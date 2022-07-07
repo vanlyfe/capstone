@@ -14,7 +14,14 @@ What is the main purpose of your project? What are the key features your site ha
 
 ## Expected Features List
 
-Add a list of your groups's brainstormed features list
+General login and registering functionality on login/register pages.
+Allow users to log in as either car owners or a person looking to rent.
+Allow users to create and update profiles within the app
+Allow renters to post and delete listings of their vehicles with Contact details, location, price range and availability information provided at the minimum.
+Allow users to provide public feedback and ratings of places they've stayed in.
+Enable users to check out onto a payment portal that supports crypto payments.
+A chat function to enable renters to communicate directly with potential rentees.
+
 
 ## Related Work
 
