@@ -1,10 +1,12 @@
 # Project Proposal
 
-Pod Members: **Add Pod Members Names**
+Pod Members: Ammar Fakih, Vernon Otieno, Edilawit Tsehay, Joram Bosire
 
 ## Problem Statement
 
-Insert your groups problem statement and target audience.
+Problem Statement: People have few options when it comes to finding affordable housing in urban areas in the United States.
+
+Target Audience: Low to moderate income adults who are living in an urban area.
 
 ## Description
 
@@ -16,8 +18,8 @@ Add a list of your groups's brainstormed features list
 
 ## Related Work
 
-What similar apps and websites? How will your project stand out from these other websites?
+Similar apps and websites are Airbnb, Outdoorsy, Escape Camper Vans, and GoCamp. Airbnb is geared towards house and apartment rentals. Our project is focused on renting motor vehicles. The rest of the listed websites are geared towards travelers and campers. Our app is focused more on repurposing vehicles for customers to sleep in when staying in the city. 
 
 ## Open Questions
 
-What questions do you still have? What topics do you need to research more for your project?
+We still need to research how to set up a scheduling and tracking system. We also need to research how to set up an insurance service for both customers and renters. Lastly, we will research the best target location(s) for this app. 
