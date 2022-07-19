@@ -24,6 +24,7 @@ Host:
 - 4.3 I want to write a description of my listing so I can describe my space in my own words.
 - 4.4 I want to list  my policies (check-in time, rules etc) so my guests can understand my expectations for them.
 - 4.5 I want to review and accept requests so I can filter out and reject requesters who I don’t want to book my vehicle. 
+
 Renter: 
 
 - 4.6 I want to see a selection of listings of vehicles to rent so I can know about the possible options in my area.
