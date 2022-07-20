@@ -19,87 +19,112 @@ List the current user stories you will implement.
 List all the pages and screens in the app. Include wireframes for at least 3 of them.
 
 ## Data Model
-
 **USER**
-- id              
-- password       
-- firstName    
-- lastName     
-- email          
-- username      
-- image_url     
-- location      
-- birthdate     
-- createdAt      
-- updatedAt     
-- gender
-- bio         
+
+| Column name | Type | Description |
+| ------------|------|------------ |
+|  id         | integer    |  Primary key   |
+|  password   |  text    |    User's password         |
+| firstName   |  text    |     User's first name        |
+| lastName    |  text    |   User's last name          |
+| Email       |   text   |     User's email        |
+| username    |  text    |  User's username          |
+| image_url   |  text    |  User's profile picture           |
+| location    |  text    |   User's location          |
+| birthdate   |  date    |   User's birthday    |
+|createdAt     |  timestamp  |  Time profile was created       |
+|updatedAt     |    timestamp  |    Timestamp of latest profile update     |
+| gender      |     text  |    User's gender     |
+| bio         |    text   |  Short user bio   | 
 
 **LISTINGS**
-- user_id
-- price
-- location
-- max_accomodation
-- model
-- description
-- image_url
-- image_url2
-- image_url3
-- image_url4
-- image_url5
-- createdAt
-- updatedAt
+
+| Column name | Type | Description |
+|-----------|-------|-------|
+| id  | integer |Primary key |
+| user_id | integer | foreign key to user table |
+| price | integer | rent price per night  |
+| location | text | location of the listing |
+| max_accomodation | integer | maximimum number of car occupants |
+| model | text | type of vehicle |
+| description | text | description of vehicle and listing policies |
+| image_url | text | first image of vehicle |
+| image_url2 | text | second image of vehicle |
+| image_url3 | text | third image of vehicle |
+| image_url4 | text | fourth image of vehicle |
+| image_url5 | text | fifth image of vehicle |
+| createdAt | timestamp | Time listing was created |
+| updatedAt | timestamp | Time of latest listing update |
 
 **ORDERS**
-- user_id
-- createdAt
-- fees
-- taxes
-- total
-- guests
-- dates
-- listing_id
+| Column name | Type | Description |
+|-----------|-------|-------|
+| id  | integer |Primary key |
+| user_id | integer | foreign key to user table |
+| createdAt | timestamp | Time order was created |
+| updatedAt | timestamp | Time of latest order update |
+| fees | float | Additional fees paid |
+| taxes | float | Taxes paid for order| 
+| total | float | total amount paid |
+| guests | integer | number of guests |
+| dates | text | timeperiod vehicle was rented |
+| listing_id | integer | foreign key to listing table |
 
 **LISTINGRATINGS**
-- rating
-- listing_id
-- user_id
-- createdAt
+| Column name | Type | Description |
+|-----------|-------|-------|
+| id  | integer |Primary key |
+| rating | float | listing rating |
+| listing_id | integer | foreign key to listing table |
+| user_id | integer | foreign key to user table |
+| createdAt | timestamp | Time rating was created |
 
 **USERRATINGS**
-- rating
-- user_id
-- created_at
+| Column name | Type | Description |
+|-----------|-------|-------|
+| id  | integer |Primary key |
+| rating | float | user rating |
+| user_id | integer | foreign key to user table |
+| createdAt | timestamp | Time rating was created |
+
+
 
 **REVIEWS**
-- review
-- listing_id
-- user_id
-- createdAt
-- updatedAt
-
+| Column name | Type | Description |
+|-----------|-------|-------|
+| id  | integer |Primary key |
+| review | text | listing review provided |
+| listing_id | integer | foreign key to listing table |
+| user_id | integer | foreign key to user table |
+| createdAt | timestamp | Time review was created |
+| updatedAt | timestamp | Time of latest review update |
 
 
 ## Endpoints
 
-**/auth**
+Endpoint | Route |CRUD | HTTP Verb | Description |User stories |
+|------|------|----|-----|-----|------|
+| **/auth** | /login | Create | POST | Logs user into account |
+| **/auth** | /register | Create | POST | Creates new user account |
+| **/auth** | /me | Read | GET | Fetches authenticated user's details |
+| **/auth** | /:userId | Update | PUT | Updates a user profile |
+|**/auth** | /:userId | Delete | DELETE | Delete a user profile |
+|**/listing** | / | Create | POST | creates a new listing |
+|**/listing** | / | Read | GET | Return all the listings in the database |
+|**/listing** | /user/:userId | Read | GET | Return all listings by a particular user |
+|**/listing** | /:listingId | Read | GET | Return one particular listing |
+|**/listing** | /:listingId | Delete | DELETE | Delete a listing |
+|**/listing** | /:listingId | Update | PUT | Update a listing |
+|**/rating** | /:listingId | Create | POST | Add rating for a listing |
+|**/rating** | /:listingId | Read | GET | Get average rating for a listing |
+|**/review** | /:listingId | Create | POST | Add review to listing |
+|**/review** | /:listingId | Read | GET | Get a listing's reviews |
+|**/review** | /:reviewId | Update | PUT | Update a posted review |
+|**/review** | /:reviewId | Delete | DELETE | Delete a review |
+|**/order** | / | Create | POST | Create a new order |
+|**/order** | / | Read | GET | Get all the orders | 
+|**/order** | /user/:userId | Read | GET | Get a user's orders |
+|**/order** | /:orderId | Read | GET | Get a particular order |
 
-- POST. /login - authenticates and logs in existing user
-- POST. /register - registers a new user
-- GET. /me - gets an authenticated user's details
-
-**/update**
-
-- PUT. /user/:userId - for user updating their profile
-- PUT. /listing/:listingId - for user to update one of their listings 
-- PUT. /review/:reviewId - for user to update a review on a listing
-
-**/listing**
-
-**/rating**
-
-**/review**
-
-**/order**
 
 ***Don't forget to set up your Issues, Milestones, and Project Board!***
