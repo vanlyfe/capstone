@@ -8,6 +8,15 @@ CREATE TABLE users(
     image_url      TEXT,
     location       TEXT,
     birthdate      TEXT,
-    createdAt      TIMESTAMP NOT NULL DEFAULT NOW()
+    createdAt      TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt      TIMESTAMP NOT NULL DEFAULT NOW(),
+    gender         TEXT,
+    bio            TEXT,
+    phone          INTEGER
 
 );
+
+
+-- Ratings
+-- phone number
+-- payment method

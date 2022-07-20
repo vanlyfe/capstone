@@ -6,6 +6,7 @@ CREATE DATABASE vanlyfe;
 \connect vanlyfe;
 
 \i vanlyfe-schema.sql
+\i vanlyfe-seed.sql
 
 \echo "Delete and recreate vanlyfe_test db?"
 \prompt "Return for yes or control-C to cancel >" answer
@@ -15,3 +16,4 @@ CREATE DATABASE vanlyfe_test;
 \connect vanlyfe_test
 
 \i vanlyfe-schema.sql
+\i vanlyfe-seed.sql
