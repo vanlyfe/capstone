@@ -47,10 +47,12 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 - image_url3
 - image_url4
 - image_url5
+- createdAt
+- updatedAt
 
 **ORDERS**
 - user_id
-- created_at
+- createdAt
 - fees
 - taxes
 - total
@@ -62,7 +64,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 - rating
 - listing_id
 - user_id
-- created_at
+- createdAt
 
 **USERRATINGS**
 - rating
@@ -73,7 +75,8 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 - review
 - listing_id
 - user_id
-- created_at
+- createdAt
+- updatedAt
 
 
 
@@ -86,6 +89,10 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 - GET. /me - gets an authenticated user's details
 
 **/update**
+
+- PUT. /user/:userId - for user updating their profile
+- PUT. /listing/:listingId - for user to update one of their listings 
+- PUT. /review/:reviewId - for user to update a review on a listing
 
 **/listing**
 
