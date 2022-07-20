@@ -1,6 +1,7 @@
 ## User Roles
 
 2.1 Renter: a person who wants a place to rent
+
 2.2 Host: a person who would like to rent out their vehicle to make some extra cash.
 
 ## User Personas
