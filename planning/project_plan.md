@@ -23,7 +23,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 
 | Column name | Type | Description |
 | ------------|------|------------ |
-|  id         | integer    |  Primary key   |
+|  user_id         | integer    |  Primary key   |
 |  password   |  text    |    User's password         |
 | firstName   |  text    |     User's first name        |
 | lastName    |  text    |   User's last name          |
@@ -41,7 +41,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 
 | Column name | Type | Description |
 |-----------|-------|-------|
-| id  | integer |Primary key |
+| listing_id  | integer |Primary key |
 | user_id | integer | foreign key to user table |
 | price | integer | rent price per night  |
 | location | text | location of the listing |
@@ -59,7 +59,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 **ORDERS**
 | Column name | Type | Description |
 |-----------|-------|-------|
-| id  | integer |Primary key |
+| order_id  | integer |Primary key |
 | user_id | integer | foreign key to user table |
 | createdAt | timestamp | Time order was created |
 | updatedAt | timestamp | Time of latest order update |
@@ -73,7 +73,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 **LISTINGRATINGS**
 | Column name | Type | Description |
 |-----------|-------|-------|
-| id  | integer |Primary key |
+| list_rating_id  | integer |Primary key |
 | rating | float | listing rating |
 | listing_id | integer | foreign key to listing table |
 | user_id | integer | foreign key to user table |
@@ -82,7 +82,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 **USERRATINGS**
 | Column name | Type | Description |
 |-----------|-------|-------|
-| id  | integer |Primary key |
+| user_rating_id  | integer |Primary key |
 | rating | float | user rating |
 | user_id | integer | foreign key to user table |
 | createdAt | timestamp | Time rating was created |
@@ -92,7 +92,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 **REVIEWS**
 | Column name | Type | Description |
 |-----------|-------|-------|
-| id  | integer |Primary key |
+| review_id  | integer |Primary key |
 | review | text | listing review provided |
 | listing_id | integer | foreign key to listing table |
 | user_id | integer | foreign key to user table |
