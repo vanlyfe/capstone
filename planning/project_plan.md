@@ -43,7 +43,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 |-----------|-------|-------|
 | id  | integer |Primary key |
 | user_id | integer | foreign key to user table |
-| price | integer | rent price per night  |
+| price | float | rent price per night  |
 | location | text | location of the listing |
 | max_accomodation | integer | maximimum number of car occupants |
 | model | text | type of vehicle |
