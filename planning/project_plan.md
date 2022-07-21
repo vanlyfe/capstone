@@ -55,6 +55,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 | image_url5 | text | fifth image of vehicle |
 | createdAt | timestamp | Time listing was created |
 | updatedAt | timestamp | Time of latest listing update |
+| fees    | float | Fees imposed on listing |
 
 **ORDERS**
 | Column name | Type | Description |
