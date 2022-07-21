@@ -47,9 +47,10 @@ CREATE TABLE  orders(
     taxes               FLOAT NOT NULL,
     total               FLOAT NOT NULL,
     guests              INTEGER NOT NULL,
-    dates               TEXT NOT NULL
+    dates               TEXT NOT NULL,
+    listing_id          INTEGER NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
    
-
 
 
 );
