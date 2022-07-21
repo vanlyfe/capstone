@@ -53,3 +53,27 @@ CREATE TABLE  orders(
 
 
 );
+
+CREATE TABLE ratings(
+    id                  SERIAL PRIMARY KEY,
+    rating              FLOAT NOT NULL,
+    listing_id          INTEGER NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    user_id             INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    createdAt           TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+
+CREATE TABLE reviews(
+    id                  SERIAL PRIMARY KEY,
+    review              TEXT NOT NULL,
+    listing_id          INTEGER NOT NULL,
+    FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
+    user_id             INTEGER NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    createdAt           TIMESTAMP NOT NULL DEFAULT NOW(),
+    updatedAt           TIMESTAMP NOT NULL DEFAULT NOW()
+
+
+);
