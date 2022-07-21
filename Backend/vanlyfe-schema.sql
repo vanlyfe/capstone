@@ -16,7 +16,6 @@ CREATE TABLE users(
 
 );
 
-CREATE TABLE listings(
 
     id                  SERIAL PRIMARY KEY,
     user_id             INTEGER NOT NULL,
@@ -54,6 +53,3 @@ CREATE TABLE  orders(
 
 
 );
--- Ratings
--- phone number
--- payment method
