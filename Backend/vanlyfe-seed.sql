@@ -168,3 +168,200 @@ VALUES (
   12
 
 );
+
+INSERT INTO orders(user_id, taxes, total, guests, dates, listing_id)
+VALUES(
+  1,
+  5.99,
+  20.99,
+  3,
+  '10/6/2000 - 10/10/2000',
+  1
+),
+(
+  1,
+  10.99,
+  25.00,
+  2,
+  '7/4/2010 - 7/10/2010',
+  2
+),
+(
+  2,
+  30.50,
+  200.00,
+  7,
+  '12/20/2012 - 12/16/2012',
+  3
+),
+(
+  2,
+  12.30,
+  40.00,
+  3,
+  '6/10/2022 - 10/10/2022',
+  4
+),
+(
+  3,
+  6.99,
+  30.96,
+  2,
+  '8/5/2015 - 8/10/2015',
+  5
+),
+(
+  3,
+  9.99,
+  24.20,
+  5,
+  '4/4/2019 - 4/9/2019',
+  6
+),
+(
+  4,
+  15.10,
+  40.00,
+  2,
+  '6/10/2014 - 10/10/2014',
+  7
+),
+(
+  4,
+  23.25,
+  50.00,
+  1,
+  '2/2/2013 - 2/10/2013',
+  8
+);
+
+
+INSERT INTO ratings(rating, listing_id, user_id)
+VALUES(
+  4.3,
+  1,
+  1
+),
+(
+  3.8,
+  2,
+  1
+),
+(
+  2.9,
+  3,
+  1
+),
+(
+  5.0,
+  1,
+  2
+),
+(
+  3.2,
+  2,
+  2
+),
+(
+  0.7,
+  3,
+  2
+),
+(
+  2.9,
+  1,
+  3
+),
+(
+  4.8,
+  2,
+  3
+),
+(
+  3.7,
+  3,
+  3
+),
+(
+  1.7,
+  1,
+  4
+),
+(
+  4.0,
+  2,
+  4
+),
+(
+  3.0,
+  3,
+  4
+),
+(
+  4.9,
+  4,
+  1
+),
+(
+  3.4,
+  5,
+  2
+),
+(
+  2.8,
+  6,
+  3
+),
+(
+  1.6,
+  7,
+  4
+);
+
+INSERT INTO reviews(review, listing_id, user_id)
+VALUES(
+  'Great car, clean and safe. Loved it',
+  1,
+  1
+),
+(
+  'Bit worse than last time but still worth it',
+  1,
+  1
+
+),
+(
+  'Too overpriced in my opinion',
+  1,
+  1
+
+),
+(
+  'Its a decent place to stay for a night',
+  1,
+  4
+
+),
+(
+  'Very dirty, terrible noisy neighbourhood, please DO NOT rent this van',
+  2,
+  2
+
+),
+(
+  'Noisy neighbourhood with constant fireworks and very insecure',
+  2,
+  3
+
+),
+(
+  'Would 1000% recommend this van and host if looking for a place in the area',
+  7,
+  1
+
+),
+(
+  'I would suggest you look into other options first before opting for this',
+  11,
+  3
+);
