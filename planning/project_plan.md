@@ -80,14 +80,6 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 | user_id | integer | foreign key to user table |
 | createdAt | timestamp | Time rating was created |
 
-**USERRATINGS**
-| Column name | Type | Description |
-|-----------|-------|-------|
-| id  | integer |Primary key |
-| rating | float | user rating |
-| user_id | integer | foreign key to user table |
-| createdAt | timestamp | Time rating was created |
-
 
 
 **REVIEWS**
