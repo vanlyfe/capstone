@@ -20,7 +20,7 @@ CREATE TABLE listings(
     id                  SERIAL PRIMARY KEY,
     user_id             INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-    price               INTEGER NOT NULL,
+    price               FLOAT NOT NULL,
     location            TEXT NOT NULL,
     max_accomodation    INTEGER NOT NULL,
     model               TEXT,
