@@ -71,7 +71,7 @@ List all the pages and screens in the app. Include wireframes for at least 3 of 
 | dates | text | timeperiod vehicle was rented |
 | listing_id | integer | foreign key to listing table |
 
-**LISTINGRATINGS**
+**RATINGS**
 | Column name | Type | Description |
 |-----------|-------|-------|
 | id  | integer |Primary key |
