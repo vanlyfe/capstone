@@ -9,11 +9,13 @@ import Register from './Register';
 import CreateListing from './CreateListing';
 import ListingDetails from './ListingDetails';
 import EditListing from './EditListing';
+import { Navbar } from './Navbar';
 
 export default function App() {
   return (
     <Box>
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
