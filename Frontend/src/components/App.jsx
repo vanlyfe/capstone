@@ -21,7 +21,7 @@ export default function App() {
           <Route path="/listings" element={<Listings />} />
           <Route path="/createlisting" element={<CreateListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
-          <Route path="/listing/:id/edit" element={<EditListing />} />"
+          <Route path="/listing/:id/edit" element={<EditListing />} />
         </Routes>
       </BrowserRouter>
     </Box>
