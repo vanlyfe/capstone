@@ -2,6 +2,7 @@ import React from 'react';
 import Box from '@mui/material/Box';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
+
 import LandingPage from './LandingPage';
 import Login from './Login';
 import Listings from './Listings';
@@ -22,8 +23,10 @@ export default function App() {
           <Route path="/createlisting" element={<CreateListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />"
+
         </Routes>
       </BrowserRouter>
     </Box>
   );
+
 }
