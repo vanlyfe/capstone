@@ -67,6 +67,18 @@ class User {
       throw new BadRequestError("Please input password");
     }
 
+    if (credentials.firstName.length < 1) {
+      throw new BadRequestError("Please input first name");
+    }
+
+    if (credentials.lastName.length < 1) {
+      throw new BadRequestError("Please input last name");
+    }
+
+    if (credentials.username.length < 1) {
+      throw new BadRequestError("Please input username");
+    }
+
     const existingUser = await User.fetchUserByEmail(credentials.email);
     if (existingUser) {
       throw new BadRequestError(`Email already exists: ${credentials.email}`);
@@ -185,50 +197,14 @@ class User {
                    RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;`
         
         console.log(query)
-        // const result = await db.query(
-        //     `
-        //     UPDATE users
-        //     SET key = $2,
-        //         updatedAt = NOW()
-        //     WHERE id = $3
-        //     RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;
-        //     `, [value, userId]
-        // )
+     
          const result = await db.query(
             query, [value, userId]
         )
 
         results = result.rows[0]
     }
-    // const res = await db.query(
-    //   `
-    //         UPDATE users
-    //         SET firstName = $1,
-    //             lastName = $2,
-    //             username = $3,
-    //             email = $4,
-    //             image_url = $5,
-    //             location = $6,
-    //             birthdate = $7,
-    //             gender = $8,
-    //             updatedAt = NOW()
-    //         WHERE id = $9
-    //         RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;
-            
-    //         `,
-    //   [
-    //     userUpdate.firstName? userUpdate.firstName : firstName,
-    //     userUpdate.lastName,
-    //     userUpdate.username,
-    //     userUpdate.email,
-    //     userUpdate.image_url,
-    //     userUpdate.location,
-    //     userUpdate.birthdate,
-    //     userUpdate.gender,
-    //     userId
-
-    //   ]
-    // );
+   
 
     return results
   }
