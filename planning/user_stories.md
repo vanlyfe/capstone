@@ -50,6 +50,13 @@ public transportation to and from work. He wants to earn extra money from his ca
   - As a customer, I want to be able to create an account to book or list a vehicle.
   - As a user, I want to be able to login to view my profile and access all the functionalities of the website.
 - **User Profile**
+  - As a user, I want to be able to view my profile details 
+  - As a user, I want to be able to update my profile so that my details are up to date
+  - As a user, I want to be able to view my past orders and listings I've created
+- **Authentication**
+   - As a customer, I want to be able to create an account to book or list a vehicle.
+   - As a user, I want to be able to login to view my profile and access all the functionalities of the website.
+
 - **Create listings**
   - As a user, I want to be able to navigate to a page with a form so that I can add a new listing to my profile
   - As a user, i want to be able to create and post a new listing with relevant information so that it can be displayed on my page
