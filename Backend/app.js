@@ -4,7 +4,7 @@ const morgan = require("morgan");
 
 //Routes declared here
 const authRoutes = require("./routes/auth")
-const updateRoutes = require("./routes/update")
+
 
 const config = require("./config");
 const security = require("./middleware/security");
@@ -21,7 +21,7 @@ app.use(morgan("tiny"));
 app.use(security.extractUserFromJwt);
 
 app.use("/auth", authRoutes)
-app.use("/update", updateRoutes)
+
 
 app.get("/", function (req, res) {
   return res.status(200).json({
