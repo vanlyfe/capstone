@@ -1,14 +1,14 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React from "react";
+import Box from "@mui/material/Box";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import LandingPage from './LandingPage';
-import Login from './Login';
-import Listings from './Listings';
-import Register from './Register';
-import CreateListing from './CreateListing';
-import ListingDetails from './ListingDetails';
-import EditListing from './EditListing';
+import LandingPage from "./LandingPage";
+import Login from "./Login";
+import Listings from "./Listings";
+import Register from "./Register";
+import CreateListing from "./CreateListing";
+import ListingDetails from "./ListingDetails";
+import EditListing from "./EditListing";
 
 export default function App() {
   return (
