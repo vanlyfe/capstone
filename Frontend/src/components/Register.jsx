@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
@@ -13,7 +12,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import logo from "../assets/Logo1.png";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+// import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Navigate, useNavigate } from "react-router-dom";
 import apiClient from "../services/apiClient";
 import { useState } from "react";
@@ -38,7 +37,7 @@ function Copyright(props) {
   );
 }
 
-const theme = createTheme();
+// const theme = createTheme();
 
 export default function Register() {
   const navigate = useNavigate();
@@ -125,12 +124,9 @@ export default function Register() {
     } else {
       setErrors((e) => ({ ...e, passwordConfirm: null }));
     }
-   
-    
 
-    console.log(form)
-    
-     
+    console.log(form);
+
     const { data, error } = await apiClient.signupUser({
       email: form.email,
       password: form.password,
@@ -138,17 +134,15 @@ export default function Register() {
       lastName: form.lastName,
       username: form.username,
     });
-   
 
-    console.log(data)
-    
+    console.log(data);
+
     if (error) {
       setErrors((e) => ({ ...e, form: error }));
       setIsLoading(false);
     }
     console.log(data);
     if (data?.user) {
-    
       navigate("/listings");
       setIsLoading(false);
       apiClient.setToken(data.token);
@@ -157,8 +151,8 @@ export default function Register() {
 
   return (
     <div className="register">
-        <Box>
-      <ThemeProvider theme={theme}>
+      <Box>
+        {/* <ThemeProvider theme={theme}> */}
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -296,7 +290,7 @@ export default function Register() {
           </Box>
           <Copyright sx={{ mt: 5 }} />
         </Container>
-      </ThemeProvider>
+        {/* </ThemeProvider> */}
       </Box>
     </div>
   );
