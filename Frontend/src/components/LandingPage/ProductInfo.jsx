@@ -22,7 +22,7 @@ function ProductValues() {
     <Box
       component="section"
       sx={{ display: 'flex', overflow: 'hidden', bgcolor: 'secondary.light' }}>
-      <Container sx={{ mt: 15, mb: 15, display: 'flex', position: 'relative' }}>
+      <Container sx={{ mt: 15, mb: 10, display: 'flex', position: 'relative' }}>
         {/* <Box
           component="img"
           src="/static/themes/onepirate/productCurvyLines.png"
@@ -35,7 +35,7 @@ function ProductValues() {
               <Box
                 component="img"
                 src={Image1}
-                alt="suitcase"
+                alt="van in front of a building"
                 sx={{ height: 300 }}
               />
               {/* <Typography variant="h6" sx={{ my: 5 }}>
@@ -48,6 +48,7 @@ function ProductValues() {
                   height: '100%',
                   display: 'flex',
                   alignItems: 'center',
+                  minHeight: 250,
                 }}>
                 <Typography variant="h5" align="center">
                   {
@@ -62,10 +63,19 @@ function ProductValues() {
           <Grid container item xs={12} md={12} mb={10}>
             <Grid item sx={item} md={6}>
               <Box
+                component="img"
+                src={Image2}
+                alt="woman in front of van"
+                sx={{ height: 300 }}
+              />
+            </Grid>
+            <Grid item sx={item} md={6}>
+              <Box
                 style={{
                   height: '100%',
                   display: 'flex',
                   alignItems: 'center',
+                  minHeight: 300,
                 }}>
                 <Typography variant="h5">
                   {
@@ -74,21 +84,13 @@ function ProductValues() {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item sx={item} md={6}>
-              <Box
-                component="img"
-                src={Image2}
-                alt="suitcase"
-                sx={{ height: 300 }}
-              />
-            </Grid>
           </Grid>
           <Grid container item xs={12} md={12} mb={10}>
             <Grid item sx={item} md={6}>
               <Box
                 component="img"
                 src={Image3}
-                alt="suitcase"
+                alt="inside of van with bed inside"
                 sx={{ height: 300 }}
               />
             </Grid>
@@ -98,6 +100,7 @@ function ProductValues() {
                   height: '100%',
                   display: 'flex',
                   alignItems: 'center',
+                  minHeight: 250,
                 }}>
                 <Typography variant="h5">
                   {

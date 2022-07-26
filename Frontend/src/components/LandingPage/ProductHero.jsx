@@ -33,14 +33,14 @@ export default function ProductHero() {
         sx={{ mb: 4, mt: { sx: 4, sm: 10 } }}>
         There are thousands of vehicles to choose from at affordable prices.
       </Typography>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex', flexWrap: "wrap", justifyContent: "center" }}>
         <Link to="/listings" style={{textDecoration: "none"}}>
           <Button
             color="secondary"
             variant="contained"
             size="large"
             component="a"
-            sx={{ minWidth: 200, margin: 1 }}>
+            sx={{  margin: 1 }}>
             Browse Listings
           </Button>
         </Link>
@@ -51,7 +51,7 @@ export default function ProductHero() {
           size="large"
           component="a"
           href="/premium-themes/onepirate/sign-up/"
-          sx={{ minWidth: 200, margin: 1 }}>
+          sx={{  margin: 1 }}>
           Create Listing
         </Button>
         </Link>
