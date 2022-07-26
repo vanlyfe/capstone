@@ -6,6 +6,8 @@ import Container from '@mui/material/Container';
 import Typography from './Typography';
 
 import Image1 from '../../assets/values-img-1.jpg';
+import Image2 from '../../assets/values-img-2.jpg';
+import Image3 from '../../assets/values-img-3.jpg';
 
 const item = {
   display: 'flex',
@@ -35,70 +37,73 @@ function ProductValues() {
                 alt="suitcase"
                 sx={{ height: 350 }}
               />
-              <Typography variant="h6" sx={{ my: 5 }}>
+              {/* <Typography variant="h6" sx={{ my: 5 }}>
                 The best luxury hotels
-              </Typography>
+              </Typography> */}
             </Grid>
             <Grid item sx={item} md={6}>
-              <Box>
-                <Typography variant="h5" styles={{ sx: { top: '50px' } }}>
+              <Box
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
+                <Typography variant="h5" align="center">
                   {
-                    'From the latest trendy boutique hotel to the iconic palace with XXL pool'
+                    'With VanLyfe, you can rent any type of vehicle as a temporary home. '
                   }
 
-                  {
-                    ', go for a mini-vacation just a few subway stops away from your home.'
-                  }
+                  {'Our vehicles are safe and affordable.'}
                 </Typography>
               </Box>
             </Grid>
           </Grid>
           <Grid container item xs={12} md={12} mb={10}>
             <Grid item sx={item} md={6}>
-              <Typography variant="h5">
-                {
-                  'From the latest trendy boutique hotel to the iconic palace with XXL pool'
-                }
-
-                {
-                  ', go for a mini-vacation just a few subway stops away from your home.'
-                }
-              </Typography>
+              <Box
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
+                <Typography variant="h5">
+                  {
+                    'If you are a vehicle owner, VanLyfe makes it easy to rent out your vehicle.'
+                  }
+                </Typography>
+              </Box>
             </Grid>
             <Grid item sx={item} md={6}>
               <Box
                 component="img"
-                src="/static/themes/onepirate/productValues1.svg"
+                src={Image2}
                 alt="suitcase"
-                sx={{ height: 55 }}
+                sx={{ height: 350 }}
               />
-              <Typography variant="h6" sx={{ my: 5 }}>
-                The best luxury hotels
-              </Typography>
             </Grid>
           </Grid>
           <Grid container item xs={12} md={12} mb={10}>
             <Grid item sx={item} md={6}>
               <Box
                 component="img"
-                src="/static/themes/onepirate/productValues1.svg"
+                src={Image3}
                 alt="suitcase"
-                sx={{ height: 55 }}
+                sx={{ height: 350 }}
               />
-              <Typography variant="h6" sx={{ my: 5 }}>
-                The best luxury hotels
-              </Typography>
             </Grid>
             <Grid item sx={item} md={6}>
-              <Typography variant="h5">
-                {
-                  'From the latest trendy boutique hotel to the iconic palace with XXL pool'
-                }
-
-                {
-                  ', go for a mini-vacation just a few subway stops away from your home.'
-                }
-              </Typography>
+              <Box
+                style={{
+                  height: '100%',
+                  display: 'flex',
+                  alignItems: 'center',
+                }}>
+                <Typography variant="h5">
+                  {
+                    'Explore the world of VanLyfe and find the perfect vehicle for your needs.'
+                  }
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Grid>

@@ -29,8 +29,7 @@ function ProductHowItWorks() {
   return (
     <Box
       component="section"
-      sx={{ display: 'flex', bgcolor: 'secondary.light', overflow: 'hidden' }}
-    >
+      sx={{ display: 'flex', bgcolor: 'secondary.light', overflow: 'hidden' }}>
       <Container
         sx={{
           mt: 10,
@@ -39,8 +38,7 @@ function ProductHowItWorks() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-        }}
-      >
+        }}>
         <Box
           component="img"
           src="/static/themes/onepirate/productCurvyLines.png"
@@ -53,51 +51,58 @@ function ProductHowItWorks() {
           }}
         />
         <Typography variant="h4" marked="center" component="h2" sx={{ mb: 14 }}>
-          How it works
+          Popular Listings
         </Typography>
         <div>
           <Grid container spacing={5}>
             <Grid item xs={12} md={4}>
               <Box sx={item}>
-                <Box sx={number}>1.</Box>
                 <Box
                   component="img"
                   src="/static/themes/onepirate/productHowItWorks1.svg"
-                  alt="suitcase"
+                  alt="vehicle listing"
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  Appointment every Wednesday 9am.
+                  Vehicle Name
+                </Typography>
+                <Typography variant="body1" align="center">
+                  Product Description: Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit.
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} md={4}>
               <Box sx={item}>
-                <Box sx={number}>2.</Box>
                 <Box
                   component="img"
-                  src="/static/themes/onepirate/productHowItWorks2.svg"
-                  alt="graph"
+                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  alt="vehicle listing"
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  First come, first served. Our offers are in limited quantities, so
-                  be quick.
+                  Vehicle Name
+                </Typography>
+                <Typography variant="body1" align="center">
+                  Product Description: Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit.
                 </Typography>
               </Box>
             </Grid>
             <Grid item xs={12} md={4}>
               <Box sx={item}>
-                <Box sx={number}>3.</Box>
                 <Box
                   component="img"
-                  src="/static/themes/onepirate/productHowItWorks3.svg"
-                  alt="clock"
+                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  alt="vehicle listing"
                   sx={image}
                 />
                 <Typography variant="h5" align="center">
-                  {'New offers every week. New experiences, new surprises. '}
-                  {'Your Sundays will no longer be alike.'}
+                  Vehicle Name
+                </Typography>
+                <Typography variant="body1" align="center">
+                  Product Description: Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit.
                 </Typography>
               </Box>
             </Grid>
@@ -109,8 +114,7 @@ function ProductHowItWorks() {
           variant="contained"
           component="a"
           href="/premium-themes/onepirate/sign-up/"
-          sx={{ mt: 8 }}
-        >
+          sx={{ mt: 8 }}>
           Get started
         </Button>
       </Container>
