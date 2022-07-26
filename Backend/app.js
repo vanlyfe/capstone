@@ -4,6 +4,10 @@ const morgan = require("morgan");
 
 //Routes declared here
 const authRoutes = require("./routes/auth")
+const listingRoutes = require("./routes/listings")
+const orderRoutes = require("./routes/orders")
+const ratingRoutes = require("./routes/ratings")
+const reviewRoutes = require("./routes/reviews")
 
 
 const config = require("./config");
@@ -21,6 +25,10 @@ app.use(morgan("tiny"));
 app.use(security.extractUserFromJwt);
 
 app.use("/auth", authRoutes)
+app.use("/listing", listingRoutes)
+app.use("/rating", ratingRoutes)
+app.use("/review", reviewRoutes)
+app.use("/order", orderRoutes)
 
 
 app.get("/", function (req, res) {
