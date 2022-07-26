@@ -112,7 +112,7 @@ export default function Register() {
 
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
-  console.log(form);
+  
 
   const handleOnSubmit = async () => {
     setIsLoading(true);
@@ -125,12 +125,7 @@ export default function Register() {
     } else {
       setErrors((e) => ({ ...e, passwordConfirm: null }));
     }
-   
     
-
-    console.log(form)
-    
-     
     const { data, error } = await apiClient.signupUser({
       email: form.email,
       password: form.password,
@@ -138,15 +133,12 @@ export default function Register() {
       lastName: form.lastName,
       username: form.username,
     });
-   
-
-    console.log(data)
-    
+     
     if (error) {
       setErrors((e) => ({ ...e, form: error }));
       setIsLoading(false);
     }
-    console.log(data);
+   
     if (data?.user) {
     
       navigate("/listings");
