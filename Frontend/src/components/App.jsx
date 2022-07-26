@@ -1,17 +1,45 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React from "react";
+import Box from "@mui/material/Box";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import LandingPage from './LandingPage';
-import Login from './Login';
-import Listings from './Listings';
-import Register from './Register';
-import CreateListing from './CreateListing';
-import ListingDetails from './ListingDetails';
-import EditListing from './EditListing';
-import { Navbar } from './Navbar';
+import LandingPage from "./LandingPage";
+import Login from "./Login";
+import Listings from "./Listings";
+import Register from "./Register";
+import CreateListing from "./CreateListing";
+import ListingDetails from "./ListingDetails";
+import EditListing from "./EditListing";
+import { Navbar } from "./Navbar";
 
 export default function App() {
+  //const [isLogin, setIsLogin] = useState(false);
+  //const [user, setUser] = userState({name: "John Doe"})
+  // const { user, setUser } = useAuthContext();
+
+  // const handleLogout = async () => {
+  //   await apiClient.logoutUser();
+  //   setUser({});
+  //   setError(null);
+  // };
+
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const { data, error } = await apiClient.fetchUserFromToken();
+  //     if (data) {
+  //       setUser(data.user);
+  //     }
+  //     if (error) {
+  //       setError(error);
+  //     }
+  //   };
+
+  //   const token = localStorage.getItem("vanlyfe_token");
+  //   if (token) {
+  //     apiClient.setToken(token);
+  //     fetchUser();
+  //   }
+  // }, [setUser]);
+
   return (
     <Box>
       <BrowserRouter>

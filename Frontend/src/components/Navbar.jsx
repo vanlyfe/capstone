@@ -8,6 +8,13 @@ import {
 } from "@mui/material";
 import Container from "@mui/material/Container";
 import logo from "../assets/logo1.png";
+import Avatar from "@mui/material/Avatar";
+
+// added the following for the links
+
+//import NavLink from "./NavLink";
+import { Link } from "react-router-dom";
+import { positions } from "@mui/system";
 
 export const Navbar = () => {
   return (
@@ -20,7 +27,9 @@ export const Navbar = () => {
             color="inherit"
             aria-label="logo"
           >
-            <img src={logo} width="100" height="50" />
+            <Link to="/">
+              <img src={logo} width="100" height="50" />
+            </Link>
           </IconButton>
         </Toolbar>
 
@@ -31,9 +40,21 @@ export const Navbar = () => {
         ></Typography>
         <Stack direction="row" spacing={2}>
           <Button color="inherit">Feature1</Button>
-          <Button color="inherit">Feature1</Button>
-          <Button color="inherit">Feature1</Button>
-          <Button color="inherit">Login</Button>
+
+          <Button component={Link} to="/createlisting" color="inherit">
+            Add Listing
+          </Button>
+
+          <Button component={Link} to="/register" color="inherit">
+            Register
+          </Button>
+          <Avatar
+            component={Link}
+            to="/listing/:id/edit"
+            alt="Travis Howard"
+            src="/static/images/avatar/2.jpg"
+            sx={{ width: 50, height: 50 }}
+          />
         </Stack>
       </Container>
     </AppBar>
