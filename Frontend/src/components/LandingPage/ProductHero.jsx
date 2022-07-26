@@ -5,6 +5,7 @@ import Typography from './Typography';
 import ProductHeroLayout from './ProductHeroLayout';
 
 import Logo from '../../assets/Logo1.svg';
+import { Link } from 'react-router-dom';
 const backgroundImage =
   'https://c.pxhere.com/photos/73/d5/classic_female_model_person_vehicle_volkswagen_woman-986101.jpg!d';
 
@@ -32,15 +33,30 @@ export default function ProductHero() {
         sx={{ mb: 4, mt: { sx: 4, sm: 10 } }}>
         There are thousands of vehicles to choose from at affordable prices.
       </Typography>
-      <Button
-        color="secondary"
-        variant="contained"
-        size="large"
-        component="a"
-        href="/premium-themes/onepirate/sign-up/"
-        sx={{ minWidth: 200 }}>
-        Register
-      </Button>
+      <Box sx={{ display: 'flex' }}>
+        <Link to="/listings" style={{textDecoration: "none"}}>
+          <Button
+            color="secondary"
+            variant="contained"
+            size="large"
+            component="a"
+            sx={{ minWidth: 200, margin: 1 }}>
+            Browse Listings
+          </Button>
+        </Link>
+        <Link to="/createlisting" style={{textDecoration: "none"}}>
+        <Button
+          color="secondary"
+          variant="contained"
+          size="large"
+          component="a"
+          href="/premium-themes/onepirate/sign-up/"
+          sx={{ minWidth: 200, margin: 1 }}>
+          Create Listing
+        </Button>
+        </Link>
+      </Box>
+
       <Typography variant="body2" color="inherit" sx={{ mt: 2 }}>
         Discover the experience
       </Typography>

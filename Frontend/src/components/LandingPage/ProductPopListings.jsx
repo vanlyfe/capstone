@@ -5,6 +5,7 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import Button from './Button';
 import Typography from './Typography';
+import { Link } from 'react-router-dom';
 
 const item = {
   display: 'flex',
@@ -33,7 +34,7 @@ function ProductHowItWorks() {
       <Container
         sx={{
           mt: 10,
-          mb: 15,
+          mb: 10,
           position: 'relative',
           display: 'flex',
           flexDirection: 'column',
@@ -54,8 +55,8 @@ function ProductHowItWorks() {
           Popular Listings
         </Typography>
         <div>
-          <Grid container spacing={5}>
-            <Grid item xs={12} md={4}>
+          <Grid container spacing={5} mb={10}>
+            <Grid item xs={12} md={3}>
               <Box sx={item}>
                 <Box
                   component="img"
@@ -72,7 +73,7 @@ function ProductHowItWorks() {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
               <Box sx={item}>
                 <Box
                   component="img"
@@ -89,7 +90,24 @@ function ProductHowItWorks() {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={3}>
+              <Box sx={item}>
+                <Box
+                  component="img"
+                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  alt="vehicle listing"
+                  sx={image}
+                />
+                <Typography variant="h5" align="center">
+                  Vehicle Name
+                </Typography>
+                <Typography variant="body1" align="center">
+                  Product Description: Lorem ipsum dolor sit amet, consectetur
+                  adipiscing elit.
+                </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={3}>
               <Box sx={item}>
                 <Box
                   component="img"
@@ -108,7 +126,7 @@ function ProductHowItWorks() {
             </Grid>
           </Grid>
         </div>
-        <Button
+        {/* <Button
           color="secondary"
           size="large"
           variant="contained"
@@ -116,7 +134,17 @@ function ProductHowItWorks() {
           href="/premium-themes/onepirate/sign-up/"
           sx={{ mt: 8 }}>
           Get started
-        </Button>
+        </Button> */}
+        <Link to="/listings" style={{ textDecoration: 'none' }}>
+          <Button
+            color="secondary"
+            variant="contained"
+            size="large"
+            component="a"
+            sx={{ minWidth: 200, margin: 1 }}>
+            Browse More Listings
+          </Button>
+        </Link>
       </Container>
     </Box>
   );

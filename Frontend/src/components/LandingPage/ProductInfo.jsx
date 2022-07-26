@@ -13,6 +13,7 @@ const item = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
   px: 5,
 };
 
@@ -35,7 +36,7 @@ function ProductValues() {
                 component="img"
                 src={Image1}
                 alt="suitcase"
-                sx={{ height: 350 }}
+                sx={{ height: 300 }}
               />
               {/* <Typography variant="h6" sx={{ my: 5 }}>
                 The best luxury hotels
@@ -78,7 +79,7 @@ function ProductValues() {
                 component="img"
                 src={Image2}
                 alt="suitcase"
-                sx={{ height: 350 }}
+                sx={{ height: 300 }}
               />
             </Grid>
           </Grid>
@@ -88,7 +89,7 @@ function ProductValues() {
                 component="img"
                 src={Image3}
                 alt="suitcase"
-                sx={{ height: 350 }}
+                sx={{ height: 300 }}
               />
             </Grid>
             <Grid item sx={item} md={6}>
