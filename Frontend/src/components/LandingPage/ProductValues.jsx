@@ -40,8 +40,8 @@ function ProductValues() {
               </Typography>
             </Grid>
             <Grid item sx={item} md={6}>
-              <Box sx={{ display: 'flex', alignContent: 'center' }}>
-                <Typography variant="h5">
+              <Box>
+                <Typography variant="h5" styles={{ sx: { top: '50px' } }}>
                   {
                     'From the latest trendy boutique hotel to the iconic palace with XXL pool'
                   }
