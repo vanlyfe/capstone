@@ -199,6 +199,7 @@ Endpoint | Route |CRUD | HTTP Verb | Description |User stories |
 |**/listing** | / | Read | GET | Return all the listings in the database |
 |**/listing** | /user/:userId | Read | GET | Return all listings by a particular user |
 |**/listing** | /:listingId | Read | GET | Return one particular listing |
+|**/listing** | /best | Read |GET | Return the 4 best rated listings to display on website|
 |**/listing** | /:listingId | Delete | DELETE | Delete a listing |
 |**/listing** | /:listingId | Update | PUT | Update a listing |
 |**/rating** | /:listingId | Create | POST | Add rating for a listing |
