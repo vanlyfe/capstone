@@ -17,6 +17,17 @@ router.get("/", async (req, res, next) => {
 })
 
 
+router.get("/best", async (req, res, next) => {
+    try{
+        var listings = await Listing.getBestListings();
+        return res.status(200).json({listings: listings})
+
+    } catch(error){
+        next(error)
+    }
+})
+
+
 
 
 router.get("/user/:userId", security.requireAuthenticatedUser, async (req, res, next) => {
