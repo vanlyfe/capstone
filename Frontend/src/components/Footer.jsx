@@ -47,7 +47,7 @@ export default function Footer() {
         marginTop: "auto",
         bgcolor: "primary.main",
         color: "white",
-        position: "fixed",
+       // position: "fixed",
         bottom: 0,
         // backgroundColor: (theme) =>
         //   theme.palette.mode === "light"
