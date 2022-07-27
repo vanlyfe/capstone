@@ -12,9 +12,9 @@ class User {
       email: user.email,
       username: user.username,
       gender: user.gender,
-      location : user.location,
-      birthdate : user.birthdate,
-      password : user.password
+      location: user.location,
+      birthdate: user.birthdate,
+     
     };
   }
 
@@ -111,7 +111,7 @@ class User {
             location
         )
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-        RETURNING id,firstName,lastName,password,email,username,location, birthdate, gender, createdAt, updatedAt;
+        RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;
         `,
       [
         credentials.firstName,
@@ -121,7 +121,7 @@ class User {
         hashedPassword,
         credentials.gender,
         credentials.birthdate,
-        credentials.location
+        credentials.location,
       ]
     );
 
@@ -170,43 +170,45 @@ class User {
   }
 
   static async editUser({ userUpdate, userId }) {
-
-    if(userUpdate.email){
-    const existingUser = await User.fetchUserByEmail(userUpdate.email);
-    if (existingUser) {
-      throw new BadRequestError(`Email already exists: ${userUpdate.email}`);
+    if (userUpdate.email) {
+      const existingUser = await User.fetchUserByEmail(userUpdate.email);
+      if (existingUser) {
+        throw new BadRequestError(`Email already exists: ${userUpdate.email}`);
+      }
     }
-  }
 
-  if(userUpdate.username){
-    const existingUsername = await User.checkUsername(userUpdate.username);
-    if (existingUsername) {
-      throw new BadRequestError(
-        `Username already exists: ${userUpdate.username}`
-      );
+    if (userUpdate.username) {
+      const existingUsername = await User.checkUsername(userUpdate.username);
+      if (existingUsername) {
+        throw new BadRequestError(
+          `Username already exists: ${userUpdate.username}`
+        );
+      }
     }
-  }
     var results = {};
+    var hashedPassword;
 
-    for(const [key, value] of Object.entries(userUpdate)){
-        console.log(String(key))
-        const query = `UPDATE users
-                       SET ` + key + ` = $1,
+    for (var [key, value] of Object.entries(userUpdate)) {
+      if (key === "password") {
+        hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR);
+      }
+      
+
+      const query =
+        `UPDATE users
+                       SET ` +
+        key +
+        ` = $1,
                        updatedAt = NOW()
                    WHERE id = $2
-                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;`
-        
-        console.log(query)
-     
-         const result = await db.query(
-            query, [value, userId]
-        )
+                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;`;
 
-        results = result.rows[0]
+      const result = await db.query(query, [key === "password" ? hashedPassword : value, userId]);
+
+      results = result.rows[0];
     }
-   
 
-    return results
+    return results;
   }
 }
 

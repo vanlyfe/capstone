@@ -10,7 +10,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import logo from "../assets/Logo1.png";
+import logo from "../assets/Logo2.svg";
 import Container from "@mui/material/Container";
 // import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -111,7 +111,7 @@ export default function Register() {
 
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
-  console.log(form);
+  
 
   const handleOnSubmit = async () => {
     setIsLoading(true);
@@ -125,8 +125,6 @@ export default function Register() {
       setErrors((e) => ({ ...e, passwordConfirm: null }));
     }
 
-    console.log(form);
-
     const { data, error } = await apiClient.signupUser({
       email: form.email,
       password: form.password,
@@ -135,13 +133,11 @@ export default function Register() {
       username: form.username,
     });
 
-    console.log(data);
-
     if (error) {
       setErrors((e) => ({ ...e, form: error }));
       setIsLoading(false);
     }
-    console.log(data);
+   
     if (data?.user) {
       navigate("/listings");
       setIsLoading(false);
