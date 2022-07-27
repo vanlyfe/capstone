@@ -49,7 +49,7 @@ router.get("/me", security.requireAuthenticatedUser, async (req,res,next) => {
   }
 })
 
-router.put("/:userId", security.requireAuthenticatedUser, permissions.authedUserOwnsProfile, async (req, res, next) => {
+router.put("/:userId", security.requireAuthenticatedUser, permissions.userOwnsProfile, async (req, res, next) => {
   try{
       const {userId} = req.params
       const user = await User.editUser({userUpdate : req.body, userId})
