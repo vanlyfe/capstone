@@ -14,6 +14,8 @@ class Listing{
          return res;
     }
 
+
+
     static async getListingById(id){
 
         const result = await db.query(
@@ -25,10 +27,12 @@ class Listing{
 
         const res = result.rows[0]
 
-
         return res;
         
     }
+
+
+
 
 
     static async getUserListings(userId){
@@ -44,6 +48,8 @@ class Listing{
     
     }
 
+    
+
     static async getBestListings(){
         const query = `
         SELECT * 
@@ -58,8 +64,6 @@ class Listing{
         LIMIT 4
         
         `
-
-        
 
         const result = await db.query(query)
 

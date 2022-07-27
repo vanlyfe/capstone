@@ -1,14 +1,30 @@
 const {BadRequestError, ForbiddenError} = require("../utils/errors")
 const User = require("../models/user")
 
-const authedUserOwnsProfile = async (req,res,next) => {
+const userOwnsProfile = async (req,res,next) => {
     try {
         const {user} = res.locals
         const {userId}  = req.params
        
 
         if(user.id != userId){
-            throw new ForbiddenError("User is only allowed to update own profile")
+            throw new ForbiddenError("User can only edit their own profile")
+        }
+
+        return next()
+    } catch(error){
+        return next(error)
+    }
+}
+
+const userOwnsAccount = async (req,res,next) => {
+    try {
+        const {user} = res.locals
+        const {userId}  = req.params
+       
+
+        if(user.id != userId){
+            throw new ForbiddenError("User can only view orders belonging to their own account")
         }
 
         return next()
@@ -18,7 +34,11 @@ const authedUserOwnsProfile = async (req,res,next) => {
 }
 
 
+
+
+
 module.exports = {
-    authedUserOwnsProfile,
+    userOwnsProfile,
+    userOwnsAccount
 
 }
