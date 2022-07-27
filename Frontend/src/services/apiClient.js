@@ -32,8 +32,17 @@ class ApiClient {
     }
   }
 
+  // Get Requests
+
   async fetchUserFromToken() {
     return await this.request({ endpoint: `auth/me`, method: `GET` });
+  }
+
+  async fetchListings() {
+    return await this.request({
+      endpoint: `listing`,
+      method: `GET`,
+    });
   }
 
   async loginUser(credentials) {
@@ -43,6 +52,8 @@ class ApiClient {
       data: credentials,
     });
   }
+
+  // Post Requests
 
   async signupUser(credentials) {
     return await this.request({
