@@ -7,6 +7,11 @@ const router = express.Router();
 router.get("/:listingId", async (req, res, next) => {
     try{
 
+        const {listingId} = req.params
+        const reviews = await Review.getReviewsByListingId(listingId)
+
+        return res.status(200).json({reviews : reviews})
+
     } catch(error){
         next(error)
     }
