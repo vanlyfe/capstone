@@ -44,6 +44,31 @@ class Listing{
     
     }
 
+    static async getBestListings(){
+        const query = `
+        SELECT * 
+        FROM (
+             SELECT AVG(rating) AS rating, listing_id
+             FROM listings
+             JOIN ratings ON ratings.listing_id = listings.id
+             GROUP BY listing_id
+        ) AS acc
+        JOIN listings ON acc.listing_id = listings.id
+        ORDER BY rating DESC
+        LIMIT 4
+        
+        `
+
+        
+
+        const result = await db.query(query)
+
+        const res = result.rows
+
+        return res
+        
+    }
+
     
 }
 
