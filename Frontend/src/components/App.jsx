@@ -1,6 +1,7 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React from "react";
+import Box from "@mui/material/Box";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 
 import LandingPage from './LandingPage';
 import Login from './Login';
@@ -11,6 +12,7 @@ import ListingDetails from './ListingDetails';
 import EditListing from './EditListing';
 import { Navbar } from './Navbar';
 import User from './User';
+
 
 export default function App() {
   //const [isLogin, setIsLogin] = useState(false);
@@ -53,7 +55,7 @@ export default function App() {
           <Route path="/listings" element={<Listings />} />
           <Route path="/createlisting" element={<CreateListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
-          <Route path="/listing/:id/edit" element={<EditListing />} />"
+          <Route path="/listing/:id/edit" element={<EditListing />} />
         </Routes>
       </BrowserRouter>
     </Box>
