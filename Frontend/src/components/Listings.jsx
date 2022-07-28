@@ -68,7 +68,7 @@ export default function Listings() {
             mr: 3,
             height: '80vh',
             width: 280,
-            display: { xs: 'none', md: 'block' },
+            
           }}>
           <Typography variant="h5" align="center" sx={{ my: 2 }}>
             {`Filter`}
