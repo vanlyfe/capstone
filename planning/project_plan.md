@@ -153,7 +153,8 @@ Wireframe:
 | taxes | float | Taxes paid for order| 
 | total | float | total amount paid |
 | guests | integer | number of guests |
-| dates | text | timeperiod vehicle was rented |
+| startDate | date | start date for renting the vehicle |
+| endDate | date | end date for renting the vehicle |
 | listing_id | integer | foreign key to listing table |
 
 **LISTINGRATINGS**
