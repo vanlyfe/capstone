@@ -1,3 +1,4 @@
+
 import React from "react";
 import Box from "@mui/material/Box";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -10,12 +11,13 @@ import Register from './Register';
 import CreateListing from './CreateListing';
 import ListingDetails from './ListingDetails';
 import EditListing from './EditListing';
+import BookListing from './BookListing';
+
 import NotFound from "./notFound";
 import { Navbar } from './Navbar';
 import User from './User';
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
 
 export default function App() {
  
@@ -54,6 +56,7 @@ export default function App() {
           <Route path="/register" element={<Register user = {user} setUser={setUser}/>} />
           <Route path="/listings" element={<Listings />} />
           <Route path="/createlisting" element={<CreateListing />} />
+          <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
           <Route path="/*" element={<NotFound />} />
