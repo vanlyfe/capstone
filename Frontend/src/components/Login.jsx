@@ -39,7 +39,7 @@ function Copyright(props) {
 
 // const theme = createTheme();
 
-export default function Login() {
+export default function Login(props) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
@@ -83,10 +83,12 @@ export default function Login() {
     }
 
     if (data?.user) {
+      props.setUser(data.user)
       setIsLoading(false);
       navigate("/listings");
       apiClient.setToken(data.token);
       setIsLoading(false);
+     
     }
   };
 

@@ -11,6 +11,8 @@ class User {
       lastName: user.lastname,
       email: user.email,
       username: user.username,
+      image_url: user.image_url,
+      bio : user.bio,
       gender: user.gender,
       location: user.location,
       birthdate: user.birthdate,

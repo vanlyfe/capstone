@@ -39,7 +39,7 @@ function Copyright(props) {
 
 // const theme = createTheme();
 
-export default function Register() {
+export default function Register(props) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -139,6 +139,7 @@ export default function Register() {
     }
    
     if (data?.user) {
+      props.setUser(data.user)
       navigate("/listings");
       setIsLoading(false);
       apiClient.setToken(data.token);

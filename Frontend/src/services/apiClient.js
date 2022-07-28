@@ -63,12 +63,22 @@ class ApiClient {
     });
   }
 
+
+  // Delete requests
+
+
+
+  //Put requests
+
+
+
+
   // added the logout user
 
-  // async logoutUser() {
-  //   this.setToken(null);
-  //   localStorage.setItem(this.tokenName, "");
-  // }
+  async logoutUser() {
+    this.setToken(null);
+    localStorage.setItem(this.tokenName, "");
+  }
 }
 
 export default new ApiClient('http://localhost:3001');
