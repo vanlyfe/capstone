@@ -59,5 +59,18 @@ router.get("/:listingId", security.requireAuthenticatedUser,  async (req, res, n
 })
 
 
+router.post("/", security.requireAuthenticatedUser, async (req,res,next) => {
+    try{
+        const {user} = res.locals
+        const listings = req.body
+        const listing = await Listing.postListing({listings, user});
+        return res.status(200).json({listing : listing})
+
+    } catch(err){
+        next(err)   
+    }
+})
+
+
 
 module.exports = router;
