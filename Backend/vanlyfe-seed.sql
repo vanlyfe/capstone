@@ -1,13 +1,14 @@
 
 
-INSERT INTO users (username, firstName, lastName, email, password, gender)
+INSERT INTO users (username, firstName, lastName, email, password, gender, image_url)
 VALUES (
   'jbosire',
   'Joram',
   'Bosire',
   'jbosire@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'male'
+  'male',
+  'https://a.cdn-hotels.com/gdcs/production92/d1580/9a28fc70-9bea-11e8-a1b5-0242ac110053.jpg'
 
 ), 
 (
@@ -16,7 +17,8 @@ VALUES (
   'Fakih',
   'afakih@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'male'
+  'male',
+  'https://www.fodors.com/wp-content/uploads/2022/04/jake-blucker-8LlJNFLTEm0-unsplash.jpg'
 ),
 (
   'votieno',
@@ -24,7 +26,9 @@ VALUES (
   'Otieno',
   'votieno@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'male'
+  'male',
+  'https://i.natgeofe.com/k/5b396b5e-59e7-43a6-9448-708125549aa1/new-york-statue-of-liberty_16x9.jpg'
+
 ),
 (
   'etsehay',
@@ -32,7 +36,8 @@ VALUES (
   'Tsehay',
   'etsehay@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'female'
+  'female',
+  'https://i.natgeofe.com/n/0652a07e-42ed-4f3d-b2ea-0538de0c5ba3/seattle-travel_3x2.jpg'
 );
 
 INSERT INTO listings(user_id, price, location, max_accomodation, image_url, model, description, fees)
