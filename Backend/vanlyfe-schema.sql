@@ -23,7 +23,7 @@ CREATE TABLE listings(
     price               FLOAT NOT NULL,
     location            TEXT NOT NULL,
     max_accomodation    INTEGER NOT NULL,
-    model               TEXT,
+    model               TEXT NOT NULL,
     description         TEXT,
     image_url           TEXT NOT NULL,
     image_url2          TEXT,

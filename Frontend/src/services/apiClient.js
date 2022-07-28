@@ -1,10 +1,10 @@
-import axios from "axios";
+import axios from 'axios';
 
 class ApiClient {
   constructor(remoteHostUrl) {
     this.remoteHostUrl = remoteHostUrl;
     this.token = null;
-    this.tokenName = "vanlyfe_token";
+    this.tokenName = 'vanlyfe_token';
   }
 
   setToken(token) {
@@ -15,11 +15,11 @@ class ApiClient {
   async request({ endpoint, method = `GET`, data = {} }) {
     const url = `${this.remoteHostUrl}/${endpoint}`;
     const headers = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     };
 
     if (this.token) {
-      headers["Authorization"] = `Bearer ${this.token}`;
+      headers['Authorization'] = `Bearer ${this.token}`;
     }
 
     try {
@@ -32,8 +32,17 @@ class ApiClient {
     }
   }
 
+  // Get Requests
+
   async fetchUserFromToken() {
     return await this.request({ endpoint: `auth/me`, method: `GET` });
+  }
+
+  async fetchListings() {
+    return await this.request({
+      endpoint: `listing`,
+      method: `GET`,
+    });
   }
 
   async loginUser(credentials) {
@@ -43,6 +52,8 @@ class ApiClient {
       data: credentials,
     });
   }
+
+  // Post Requests
 
   async signupUser(credentials) {
     return await this.request({
@@ -60,4 +71,4 @@ class ApiClient {
   // }
 }
 
-export default new ApiClient("http://localhost:3001");
+export default new ApiClient('http://localhost:3001');
