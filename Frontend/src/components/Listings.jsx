@@ -6,7 +6,24 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { Container, Grid, Paper, Slide } from '@mui/material';
+import {
+  Autocomplete,
+  Container,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  Paper,
+  Radio,
+  RadioGroup,
+  Rating,
+  Slide,
+  TextField,
+} from '@mui/material';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
 import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
 
@@ -16,6 +33,9 @@ export default function Listings() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [listings, setListings] = React.useState([]);
   const [error, setError] = React.useState(null);
+  const [rating, setRating] = React.useState(0);
+
+  const locations = ['San Francisco', 'Los Angeles', 'New York'];
 
   useEffect(() => {
     const getListings = async () => {
@@ -38,12 +58,108 @@ export default function Listings() {
           elevation={3}
           xs={2}
           sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
             mt: 5,
             mr: 3,
             height: '80vh',
-            width: 240,
+            width: 280,
             display: { xs: 'none', md: 'block' },
-          }}></Paper>
+          }}>
+          <Typography variant="h5" align="center" sx={{ my: 2 }}>
+            {`Filter`}
+          </Typography>
+          <Divider />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              mt: 2,
+            }}>
+            <Typography variant="p" align="center">
+              {`Minimum Rating`}
+            </Typography>
+            <Rating
+              name="min-rating"
+              value={rating}
+              precision={0.5}
+              onChange={(event, newValue) => {
+                setRating(newValue);
+              }}
+            />
+            <Autocomplete
+              disablePortal
+              id="locations-auto-complete"
+              options={locations}
+              sx={{ width: '90%', mt: 2 }}
+              renderInput={(params) => (
+                <TextField {...params} label="Location" />
+              )}
+            />
+            <Typography variant="p" align="center" mt={2}>
+              {`Price Range`}
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                alignItems: 'center',
+              }}>
+              <FormControl sx={{ mt: 2, width: '40%' }}>
+                <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  // value={5}
+                  // onChange={handleChange('amount')}
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  label="Amount"
+                />
+              </FormControl>
+              <Typography variant="h5">-</Typography>
+              <FormControl sx={{ mt: 2, width: '40%' }}>
+                <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  // value={5}
+                  // onChange={handleChange('amount')}
+                  startAdornment={
+                    <InputAdornment position="start">$</InputAdornment>
+                  }
+                  label="Amount"
+                />
+              </FormControl>
+            </Box>
+          </Box>
+
+          {/* <FormControl sx={{ ml: 3, my: 2 }}>
+            <FormLabel id="demo-radio-buttons-group-label">
+              Vehicle Type
+            </FormLabel>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="female"
+              name="radio-buttons-group">
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="Female"
+              />
+              <FormControlLabel value="male" control={<Radio />} label="Male" />
+              <FormControlLabel
+                value="other"
+                control={<Radio />}
+                label="Other"
+              />
+            </RadioGroup>
+          </FormControl> */}
+        </Paper>
 
         {/* Mobile Filter Bottom Bar */}
 
@@ -125,7 +241,7 @@ export default function Listings() {
           </Grid>
           {listings.map((listing, i) => (
             <Grid key={i} item xs={4} justifyContent="center">
-              <Card sx={{ width: "100%" }}>
+              <Card sx={{ width: '100%' }}>
                 <CardMedia
                   component="img"
                   height="140"
