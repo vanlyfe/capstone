@@ -70,19 +70,30 @@ class Listing {
       "image_url",
     ];
 
-    //console.log(listings)
-   // console.log(user.id)
-
-   // console.log(requiredFields)
     requiredFields.forEach((field) => {
       if (!listings.hasOwnProperty(field)) {
         throw new BadRequestError(`Missing ${field} in request body.`);
       }
     });
 
-    //if(listings)
+    if(listings.location.length < 1){
+        throw new BadRequestError("No location provided")
 
-   
+    }
+
+    if(listings.model.length < 1){
+        throw new BadRequestError("No car model provided")
+
+    }
+
+    if(listings.image_url.length < 1){
+        throw new BadRequestError("No car image provided")
+
+    }
+
+    if(listings.max_accomodation < 1){
+        throw new BadRequestError("Maximum vehicle accomodation cannot be less than 1")
+    }
 
     const result = await db.query(
       `
@@ -93,9 +104,10 @@ class Listing {
                 model,
                 image_url,
                 user_id
+                description
                 )
-           VALUES ($1,$2,$3,$4,$5,$6)
-           RETURNING price, location, max_accomodation, model, image_url, user_id;
+           VALUES ($1,$2,$3,$4,$5,$6,$7)
+           RETURNING price, location, max_accomodation, model, image_url, user_id, description;
           `,
       [
         listings.price,
@@ -104,13 +116,13 @@ class Listing {
         listings.model,
         listings.image_url,
         user.id,
+        listings.description,
       ]
     );
 
+    const res = result.rows;
 
-    const res = result.rows
-
-    return res
+    return res;
   }
 }
 
