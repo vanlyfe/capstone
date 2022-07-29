@@ -1,301 +1,566 @@
-import React from "react";
-import PropTypes from "prop-types";
-import classNames from "classnames";
-import AppBar from "@material-ui/core/AppBar";
-import Button from "@material-ui/core/Button";
-import CameraIcon from "@material-ui/icons/PhotoCamera";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Grid from "@material-ui/core/Grid";
-import { Box } from "@material-ui/core";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import { withStyles } from "@material-ui/core/styles";
+import React, { useEffect } from "react";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Stack,
+  Button,
+  Box,
+  Grid,
+  Card,
+  CardHeader,
+  CardMedia,
+  CardActions,
+  Collapse,
+  IconButton,
+  CardContent,
+  Avatar,
+  Rating,
+  Divider,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Drawer,
+  TextField,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
-import { Star } from "@mui/icons-material";
-import { IconButton } from "@mui/material";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIosNew";
-import { green } from "@material-ui/core/colors";
+import { ThumbUp } from "@mui/icons-material";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import ShareIcon from "@mui/icons-material/Share";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+// my imports
+import DatePicker from "./DatePicker";
+import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
-const styles = (theme) => ({
-  // appBar: {
-  //   position: 'relative',
-  // },
-  icon: {
-    marginRight: theme.spacing.unit * 2,
-  },
-  heroUnit: {
-    // backgroundColor: theme.palette.background.paper,
-    backgroundColor: "#d8e6fe",
-    maxHeight: "20%",
-    width: "50%",
-  },
+export default function ListingDetails() {
+  const [expanded, setExpanded] = React.useState(false);
+  const [value, setValue] = React.useState();
+  const handleExpandClick = () => {
+    setExpanded(!expanded);
+  };
 
-  container: {
-    // backgroundColor: theme.palette.background.paper,
-    backgroundColor: "#e57373",
-    display: "flex",
-    flexDirection: "column",
-
-    marginRight: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit * 3,
-  },
-  heroContent: {
-    maxWidth: "50%",
-    maxHeight: "20%",
-    marginLeft: theme.spacing.unit * 3,
-    margin: "0 auto",
-    padding: `${theme.spacing.unit * 4}px 0 ${theme.spacing.unit * 6}px`,
-  },
-  heroButtons: {
-    marginTop: theme.spacing.unit * 4,
-  },
-  layout: {
-    width: "auto",
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(1100 + theme.spacing.unit * 3 * 2)]: {
-      width: 1100,
-      marginLeft: "auto",
-      marginRight: "auto",
-    },
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`,
-  },
-  card: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-    marginTop: theme.spacing.unit * 3,
-    width: "50%",
-  },
-  cardMedia: {
-    paddingTop: "56.25%", // 16:9
-
-    width: "100%",
-  },
-  cardContent: {
-    flexGrow: 1,
-  },
-  //added this class
-
-  cardActions: {
-    // backgroundColor: "#1b5e20",
-  },
-
-  footer: {
-    backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing.unit * 6,
-    height: "40%",
-  },
-});
-
-// const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-
-function Album(props) {
-  const { classes } = props;
+  const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+  })(({ theme, expand }) => ({
+    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  }));
 
   return (
-    <React.Fragment>
-      <CssBaseline />
-      {/* <AppBar position="static" className={classes.appBar}>
-        <Toolbar>
-          <CameraIcon className={classes.icon} />
-          <Typography variant="h6" color="inherit" noWrap>
-            Album layout
-          </Typography>
-        </Toolbar>
-      </AppBar> */}
-      <main>
-        {/* Hero unit */}
-        {/* <div className={classes.heroUnit}>
-          <div className={classes.heroContent}>
-            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-              Album layout
-            </Typography>
-            <Typography variant="h6" align="center" color="textSecondary" paragraph>
-              Something short and leading about the collection below—its contents, the creator, etc.
-              Make it short and sweet, but not too short so folks don&apos;t simply skip over it
-              entirely.
-            </Typography>
-            <div className={classes.heroButtons}>
-              <Grid container spacing={16} justify="center">
-                <Grid item>
-                  <Button variant="contained" color="primary">
-                    Main call to action
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button variant="outlined" color="primary">
-                    Secondary action
-                  </Button>
-                </Grid>
-              </Grid>
-            </div>
-          </div>
-        </div> */}
-        <div>
-          {/* <div className={classNames(classes.layout, classes.cardGrid)}> */}
-          {/* End hero unit */}
-          {/*added the container class*/}
-          <div className={classes.container} sx={{ maxHeight: "10%" }}>
-            {/* <Box container spacing={40} className={classes.container}> */}
-            {/* {cards.map(card => (
-              <Grid item key={card} sm={6} md={4} lg={3}> */}
-            <Card className={classes.card}>
-              <CardMedia
-                className={classes.cardMedia}
-                image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1674&q=80"
-                title="Image title"
-              />
-              {/* <CardContent className={classes.cardContent} align="center">
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-                <Star />
-              </CardContent> */}
-              <div className={classes.cardActions} align="center">
-                <Button>
-                  <ArrowBackIosIcon />
-                </Button>
-                <Button>
-                  <ArrowForwardIosIcon />
-                </Button>
-              </div>
-              <div className={classes.heroUnit}>
-                <div className={classes.heroContent}>
-                  <Typography
-                    component="h6"
-                    variant="h6"
-                    align="left"
-                    color="textPrimary"
-                    gutterBottom
-                  >
-                    San Fransisco, CA
-                  </Typography>
-                  <Typography variant="h3" align="left" color="textPrimary">
-                    $ 100 USD/Night
-                  </Typography>
-                  <Typography variant="h6" align="left" color="textPrimary">
-                    Equiped Jeep Overland Camper
-                  </Typography>
+    <Box>
+      <Grid
+        sx={{
+          display: "flex",
+          flexDirection: "rows",
+          width: "100vw",
+          height: 900,
+        }}
+      >
+        <Grid
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            width: "50%",
+          }}
+        >
+          <Card sx={{ width: "100%", maxWidth: "100%" }}>
+            <CardHeader
+              avatar={
+                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                  V
+                </Avatar>
+              }
+              title="Vernon Otieno"
+              subheader="September 14, 2021"
+            />
+            <CardMedia
+              component="img"
+              height="400"
+              image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dm9sa3N3YWdlbiUyMHZhbnxlbnwwfHwwfHw%3D&w=1000&q=80"
+              alt="Paella dish"
+            />
+            <CardContent sx={{ display: "flex", flexDirection: "row" }}>
+              {/* <Typography variant="body2" color="text.secondary">
+                This impressive paella is a perfect party dish and a fun meal to
+                cook together with your guests. Add 1 cup of frozen peas along
+                with the mussels, if you like.
+              </Typography> */}
 
-                  <CardContent className={classes.cardContent} align="left">
-                    <Star />
-                    <Star />
-                    <Star />
-                    <Star />
-                    <Star />
-                    <>(5)</>
-                  </CardContent>
-                  <Typography
-                    variant="h6"
-                    align="left"
-                    color="textSecondary"
-                    paragraph
-                  >
-                    Sleeps 4
-                  </Typography>
-                </div>
-                <div className={classes.heroButtons}>
-                  <Grid container spacing={16} justify="center">
-                    <Grid item>
-                      <Button variant="contained" color="primary">
-                        BOOK
-                      </Button>
-                    </Grid>
-                    {/* <Grid item>
-                    <Button variant="outlined" color="primary">
-                      Secondary action
-                    </Button>
-                  </Grid> */}
-                  </Grid>
-                </div>
-              </div>
-            </Card>
-            {/* </Grid> */}
-            {/* ))} */}
-
-            {/* <div className={classes.heroUnit}>
-              <div className={classes.heroContent}>
+              <Box>
                 <Typography
-                  component="h6"
-                  variant="h6"
-                  align="left"
-                  color="textPrimary"
-                  gutterBottom
+                  sx={{
+                    fontFamily: "sans-serif",
+                    color: "#1e1e1f",
+                    fontWeight: 300,
+                    fontSize: 20,
+                  }}
                 >
-                  San Fransisco, CA
+                  San Manteo,CA
                 </Typography>
-                <Typography variant="h3" align="left" color="textPrimary">
-                  $ 100 USD/Night
-                </Typography>
-                <Typography variant="h6" align="left" color="textPrimary">
-                  Equiped Jeep Overland Camper
-                </Typography>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "Arial",
+                      color: "#1d3557",
 
-                <CardContent className={classes.cardContent} align="left">
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
-                  <Star />
-                  <>(5)</>
-                </CardContent>
+                      fontWeight: 600,
+                      fontSize: 15,
+                    }}
+                  >
+                    25 Reviews
+                  </Typography>
+                  <Rating name="read-only" value={3} readOnly />
+                </Box>
                 <Typography
-                  variant="h6"
-                  align="left"
-                  color="textSecondary"
-                  paragraph
+                  sx={{
+                    fontFamily: "Chalkduster, fantasy",
+                    color: "003049",
+                    fontWeight: 600,
+                    fontSize: 40,
+                  }}
+                >
+                  $200/Night
+                </Typography>{" "}
+                <Typography
+                  sx={{
+                    fontFamily: "Arial",
+                    color: "#343a40",
+
+                    fontWeight: 600,
+                    fontSize: 15,
+                  }}
+                >
+                  Thor Majestic Class C
+                </Typography>{" "}
+                <Typography
+                  sx={{
+                    fontFamily: "Arial",
+                    color: "#bbd0ff",
+
+                    fontWeight: 600,
+                    fontSize: 15,
+                  }}
                 >
                   Sleeps 4
                 </Typography>
-              </div>
-              <div className={classes.heroButtons}>
-                <Grid container spacing={16} justify="center">
-                  <Grid item>
-                    <Button variant="contained" color="primary">
-                      BOOK
-                    </Button>
-                  </Grid>
-                  {/* <Grid item>
-                    <Button variant="outlined" color="primary">
-                      Secondary action
-                    </Button>
-                  </Grid> */}
-            {/* </Grid>
-              </div>
-            </div> */}
-          </div>
-        </div>
-      </main>
-      {/* Footer */}
-      <footer className={classes.footer}>
-        <Typography variant="h6" align="center" gutterBottom>
-          Footer
-        </Typography>
-        <Typography
-          variant="subtitle1"
-          align="center"
-          color="textSecondary"
-          component="p"
+              </Box>
+              <Box>
+                <BookmarkSharpIcon sx={{ justify: "end" }} />
+              </Box>
+            </CardContent>
+
+            <Box sx={{ display: "flex", flexDirection: "column",}}>
+              <Typography
+                sx={{
+                  fontSize: 25,
+                  mt: 3,
+                  ml: 20,
+                  //color: "white",
+                  align: "center",
+                }}
+              >
+                Contact Host
+              </Typography>
+
+              <Box>
+                <Box
+                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
+                >
+                  <Avatar
+                    alt="Remy Sharp"
+                    src="/static/images/avatar/1.jpg"
+                    // sx={{ width: 200, height: 200 }}
+                  />
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
+                  >
+                    Vernon Owenga
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                >
+                  <LocalPhoneIcon
+                  />
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5}}
+                  >
+                    +1 773 754 9759
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                >
+                  <MailOutlineIcon/>
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5}}
+                  >
+                    vernon@gmail.com
+                  </Typography>
+                </Box>
+              </Box>
+              {/* <Box sx={{ display: "flex", flexDirection: "row" }}>
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Required"
+                  placeholder="First Name"
+                  sx={{ ml: 2, mt: 2, mr: 2 }}
+                />
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Required"
+                  placeholder="Last Name"
+                  sx={{ ml: 10, mt: 2 }}
+                />
+              </Box>
+
+              <TextField
+                required
+                id="outlined-required"
+                label="Required"
+                placeholder="email"
+                sx={{ ml: 2, mt: 2, width: "80%" }}
+              />
+                <TextField
+                required
+                id="outlined-required"
+                label="Required"
+                placeholder="Phone"
+                sx={{ ml: 2, mt: 2, width: "50%" }}
+              />
+
+              <Button
+                variant="contained"
+                size="medium"
+                sx={{ mt: 2, ml: 2, mr: 2 }}
+              >
+                Message
+              </Button> */}
+            </Box>
+
+            {/* <CardActions disableSpacing>
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </ExpandMore>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>Method:</Typography>
+                <Typography paragraph>
+                  Heat 1/2 cup of the broth in a pot until simmering, add
+                  saffron and set aside for 10 minutes.
+                </Typography>
+                <Typography paragraph>
+                  Heat oil in a (14- to 16-inch) paella pan or a large, deep
+                  skillet over medium-high heat. Add chicken, shrimp and
+                  chorizo, and cook, stirring occasionally until lightly
+                  browned, 6 to 8 minutes. Transfer shrimp to a large plate and
+                  set aside, leaving chicken and chorizo in the pan. Add
+                  pimentón, bay leaves, garlic, tomatoes, onion, salt and
+                  pepper, and cook, stirring often until thickened and fragrant,
+                  about 10 minutes. Add saffron broth and remaining 4 1/2 cups
+                  chicken broth; bring to a boil.
+                </Typography>
+                <Typography paragraph>
+                  Add rice and stir very gently to distribute. Top with
+                  artichokes and peppers, and cook without stirring, until most
+                  of the liquid is absorbed, 15 to 18 minutes. Reduce heat to
+                  medium-low, add reserved shrimp and mussels, tucking them down
+                  into the rice, and cook again without stirring, until mussels
+                  have opened and rice is just tender, 5 to 7 minutes more.
+                  (Discard any mussels that don&apos;t open.)
+                </Typography>
+                <Typography>
+                  Set aside off of the heat to let rest for 10 minutes, and then
+                  serve.
+                </Typography>
+              </CardContent>
+            </Collapse> */}
+          </Card>{" "}
+        </Grid>
+        <Grid
+          sx={{
+            display: "flex",
+            flexDirection: " column",
+            width: "50%",
+          }}
         >
-          Something here to give the footer a purpose!
+          <DatePicker />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              //backgroundColor: "blue",
+              height: "40%",
+              width: "60%",
+              alignItems: "center",
+              justifyContent: "center",
+              p: 2,
+            }}
+          >
+            <Box>
+              <Typography
+                sx={{
+                  fontSize: 25,
+                  mt: 3,
+                  ml: 3,
+                  //color: "white",
+                  align: "center",
+                }}
+              >
+                Book This Listing
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "row" }}>
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Required"
+                  placeholder="First Name"
+                  sx={{ ml: 2, mt: 5, mr: 2 }}
+                />
+                <TextField
+                  required
+                  id="outlined-required"
+                  label="Required"
+                  placeholder="Last Name"
+                  sx={{ ml: 10, mt: 5 }}
+                />
+              </Box>
+
+              <TextField
+                required
+                id="outlined-required"
+                label="Required"
+                placeholder="email"
+                sx={{ ml: 2, mt: 5, width: "100%" }}
+              />
+
+              <Button
+                variant="contained"
+                size="medium"
+                sx={{ mt: 2, ml: 2, mr: 2 }}
+              >
+                Book
+              </Button>
+            </Box>
+
+            {/* <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: "40%",
+                width: "60%",
+                backgroundColor:"red",
+
+                ml: "5%",
+              }}
+            ></Box> */}
+          </Box>
+        </Grid>
+      </Grid>
+      <Grid
+        sx={{
+          bgcolor: "#73777B",
+          display: "flex",
+          flexDirection: " column",
+          //alignContent: "center",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100vw",
+          alignContent: "center",
+          // height: 800,
+          pb:10,
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: 25,
+            mt: 3,
+            ml: 3,
+            color: "white",
+            align: "center",
+          }}
+        >
+          Reviews
         </Typography>
-      </footer>
-      {/* End footer */}
-    </React.Fragment>
+        <Box
+          sx={{
+            height: 200,
+            width: 800,
+            mt: 3,
+            ml: 3,
+            bgcolor: "white",
+          }}
+        >
+          <Rating
+            name="user-rating"
+            sx={{ mt: 2, ml: 2 }}
+            value={value}
+            readOnly
+          />
+          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+            <Avatar
+              alt="Remy Sharp"
+              src="/static/images/avatar/1.jpg"
+              // sx={{ width: 200, height: 200 }}
+            />
+            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+              Vernon Owenga
+            </Typography>
+          </Grid>
+          <Typography sx={{ mt: 2, ml: 2 }}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
+            in officiis? Neque, ducimus error! Atque molestias aliquid facere
+            animi modi praesentium, illo enim reprehenderit omnis corrupti
+            beatae sint voluptate?
+          </Typography>
+          <Divider />
+          <Grid sx={{ display: "flex", flexDirection: "row" }}>
+            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+              Helpful
+            </Typography>
+          </Grid>
+        </Box>
+        <Box
+          sx={{
+            height: 200,
+            width: 800,
+            mt: 3,
+            ml: 3,
+            bgcolor: "white",
+          }}
+        >
+          <Rating
+            name="user-rating"
+            sx={{ mt: 2, ml: 2 }}
+            value={value}
+            readOnly
+          />
+          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+            <Avatar
+              alt="Remy Sharp"
+              src="/static/images/avatar/1.jpg"
+              // sx={{ width: 200, height: 200 }}
+            />
+            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+              Vernon Owenga
+            </Typography>
+          </Grid>
+          <Typography sx={{ mt: 2, ml: 2 }}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
+            in officiis? Neque, ducimus error! Atque molestias aliquid facere
+            animi modi praesentium, illo enim reprehenderit omnis corrupti
+            beatae sint voluptate?
+          </Typography>
+          <Divider />
+          <Grid sx={{ display: "flex", flexDirection: "row" }}>
+            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+              Helpful
+            </Typography>
+          </Grid>
+        </Box>
+        <Box
+          sx={{
+            height: 200,
+            width: 800,
+            mt: 3,
+            ml: 3,
+            bgcolor: "white",
+          }}
+        >
+          <Rating
+            name="user-rating"
+            sx={{ mt: 2, ml: 2 }}
+            value={value}
+            readOnly
+          />
+          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+            <Avatar
+              alt="Remy Sharp"
+              src="/static/images/avatar/1.jpg"
+              // sx={{ width: 200, height: 200 }}
+            />
+            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+              Vernon Owenga
+            </Typography>
+          </Grid>
+          <Typography sx={{ mt: 2, ml: 2 }}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
+            in officiis? Neque, ducimus error! Atque molestias aliquid facere
+            animi modi praesentium, illo enim reprehenderit omnis corrupti
+            beatae sint voluptate?
+          </Typography>
+          <Divider />
+          <Grid sx={{ display: "flex", flexDirection: "row" }}>
+            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+              Helpful
+            </Typography>
+          </Grid>
+        </Box>
+        <Box
+          sx={{
+            height: 200,
+            width: 800,
+            mt: 3,
+            ml: 3,
+            bgcolor: "white",
+          }}
+        >
+          <Rating
+            name="user-rating"
+            sx={{ mt: 2, ml: 2 }}
+            value={value}
+            readOnly
+          />
+          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+            <Avatar
+              alt="Remy Sharp"
+              src="/static/images/avatar/1.jpg"
+              // sx={{ width: 200, height: 200 }}
+            />
+            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+              Vernon Owenga
+            </Typography>
+          </Grid>
+          <Typography sx={{ mt: 2, ml: 2 }}>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
+            in officiis? Neque, ducimus error! Atque molestias aliquid facere
+            animi modi praesentium, illo enim reprehenderit omnis corrupti
+            beatae sint voluptate?
+          </Typography>
+          <Divider />
+          <Grid sx={{ display: "flex", flexDirection: "row" }}>
+            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+              Helpful
+            </Typography>
+          </Grid>
+        </Box>
+      </Grid>
+    </Box>
   );
 }
-
-Album.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(Album);

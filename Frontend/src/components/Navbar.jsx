@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -6,141 +5,58 @@ import {
   Typography,
   Stack,
   Button,
-  Box,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Drawer,
-} from '@mui/material';
-import logo from '../assets/logo1.png';
-import Avatar from '@mui/material/Avatar';
-import MenuIcon from '@mui/icons-material/Menu';
+} from "@mui/material";
+import Container from "@mui/material/Container";
+import logo from "../assets/logo1.png";
+import Avatar from "@mui/material/Avatar";
 
 // added the following for the links
 
-//import NavLink from "./NavLink";
-import { Link } from 'react-router-dom';
 
-export const Navbar = (props) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { window } = props;
+import { Link } from "react-router-dom";
+import { positions } from "@mui/system";
 
-  const navItems = ['Add Listing', 'Register'];
-
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        VanLyfe
-      </Typography>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-
+export const Navbar = () => {
   return (
-    <Box display="flex">
-      <AppBar position="static">
+    <AppBar position="static">
+      <Container maxWidth="xl" sx={{ display: { xs: "none", md: "flex" } }}>
         <Toolbar>
-          {/* Desktop logo */}
           <IconButton
-            sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
             size="large"
             edge="start"
             color="inherit"
-            aria-label="logo">
+            aria-label="logo"
+          >
             <Link to="/">
-              <img src={logo} width="86" height="65" />
+              <img src={logo} width="100" height="50" />
             </Link>
           </IconButton>
-
-          {/* Mobile Menu Button */}
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}>
-            <MenuIcon />
-          </IconButton>
-
-          {/* Keep this so menu layout doesnt break */}
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1 }}></Typography>
-
-          {/* Desktop Menu */}
-          <Stack
-            direction="row"
-            spacing={2}
-            alignItems="center"
-            sx={{ display: { xs: 'none', md: 'flex' } }}>
-            {/* <Button sx={{ height: 65 }} color="inherit">
-            Feature1
-          </Button> */}
-
-            <Button
-              sx={{ height: 65 }}
-              component={Link}
-              to="/createlisting"
-              color="inherit">
-              Add Listing
-            </Button>
-
-            <Button
-              sx={{ height: 65 }}
-              component={Link}
-              to="/register"
-              color="inherit">
-              Register
-            </Button>
-            <Avatar
-              component={Link}
-              to="/user/1"
-              alt="Travis Howard"
-              // src="/static/images/avatar/2.jpg"
-              sx={{ width: 50, height: 50 }}
-            />
-          </Stack>
         </Toolbar>
-      </AppBar>
 
-      {/* Mobile Menu Drawer */}
-      <Box component="nav">
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: 240,
-            },
-          }}>
-          {drawer}
-        </Drawer>
-      </Box>
-    </Box>
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1 }}
+        ></Typography>
+        <Stack direction="row" spacing={2}>
+          <Button component={Link} to="/listing/:id" color="inherit">Temp link to details</Button>
+
+          <Button component={Link} to="/createlisting" color="inherit">
+            Add Listing
+          </Button>
+
+          <Button component={Link} to="/register" color="inherit">
+            Register
+          </Button>
+          <Avatar
+            component={Link}
+            to="/listing/:id/edit"
+            alt="Travis Howard"
+            src="/static/images/avatar/2.jpg"
+            sx={{ width: 50, height: 50 }}
+          />
+        </Stack>
+      </Container>
+    </AppBar>
   );
 };
