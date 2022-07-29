@@ -168,6 +168,53 @@ class Listing {
 
     return res;
   }
+
+  static async editListing({listingUpdate, listingId}){
+    if(listingUpdate.location?.length < 1){
+      throw new BadRequestError("Invalid location")
+    }
+
+    if(listingUpdate.max_accomodation){
+      if(listingUpdate.max_accomodation < 1){
+        throw new BadRequestError("Vehicle should be able to accomodate at least one person")
+      }
+    }
+
+    if(listingUpdate.model?.length < 1){
+      throw new BadRequestError("Invalid vehicle model")
+    }
+
+    if(listingUpdate.image_url?.length < 1){
+      throw new BadRequestError("Invalid image, listing must have at least one image")
+    }
+
+
+    var results = {};
+    
+
+    for (var [key, value] of Object.entries(listingUpdate)) {
+      
+
+      const query =
+        `UPDATE listings
+                       SET ` +
+        key +
+        ` = $1,
+                       updatedAt = NOW()
+                   WHERE id = $2
+                   RETURNING id,user_id,price, location, max_accomodation, model, decription,image_url, fees, createdAt, updatedAt;`;
+
+      const result = await db.query(query, [
+        value,
+        listingId,
+      ]);
+
+      results = result.rows[0];
+    }
+
+    return results;
+
+  }
 }
 
 module.exports = Listing;

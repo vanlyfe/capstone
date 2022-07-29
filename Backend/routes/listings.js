@@ -60,4 +60,18 @@ router.post("/", security.requireAuthenticatedUser, async (req, res, next) => {
   }
 });
 
+router.put("/:listingId", security.requireAuthenticatedUser, permissions.userOwnsListing, async (req, res, next) => {
+  try{
+      const {listingId} = req.params
+     // const user = await User.editUser({userUpdate : req.body, userId})
+     const listing = await Listing.editListing({listingUpdate : req.body, listingId})
+     
+      return res.status(200).json({listing : listing})
+
+  } catch (error){
+      next(error)
+  }
+
+})
+
 module.exports = router;
