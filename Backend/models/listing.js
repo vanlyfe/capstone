@@ -103,7 +103,7 @@ class Listing {
                 max_accomodation,
                 model,
                 image_url,
-                user_id
+                user_id,
                 description
                 )
            VALUES ($1,$2,$3,$4,$5,$6,$7)

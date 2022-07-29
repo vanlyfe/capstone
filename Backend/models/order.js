@@ -50,13 +50,14 @@ class Order{
         return res
     }
 
-    static async postOrder({orders, user }) {
+    static async postOrder({listingId, orders, user }) {
         const requiredFields = [
           "taxes",
           "total",
           "guests",
           "startDate",
-          "endDate"
+          "endDate",
+          
           
         ];
     
@@ -113,7 +114,7 @@ class Order{
             orders.total, 
             orders.guests,
             user.id,
-            orders.listing_id,
+            listingId,
             start,
             end,
             orders.fees
