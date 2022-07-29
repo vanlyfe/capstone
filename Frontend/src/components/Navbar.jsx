@@ -14,7 +14,7 @@ import {
   ListItemText,
   Drawer,
 } from '@mui/material';
-import logo from '../assets/Logo2.svg';
+import logo from '../assets/LogoDarkBg.svg';
 import Avatar from '@mui/material/Avatar';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Navigate, useNavigate } from "react-router-dom";

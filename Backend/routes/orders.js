@@ -43,5 +43,20 @@ router.get("/:orderId", security.requireAuthenticatedUser, async (req, res, next
 })
 
 
+router.post("/:listingId", security.requireAuthenticatedUser, async (req, res, next) => {
+    try {
+      const { user } = res.locals;
+      const {listingId} =  req.params
+
+     
+      const orders = req.body
+      const order = await Order.postOrder({listingId, orders, user });
+      return res.status(200).json({ order: order });
+    } catch (err) {
+      next(err);
+    }
+  });
+
+
 
 module.exports = router;

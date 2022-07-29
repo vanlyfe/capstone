@@ -18,6 +18,46 @@ class Rating{
         return res
     }
 
+
+    static async postRating({listingId, ratings, user}){
+        const requiredFields = [
+            "rating",
+           
+          ];
+      
+          requiredFields.forEach((field) => {
+            if (!ratings.hasOwnProperty(field)) {
+              throw new BadRequestError(`Missing ${field} in request body.`);
+            }
+          });
+      
+          if(ratings.rating < 0 || ratings.rating > 5 ){
+              throw new BadRequestError("Invalid rating value")
+      
+          }
+
+
+          const result = await db.query(
+            `
+            INSERT INTO ratings(
+                    rating,
+                    listing_id,
+                    user_id
+            )
+            VALUES ($1,$2, $3)
+            RETURNING id, rating, listing_id, user_id
+
+            `, [ratings.rating, listingId, user.id]
+          )
+
+
+          const res = result.rows
+          
+          return res
+
+
+    }
+
     
 }
 
