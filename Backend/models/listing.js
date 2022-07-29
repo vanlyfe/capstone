@@ -16,6 +16,9 @@ class Listing {
     ALTER TABLE temptable
     DROP COLUMN listing_id;
 
+    SELECT * FROM temptable;
+    DROP TABLE temptable;
+
     
     
      
