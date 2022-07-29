@@ -38,20 +38,16 @@ router.get(
   }
 );
 
-router.get(
-  "/:listingId",
-  security.requireAuthenticatedUser,
-  async (req, res, next) => {
-    try {
-      var id = req.params.listingId;
+router.get("/:listingId", async (req, res, next) => {
+  try {
+    var id = req.params.listingId;
 
-      var listing = await Listing.getListingById(id);
-      return res.status(200).json({ listing: listing });
-    } catch (error) {
-      next(error);
-    }
+    var listing = await Listing.getListingById(id);
+    return res.status(200).json({ listing: listing });
+  } catch (error) {
+    next(error);
   }
-);
+});
 
 router.post("/", security.requireAuthenticatedUser, async (req, res, next) => {
   try {
