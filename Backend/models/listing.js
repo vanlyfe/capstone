@@ -4,10 +4,26 @@ const { BadRequestError } = require("../utils/errors");
 class Listing {
   static async getListings() {
     const result = await db.query(`
-        SELECT * FROM listings;
+    SELECT * INTO temptable
+    FROM listings
+    LEFT JOIN (
+         SELECT AVG(rating) AS rating, listing_id
+         FROM listings
+        LEFT JOIN ratings ON ratings.listing_id = listings.id
+         GROUP BY listing_id
+    ) AS acc ON acc.listing_id = listings.id;
+
+    ALTER TABLE temptable
+    DROP COLUMN listing_id;
+
+    
+    
+     
+   
         `);
 
-    const res = result.rows;
+    
+    const res = result[2].rows;
 
     return res;
   }
@@ -15,13 +31,27 @@ class Listing {
   static async getListingById(id) {
     const result = await db.query(
       `
-            SELECT * FROM listings
-            WHERE id = $1;
-            `,
-      [id]
+      SELECT * INTO temptable
+    FROM listings
+    LEFT JOIN (
+         SELECT AVG(rating) AS rating, listing_id
+         FROM listings
+        LEFT JOIN ratings ON ratings.listing_id = listings.id
+         GROUP BY listing_id
+    ) AS acc ON acc.listing_id = listings.id
+    WHERE id =` + id + `;
+
+    ALTER TABLE temptable
+    DROP COLUMN listing_id;
+
+    SELECT * FROM temptable;
+    DROP TABLE temptable;
+      
+            `
+    
     );
 
-    const res = result.rows[0];
+    const res = result[2].rows;
 
     return res;
   }
@@ -29,13 +59,27 @@ class Listing {
   static async getUserListings(userId) {
     const result = await db.query(
       `
-            SELECT * FROM listings
-            WHERE user_id = $1;
-            `,
-      [userId]
+      SELECT * INTO temptable
+      FROM listings
+      LEFT JOIN (
+           SELECT AVG(rating) AS rating, listing_id
+           FROM listings
+          LEFT JOIN ratings ON ratings.listing_id = listings.id
+           GROUP BY listing_id
+      ) AS acc ON acc.listing_id = listings.id
+      WHERE user_id =` + userId + `;
+  
+      ALTER TABLE temptable
+      DROP COLUMN listing_id;
+  
+      SELECT * FROM temptable;
+      DROP TABLE temptable;
+            
+            `
+    
     );
 
-    const res = result.rows;
+    const res = result[2].rows;
     return res;
   }
 
