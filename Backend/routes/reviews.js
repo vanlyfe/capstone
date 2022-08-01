@@ -32,6 +32,20 @@ router.post("/:listingId", security.requireAuthenticatedUser, async (req, res, n
     }
 })
 
+router.put("/:reviewId", security.requireAuthenticatedUser, permissions.userOwnsReview, async (req, res, next) => {
+    try{
+        const {reviewId} = req.params
+      
+       const review = await Review.editReview({reviewUpdate : req.body, reviewId})
+       
+        return res.status(200).json({review : review})
+  
+    } catch (error){
+        next(error)
+    }
+  
+  })
+
 
 
 module.exports = router;

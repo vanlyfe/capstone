@@ -55,9 +55,7 @@ const userOwnsListing = async (req, res, next) => {
       throw new ForbiddenError(
         "User can only edit listing belonging to their account"
       );
-    }
-
-    
+    }  
 
     return next();
   } catch (error) {
@@ -65,8 +63,38 @@ const userOwnsListing = async (req, res, next) => {
   }
 };
 
+const userOwnsReview = async (req, res, next) => {
+    try {
+      const { user } = res.locals;
+      const { reviewId } = req.params;
+      var review = await db.query(
+        `
+                  SELECT user_id
+                  FROM reviews
+                  WHERE id = $1
+          `,
+        [reviewId]
+      );
+  
+      review = review.rows[0]
+  
+      const userId = review.user_id;
+      
+      if (user.id != userId) {
+        throw new ForbiddenError(
+          "User can only edit their own reviews"
+        );
+      }  
+  
+      return next();
+    } catch (error) {
+      return next(error);
+    }
+  };
+
 module.exports = {
   userOwnsProfile,
   userOwnsAccount,
   userOwnsListing,
+  userOwnsReview
 };

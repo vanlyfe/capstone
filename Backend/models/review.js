@@ -52,6 +52,27 @@ class Review{
 
 
     }
+
+    static async editReview({ reviewUpdate, reviewId }) {
+      
+      if(!reviewUpdate.review){
+        throw new BadRequestError("Review must have at least one character, otherwise delete the review")
+      }
+  
+      const result = await db.query(
+        `
+        UPDATE reviews
+                SET review = $1,
+                updatedAt = NOW()
+                WHERE id = $2
+                RETURNING id, review, createdAt, updatedAt, listing_id, user_id;
+        `, [reviewUpdate.review, reviewId]
+      )
+
+      const res = result.rows[0]
+     
+      return res;
+    }
     
 }
 
