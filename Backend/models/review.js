@@ -73,6 +73,20 @@ class Review{
      
       return res;
     }
+
+    static async deleteReview(reviewId){
+      const result = await db.query(
+        `
+        DELETE FROM reviews
+        WHERE id = $1
+        RETURNING review, createdAt, updatedAt, listing_id, user_id
+        
+        `, [reviewId]
+      )
+
+      return result
+
+    }
     
 }
 
