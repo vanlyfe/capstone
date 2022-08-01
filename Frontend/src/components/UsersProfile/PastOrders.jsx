@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, MouseEvent } from "react";
 import {
   Box,
   Grid,
@@ -15,6 +15,8 @@ import {
   List,
   Divider,
   AppBar,
+  Modal,
+  TextareaAutosize,
   Link,
   ListItem,
   ListItemButton,
@@ -26,6 +28,7 @@ import {
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { Group } from "@mui/icons-material";
+import { height } from "@mui/system";
 
 function createData(
   vehicleModel,
@@ -96,7 +99,7 @@ const rows = [
     1,
     "$15.20",
 
-    "see reviews"
+    "add reviews"
   ),
   createData(
     "Toyota RAV4",
@@ -106,12 +109,29 @@ const rows = [
     3,
     "$26.20",
 
-    "see reviews"
+    "add reviews"
   ),
 ];
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 600,
+  height: 300,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
+
 export default function PastOrders() {
   const [value, setValue] = React.useState();
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   // const [value, setValue] = (React.useState < number) | (null > 2);
 
   // const DataTable =() => {
@@ -382,16 +402,68 @@ export default function PastOrders() {
                       >
                         <Rating />
                         <Link
-                          href="/listing/:id"
+                          onClick={handleOpen}
                           sx={{
                             textDecoration: "none",
                             mr: 5,
                             color: "#6E85B7",
                           }}
                         >
-                          {" "}
-                          {row.reviews}{" "}
+                          {row.reviews}
                         </Link>
+
+                        <Modal
+                          open={open}
+                          onClose={handleClose}
+                          aria-labelledby="modal-modal-title"
+                          aria-describedby="modal-modal-description"
+                        >
+                          <Box sx={style}>
+                            <Typography
+                              id="modal-modal-title"
+                              variant="h6"
+                              component="h2"
+                              sx={{ textalign: "center" }}
+                            >
+                              Rate and review
+                            </Typography>
+                            <Typography>
+                              Share your experience to help others
+                            </Typography>
+                            {/* <Typography
+                              id="modal-modal-description"
+                              sx={{ mt: 2 }}
+                            >
+                              Duis mollis, est non commodo luctus, nisi erat
+                              porttitor ligula.
+                            </Typography> */}
+                            <Rating />
+                            <TextareaAutosize
+                              aria-label="minimum height"
+                              minRows={3}
+                              placeholder="Describe your experience"
+                              style={{ width: 500, height: 100 }}
+                            />
+                            <Typography>
+                              Your review will be posted publicly on the web.
+                            </Typography>
+
+                            <Grid sx={{ mt: 2, ml: 40 }}>
+                              <Button
+                                onClick={handleClose}
+                                sx={{ color: "#669bbc" }}
+                              >
+                                POST
+                              </Button>
+                              <Button
+                                onClick={handleClose}
+                                sx={{ ml: 4, color: "#669bbc" }}
+                              >
+                                CANCEL
+                              </Button>
+                            </Grid>
+                          </Box>
+                        </Modal>
                       </TableCell>
                     </TableRow>
                   ))}
