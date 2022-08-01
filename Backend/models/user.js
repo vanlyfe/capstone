@@ -12,11 +12,10 @@ class User {
       email: user.email,
       username: user.username,
       image_url: user.image_url,
-      bio : user.bio,
+      bio: user.bio,
       gender: user.gender,
       location: user.location,
       birthdate: user.birthdate,
-     
     };
   }
 
@@ -61,7 +60,7 @@ class User {
       }
     });
 
-    if (credentials.email.indexOf("@") <= 0) {
+    if (credentials.email.indexOf("@") <= 0 || credentials.email.length < 1) {
       throw new BadRequestError("Invalid email.");
     }
 
@@ -173,11 +172,36 @@ class User {
 
   static async editUser({ userUpdate, userId }) {
     if (userUpdate.email) {
+      if (userUpdate.email.indexOf("@") <= 0 || userUpdate.email.length < 1) {
+        throw new BadRequestError("Invalid email.");
+      }
+
       const existingUser = await User.fetchUserByEmail(userUpdate.email);
       if (existingUser) {
         throw new BadRequestError(`Email already exists: ${userUpdate.email}`);
       }
     }
+
+    if (userUpdate.password?.length < 1) {
+      throw new BadRequestError("Please input valid password");
+    }
+
+    if (userUpdate.firstName?.length < 1) {
+      throw new BadRequestError("Please input valid first name");
+    }
+
+    if (userUpdate.lastName?.length < 1) {
+      throw new BadRequestError("Please input valid last name");
+    }
+
+    if (userUpdate.username?.length < 1) {
+      throw new BadRequestError("Please input valid username");
+    }
+
+    
+
+   
+
 
     if (userUpdate.username) {
       const existingUsername = await User.checkUsername(userUpdate.username);
@@ -194,7 +218,6 @@ class User {
       if (key === "password") {
         hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR);
       }
-      
 
       const query =
         `UPDATE users
@@ -205,13 +228,30 @@ class User {
                    WHERE id = $2
                    RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;`;
 
-      const result = await db.query(query, [key === "password" ? hashedPassword : value, userId]);
+      const result = await db.query(query, [
+        key === "password" ? hashedPassword : value,
+        userId,
+      ]);
 
       results = result.rows[0];
     }
 
     return results;
   }
+
+  static async deleteUser(userId){
+    await db.query(
+     `
+     DELETE FROM users
+     WHERE id = $1;
+    
+     
+     `, [userId]
+   )
+
+   
+
+ }
 }
 
 module.exports = User;
