@@ -74,4 +74,16 @@ router.put("/:listingId", security.requireAuthenticatedUser, permissions.userOwn
 
 })
 
+
+router.delete("/:listingId", security.requireAuthenticatedUser, permissions.userOwnsListing, async(req, res, next) => {
+  try{
+    const {listingId} = req.params
+    await Listing.deleteListing(listingId)
+    return res.status(200).json()
+
+  } catch(error){
+
+  }
+})
+
 module.exports = router;

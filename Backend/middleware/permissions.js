@@ -46,8 +46,16 @@ const userOwnsListing = async (req, res, next) => {
         `,
       [listingId]
     );
+    
+    
 
     listing = listing.rows[0]
+
+    if(!listing){
+        throw new BadRequestError(
+            "Listing does not exist"
+        )
+    }
 
     const userId = listing.user_id;
     

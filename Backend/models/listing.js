@@ -214,6 +214,19 @@ class Listing {
 
     return results;
   }
+
+  static async deleteListing(listingId){
+    await db.query(
+      `
+      DELETE FROM listings
+      WHERE id = $1;
+     
+      
+      `, [listingId]
+    )
+  }
+
+
 }
 
 module.exports = Listing;
