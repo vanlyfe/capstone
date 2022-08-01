@@ -19,7 +19,7 @@ import {
 import { DataGrid } from "@mui/x-data-grid";
 import { ThumbUp } from "@mui/icons-material";
 
-export default function User() {
+export default function Reviews() {
   const [value, setValue] = React.useState();
   // const [value, setValue] = (React.useState < number) | (null > 2);
 

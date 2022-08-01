@@ -110,7 +110,7 @@ const rows = [
   ),
 ];
 
-export default function User() {
+export default function PastListings() {
   const [value, setValue] = React.useState();
   // const [value, setValue] = (React.useState < number) | (null > 2);
 
