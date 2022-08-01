@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -34,8 +35,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 // my imports
 import DatePicker from "./DatePicker";
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 
 export default function ListingDetails() {
   const [expanded, setExpanded] = React.useState(false);
@@ -163,7 +164,7 @@ export default function ListingDetails() {
               </Box>
             </CardContent>
 
-            <Box sx={{ display: "flex", flexDirection: "column",}}>
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Typography
                 sx={{
                   fontSize: 25,
@@ -192,12 +193,32 @@ export default function ListingDetails() {
                   </Typography>
                 </Box>
                 <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 5,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "Arial",
+                      color: "#1d3557",
+
+                      fontWeight: 600,
+                      fontSize: 15,
+                    }}
+                  >
+                    25 Reviews
+                  </Typography>
+                  <Rating name="read-only" value={3} readOnly />
+                </Box>
+                <Box
                   sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
                 >
-                  <LocalPhoneIcon
-                  />
+                  <LocalPhoneIcon />
                   <Typography
-                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5}}
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
                   >
                     +1 773 754 9759
                   </Typography>
@@ -205,9 +226,9 @@ export default function ListingDetails() {
                 <Box
                   sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
                 >
-                  <MailOutlineIcon/>
+                  <MailOutlineIcon />
                   <Typography
-                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5}}
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
                   >
                     vernon@gmail.com
                   </Typography>
@@ -329,20 +350,20 @@ export default function ListingDetails() {
                   align: "center",
                 }}
               >
-                Book This Listing
+                Request This Listing
               </Typography>
               <Box sx={{ display: "flex", flexDirection: "row" }}>
                 <TextField
                   required
                   id="outlined-required"
-                  label="Required"
+                  label="First Name"
                   placeholder="First Name"
                   sx={{ ml: 2, mt: 5, mr: 2 }}
                 />
                 <TextField
                   required
                   id="outlined-required"
-                  label="Required"
+                  label="Last Name"
                   placeholder="Last Name"
                   sx={{ ml: 10, mt: 5 }}
                 />
@@ -351,7 +372,7 @@ export default function ListingDetails() {
               <TextField
                 required
                 id="outlined-required"
-                label="Required"
+                label="Email"
                 placeholder="email"
                 sx={{ ml: 2, mt: 5, width: "100%" }}
               />
@@ -361,9 +382,13 @@ export default function ListingDetails() {
                 size="medium"
                 sx={{ mt: 2, ml: 2, mr: 2 }}
               >
-                Book
+                Submit Request
               </Button>
             </Box>
+
+            <Button component={Link} to="/listings" color="inherit" sx={{mt:10}}>
+              Back to Listings
+            </Button>
 
             {/* <Box
               sx={{
@@ -390,7 +415,7 @@ export default function ListingDetails() {
           width: "100vw",
           alignContent: "center",
           // height: 800,
-          pb:10,
+          pb: 10,
         }}
       >
         <Typography
