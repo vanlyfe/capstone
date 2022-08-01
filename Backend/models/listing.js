@@ -25,7 +25,6 @@ class Listing {
    
         `);
 
-    
     const res = result[2].rows;
 
     return res;
@@ -42,7 +41,9 @@ class Listing {
         LEFT JOIN ratings ON ratings.listing_id = listings.id
          GROUP BY listing_id
     ) AS acc ON acc.listing_id = listings.id
-    WHERE id =` + id + `;
+    WHERE id =` +
+        id +
+        `;
 
     ALTER TABLE temptable
     DROP COLUMN listing_id;
@@ -51,7 +52,6 @@ class Listing {
     DROP TABLE temptable;
       
             `
-    
     );
 
     const res = result[2].rows;
@@ -70,7 +70,9 @@ class Listing {
           LEFT JOIN ratings ON ratings.listing_id = listings.id
            GROUP BY listing_id
       ) AS acc ON acc.listing_id = listings.id
-      WHERE user_id =` + userId + `;
+      WHERE user_id =` +
+        userId +
+        `;
   
       ALTER TABLE temptable
       DROP COLUMN listing_id;
@@ -79,7 +81,6 @@ class Listing {
       DROP TABLE temptable;
             
             `
-    
     );
 
     const res = result[2].rows;
@@ -123,23 +124,22 @@ class Listing {
       }
     });
 
-    if(listings.location.length < 1){
-        throw new BadRequestError("No location provided")
-
+    if (listings.location.length < 1) {
+      throw new BadRequestError("No location provided");
     }
 
-    if(listings.model.length < 1){
-        throw new BadRequestError("No car model provided")
-
+    if (listings.model.length < 1) {
+      throw new BadRequestError("No car model provided");
     }
 
-    if(listings.image_url.length < 1){
-        throw new BadRequestError("No car image provided")
-
+    if (listings.image_url.length < 1) {
+      throw new BadRequestError("No car image provided");
     }
 
-    if(listings.max_accomodation < 1){
-        throw new BadRequestError("Maximum vehicle accomodation cannot be less than 1")
+    if (listings.max_accomodation < 1) {
+      throw new BadRequestError(
+        "Maximum vehicle accomodation cannot be less than 1"
+      );
     }
 
     const result = await db.query(
@@ -172,32 +172,32 @@ class Listing {
     return res;
   }
 
-  static async editListing({listingUpdate, listingId}){
-    if(listingUpdate.location?.length < 1){
-      throw new BadRequestError("Invalid location")
+  static async editListing({ listingUpdate, listingId }) {
+    if (listingUpdate.location?.length < 1) {
+      throw new BadRequestError("Invalid location");
     }
 
-    if(listingUpdate.max_accomodation){
-      if(listingUpdate.max_accomodation < 1){
-        throw new BadRequestError("Vehicle should be able to accomodate at least one person")
-      }
+    
+    if (listingUpdate?.max_accomodation < 1) {
+      throw new BadRequestError(
+        "Vehicle should be able to accomodate at least one person"
+      );
     }
-
-    if(listingUpdate.model?.length < 1){
-      throw new BadRequestError("Invalid vehicle model")
-    }
-
-    if(listingUpdate.image_url?.length < 1){
-      throw new BadRequestError("Invalid image, listing must have at least one image")
-    }
-
-
-    var results = {};
     
 
-    for (var [key, value] of Object.entries(listingUpdate)) {
-      
+    if (listingUpdate.model?.length < 1) {
+      throw new BadRequestError("Invalid vehicle model");
+    }
 
+    if (listingUpdate.image_url?.length < 1) {
+      throw new BadRequestError(
+        "Invalid image, listing must have at least one image"
+      );
+    }
+
+    var results = {};
+
+    for (var [key, value] of Object.entries(listingUpdate)) {
       const query =
         `UPDATE listings
                        SET ` +
@@ -205,18 +205,14 @@ class Listing {
         ` = $1,
                        updatedAt = NOW()
                    WHERE id = $2
-                   RETURNING id,user_id,price, location, max_accomodation, model, decription,image_url, fees, createdAt, updatedAt;`;
+                   RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, fees, createdAt, updatedAt;`;
 
-      const result = await db.query(query, [
-        value,
-        listingId,
-      ]);
+      const result = await db.query(query, [value, listingId]);
 
       results = result.rows[0];
     }
 
     return results;
-
   }
 }
 

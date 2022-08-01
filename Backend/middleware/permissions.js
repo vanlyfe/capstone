@@ -50,12 +50,14 @@ const userOwnsListing = async (req, res, next) => {
     listing = listing.rows[0]
 
     const userId = listing.user_id;
-    console.log(listing)
+    
     if (user.id != userId) {
       throw new ForbiddenError(
         "User can only edit listing belonging to their account"
       );
     }
+
+    
 
     return next();
   } catch (error) {

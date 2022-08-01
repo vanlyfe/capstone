@@ -60,7 +60,7 @@ class User {
       }
     });
 
-    if (credentials.email.indexOf("@") <= 0 || userUpdate.email.length < 1) {
+    if (credentials.email.indexOf("@") <= 0 || credentials.email.length < 1) {
       throw new BadRequestError("Invalid email.");
     }
 

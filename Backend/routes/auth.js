@@ -49,6 +49,17 @@ router.get("/me", security.requireAuthenticatedUser, async (req,res,next) => {
   }
 })
 
+router.get("/:userId" , async(req, res, next) => {
+  try{
+    const {userId} = req.params
+      const user = await User.fetchUserById(userId)
+      return res.status(200).json({user,user})
+
+  } catch(error){
+    next(error)
+  }
+})
+
 router.put("/:userId", security.requireAuthenticatedUser, permissions.userOwnsProfile, async (req, res, next) => {
   try{
       const {userId} = req.params
