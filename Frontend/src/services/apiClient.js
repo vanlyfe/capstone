@@ -231,6 +231,8 @@ class ApiClient {
     this.setToken(null);
     localStorage.setItem(this.tokenName, "");
   }
+
+  
 }
 
 export default new ApiClient("http://localhost:3001");
