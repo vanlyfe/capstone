@@ -60,30 +60,37 @@ router.post("/", security.requireAuthenticatedUser, async (req, res, next) => {
   }
 });
 
-router.put("/:listingId", security.requireAuthenticatedUser, permissions.userOwnsListing, async (req, res, next) => {
-  try{
-      const {listingId} = req.params
-    
-     const listing = await Listing.editListing({listingUpdate : req.body, listingId})
-     
-      return res.status(200).json({listing : listing})
+router.put(
+  "/:listingId",
+  security.requireAuthenticatedUser,
+  permissions.userOwnsListing,
+  async (req, res, next) => {
+    try {
+      const { listingId } = req.params;
 
-  } catch (error){
-      next(error)
+      const listing = await Listing.editListing({
+        listingUpdate: req.body,
+        listingId,
+      });
+
+      return res.status(200).json({ listing: listing });
+    } catch (error) {
+      next(error);
+    }
   }
+);
 
-})
-
-
-router.delete("/:listingId", security.requireAuthenticatedUser, permissions.userOwnsListing, async(req, res, next) => {
-  try{
-    const {listingId} = req.params
-    await Listing.deleteListing(listingId)
-    return res.status(200).json()
-
-  } catch(error){
-
+router.delete(
+  "/:listingId",
+  security.requireAuthenticatedUser,
+  permissions.userOwnsListing,
+  async (req, res, next) => {
+    try {
+      const { listingId } = req.params;
+      await Listing.deleteListing(listingId);
+      return res.status(200).json();
+    } catch (error) {}
   }
-})
+);
 
 module.exports = router;

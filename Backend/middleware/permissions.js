@@ -8,7 +8,11 @@ const userOwnsProfile = async (req, res, next) => {
     const { userId } = req.params;
 
     if (user.id != userId) {
+      if(req.baseUrl === "/auth"){
       throw new ForbiddenError("User can only edit their own account");
+      } else {
+        throw new ForbiddenError("User can only view orders belonging to their account");
+      }
     }
 
     return next();
@@ -17,22 +21,32 @@ const userOwnsProfile = async (req, res, next) => {
   }
 };
 
-const userOwnsAccount = async (req, res, next) => {
-  try {
-    const { user } = res.locals;
-    const { userId } = req.params;
+const userOwnsOrder = async (req, res, next) => {
+  try{
+    const {user} = res.locals
+    const {orderId} = req.params
 
-    if (user.id != userId) {
-      throw new ForbiddenError(
-        "User can only view orders belonging to their own account"
-      );
+    var order = await db.query(
+      `
+      SELECT user_id
+      FROM orders
+      WHERE id = $1
+      
+      `, [orderId]
+    )
+
+    order = order.rows[0]
+
+    if(order.user_id !== user.id){
+      throw new ForbiddenError("User can on view orders belonging to their account")
     }
 
-    return next();
-  } catch (error) {
-    return next(error);
+    return next()
+
+  } catch(error){
+    return next(error)
   }
-};
+}
 
 const userOwnsListing = async (req, res, next) => {
   try {
@@ -100,9 +114,43 @@ const userOwnsReview = async (req, res, next) => {
     }
   };
 
+
+  const userIsNotListingOwner = async (req, res, next) => {
+    try{
+      const {listingId} = req.params
+      var listing = await db.query(
+        `
+        SELECT user_id
+        FROM listings
+        WHERE id = $1
+      
+      `, [listingId])
+
+      listing = listing.rows[0]
+      console.log(req.baseUrl)
+      const {user} = res.locals
+
+      if(listing.user_id == user.id){
+        if(req.baseUrl === "/review"){
+          throw new ForbiddenError("User is not allowed to review their own listing")
+
+        } else if(req.baseUrl === "/rating"){
+          throw new ForbiddenError("User is not allowed to rate their own listing")
+
+        } else{
+        throw new ForbiddenError("User is not allowed to book their own listing")
+        }
+      }
+
+      return next()
+    } catch(error){
+      return next(error)
+    }
+  }
 module.exports = {
   userOwnsProfile,
-  userOwnsAccount,
   userOwnsListing,
-  userOwnsReview
+  userOwnsReview,
+  userOwnsOrder,
+  userIsNotListingOwner
 };
