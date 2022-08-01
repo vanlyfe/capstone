@@ -195,6 +195,7 @@ Endpoint | Route |CRUD | HTTP Verb | Description |User stories |
 | **/auth** | /register | Create | POST | Creates new user account |
 | **/auth** | /me | Read | GET | Fetches authenticated user's details |
 | **/auth** | /:userId | Update | PUT | Updates a user profile |
+| **/auth** | /:userId | Read | GET | retreives a profile based on user_id |
 |**/auth** | /:userId | Delete | DELETE | Delete a user profile |
 |**/listing** | / | Create | POST | creates a new listing |
 |**/listing** | / | Read | GET | Return all the listings in the database |
