@@ -54,7 +54,7 @@ router.put(
 router.delete("/:reviewId" , security.requireAuthenticatedUser, permissions.userOwnsReview, async (req, res,next) => {
     try{
         const {reviewId} = req.params
-        const review = Review.deleteReview(reviewId)
+        await Review.deleteReview(reviewId)
         return res.status(200).json()
 
     } catch(error){

@@ -238,6 +238,20 @@ class User {
 
     return results;
   }
+
+  static async deleteUser(userId){
+    await db.query(
+     `
+     DELETE FROM users
+     WHERE id = $1;
+    
+     
+     `, [userId]
+   )
+
+   
+
+ }
 }
 
 module.exports = User;
