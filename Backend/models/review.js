@@ -19,6 +19,25 @@ class Review{
     }
 
 
+    static async getReviewsByUserId(userId){
+      const result = await db.query(
+        `
+        SELECT l.user_id , review, listing_id, r.createdAt, r.updatedAt
+        FROM reviews AS r
+        JOIN listings AS l ON l.id = r.listing_id
+        WHERE l.user_id = $1
+       
+        
+        
+        `, [userId]
+      )
+
+      const res = result.rows
+
+      return res
+    }
+
+
     static async postReview({listingId, reviews, user}){
         const requiredFields = [
             "review",   

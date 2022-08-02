@@ -10,9 +10,9 @@ const userOwnsProfile = async (req, res, next) => {
     if (user.id != userId) {
       if(req.baseUrl === "/auth"){
       throw new ForbiddenError("User can only edit their own account");
-      } else {
+      } else if(req.baseUrl === "/order"){
         throw new ForbiddenError("User can only view orders belonging to their account");
-      }
+      } 
     }
 
     return next();

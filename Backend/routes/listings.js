@@ -25,7 +25,7 @@ router.get("/best", async (req, res, next) => {
 
 router.get(
   "/user/:userId",
-  security.requireAuthenticatedUser,
+ 
   async (req, res, next) => {
     try {
       var userId = req.params.userId;

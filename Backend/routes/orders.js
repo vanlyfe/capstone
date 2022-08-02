@@ -4,15 +4,7 @@ const security = require("../middleware/security");
 const permissions = require("../middleware/permissions");
 const router = express.Router();
 
-router.get("/", async (req, res, next) => {
-  try {
-    const orders = await Order.getOrders();
 
-    return res.status(200).json({ orders: orders });
-  } catch (error) {
-    next(error);
-  }
-});
 
 router.get(
   "/user/:userId",
