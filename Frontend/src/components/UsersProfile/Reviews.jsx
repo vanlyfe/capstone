@@ -21,10 +21,12 @@ import apiClient from "../../services/apiClient";
 
 export default function Reviews() {
   const [value, setValue] = React.useState();
+  const [Error, setError] = React.useState();
+  const [rating, setRating] = React.useState(0);
 
   useEffect(() => {
-    const getRatings = async () => {
-      const response = await apiClient.getRating();
+    const getReviews = async () => {
+      const response = await apiClient.getReviews(1);
       console.log("rating: ", response.data);
 
       if (response?.data) {
@@ -34,7 +36,7 @@ export default function Reviews() {
       }
     };
 
-    getRatings();
+    getReviews();
   }, []);
 
   return (
