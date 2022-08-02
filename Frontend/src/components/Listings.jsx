@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import {
   Autocomplete,
   Container,
@@ -23,9 +24,10 @@ import {
   Rating,
   Slide,
   TextField,
-} from "@mui/material";
-import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
-import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+} from '@mui/material';
+import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
+import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
+import PersonIcon from '@mui/icons-material/Person';
 
 import apiClient from "../services/apiClient";
 
@@ -66,9 +68,8 @@ export default function Listings() {
             mr: 3,
             height: "80vh",
             width: 280,
-            // display: { xs: 'none', md: 'block' },
-          }}
-        >
+            
+          }}>
           <Typography variant="h5" align="center" sx={{ my: 2 }}>
             {`Filter`}
           </Typography>
@@ -240,35 +241,66 @@ export default function Listings() {
         <Grid
           container
           // bgcolor="red"
-          sx={{ width: "100%", height: "100%" }}
-          columns={{ xs: 4, sm: 8, md: 12 }}
-          spacing={2}
-        >
+          sx={{ width: '100%', height: '100%' }}
+          spacing={{ xs: 2, md: 3, lg: 5, xl: 7 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}>
           <Grid item xs={12}>
-            <Typography variant="h5" sx={{ my: 2 }}>
-              {`Browse the Current Listings`}
+            <Typography variant="h5" sx={{ mb: 2, mt: 4 }}>
+              {`Browse Active Listings`}
             </Typography>
           </Grid>
           {listings.map((listing, i) => (
             <Grid key={i} item xs={4} justifyContent="center">
-              <Card sx={{ width: "100%" }}>
-                <CardMedia
-                  component="img"
-                  height="140"
-                  image={listing.image_url}
-                  alt="listing photo"
-                />
+              <Card sx={{ width: '100%' }}>
+                <Link
+                  style={{ textDecoration: 'none' }}
+                  to={`/listing/${listing.id}`}>
+                  <CardMedia
+                    component="img"
+                    height="140"
+                    image={listing.image_url}
+                    alt="listing photo"
+                  />
+                </Link>
+
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {listing.model}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {listing.description}
-                  </Typography>
+                  <Box
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography gutterBottom variant="h5" component="div">
+                      {listing.model}
+                    </Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Typography variant="body2" color="text.secondary">
+                        {listing.max_accomodation}
+                      </Typography>
+                      <PersonIcon fontSize="small" />
+                    </Box>
+                  </Box>
+
+                  <Box
+                    sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Typography variant="body2" color="text.secondary">
+                      {listing.location}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      fontStyle="italic">
+                      ${listing.price}
+                    </Typography>
+                  </Box>
                 </CardContent>
                 <CardActions>
-                  <Button size="small">Book Now</Button>
-                  <Button size="small">Learn More</Button>
+                  <Link
+                    style={{ textDecoration: 'none' }}
+                    to={`/listing/${listing.id}/book`}>
+                    <Button size="small">Book Now</Button>
+                  </Link>
+                  <Link
+                    style={{ textDecoration: 'none' }}
+                    to={`/listing/${listing.id}`}>
+                    <Button size="small">Learn More</Button>
+                  </Link>
                 </CardActions>
               </Card>
             </Grid>

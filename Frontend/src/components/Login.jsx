@@ -5,7 +5,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+import {Link} from "react-router-dom"
+
 
 import apiClient from "../services/apiClient";
 import Grid from "@mui/material/Grid";
@@ -28,9 +29,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" to="https://mui.com/" style={{textDecoration: "none"}}>
         vanlyfe
-      </Link>{" "}
+      </Link >{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -39,7 +40,7 @@ function Copyright(props) {
 
 // const theme = createTheme();
 
-export default function Login() {
+export default function Login(props) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
@@ -83,10 +84,12 @@ export default function Login() {
     }
 
     if (data?.user) {
+      props.setUser(data.user)
       setIsLoading(false);
       navigate("/listings");
       apiClient.setToken(data.token);
       setIsLoading(false);
+     
     }
   };
 
@@ -154,14 +157,14 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <a href="/forgot-password" variant="body2">
+                  <Link to="/forgot-password" variant="body2" style={{textDecoration: "none"}}>
                     Forgot password?
-                  </a>
+                  </Link>
                 </Grid>
                 <Grid item>
-                  <a href="/register" variant="body2">
+                  <Link to="/register" variant="body2" style={{textDecoration: "none"}}>
                     {"Don't have an account? Sign Up"}
-                  </a>
+                  </Link>
                 </Grid>
               </Grid>
             </Box>

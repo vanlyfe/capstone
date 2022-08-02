@@ -13,7 +13,6 @@ import {
   CssBaseline,
   Toolbar,
   List,
-  Link,
   Divider,
   AppBar,
   ListItem,
@@ -21,11 +20,12 @@ import {
   ListItemText,
   Stack,
   Avatar,
+  Link,
   Rating,
   Button,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { Person, Group } from "@mui/icons-material";
+import { Group } from "@mui/icons-material";
 
 function createData(
   vehicleModel,
@@ -110,7 +110,7 @@ const rows = [
   ),
 ];
 
-export default function User() {
+export default function ActiveOrders() {
   const [value, setValue] = React.useState();
   // const [value, setValue] = (React.useState < number) | (null > 2);
 
@@ -266,14 +266,14 @@ export default function User() {
               <Typography>Host</Typography>
 
               <ListItem
-                disablepadding
+                disablePadding
                 sx={{ display: "flex", flexDirection: "column" }}
               >
                 <ListItemButton href="/user/:id/activeListing">
                   <ListItemText> Active Listings</ListItemText>
                 </ListItemButton>
                 <ListItemButton href="/user/:id/pastListing">
-                  <ListItemText>Past Listings</ListItemText>
+                  <ListItemText> Past Listings</ListItemText>
                 </ListItemButton>
               </ListItem>
             </List>
@@ -292,11 +292,11 @@ export default function User() {
               <Typography>Renter</Typography>
 
               <ListItem
-                disablepadding
+                disablePadding
                 sx={{ display: "flex", flexDirection: "column" }}
               >
                 <ListItemButton href="/user/:id/activeOrders">
-                  <ListItemText> Active Orders</ListItemText>
+                  <ListItemText>Active Orders</ListItemText>
                 </ListItemButton>
                 <ListItemButton href="/user/:id/pastOrders">
                   <ListItemText> Past Orders</ListItemText>
@@ -309,7 +309,7 @@ export default function User() {
               <ListItem>
                 <ListItemButton href="/user/:id/reviews">
                   <ListItemText
-                    disablepadding
+                    disablePadding
                     sx={{ display: "flex", flexDirection: "column" }}
                   >
                     Reviews
@@ -331,17 +331,17 @@ export default function User() {
           <Box>
             <Button
               variant="text"
-              href="/user/:id/activeListing"
+              href="/user/:id/activeOrders"
               sx={{ mt: 2, mb: 2 }}
             >
-              Active Listings
+              Active Orders
             </Button>
             <Button
               variant="contained"
-              href="/createlisting"
+              href="/listings"
               sx={{ mt: 2, mb: 2, ml: 2 }}
             >
-              Make Listing
+              Browse Listing
             </Button>
           </Box>
           <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>

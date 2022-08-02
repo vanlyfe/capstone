@@ -1,13 +1,14 @@
 
 
-INSERT INTO users (username, firstName, lastName, email, password, gender)
+INSERT INTO users (username, firstName, lastName, email, password, gender, image_url)
 VALUES (
   'jbosire',
   'Joram',
   'Bosire',
   'jbosire@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'male'
+  'male',
+  'https://a.cdn-hotels.com/gdcs/production92/d1580/9a28fc70-9bea-11e8-a1b5-0242ac110053.jpg'
 
 ), 
 (
@@ -16,7 +17,8 @@ VALUES (
   'Fakih',
   'afakih@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'male'
+  'male',
+  'https://www.fodors.com/wp-content/uploads/2022/04/jake-blucker-8LlJNFLTEm0-unsplash.jpg'
 ),
 (
   'votieno',
@@ -24,7 +26,9 @@ VALUES (
   'Otieno',
   'votieno@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'male'
+  'male',
+  'https://i.natgeofe.com/k/5b396b5e-59e7-43a6-9448-708125549aa1/new-york-statue-of-liberty_16x9.jpg'
+
 ),
 (
   'etsehay',
@@ -32,7 +36,8 @@ VALUES (
   'Tsehay',
   'etsehay@salesforce.com',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
-  'female'
+  'female',
+  'https://i.natgeofe.com/n/0652a07e-42ed-4f3d-b2ea-0538de0c5ba3/seattle-travel_3x2.jpg'
 );
 
 INSERT INTO listings(user_id, price, location, max_accomodation, image_url, model, description, fees)
@@ -169,70 +174,78 @@ VALUES (
 
 );
 
-INSERT INTO orders(user_id, taxes, total, guests, dates, listing_id)
+INSERT INTO orders(user_id, taxes, total, guests, listing_id, startDate, endDate)
 VALUES(
   1,
   5.99,
   20.99,
   3,
-  '10/6/2000 - 10/10/2000',
-  1
+  1,
+  '11/6/2022',
+  '11/10/2022'
 ),
 (
   1,
   10.99,
   25.00,
   2,
-  '7/4/2010 - 7/10/2010',
-  2
+  2,
+  '11/6/2023',
+  '12/10/2023'
 ),
 (
   2,
   30.50,
   200.00,
   7,
-  '12/20/2012 - 12/16/2012',
-  3
+  3,
+  '11/6/2000',
+  '11/10/2000'
 ),
 (
   2,
   12.30,
   40.00,
   3,
-  '6/10/2022 - 10/10/2022',
-  4
+  4,
+  '10/6/2000',
+  '12/12/2000'
 ),
 (
   3,
   6.99,
   30.96,
   2,
-  '8/5/2015 - 8/10/2015',
-  5
+  5,
+  '1/1/2005',
+  '2/2/2005'
 ),
 (
   3,
   9.99,
   24.20,
   5,
-  '4/4/2019 - 4/9/2019',
-  6
+  6,
+  '4/6/2024',
+  '6/22/2024'
 ),
 (
   4,
   15.10,
   40.00,
   2,
-  '6/10/2014 - 10/10/2014',
-  7
+  7,
+  '11/6/2020',
+  '11/10/2020'
 ),
 (
   4,
   23.25,
   50.00,
   1,
-  '2/2/2013 - 2/10/2013',
-  8
+  8,
+  '1/23/2001',
+  '2/1/2001'
 );
 
 

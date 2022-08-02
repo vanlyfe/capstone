@@ -36,7 +36,7 @@ CREATE TABLE listings(
 
 );
 
-CREATE TABLE  orders(
+CREATE TABLE orders(
     id                  SERIAL PRIMARY KEY,
     user_id             INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
@@ -46,7 +46,8 @@ CREATE TABLE  orders(
     taxes               FLOAT NOT NULL,
     total               FLOAT NOT NULL,
     guests              INTEGER NOT NULL,
-    dates               TEXT NOT NULL,
+    startDate           DATE NOT NULL,
+    endDate             DATE NOT NULL,
     listing_id          INTEGER NOT NULL,
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE
    
