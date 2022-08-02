@@ -42,6 +42,7 @@ router.get("/me", security.requireAuthenticatedUser, async (req, res, next) => {
   }
 });
 
+
 router.get("/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;

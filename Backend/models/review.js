@@ -1,5 +1,6 @@
 const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
+const User = require("./user")
 
 
 class Review{
@@ -20,21 +21,58 @@ class Review{
 
 
     static async getReviewsByUserId(userId){
-      const result = await db.query(
+      
+      var result = await db.query(
         `
-        SELECT l.user_id , review, listing_id, r.createdAt, r.updatedAt
+        SELECT r.user_id AS reveiwer_id, u.id AS host_id, rater.firstName, rater.lastName, rater.image_url, rater.updatedAt, r.review AS review, rates.rating AS rating, r.id AS review_id
         FROM reviews AS r
         JOIN listings AS l ON l.id = r.listing_id
-        WHERE l.user_id = $1
-       
+        JOIN users AS u ON l.user_id = u.id
+        JOIN (
+          SELECT image_url, u.id AS id, firstName, lastName, r.updatedAt, review
+          FROM reviews AS r
+          JOIN users AS u ON r.user_id = u.id
+        ) AS rater on rater.id = r.user_id
+        JOIN (
+          SELECT AVG(rating) AS rating, acc.user_id   
+          FROM (
+            SELECT rating, l.user_id
+            FROM listings AS l
+            JOIN ratings AS r ON r.listing_id = l.id
+          ) AS acc
+          GROUP BY acc.user_id
+          
+         
+          
+         
+        ) AS rates ON rates.user_id = r.user_id  
+        WHERE u.id = $1
         
         
-        `, [userId]
+        
+        
+        ` , [userId]
       )
 
-      const res = result.rows
+      
 
-      return res
+      var res = result.rows
+      var acc = []
+      var ans = []
+     
+
+      res.forEach((elem) => {
+       
+        if(!acc.includes(elem.review_id)){
+          acc.push(elem.review_id)
+          ans.push(elem)
+
+        }
+         
+      })
+
+
+      return ans
     }
 
 

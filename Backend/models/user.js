@@ -16,6 +16,7 @@ class User {
       gender: user.gender,
       location: user.location,
       birthdate: user.birthdate,
+      rating : user.rating
     };
   }
 
@@ -45,6 +46,26 @@ class User {
     }
 
     throw new UnauthorizedError('Invalid email/password combo');
+  }
+
+  static async getUserRating(userId){
+    const result = await db.query(
+      `
+      SELECT AVG(rating), l.user_id
+      FROM listings AS l
+      LEFT JOIN ratings AS r on r.listing_id = l.id
+      WHERE l.user_id = $1
+      GROUP BY l.user_id
+      
+    
+      
+
+      `, [userId]
+    )
+
+    const res = result.rows[0]
+
+    return res
   }
 
   static async register(credentials) {
@@ -113,10 +134,11 @@ class User {
             password,
             gender,
             birthdate,
-            location
+            location,
+            rating
         )
-        VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-        RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;
+        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+        RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt, rating;
         `,
       [
         credentials.firstName,
@@ -127,12 +149,15 @@ class User {
         credentials.gender,
         credentials.birthdate,
         credentials.location,
+        null
       ]
     );
 
-    const user = result.rows[0];
-
-    return User.makePublicUser(user);
+    var user = result.rows[0];
+    user = User.makePublicUser(user)
+    const rate = await this.getUserRating(user.id)
+    user.rating = rate ? rate.avg : null
+    return user;
   }
 
   static async fetchUserByEmail(email) {
@@ -146,8 +171,11 @@ class User {
 
     const query = `SELECT * FROM users WHERE email = $1`;
     const result = await db.query(query, [email.toLowerCase()]);
-    const user = result.rows[0];
-
+    var user = result.rows[0];
+    if(user?.id){
+    const rate = await this.getUserRating(user.id)
+    user.rating = rate ? rate.avg : null
+    }
     return user;
   }
 
@@ -159,6 +187,8 @@ class User {
     const query = `SELECT * FROM users WHERE id = $1`;
     const result = await db.query(query, [id]);
     const user = result.rows[0];
+    const rate = await this.getUserRating(user.id)
+    user.rating = rate ? rate.avg : null
 
     return user;
   }
@@ -170,7 +200,11 @@ class User {
 
     const query = `SELECT * FROM users WHERE username = $1`;
     const result = await db.query(query, [username]);
-    const user = result.rows[0];
+    var user = result.rows[0];
+    if(user?.id){
+    const rate = await this.getUserRating(user.id)
+    user.rating = rate ? rate.avg : null
+    }
     return user;
   }
 
@@ -234,7 +268,8 @@ class User {
 
       results = result.rows[0];
     }
-
+    const rate = await this.getUserRating(results.id)
+    results.rating = rate ? rate.avg : null
     return results;
   }
 

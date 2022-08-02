@@ -1,6 +1,6 @@
 const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
-
+const User = require("./user")
 
 class Rating{
     static async getRatingByListingId(listingId){
@@ -49,7 +49,6 @@ class Rating{
 
             `, [ratings.rating, listingId, user.id]
           )
-
 
           const res = result.rows
           
