@@ -1,7 +1,7 @@
-const bcrypt = require("bcrypt");
-const db = require("../db");
-const { BCRYPT_WORK_FACTOR } = require("../config");
-const { BadRequestError, UnauthorizedError } = require("../utils/errors");
+const bcrypt = require('bcrypt');
+const db = require('../db');
+const { BCRYPT_WORK_FACTOR } = require('../config');
+const { BadRequestError, UnauthorizedError } = require('../utils/errors');
 
 class User {
   static makePublicUser(user) {
@@ -20,18 +20,19 @@ class User {
   }
 
   static async login(credentials) {
-    const requiredFields = ["email", "password"];
+    const requiredFields = ['email', 'password'];
     requiredFields.forEach((field) => {
       if (!credentials.hasOwnProperty(field)) {
         throw new BadRequestError(`Missing ${field} in request body.`);
       }
     });
-    if (credentials.email.indexOf("@") <= 0) {
-      throw new BadRequestError("Invalid email.");
+
+    if (credentials.email.indexOf('@') <= 0) {
+      throw new BadRequestError('Invalid email.');
     }
 
     if (credentials.password.length < 1) {
-      throw new BadRequestError("Please input password");
+      throw new BadRequestError('Please input password');
     }
 
     const user = await User.fetchUserByEmail(credentials.email);
@@ -43,16 +44,17 @@ class User {
       }
     }
 
-    throw new UnauthorizedError("Invalid email/password combo");
+    throw new UnauthorizedError('Invalid email/password combo');
   }
 
   static async register(credentials) {
     const requiredFields = [
-      "firstName",
-      "lastName",
-      "username",
-      "email",
-      "password",
+      'firstName',
+      'lastName',
+      'username',
+      'email',
+      'password',
+      'birthdate',
     ];
     requiredFields.forEach((field) => {
       if (!credentials.hasOwnProperty(field)) {
@@ -60,24 +62,26 @@ class User {
       }
     });
 
-    if (credentials.email.indexOf("@") <= 0 || credentials.email.length < 1) {
-      throw new BadRequestError("Invalid email.");
+    this.authenticateBirthdate(credentials.birthdate)
+
+    if (credentials.email.indexOf('@') <= 0 || credentials.email.length < 1) {
+      throw new BadRequestError('Invalid email.');
     }
 
     if (credentials.password.length < 1) {
-      throw new BadRequestError("Please input password");
+      throw new BadRequestError('Please input password');
     }
 
     if (credentials.firstName.length < 1) {
-      throw new BadRequestError("Please input first name");
+      throw new BadRequestError('Please input first name');
     }
 
     if (credentials.lastName.length < 1) {
-      throw new BadRequestError("Please input last name");
+      throw new BadRequestError('Please input last name');
     }
 
     if (credentials.username.length < 1) {
-      throw new BadRequestError("Please input username");
+      throw new BadRequestError('Please input username');
     }
 
     const existingUser = await User.fetchUserByEmail(credentials.email);
@@ -133,11 +137,11 @@ class User {
 
   static async fetchUserByEmail(email) {
     if (!email) {
-      throw new BadRequestError("No email provided");
+      throw new BadRequestError('No email provided');
     }
 
-    if (email.indexOf("@") <= 0) {
-      throw new BadRequestError("Invalid email.");
+    if (email.indexOf('@') <= 0) {
+      throw new BadRequestError('Invalid email.');
     }
 
     const query = `SELECT * FROM users WHERE email = $1`;
@@ -149,7 +153,7 @@ class User {
 
   static async fetchUserById(id) {
     if (!id) {
-      throw new BadRequestError("No id provided");
+      throw new BadRequestError('No id provided');
     }
 
     const query = `SELECT * FROM users WHERE id = $1`;
@@ -161,7 +165,7 @@ class User {
 
   static async checkUsername(username) {
     if (!username && !update) {
-      throw new BadRequestError("No username provided");
+      throw new BadRequestError('No username provided');
     }
 
     const query = `SELECT * FROM users WHERE username = $1`;
@@ -172,8 +176,8 @@ class User {
 
   static async editUser({ userUpdate, userId }) {
     if (userUpdate.email) {
-      if (userUpdate.email.indexOf("@") <= 0 || userUpdate.email.length < 1) {
-        throw new BadRequestError("Invalid email.");
+      if (userUpdate.email.indexOf('@') <= 0 || userUpdate.email.length < 1) {
+        throw new BadRequestError('Invalid email.');
       }
 
       const existingUser = await User.fetchUserByEmail(userUpdate.email);
@@ -183,25 +187,20 @@ class User {
     }
 
     if (userUpdate.password?.length < 1) {
-      throw new BadRequestError("Please input valid password");
+      throw new BadRequestError('Please input valid password');
     }
 
     if (userUpdate.firstName?.length < 1) {
-      throw new BadRequestError("Please input valid first name");
+      throw new BadRequestError('Please input valid first name');
     }
 
     if (userUpdate.lastName?.length < 1) {
-      throw new BadRequestError("Please input valid last name");
+      throw new BadRequestError('Please input valid last name');
     }
 
     if (userUpdate.username?.length < 1) {
-      throw new BadRequestError("Please input valid username");
+      throw new BadRequestError('Please input valid username');
     }
-
-    
-
-   
-
 
     if (userUpdate.username) {
       const existingUsername = await User.checkUsername(userUpdate.username);
@@ -215,7 +214,7 @@ class User {
     var hashedPassword;
 
     for (var [key, value] of Object.entries(userUpdate)) {
-      if (key === "password") {
+      if (key === 'password') {
         hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR);
       }
 
@@ -229,7 +228,7 @@ class User {
                    RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;`;
 
       const result = await db.query(query, [
-        key === "password" ? hashedPassword : value,
+        key === 'password' ? hashedPassword : value,
         userId,
       ]);
 
@@ -239,19 +238,38 @@ class User {
     return results;
   }
 
-  static async deleteUser(userId){
+  static async deleteUser(userId) {
     await db.query(
-     `
+      `
      DELETE FROM users
      WHERE id = $1;
     
      
-     `, [userId]
-   )
+     `,
+      [userId]
+    );
+  }
 
-   
+  // Helper Functions
 
- }
+  /**
+   * check that the user is over 18
+   * @param {string} birthdate
+   *
+   */
+  static authenticateBirthdate(birthdate) {
+    const today = new Date();
+    const birthdateDate = new Date(birthdate);
+    let age = today.getFullYear() - birthdateDate.getFullYear();
+    const m = today.getMonth() - birthdateDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthdateDate.getDate())) {
+      age--;
+    }
+
+    if (age < 18) {
+      throw new BadRequestError('You must be over 18 to register');
+    }
+  }
 }
 
 module.exports = User;

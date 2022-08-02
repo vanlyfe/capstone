@@ -1,27 +1,27 @@
-import React from "react";
-import Box from "@mui/material/Box";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React from 'react';
+import Box from '@mui/material/Box';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import apiClient from "../services/apiClient";
-import LandingPage from "./LandingPage";
-import Login from "./Login";
-import Listings from "./Listings";
-import Register from "./Register";
-import CreateListing from "./CreateListing";
-import ListingDetails from "./ListingDetails";
-import EditListing from "./EditListing";
-import BookListing from "./BookListing";
+import apiClient from '../services/apiClient';
+import LandingPage from './LandingPage';
+import Login from './Login';
+import Listings from './Listings';
+import Register from './Register';
+import CreateListing from './CreateListing';
+import ListingDetails from './ListingDetails';
+import EditListing from './EditListing';
+import BookListing from './BookListing';
 
-import NotFound from "./notFound";
-import { Navbar } from "./Navbar";
-import User from "./User";
-import { Navigate, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import ActiveOrders from "./UsersProfile/ActiveOrders";
-import PastOrders from "./UsersProfile/PastOrders";
-import PastListings from "./UsersProfile/PastListings";
-import Reviews from "./UsersProfile/Reviews";
-import EditUser from "./UsersProfile/EditUser";
+import NotFound from './notFound';
+import { Navbar } from './Navbar';
+import User from './User';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import ActiveOrders from './UsersProfile/ActiveOrders';
+import PastOrders from './UsersProfile/PastOrders';
+import PastListings from './UsersProfile/PastListings';
+import Reviews from './UsersProfile/Reviews';
+import EditUser from './UsersProfile/EditUser';
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -39,7 +39,7 @@ export default function App() {
       }
     };
 
-    const token = localStorage.getItem("vanlyfe_token");
+    const token = localStorage.getItem('vanlyfe_token');
     if (token) {
       apiClient.setToken(token);
       fetchUser();
@@ -51,7 +51,7 @@ export default function App() {
       <BrowserRouter>
         <Navbar user={user} setUser={setUser} />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={user ? <Listings /> : <LandingPage />} />
           <Route path="/user/:id" element={<User />} />
           <Route
             path="/login"
