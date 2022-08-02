@@ -16,87 +16,26 @@ import {
   Rating,
   Button,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import { ThumbUp } from "@mui/icons-material";
+import apiClient from "../../services/apiClient";
 
 export default function Reviews() {
   const [value, setValue] = React.useState();
-  // const [value, setValue] = (React.useState < number) | (null > 2);
 
-  const columns = [
-    {
-      field: "vehicleModel",
-      headerName: "Vehicle Model",
-      width: 110,
-    },
-    {
-      field: "date",
-      headerName: "Date",
-      width: 90,
-      type: "number",
-    },
-    {
-      field: "customerEmail",
-      headerName: "Customer Email",
-      width: 150,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      width: 90,
-    },
-    {
-      field: "price",
-      headerName: "Price",
-      width: 90,
-      type: "number",
-    },
-  ];
+  useEffect(() => {
+    const getRatings = async () => {
+      const response = await apiClient.getRating();
+      console.log("rating: ", response.data);
 
-  // const DataTable =() => {
+      if (response?.data) {
+        setValue(response.data);
+      } else {
+        setError("No reviews yet");
+      }
+    };
 
-  //   const [tableData, setTableData] =useState()
-  //   useEffect(() => {
-  //     fetch("https://..")
-  //       //  write a query to fetch profile from the database
-
-  //     .then((data)=> data.json())
-  //     .then((data)=> console.log(data))
-  //     .then((data)=> setTableData)
-
-  //   })
-
-  //   return (
-  //     <div>
-  //       <DataGrid
-  //       rows = {tableData}
-  //       columns= {columns}
-  //       pageSize={5}
-  //           rowsPerPageOptions={[5]}
-  //           checkboxSelection
-  //     />
-  //     </div>
-  //   )
-  // }
-
-  const rows = [
-    {
-      internalId: 1,
-      vehicleModel: 1,
-      date: 2,
-      customerEmail: "john@gmail.com",
-      status: "open",
-      price: 15,
-    },
-    {
-      internalId: 2,
-      vehicleModel: 2,
-      date: 1,
-      customerEmail: "john@gmail.com",
-      status: "open",
-      price: 15,
-    },
-  ];
+    getRatings();
+  }, []);
 
   return (
     <Box
@@ -208,18 +147,6 @@ export default function Reviews() {
               flexDirection: "column",
             }}
           >
-            {/* <List>
-              <Typography>Host</Typography>
-              {["Reviews", "Active Listings", "Past Listings"].map(
-                (text, index) => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                      <ListItemText primary={text} />
-                    </ListItemButton>
-                  </ListItem>
-                )
-              )}
-            </List> */}
             <List>
               <Typography>Host</Typography>
 
@@ -236,16 +163,7 @@ export default function Reviews() {
               </ListItem>
             </List>
             <Divider />
-            {/* <List>
-              <Typography>Renter</Typography>
-              {["Active Orders", "Past Orders"].map((text, index) => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List> */}
+
             <List>
               <Typography>Renter</Typography>
 
@@ -342,20 +260,6 @@ export default function Reviews() {
                 Helpful
               </Typography>
             </Grid>
-            {/* <DataGrid
-              sx={{
-                color: "black",
-                bgcolor: "##8cbfed",
-                width: "80%",
-                height: "70%",
-              }}
-              rows={rows}
-              columns={columns}
-              pageSize={4}
-              rowsPerPageOptions={[4]}
-              checkboxSelection
-              getRowId={(row) => row.internalId}
-            /> */}
           </Box>
           <Box
             sx={{
@@ -395,20 +299,6 @@ export default function Reviews() {
                 Helpful
               </Typography>
             </Grid>
-            {/* <DataGrid
-              sx={{
-                color: "black",
-                bgcolor: "##8cbfed",
-                width: "80%",
-                height: "70%",
-              }}
-              rows={rows}
-              columns={columns}
-              pageSize={4}
-              rowsPerPageOptions={[4]}
-              checkboxSelection
-              getRowId={(row) => row.internalId}
-            /> */}
           </Box>
           <Box
             sx={{
@@ -448,20 +338,6 @@ export default function Reviews() {
                 Helpful
               </Typography>
             </Grid>
-            {/* <DataGrid
-              sx={{
-                color: "black",
-                bgcolor: "##8cbfed",
-                width: "80%",
-                height: "70%",
-              }}
-              rows={rows}
-              columns={columns}
-              pageSize={4}
-              rowsPerPageOptions={[4]}
-              checkboxSelection
-              getRowId={(row) => row.internalId}
-            /> */}
           </Box>
         </Grid>
       </Grid>

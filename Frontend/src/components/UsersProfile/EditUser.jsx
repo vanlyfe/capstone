@@ -3,7 +3,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Box, Avatar, Grid, Button, TextField, Link } from "@mui/material";
 import Typography from "../LandingPage/Typography";
 //import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import MuiPhoneNumber from "material-ui-phone-number";
 //import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 export default function EditUser() {
@@ -141,12 +140,6 @@ export default function EditUser() {
               }}
                renderInput={(params) => <TextField {...params} />}
             /> */}
-            <MuiPhoneNumber
-              variant="filled"
-              defaultCountry={"us"}
-              /* onChange={handleOnChange}  */
-              sx={{ width: 500, mr: 3, mb: 5 }}
-            />
             <TextField
               id="filled-multiline-flexible"
               label="City"
