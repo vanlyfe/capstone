@@ -208,6 +208,7 @@ Endpoint | Route |CRUD | HTTP Verb | Description |User stories |
 |**/rating** | /:listingId | Read | GET | Get average rating for a listing |
 |**/review** | /:listingId | Create | POST | Add review to listing |
 |**/review** | /:listingId | Read | GET | Get a listing's reviews |
+|**/reveiw** | /:userId | Read | GET | Get a user's reviews |
 |**/review** | /:reviewId | Update | PUT | Update a posted review |
 |**/review** | /:reviewId | Delete | DELETE | Delete a review |
 |**/order** | / | Create | POST | Create a new order |
