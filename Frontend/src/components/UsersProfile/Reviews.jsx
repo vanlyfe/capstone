@@ -2,18 +2,10 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
   Typography,
   CssBaseline,
   Toolbar,
   List,
-  Link,
   Divider,
   AppBar,
   ListItem,
@@ -25,22 +17,17 @@ import {
   Button,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { Person, Group } from "@mui/icons-material";
+import { ThumbUp } from "@mui/icons-material";
 
-function createData(
-  vehicleModel,
-  date,
-  customerEmail,
-  status,
-  price,
-  numOfGuests,
-  reviews
-) {
+export default function Reviews() {
+  const [value, setValue] = React.useState();
+  // const [value, setValue] = (React.useState < number) | (null > 2);
+
   const columns = [
     {
       field: "vehicleModel",
       headerName: "Vehicle Model",
-      width: 90,
+      width: 110,
     },
     {
       field: "date",
@@ -51,7 +38,7 @@ function createData(
     {
       field: "customerEmail",
       headerName: "Customer Email",
-      width: 90,
+      width: 150,
     },
     {
       field: "status",
@@ -64,55 +51,7 @@ function createData(
       width: 90,
       type: "number",
     },
-    {
-      field: "numOfGuests",
-      headerName: "Guests",
-      width: 90,
-      type: "number",
-    },
-    {
-      field: "reviews",
-      headerName: "",
-      width: 90,
-    },
   ];
-  return {
-    vehicleModel,
-    date,
-    customerEmail,
-    status,
-    price,
-    numOfGuests,
-    reviews,
-  };
-}
-
-const rows = [
-  createData(
-    "Toyota RAV4",
-    "07/18/2022 - 07/20/2022",
-    "john@gmail.com",
-    "filled",
-    1,
-    "$15.20",
-
-    "see reviews"
-  ),
-  createData(
-    "Toyota RAV4",
-    "06/08/2022 - 06/09/2022",
-    "john@gmail.com",
-    "filled",
-    3,
-    "$26.20",
-
-    "see reviews"
-  ),
-];
-
-export default function User() {
-  const [value, setValue] = React.useState();
-  // const [value, setValue] = (React.useState < number) | (null > 2);
 
   // const DataTable =() => {
 
@@ -140,12 +79,32 @@ export default function User() {
   //   )
   // }
 
+  const rows = [
+    {
+      internalId: 1,
+      vehicleModel: 1,
+      date: 2,
+      customerEmail: "john@gmail.com",
+      status: "open",
+      price: 15,
+    },
+    {
+      internalId: 2,
+      vehicleModel: 2,
+      date: 1,
+      customerEmail: "john@gmail.com",
+      status: "open",
+      price: 15,
+    },
+  ];
+
   return (
     <Box
       sx={{
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        bgcolor: "#eeeeee",
       }}
     >
       <CssBaseline />
@@ -226,7 +185,6 @@ export default function User() {
           mr: 67,
           display: "flex",
           flexDirection: "row",
-          bgcolor: "grey",
         }}
       >
         <Grid
@@ -266,14 +224,14 @@ export default function User() {
               <Typography>Host</Typography>
 
               <ListItem
-                disablepadding
+                disablePadding
                 sx={{ display: "flex", flexDirection: "column" }}
               >
                 <ListItemButton href="/user/:id/activeListing">
                   <ListItemText> Active Listings</ListItemText>
                 </ListItemButton>
                 <ListItemButton href="/user/:id/pastListing">
-                  <ListItemText>Past Listings</ListItemText>
+                  <ListItemText> Past Listings</ListItemText>
                 </ListItemButton>
               </ListItem>
             </List>
@@ -292,7 +250,7 @@ export default function User() {
               <Typography>Renter</Typography>
 
               <ListItem
-                disablepadding
+                disablePadding
                 sx={{ display: "flex", flexDirection: "column" }}
               >
                 <ListItemButton href="/user/:id/activeOrders">
@@ -309,8 +267,11 @@ export default function User() {
               <ListItem>
                 <ListItemButton href="/user/:id/reviews">
                   <ListItemText
-                    disablepadding
-                    sx={{ display: "flex", flexDirection: "column" }}
+                    disablePadding
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
                   >
                     Reviews
                   </ListItemText>
@@ -322,7 +283,6 @@ export default function User() {
         <Grid
           sx={{
             mt: 1,
-            bgcolor: "##8cbfed",
             height: "70%",
             width: "100%",
             mt: 1,
@@ -331,77 +291,177 @@ export default function User() {
           <Box>
             <Button
               variant="text"
-              href="/user/:id/activeListing"
-              sx={{ mt: 2, mb: 2 }}
+              href="/user/:id/reviews"
+              sx={{ mt: 2, mb: 2, ml: 2 }}
             >
-              Active Listings
+              Reviews
             </Button>
             <Button
               variant="contained"
-              href="/createlisting"
+              href="/listings"
               sx={{ mt: 2, mb: 2, ml: 2 }}
             >
-              Make Listing
+              Browse Listing
             </Button>
           </Box>
-          <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
-            <TableContainer component={Paper}>
-              <Table sx={{ minWidth: 140 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Vehicle Model</TableCell>
-                    <TableCell align="center">Date</TableCell>
-                    <TableCell align="center">Email</TableCell>
-                    <TableCell align="right">Status</TableCell>
-                    <TableCell align="right">Number of Guests</TableCell>
-                    <TableCell align="right">Price</TableCell>
-
-                    <TableCell align="center">Reviews</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <TableRow
-                      key={row.name}
-                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.vehicleModel}
-                      </TableCell>
-                      <TableCell align="right">{row.date}</TableCell>
-                      <TableCell align="right">{row.customerEmail}</TableCell>
-                      <TableCell align="right">{row.status}</TableCell>
-                      <TableCell align="right">
-                        {" "}
-                        <Group /> {row.price}{" "}
-                      </TableCell>
-                      <TableCell align="right">{row.numOfGuests}</TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          textDecoration: "none",
-                          display: "flex",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <Rating />
-                        <Link
-                          href="/listing/:id"
-                          sx={{
-                            textDecoration: "none",
-                            mr: 5,
-                            color: "#6E85B7",
-                          }}
-                        >
-                          {" "}
-                          {row.reviews}{" "}
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
+          <Box
+            sx={{
+              height: 200,
+              width: 800,
+              mt: 3,
+              ml: 3,
+              bgcolor: "white",
+            }}
+          >
+            <Rating
+              name="user-rating"
+              sx={{ mt: 2, ml: 2 }}
+              value={value}
+              readOnly
+            />
+            <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+              <Avatar
+                alt="Remy Sharp"
+                src="/static/images/avatar/1.jpg"
+                // sx={{ width: 200, height: 200 }}
+              />
+              <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+                Edil Abe{" "}
+              </Typography>
+            </Grid>
+            <Typography sx={{ mt: 2, ml: 2 }}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              itaque in officiis? Neque, ducimus error! Atque molestias aliquid
+              facere animi modi praesentium, illo enim reprehenderit omnis
+              corrupti beatae sint voluptate?
+            </Typography>
+            <Divider />
+            <Grid sx={{ display: "flex", flexDirection: "row" }}>
+              <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+              <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+                Helpful
+              </Typography>
+            </Grid>
+            {/* <DataGrid
+              sx={{
+                color: "black",
+                bgcolor: "##8cbfed",
+                width: "80%",
+                height: "70%",
+              }}
+              rows={rows}
+              columns={columns}
+              pageSize={4}
+              rowsPerPageOptions={[4]}
+              checkboxSelection
+              getRowId={(row) => row.internalId}
+            /> */}
+          </Box>
+          <Box
+            sx={{
+              height: 200,
+              width: 800,
+              mt: 3,
+              ml: 3,
+              bgcolor: "white",
+            }}
+          >
+            <Rating
+              name="user-rating"
+              sx={{ mt: 2, ml: 2 }}
+              value={value}
+              readOnly
+            />
+            <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+              <Avatar
+                alt="Remy Sharp"
+                src="/static/images/avatar/1.jpg"
+                // sx={{ width: 200, height: 200 }}
+              />
+              <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+                Joram Bosir{" "}
+              </Typography>
+            </Grid>
+            <Typography sx={{ mt: 2, ml: 2 }}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              itaque in officiis? Neque, ducimus error! Atque molestias aliquid
+              facere animi modi praesentium, illo enim reprehenderit omnis
+              corrupti beatae sint voluptate?
+            </Typography>
+            <Divider />
+            <Grid sx={{ display: "flex", flexDirection: "row" }}>
+              <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+              <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+                Helpful
+              </Typography>
+            </Grid>
+            {/* <DataGrid
+              sx={{
+                color: "black",
+                bgcolor: "##8cbfed",
+                width: "80%",
+                height: "70%",
+              }}
+              rows={rows}
+              columns={columns}
+              pageSize={4}
+              rowsPerPageOptions={[4]}
+              checkboxSelection
+              getRowId={(row) => row.internalId}
+            /> */}
+          </Box>
+          <Box
+            sx={{
+              height: 200,
+              width: 800,
+              mt: 3,
+              ml: 3,
+              bgcolor: "white",
+            }}
+          >
+            <Rating
+              name="user-rating"
+              sx={{ mt: 2, ml: 2 }}
+              value={value}
+              readOnly
+            />
+            <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+              <Avatar
+                alt="Remy Sharp"
+                src="/static/images/avatar/1.jpg"
+                // sx={{ width: 200, height: 200 }}
+              />
+              <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+                Vernon Owenga
+              </Typography>
+            </Grid>
+            <Typography sx={{ mt: 2, ml: 2 }}>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
+              itaque in officiis? Neque, ducimus error! Atque molestias aliquid
+              facere animi modi praesentium, illo enim reprehenderit omnis
+              corrupti beatae sint voluptate?
+            </Typography>
+            <Divider />
+            <Grid sx={{ display: "flex", flexDirection: "row" }}>
+              <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+              <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+                Helpful
+              </Typography>
+            </Grid>
+            {/* <DataGrid
+              sx={{
+                color: "black",
+                bgcolor: "##8cbfed",
+                width: "80%",
+                height: "70%",
+              }}
+              rows={rows}
+              columns={columns}
+              pageSize={4}
+              rowsPerPageOptions={[4]}
+              checkboxSelection
+              getRowId={(row) => row.internalId}
+            /> */}
           </Box>
         </Grid>
       </Grid>

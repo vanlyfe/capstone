@@ -38,3 +38,15 @@
     display: flex;
     flex-direction: row;
 }
+
+.notFound{
+    display: flex;
+    justify-content: center;
+    font-size: xx-large;
+}
+
+.navatar{
+    border: 1px solid whitesmoke;
+    
+   
+}

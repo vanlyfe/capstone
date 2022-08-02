@@ -110,7 +110,7 @@ const rows = [
   ),
 ];
 
-export default function User() {
+export default function PastListings() {
   const [value, setValue] = React.useState();
   // const [value, setValue] = (React.useState < number) | (null > 2);
 
@@ -331,10 +331,10 @@ export default function User() {
           <Box>
             <Button
               variant="text"
-              href="/user/:id/activeListing"
+              href="/user/:id/pastListing"
               sx={{ mt: 2, mb: 2 }}
             >
-              Active Listings
+              Past Listings
             </Button>
             <Button
               variant="contained"
