@@ -53,7 +53,7 @@ export default function Register(props) {
     username: '',
     password: '',
     passwordConfirm: '',
-    birthdate: '',
+    birthdate: new Date(),
   });
 
   const handleOnInputChange = (event) => {
