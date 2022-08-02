@@ -23,14 +23,15 @@ export default function Reviews() {
   const [value, setValue] = React.useState();
   const [Error, setError] = React.useState();
   const [rating, setRating] = React.useState(0);
+  const [review, setReview] = React.useState();
 
   useEffect(() => {
     const getReviews = async () => {
-      const response = await apiClient.getReviews(1);
+      const response = await apiClient.getReviewsForUser(4);
       console.log("rating: ", response.data);
 
-      if (response?.data) {
-        setValue(response.data);
+      if (response?.data?.reviews) {
+        setReview(response.data.reviews);
       } else {
         setError("No reviews yet");
       }
@@ -152,10 +153,7 @@ export default function Reviews() {
             <List>
               <Typography>Host</Typography>
 
-              <ListItem
-                disablePadding
-                sx={{ display: "flex", flexDirection: "column" }}
-              >
+              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
                 <ListItemButton href="/user/:id/activeListing">
                   <ListItemText> Active Listings</ListItemText>
                 </ListItemButton>
@@ -169,10 +167,7 @@ export default function Reviews() {
             <List>
               <Typography>Renter</Typography>
 
-              <ListItem
-                disablePadding
-                sx={{ display: "flex", flexDirection: "column" }}
-              >
+              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
                 <ListItemButton href="/user/:id/activeOrders">
                   <ListItemText> Active Orders</ListItemText>
                 </ListItemButton>
@@ -187,7 +182,6 @@ export default function Reviews() {
               <ListItem>
                 <ListItemButton href="/user/:id/reviews">
                   <ListItemText
-                    disablePadding
                     sx={{
                       display: "flex",
                       flexDirection: "column",

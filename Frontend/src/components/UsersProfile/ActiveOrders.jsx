@@ -254,7 +254,7 @@ export default function ActiveOrders() {
               <Typography>Host</Typography>
               {["Reviews", "Active Listings", "Past Listings"].map(
                 (text, index) => (
-                  <ListItem key={text} disablePadding>
+                  <ListItem key={text} >
                     <ListItemButton>
                       <ListItemText primary={text} />
                     </ListItemButton>
@@ -265,10 +265,7 @@ export default function ActiveOrders() {
             <List>
               <Typography>Host</Typography>
 
-              <ListItem
-                disablePadding
-                sx={{ display: "flex", flexDirection: "column" }}
-              >
+              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
                 <ListItemButton href="/user/:id/activeListing">
                   <ListItemText> Active Listings</ListItemText>
                 </ListItemButton>
@@ -281,7 +278,7 @@ export default function ActiveOrders() {
             {/* <List>
               <Typography>Renter</Typography>
               {["Active Orders", "Past Orders"].map((text, index) => (
-                <ListItem key={text} disablePadding>
+                <ListItem key={text} >
                   <ListItemButton>
                     <ListItemText primary={text} />
                   </ListItemButton>
@@ -291,10 +288,7 @@ export default function ActiveOrders() {
             <List>
               <Typography>Renter</Typography>
 
-              <ListItem
-                disablePadding
-                sx={{ display: "flex", flexDirection: "column" }}
-              >
+              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
                 <ListItemButton href="/user/:id/activeOrders">
                   <ListItemText>Active Orders</ListItemText>
                 </ListItemButton>
@@ -309,7 +303,6 @@ export default function ActiveOrders() {
               <ListItem>
                 <ListItemButton href="/user/:id/reviews">
                   <ListItemText
-                    disablePadding
                     sx={{ display: "flex", flexDirection: "column" }}
                   >
                     Reviews

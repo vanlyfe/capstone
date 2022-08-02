@@ -62,13 +62,6 @@ class ApiClient {
     });
   }
 
-<<<<<<< HEAD
-  // Delete requests
-
-  //Put requests
-
-  // added the logout user
-=======
   //PUT requests
 
   async updateUser(userUpdate, userId) {
@@ -240,7 +233,6 @@ class ApiClient {
   }
 
   // Logging out a user
->>>>>>> main
 
   async logoutUser() {
     this.setToken(null);

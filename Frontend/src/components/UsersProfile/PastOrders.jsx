@@ -128,10 +128,26 @@ const style = {
 
 export default function PastOrders() {
   const [value, setValue] = React.useState();
-
+  const [reviewText, setReviewText] = useState();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  // const isDisabled = reviewText.length === 0 || reviewText.length > 140;
+
+  function handleOnReviewTextChange(evt) {
+    setReviewText(evt.target.value);
+  }
+
+  function handleonsubmit() {
+    let newReview = {
+      review: "",
+    };
+    // setReviews(reviews.concat(newReview));
+    setReviewText("");
+    setOpen(false);
+  }
+
   // const [value, setValue] = (React.useState < number) | (null > 2);
 
   // const DataTable =() => {
@@ -274,7 +290,7 @@ export default function PastOrders() {
               <Typography>Host</Typography>
               {["Reviews", "Active Listings", "Past Listings"].map(
                 (text, index) => (
-                  <ListItem key={text} disablePadding>
+                  <ListItem key={text} >
                     <ListItemButton>
                       <ListItemText primary={text} />
                     </ListItemButton>
@@ -285,10 +301,7 @@ export default function PastOrders() {
             <List>
               <Typography>Host</Typography>
 
-              <ListItem
-                disablePadding
-                sx={{ display: "flex", flexDirection: "column" }}
-              >
+              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
                 <ListItemButton href="/user/:id/activeListing">
                   <ListItemText> Active Listings</ListItemText>
                 </ListItemButton>
@@ -301,7 +314,7 @@ export default function PastOrders() {
             {/* <List>
               <Typography>Renter</Typography>
               {["Active Orders", "Past Orders"].map((text, index) => (
-                <ListItem key={text} disablePadding>
+                <ListItem key={text} >
                   <ListItemButton>
                     <ListItemText primary={text} />
                   </ListItemButton>
@@ -311,10 +324,7 @@ export default function PastOrders() {
             <List>
               <Typography>Renter</Typography>
 
-              <ListItem
-                disablePadding
-                sx={{ display: "flex", flexDirection: "column" }}
-              >
+              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
                 <ListItemButton href="/user/:id/activeOrders">
                   <ListItemText> Active Orders</ListItemText>
                 </ListItemButton>
@@ -329,7 +339,6 @@ export default function PastOrders() {
               <ListItem>
                 <ListItemButton href="/user/:id/reviews">
                   <ListItemText
-                    disablePadding
                     sx={{ display: "flex", flexDirection: "column" }}
                   >
                     Reviews
@@ -443,18 +452,21 @@ export default function PastOrders() {
                               minRows={3}
                               placeholder="Describe your experience"
                               style={{ width: 500, height: 100 }}
+                              handleOnChange={handleOnReviewTextChange}
+                              value={reviewText}
                             />
+
                             <Typography>
                               Your review will be posted publicly on the web.
                             </Typography>
 
                             <Grid sx={{ mt: 2, ml: 40 }}>
-                              <Button
-                                onClick={handleClose}
-                                sx={{ color: "#669bbc" }}
-                              >
-                                POST
-                              </Button>
+                              {/* <ReviewCharacterCount
+                                textLength={reviewText.length}
+                              /> */}
+                              <ReviewSubmitButton
+                                handleOnSubmit={handleonsubmit}
+                              />
                               <Button
                                 onClick={handleClose}
                                 sx={{ ml: 4, color: "#669bbc" }}
@@ -474,5 +486,27 @@ export default function PastOrders() {
         </Grid>
       </Grid>
     </Box>
+  );
+}
+
+// export function ReviewCharacterCount({ textLength }) {
+//   return (
+//     <Typography
+//       className={textLength > 140 ? "Review-length red" : "Review-length"}
+//     >
+//       {textLength > 0 ? 140 - textLength : ""}{" "}
+//     </Typography>
+//   );
+// }
+
+export function ReviewSubmitButton({ handleonsubmit }) {
+  return (
+    <Button
+      sx={{ color: "#669bbc" }}
+      onClick={() => handleonsubmit()}
+      // disabled={isDisabled}
+    >
+      POST
+    </Button>
   );
 }

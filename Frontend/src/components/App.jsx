@@ -27,6 +27,7 @@ export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
   //const { user, setUser } = useAuthContext();
+  const [error, setError] = useState();
 
   useEffect(() => {
     const fetchUser = async () => {
