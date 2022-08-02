@@ -190,9 +190,16 @@ class ApiClient {
 
   // GET requests
 
-  async getReviews(listingId) {
+  async getReviewsForListing(listingId) {
     return await this.request({
       endpoint: `review/` + listingId,
+      method: `GET`,
+    });
+  }
+
+  async getReviewsForUser(userId) {
+    return await this.request({
+      endpoint: `review/user/` + userId,
       method: `GET`,
     });
   }
@@ -231,8 +238,6 @@ class ApiClient {
     this.setToken(null);
     localStorage.setItem(this.tokenName, "");
   }
-
-  
 }
 
 export default new ApiClient("http://localhost:3001");

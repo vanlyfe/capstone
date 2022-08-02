@@ -17,7 +17,7 @@ import {
 import logo from '../assets/LogoDarkBg.svg';
 import Avatar from '@mui/material/Avatar';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from 'react-router-dom';
 import apiClient from '../services/apiClient';
 
 // added the following for the links
@@ -28,10 +28,8 @@ import { Link } from 'react-router-dom';
 export const Navbar = (props) => {
   const navigate = useNavigate();
 
-
   const [mobileOpen, setMobileOpen] = useState(false);
   const { window } = props;
-
 
   const navItems = ['Add Listing', 'Register'];
 
@@ -42,13 +40,9 @@ export const Navbar = (props) => {
   const handleLogout = async () => {
     await apiClient.logoutUser();
     props.setUser(null);
-   // setError(null);
-    navigate("/")
+    // setError(null);
+    navigate('/');
   };
-
-
-  
-
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -68,7 +62,7 @@ export const Navbar = (props) => {
     </Box>
   );
 
-  console.log(props.user)
+  console.log(props.user);
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
@@ -115,53 +109,45 @@ export const Navbar = (props) => {
             Feature1
           </Button> */}
 
-          <Button
+            <Button
               sx={{ height: 65 }}
               component={Link}
               to="/listings"
               color="inherit">
-             View Listings
+              View Listings
             </Button>
-           
+
             <Button
               sx={{ height: 65 }}
               component={Link}
-              to={props.user ? "/createListing" : "/login"}
+              to={props.user ? '/createListing' : '/login'}
               color="inherit">
               Add Listing
             </Button>
 
+            {props.user ? (
+              <Button
+                sx={{ height: 65 }}
+                component={Link}
+                to={'/login'}
+                onClick={handleLogout}
+                color="inherit">
+                Log out
+              </Button>
+            ) : null}
 
-            { props.user ? 
-            <Button
-              
-              sx={{ height: 65 }}
-              component={Link}
-              to={"/login"}
-              onClick={handleLogout}
-              color="inherit">
-            
-              Log out
-            </Button>
-            : null
-
-            }
-           
-
-           {props.user ? null :
-            <Button
-              
-              sx={{ height: 65 }}
-              component={Link}
-              to={"/register"}
-              color="inherit">
-              Register
-            </Button>
-
-           }
+            {props.user ? null : (
+              <Button
+                sx={{ height: 65 }}
+                component={Link}
+                to={'/register'}
+                color="inherit">
+                Register
+              </Button>
+            )}
             <Avatar
               component={Link}
-              to={props.user ? "/user/" + props.user.id : "/login"}
+              to={props.user ? '/user/' + props.user.id : '/login'}
               alt="Travis Howard"
               src={props.user ? props.user.image_url : null}
               // src="/static/images/avatar/2.jpg"

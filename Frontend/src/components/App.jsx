@@ -26,6 +26,7 @@ import EditUser from './UsersProfile/EditUser';
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   //const { user, setUser } = useAuthContext();
 
   useEffect(() => {
