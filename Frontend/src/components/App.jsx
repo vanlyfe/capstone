@@ -12,6 +12,9 @@ import ListingDetails from './ListingDetails';
 import EditListing from './EditListing';
 import { Navbar } from './Navbar';
 import User from './User';
+// added the order confirmation route and imported the component
+
+import OrderConfirmation from "./OrderConfirmation";
 
 
 export default function App() {
@@ -56,6 +59,7 @@ export default function App() {
           <Route path="/createlisting" element={<CreateListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
+          <Route path="/orderconfirmation" element={<OrderConfirmation />} />
         </Routes>
       </BrowserRouter>
     </Box>
