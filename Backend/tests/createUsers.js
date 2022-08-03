@@ -3,6 +3,8 @@ const db = require("../db")
 const tokens = require("../utils/tokens")
 const { BCRYPT_WORK_FACTOR } = require("../config")
 
+
+
 const createUsers = async () => {
   await db.query(`
     INSERT INTO users (username, firstName, lastName, email, password, gender, image_url, birthdate)
@@ -46,18 +48,18 @@ const createUsers = async () => {
   
 
   const ids = results.rows.map((row) => row.id)
+
+  var ammarToken = tokens.createUserJwt({ id : ids[0]})
+  var vernonToken = tokens.createUserJwt({ id : ids[1] })
+  var edilToken = tokens.createUserJwt({ id : ids[2] })
+
   
-  return ids
+  return {ids :ids , testTokens : {ammarToken : ammarToken, vernonToken : vernonToken, edilToken : edilToken}}
 }
 
-const ammarToken = tokens.createUserJwt({ id : 1 })
-const vernonToken = tokens.createUserJwt({ id : 2 })
-const edilToken = tokens.createUserJwt({ id : 3 })
+
 
 module.exports = {
   createUsers,
-  ammarToken,
-  vernonToken,
-  edilToken
   
 }

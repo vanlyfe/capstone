@@ -1,4 +1,5 @@
-const { createUsers, ammarToken, vernonToken, edilToken } = require("./createUsers")
+
+const { createUsers } = require("./createUsers")
 const { createListings } = require("./createListings")
 const { createOrders } = require("./createOrders")
 const { createRatings } = require("./createRatings")
@@ -11,9 +12,14 @@ const testOrderIds = []
 const testRatingIds = []
 const testReviewIds = []
 const testUserIds = []
+const testTokens = {ammarToken : "",
+                    edilToken : "",
+                    vernonToken : ""}
 
 
-const testTokens = { ammarToken, vernonToken, edilToken }
+
+
+
 
 async function commonBeforeAll() {
   // delete all current test data
@@ -25,8 +31,19 @@ async function commonBeforeAll() {
 
 
   // insert fresh test data
-  const userIds = await createUsers()
+  var userIds = await createUsers()
+  var tokens = userIds.testTokens
+  testTokens.ammarToken = tokens.ammarToken
+  testTokens.vernonToken = tokens.vernonToken
+  testTokens.edilToken = tokens.edilToken
 
+
+  userIds = userIds.ids
+  
+
+ 
+
+  
   for (let i = 0; i < userIds.length; i++) {
     testUserIds.push(userIds[i])
   }
@@ -70,6 +87,8 @@ async function commonAfterEach() {
 async function commonAfterAll() {
   await db.end()
 }
+
+
 
 module.exports = {
   commonBeforeAll,
