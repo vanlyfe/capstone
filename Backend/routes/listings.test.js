@@ -43,8 +43,15 @@ describe("POST listing", () => {
     const res = await request(app)
       .post(`/listing`)
       .set("authorization", `Bearer ${testTokens.ammarToken}`)
-      .send({ listings });
-    expect(res.body).toEqual(201);
+      .send({
+        location: "Canada",
+        model: "Tesla",
+        max_accomodation: 3,
+        price: 200,
+        image_url:
+          "https://images.unsplash.com/photo-1539437829697-1b4ed5aebd19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
+      });
+    expect(res.statusCode).toEqual(200);
 
     // console.log(res.message);
 
@@ -53,15 +60,14 @@ describe("POST listing", () => {
     // cast to proper datatypes
     listing.price = Number(listing.price);
 
-    expect(listing).toEqual({
+    expect(listing[0]).toEqual({
       id: expect.any(Number),
       user_id: expect.any(Number),
-      username: "lebron",
-      location: newListing.location,
-      image_url: newListing.image_url,
-      imageUrl2: null,
-      imageUrl3: null,
-      price: newListing.price,
+      
+      location: listing.location,
+      image_url: listing.image_url,
+     
+      price: listing.price,
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
     });
@@ -173,7 +179,7 @@ describe("GET listing/user/:userId", () => {
       .set("authorization", `Bearer ${testTokens.ammarToken}`);
     expect(res.statusCode).toEqual(200);
 
-    var {listings} = res.body
+    var { listings } = res.body;
 
     const listingVernon = listings.find((l) => l.model === "GMC Savana");
     const {
@@ -196,18 +202,15 @@ describe("GET listing/user/:userId", () => {
       fees,
       description,
     }).toEqual(vernonListing);
- 
-
   });
 
   test("Anonymous user can fetch all listings by a particular user", async () => {
     const userId = testUserIds[1];
-    const res = await request(app)
-      .get(`/listing/user/${userId}`)
-     
+    const res = await request(app).get(`/listing/user/${userId}`);
+
     expect(res.statusCode).toEqual(200);
 
-    var {listings} = res.body
+    var { listings } = res.body;
 
     const listingVernon = listings.find((l) => l.model === "GMC Savana");
     const {
@@ -304,39 +307,39 @@ describe("GET /listing/:listingId", () => {
 /************************************** PUT /listing/:listingId */
 describe("PUT /listing/:listingId", () => {
   test("Authed user can update their own listing", async () => {
-    const listingId = testListingIds[1]
-   
-    const listingUpdate = {model : "Toyota Corolla"}
-    const res = await request(app).put(`/listing/${listingId}`).set("authorization", `Bearer ${testTokens.vernonToken}`).send(listingUpdate);
+    const listingId = testListingIds[1];
+
+    const listingUpdate = { model: "Toyota Corolla" };
+    const res = await request(app)
+      .put(`/listing/${listingId}`)
+      .set("authorization", `Bearer ${testTokens.vernonToken}`)
+      .send(listingUpdate);
     expect(res.statusCode).toEqual(200);
 
+    var { listing } = res.body;
 
-    var {listing} = res.body
-
-    expect(listing.model).toEqual("Toyota Corolla")
-
-
+    expect(listing.model).toEqual("Toyota Corolla");
   });
 
   test("Throws forbidden error when authed user tries to update other user's listing", async () => {
-    const listingId = testListingIds[1]
-   
-    const listingUpdate = {model : "Toyota Corolla"}
-    const res = await request(app).put(`/listing/${listingId}`).set("authorization", `Bearer ${testTokens.ammarToken}`).send(listingUpdate);
+    const listingId = testListingIds[1];
+
+    const listingUpdate = { model: "Toyota Corolla" };
+    const res = await request(app)
+      .put(`/listing/${listingId}`)
+      .set("authorization", `Bearer ${testTokens.ammarToken}`)
+      .send(listingUpdate);
     expect(res.statusCode).toEqual(403);
-
-
-    
   });
 
   test("Throws unauthorized error when anonymous user tries to update a listing", async () => {
-    const listingId = testListingIds[1]
-   
-    const listingUpdate = {model : "Toyota Corolla"}
-    const res = await request(app).put(`/listing/${listingId}`).send(listingUpdate);
-    expect(res.statusCode).toEqual(401);
+    const listingId = testListingIds[1];
 
-    
+    const listingUpdate = { model: "Toyota Corolla" };
+    const res = await request(app)
+      .put(`/listing/${listingId}`)
+      .send(listingUpdate);
+    expect(res.statusCode).toEqual(401);
   });
 });
 
@@ -344,48 +347,30 @@ describe("PUT /listing/:listingId", () => {
 
 describe("DELETE /listing/:listingId", () => {
   test("Authed user can delete their own listing", async () => {
-    const listingId = testListingIds[1]
-   
-    
-    const res = await request(app).delete(`/listing/${listingId}`).set("authorization", `Bearer ${testTokens.vernonToken}`)
+    const listingId = testListingIds[1];
+
+    const res = await request(app)
+      .delete(`/listing/${listingId}`)
+      .set("authorization", `Bearer ${testTokens.vernonToken}`);
     expect(res.statusCode).toEqual(200);
-
-
-   
   });
 
   test("Throws forbidden error when authed user tries to delete other user's listing", async () => {
-    const listingId = testListingIds[1]
-   
-    
-    const res = await request(app).delete(`/listing/${listingId}`).set("authorization", `Bearer ${testTokens.edilToken}`)
+    const listingId = testListingIds[1];
+
+    const res = await request(app)
+      .delete(`/listing/${listingId}`)
+      .set("authorization", `Bearer ${testTokens.edilToken}`);
     expect(res.statusCode).toEqual(403);
   });
 
   test("Throws unauthorized error when anonymous user tries to delete a listing", async () => {
-    const listingId = testListingIds[1]
-   
-    
-    const res = await request(app).delete(`/listing/${listingId}`)
+    const listingId = testListingIds[1];
+
+    const res = await request(app).delete(`/listing/${listingId}`);
     expect(res.statusCode).toEqual(401);
   });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // /************************************** GET /listings/:listingId */
 
