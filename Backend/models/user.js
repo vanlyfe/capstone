@@ -11,12 +11,9 @@ class User {
       lastName: user.lastname,
       email: user.email,
       username: user.username,
-      image_url: user.image_url,
-      bio: user.bio,
-      gender: user.gender,
-      location: user.location,
       birthdate: user.birthdate,
-      rating : user.rating
+      createdAt : user.createdat
+    
     };
   }
 
@@ -154,9 +151,11 @@ class User {
     );
 
     var user = result.rows[0];
+    console.log(user)
     user = User.makePublicUser(user)
-    const rate = await this.getUserRating(user.id)
-    user.rating = rate ? rate.avg : null
+    
+    // const rate = await this.getUserRating(user.id)
+    // user.rating = rate ? rate.avg : null
     return user;
   }
 

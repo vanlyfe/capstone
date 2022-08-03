@@ -154,7 +154,7 @@ class Listing {
                 description
                 )
            VALUES ($1,$2,$3,$4,$5,$6,$7)
-           RETURNING price, location, max_accomodation, model, image_url, user_id, description;
+           RETURNING price, location, max_accomodation, model, image_url, user_id;
           `,
       [
         listings.price,

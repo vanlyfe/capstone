@@ -110,7 +110,7 @@ class Review{
 
     }
 
-    static async editReview({ reviewUpdate, reviewId }) {
+    static async editReview( {reviewUpdate, reviewId }) {
       
       if(!reviewUpdate.review){
         throw new BadRequestError("Review must have at least one character, otherwise delete the review")
