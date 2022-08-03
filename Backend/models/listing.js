@@ -115,7 +115,6 @@ class Listing {
       'location',
       'max_accomodation',
       'model',
-      'image_url',
       'make',
     ];
 
@@ -133,9 +132,9 @@ class Listing {
       throw new BadRequestError('No car model provided');
     }
 
-    if (listings.image_url.length < 1) {
-      throw new BadRequestError('No car image provided');
-    }
+    // if (listings.image_url.length < 1) {
+    //   throw new BadRequestError('No car image provided');
+    // }
 
     if (listings.make.length < 1) {
       throw new BadRequestError('No car make provided');
@@ -158,12 +157,11 @@ class Listing {
                 make,
                 model,
                 year,
-                image_url,
                 user_id,
                 description
                 )
-           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-           RETURNING price, location, max_accomodation, make, model, year, image_url, user_id, description;
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+           RETURNING price, location, max_accomodation, make, model, year, user_id, description;
           `,
       [
         Number(listings.price),
@@ -172,7 +170,6 @@ class Listing {
         listings.make,
         listings.model,
         Number(listings.year),
-        listings.image_url,
         user.id,
         listings.description,
       ]
@@ -198,11 +195,6 @@ class Listing {
       throw new BadRequestError('Invalid vehicle model');
     }
 
-    if (listingUpdate.image_url?.length < 1) {
-      throw new BadRequestError(
-        'Invalid image, listing must have at least one image'
-      );
-    }
 
     var results = {};
 

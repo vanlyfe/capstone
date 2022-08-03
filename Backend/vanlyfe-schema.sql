@@ -27,7 +27,7 @@ CREATE TABLE listings(
     model               TEXT NOT NULL,
     year                INTEGER NOT NULL,
     description         TEXT,
-    image_url           TEXT NOT NULL,
+    image_url           TEXT,
     image_url2          TEXT,
     image_url3          TEXT,
     image_url4          TEXT,
