@@ -145,6 +145,22 @@ export default function EditUser() {
               }}
                renderInput={(params) => <TextField {...params} />}
             /> */}
+            {/* <MuiPhoneNumber
+              variant="filled"
+              defaultCountry={"us"}
+               onChange={handleOnChange}  
+              sx={{ width: 500, mr: 3, mb: 5 }}
+            /> */}
+            <TextField
+              id="filled-multiline-flexible"
+              label="Phone Number"
+              multiline
+              maxRows={4}
+              value={value}
+              onChange={handleChange}
+              variant="filled"
+              sx={{ width: 500, mb: 5 }}
+            />{" "}
             <TextField
               id="filled-multiline-flexible"
               label="City"
@@ -153,7 +169,7 @@ export default function EditUser() {
               value={value}
               onChange={handleChange}
               variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
+              sx={{ width: 240, mr: 3 }}
             />{" "}
             <TextField
               id="filled-multiline-flexible"
@@ -163,7 +179,7 @@ export default function EditUser() {
               value={value}
               onChange={handleChange}
               variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
+              sx={{ width: 240, mr: 3 }}
             />{" "}
             <TextField
               id="filled-multiline-static"
@@ -172,7 +188,7 @@ export default function EditUser() {
               rows={4}
               defaultValue="Default Value"
               variant="filled"
-              sx={{ width: 500 }}
+              sx={{ width: 500, mt: 5 }}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row", ml: 15 }}>

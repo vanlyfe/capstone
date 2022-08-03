@@ -17,14 +17,17 @@ import { Navbar } from "./Navbar";
 import User from "./User";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import ActiveOrders from "./UsersProfile/ActiveOrders";
+import PastOrders from "./UsersProfile/PastOrders";
+import PastListings from "./UsersProfile/PastListings";
+import Reviews from "./UsersProfile/Reviews";
 import EditUser from "./UsersProfile/EditUser";
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   //const { user, setUser } = useAuthContext();
-  const [error, setError] = useState();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -50,7 +53,8 @@ export default function App() {
       <BrowserRouter>
         <Navbar user={user} setUser={setUser} />
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={user ? <Listings /> : <LandingPage />} />
+          <Route path="/user/:id" element={<User />} />
           <Route
             path="/login"
             element={<Login user={user} setUser={setUser} />}

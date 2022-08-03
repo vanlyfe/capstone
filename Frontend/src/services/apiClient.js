@@ -40,8 +40,8 @@ class ApiClient {
     return await this.request({ endpoint: `auth/me`, method: `GET` });
   }
 
-  async fetchUserFromId() {
-    return await this.request({ endpoint: `auth/:userId`, method: `GET` });
+  async fetchUserFromId(userId) {
+    return await this.request({ endpoint: `auth/` + userId, method: `GET` });
   }
 
   // POST requests
@@ -74,8 +74,8 @@ class ApiClient {
 
   //DELETE requests
 
-  async deleteUser() {
-    return await this.request({ endpoint: `auth/:userId`, method: `DELETE` });
+  async deleteUser(userId) {
+    return await this.request({ endpoint: `auth/` + userId, method: `DELETE` });
   }
 
   //LISTINGS requests
