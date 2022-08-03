@@ -87,7 +87,7 @@ describe("GET /listing", () => {
 
     const { listings } = res.body;
 
-    expect(listings.length).toEqual(12);
+    expect(listings.length).toEqual(13);
 
     const listingVernon = listings.find((l) => l.model === "GMC Savana");
     const {
@@ -118,7 +118,7 @@ describe("GET /listing", () => {
 
     const { listings } = res.body;
 
-    expect(listings.length).toEqual(12);
+    expect(listings.length).toEqual(13);
 
     const listingVernon = listings.find((l) => l.model === "GMC Savana");
     const {

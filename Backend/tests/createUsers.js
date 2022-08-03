@@ -1,9 +1,7 @@
-const bcrypt = require("bcrypt")
-const db = require("../db")
-const tokens = require("../utils/tokens")
-const { BCRYPT_WORK_FACTOR } = require("../config")
-
-
+const bcrypt = require("bcrypt");
+const db = require("../db");
+const tokens = require("../utils/tokens");
+const { BCRYPT_WORK_FACTOR } = require("../config");
 
 const createUsers = async () => {
   await db.query(`
@@ -38,28 +36,40 @@ const createUsers = async () => {
       'female',
       'https://i.natgeofe.com/n/0652a07e-42ed-4f3d-b2ea-0538de0c5ba3/seattle-travel_3x2.jpg',
       '2000-07-05T07:00:00.000Z'
+    ),
+    (
+      'jbosire',
+      'Joram',
+      'Bosire',
+      'jbosire@salesforce.com',
+      '${await bcrypt.hash("password", BCRYPT_WORK_FACTOR)}',
+      'male',
+      'https://a.cdn-hotels.com/gdcs/production92/d1580/9a28fc70-9bea-11e8-a1b5-0242ac110053.jpg',
+      '2000-07-05T07:00:00.000Z'
+
     );
-  `)
+  `);
 
-       
+  const results = await db.query(`SELECT id FROM users ORDER BY id ASC`);
 
+  const ids = results.rows.map((row) => row.id);
 
-  const results = await db.query(`SELECT id FROM users ORDER BY id ASC`)
-  
+  var ammarToken = tokens.createUserJwt({ id: ids[0] });
+  var vernonToken = tokens.createUserJwt({ id: ids[1] });
+  var edilToken = tokens.createUserJwt({ id: ids[2] });
+  var joramToken = tokens.createUserJwt({ id: ids[3] });
 
-  const ids = results.rows.map((row) => row.id)
-
-  var ammarToken = tokens.createUserJwt({ id : ids[0]})
-  var vernonToken = tokens.createUserJwt({ id : ids[1] })
-  var edilToken = tokens.createUserJwt({ id : ids[2] })
-
-  
-  return {ids :ids , testTokens : {ammarToken : ammarToken, vernonToken : vernonToken, edilToken : edilToken}}
-}
-
-
+  return {
+    ids: ids,
+    testTokens: {
+      ammarToken: ammarToken,
+      vernonToken: vernonToken,
+      edilToken: edilToken,
+      joramToken: joramToken,
+    },
+  };
+};
 
 module.exports = {
   createUsers,
-  
-}
+};

@@ -141,6 +141,17 @@ const createListings = async (userIds) => {
     '10 year old covette, clean and still in great condition',
     12
   
+  ),
+  (
+    ${thirdUserId},
+    20.00,
+    'Sydney, Austalia',
+    4,
+    'https://static.wikia.nocookie.net/starcars/images/6/68/Optimusprimealtmoviemode.jpg/revision/latest?cb=20120827215442',
+    'Big truck',
+    'This is optimus prime',
+    10
+  
   );
   `)
 
