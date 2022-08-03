@@ -63,7 +63,7 @@ export default function App() {
             element={<Register user={user} setUser={setUser} />}
           />
           <Route path="/listings" element={<Listings />} />
-          <Route path="/createlisting" element={<CreateListing />} />
+          <Route path="/createlisting" element={<CreateListing user={user} />} />
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
