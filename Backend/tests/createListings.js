@@ -11,7 +11,7 @@ const createListings = async (userIds) => {
   await db.query(`
   INSERT INTO listings(user_id, price, location, max_accomodation, image_url, model, description, fees)
   VALUES (
-    ${secondUserId},,
+    ${secondUserId},
     20.99,
     'San Francisco, California',
     3,

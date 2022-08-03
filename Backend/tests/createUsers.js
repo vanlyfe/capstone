@@ -43,8 +43,10 @@ const createUsers = async () => {
 
 
   const results = await db.query(`SELECT id FROM users ORDER BY id ASC`)
+  
 
   const ids = results.rows.map((row) => row.id)
+  
   return ids
 }
 

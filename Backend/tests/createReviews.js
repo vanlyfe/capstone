@@ -1,6 +1,6 @@
 const db = require("../db")
 
-const createReviews = async () => {
+const createReviews = async (userIds, listingIds) => {
  
 
   await db.query(
@@ -8,37 +8,37 @@ const createReviews = async () => {
     INSERT INTO reviews(review, listing_id, user_id)
     VALUES(
       'Great car, clean and safe. Loved it',
-      1,
-      1
+      ${listingIds[5]},
+      ${userIds[2]}
     ),
     (
       'Bit worse than last time but still worth it',
-      1,
-      1
+      ${listingIds[4]},
+      ${userIds[1]}
     
     ),
     (
       'Too overpriced in my opinion',
-      1,
-      1
+      ${listingIds[3]},
+      ${userIds[0]}
     
     ),
     (
       'Its a decent place to stay for a night',
-      1,
-      4
+      ${listingIds[2]},
+      ${userIds[1]}
     
     ),
     (
       'Very dirty, terrible noisy neighbourhood, please DO NOT rent this van',
-      2,
-      2
+      ${listingIds[1]},
+      ${userIds[2]}
     
     ),
     (
       'Noisy neighbourhood with constant fireworks and very insecure',
-      2,
-      3
+      ${listingIds[0]},
+      ${userIds[0]}
     
     );
     `

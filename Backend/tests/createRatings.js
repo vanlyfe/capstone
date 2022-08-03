@@ -1,6 +1,6 @@
 const db = require("../db")
 
-const createRatings = async () => {
+const createRatings = async (userIds, listingIds) => {
  
 
   await db.query(
@@ -8,33 +8,33 @@ const createRatings = async () => {
     INSERT INTO ratings(rating, listing_id, user_id)
     VALUES(
       4,
-      12,
-      1
+      ${listingIds[9]},
+      ${userIds[2]}
     ),
     (
       3,
-      11,
-      2
+      ${listingIds[8]},
+      ${userIds[1]}
     ),
     (
       2,
-      10,
-      3
+      ${listingIds[7]},
+      ${userIds[0]}
     ),
     (
       1,
-      12,
-      1
+      ${listingIds[6]},
+      ${userIds[1]}
     ),
     (
       2,
-      11,
-      2
+      ${listingIds[5]},
+      ${userIds[2]}
     ),
     (
       3,
-      10,
-      3
+      ${listingIds[4]},
+      ${userIds[0]}
     );
     `
   )

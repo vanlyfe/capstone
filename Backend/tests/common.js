@@ -10,6 +10,7 @@ const testListingIds = []
 const testOrderIds = []
 const testRatingIds = []
 const testReviewIds = []
+const testUserIds = []
 
 
 const testTokens = { ammarToken, vernonToken, edilToken }
@@ -25,25 +26,32 @@ async function commonBeforeAll() {
 
   // insert fresh test data
   const userIds = await createUsers()
+
+  for (let i = 0; i < userIds.length; i++) {
+    testUserIds.push(userIds[i])
+  }
+
+
+
   const listingIds = await createListings(userIds)
 
   for (let i = 0; i < listingIds.length; i++) {
     testListingIds.push(listingIds[i])
   }
 
-  const orderIds = await createOrders()
+  const orderIds = await createOrders(userIds, listingIds)
 
   for (let i = 0; i < orderIds.length; i++) {
     testOrderIds.push(orderIds[i])
   }
 
-  const ratingIds = await createRatings()
+  const ratingIds = await createRatings(userIds, listingIds)
 
   for (let i = 0; i < ratingIds.length; i++) {
     testRatingIds.push(ratingIds[i])
   }
 
-  const reviewIds = await createReviews()
+  const reviewIds = await createReviews(userIds, listingIds)
 
   for (let i = 0; i < reviewIds.length; i++) {
     testReviewIds.push(reviewIds[i])
@@ -72,5 +80,6 @@ module.exports = {
   testOrderIds,
   testRatingIds,
   testReviewIds,
-  testTokens,
+  testUserIds,
+  testTokens
 }
