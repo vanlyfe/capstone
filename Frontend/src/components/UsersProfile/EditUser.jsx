@@ -4,12 +4,16 @@ import { Box, Avatar, Grid, Button, TextField, Link } from "@mui/material";
 import Typography from "../LandingPage/Typography";
 //import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 //import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import ActiveListings from "./ActiveListings";
 
 export default function EditUser() {
   const [value, setValue] = React.useState();
+
   // const [value, setValue] = React.useState<Date | null>(new Date());
 
   // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnClick = () => {};
+
   const handleChange = (event) => {
     setValue(event.target.value);
   };
@@ -27,9 +31,10 @@ export default function EditUser() {
       }}
     >
       {/* <Grid> */}
-      <Link href="/user/:id/activeListing">
+      <Link onClick={handleOnClick}>
         <ArrowBackIcon sx={{ fontSize: 60 }} />
       </Link>
+
       {/* </Grid> */}
       <Grid
         sx={{

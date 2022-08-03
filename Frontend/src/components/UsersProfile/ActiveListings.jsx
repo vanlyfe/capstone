@@ -97,7 +97,8 @@ const rows = [
     "see reviews"
   ),
 ];
-export default function PastListings() {
+
+export default function ActiveListings() {
   return (
     <Grid
       sx={{
@@ -110,7 +111,7 @@ export default function PastListings() {
     >
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2 }}>
-          Past Listings
+          Active Listings
         </Button>
         <Button
           variant="contained"

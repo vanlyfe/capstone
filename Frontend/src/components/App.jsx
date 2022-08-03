@@ -17,10 +17,7 @@ import { Navbar } from "./Navbar";
 import User from "./User";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ActiveOrders from "./UsersProfile/ActiveOrders";
-import PastOrders from "./UsersProfile/PastOrders";
-import PastListings from "./UsersProfile/PastListings";
-import Reviews from "./UsersProfile/Reviews";
+
 import EditUser from "./UsersProfile/EditUser";
 
 export default function App() {
@@ -32,6 +29,7 @@ export default function App() {
   useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await apiClient.fetchUserFromToken();
+      console.log("user info: ", data);
       if (data) {
         setUser(data.user);
       }
@@ -53,7 +51,6 @@ export default function App() {
         <Navbar user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/user/:id" element={<User />} />
           <Route
             path="/login"
             element={<Login user={user} setUser={setUser} />}
@@ -69,12 +66,10 @@ export default function App() {
           <Route path="/listing/:id/edit" element={<EditListing />} />
 
           <Route path="/user/:id/profile" element={<EditUser />} />
-          <Route path="/user/:id" element={<User />} />
-          <Route path="/user/:id/activeListing" element={<User />} />
-          <Route path="/user/:id/activeOrders" element={<ActiveOrders />} />
-          <Route path="/user/:id/pastListing" element={<PastListings />} />
-          <Route path="/user/:id/pastOrders" element={<PastOrders />} />
-          <Route path="/user/:id/reviews" element={<Reviews />} />
+          <Route
+            path="/user/:id"
+            element={<User user={user} setUser={setUser} />}
+          />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

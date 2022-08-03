@@ -3,15 +3,7 @@ import {
   Box,
   Grid,
   Typography,
-  CssBaseline,
-  Toolbar,
-  List,
   Divider,
-  AppBar,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Stack,
   Avatar,
   Rating,
   Button,
@@ -19,7 +11,7 @@ import {
 import { ThumbUp } from "@mui/icons-material";
 import apiClient from "../../services/apiClient";
 
-export default function Reviews() {
+export default function Reviews(props) {
   const [value, setValue] = React.useState();
   const [Error, setError] = React.useState();
   const [rating, setRating] = React.useState(0);
@@ -27,11 +19,14 @@ export default function Reviews() {
 
   useEffect(() => {
     const getReviews = async () => {
-      const response = await apiClient.getReviewsForUser(4);
-      console.log("rating: ", response.data);
+      const response = await apiClient.getReviewsForUser(props.user.id);
 
-      if (response?.data?.reviews) {
-        setReview(response.data.reviews);
+      console.log("rating: ", response.data.reviews[0].review);
+      console.log("re data: ", response.data);
+      console.log("user: ", props.user);
+
+      if (response?.data?.reviews[0].review) {
+        setReview(response.data.reviews[0].review);
       } else {
         setError("No reviews yet");
       }
@@ -41,302 +36,141 @@ export default function Reviews() {
   }, []);
 
   return (
-    <Box
+    <Grid
       sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "space-between",
-        bgcolor: "#eeeeee",
+        mt: 1,
+        height: "70%",
+        width: "100%",
+        mt: 1,
       }}
     >
-      <CssBaseline />
-      <AppBar
-        position="relative"
+      <Box>
+        <Button variant="text" sx={{ mt: 2, mb: 2, ml: 2 }}>
+          Reviews
+        </Button>
+        <Button
+          variant="contained"
+          href="/listings"
+          sx={{ mt: 2, mb: 2, ml: 2 }}
+        >
+          Browse Listing
+        </Button>
+      </Box>
+      <Box
         sx={{
-          zIndex: (theme) => theme.zIndex.drawer + 1,
-          bgcolor: "#e1e9f0",
-          color: "black",
-          p: 3,
+          height: 200,
+          width: 800,
+          mt: 3,
+          ml: 3,
+          bgcolor: "white",
         }}
       >
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-          <Box
-            noWrap
-            component="div"
-            sx={{
-              flexWrap: "wrap",
-              width: "50% ",
-            }}
-          >
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "flex-start",
-              }}
-              direction="column"
-              spacing={1}
-            >
-              <Grid>
-                <Avatar
-                  alt="Remy Sharp"
-                  src="/static/images/avatar/1.jpg"
-                  sx={{ width: 200, height: 200 }}
-                />
-              </Grid>
-              <Grid>
-                <Box>
-                  <Typography sx={{ fontSize: 25, mt: 10, ml: 3 }}>
-                    John Doe
-                  </Typography>
-                  <Rating
-                    name="user-rating"
-                    sx={{ mt: 1, ml: 3 }}
-                    value={value}
-                    readOnly
-                  />
-                </Box>
-              </Grid>
-            </Grid>
-          </Box>
-          <Box sx={{ flexWrap: "wrap", width: "50% " }}>
-            <Button
-              variant="contained"
-              href="/user/:id/profile"
-              sx={{ alignContent: "baseline", mb: 4, ml: 55 }}
-            >
-              EDIT PROFILE
-            </Button>
-
-            <Typography>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-              itaque in officiis? Neque, ducimus error! Atque molestias aliquid
-              facere animi modi praesentium, illo enim reprehenderit omnis
-              corrupti beatae sint voluptate?
+        <Rating
+          name="user-rating"
+          sx={{ mt: 2, ml: 2 }}
+          value={value}
+          readOnly
+        />
+        <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+          <Avatar alt="profile picture"> {props.user.image_url}</Avatar>
+          <Box sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+            <Typography sx={{ fontWeight: 600, fontSize: 20 }}>
+              {" "}
+              {props.user.firstName}
+            </Typography>
+            <Typography sx={{ fontWeight: 600, fontSize: 20, ml: 1 }}>
+              {" "}
+              {props.user.lastName}{" "}
             </Typography>
           </Box>
-        </Toolbar>
-      </AppBar>
-      <Grid
+        </Grid>
+        <Typography sx={{ mt: 2, ml: 3 }}>{review}</Typography>
+        <Divider />
+        <Grid sx={{ display: "flex", flexDirection: "row" }}>
+          <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+          <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+            Helpful
+          </Typography>
+        </Grid>
+      </Box>
+      <Box
         sx={{
-          mt: 1,
-          bgcolor: "##8cbfed",
-          height: "70%",
-          width: "100%",
-          mt: 1,
-          mr: 67,
-          display: "flex",
-          flexDirection: "row",
+          height: 200,
+          width: 800,
+          mt: 3,
+          ml: 3,
+          bgcolor: "white",
         }}
       >
-        <Grid
-          sx={{
-            mt: 1,
-            bgcolor: "#e1e9f0",
-            width: "25%",
-            mt: 1,
-            mr: 1,
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <Box
-            sx={{
-              height: 400,
-              width: "80%",
-              mr: 1,
-              ml: 3,
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <List>
-              <Typography>Host</Typography>
-
-              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
-                <ListItemButton href="/user/:id/activeListing">
-                  <ListItemText> Active Listings</ListItemText>
-                </ListItemButton>
-                <ListItemButton href="/user/:id/pastListing">
-                  <ListItemText> Past Listings</ListItemText>
-                </ListItemButton>
-              </ListItem>
-            </List>
-            <Divider />
-
-            <List>
-              <Typography>Renter</Typography>
-
-              <ListItem sx={{ display: "flex", flexDirection: "column" }}>
-                <ListItemButton href="/user/:id/activeOrders">
-                  <ListItemText> Active Orders</ListItemText>
-                </ListItemButton>
-                <ListItemButton href="/user/:id/pastOrders">
-                  <ListItemText> Past Orders</ListItemText>
-                </ListItemButton>
-              </ListItem>
-            </List>
-            <Divider />
-
-            <List>
-              <ListItem>
-                <ListItemButton href="/user/:id/reviews">
-                  <ListItemText
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                    }}
-                  >
-                    Reviews
-                  </ListItemText>
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </Box>
+        <Rating
+          name="user-rating"
+          sx={{ mt: 2, ml: 2 }}
+          value={value}
+          readOnly
+        />
+        <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+          <Avatar
+            alt="Remy Sharp"
+            src="/static/images/avatar/1.jpg"
+            // sx={{ width: 200, height: 200 }}
+          />
+          <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+            Joram Bosir{" "}
+          </Typography>
         </Grid>
-        <Grid
-          sx={{
-            mt: 1,
-            height: "70%",
-            width: "100%",
-            mt: 1,
-          }}
-        >
-          <Box>
-            <Button
-              variant="text"
-              href="/user/:id/reviews"
-              sx={{ mt: 2, mb: 2, ml: 2 }}
-            >
-              Reviews
-            </Button>
-            <Button
-              variant="contained"
-              href="/listings"
-              sx={{ mt: 2, mb: 2, ml: 2 }}
-            >
-              Browse Listing
-            </Button>
-          </Box>
-          <Box
-            sx={{
-              height: 200,
-              width: 800,
-              mt: 3,
-              ml: 3,
-              bgcolor: "white",
-            }}
-          >
-            <Rating
-              name="user-rating"
-              sx={{ mt: 2, ml: 2 }}
-              value={value}
-              readOnly
-            />
-            <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
-              <Avatar
-                alt="Remy Sharp"
-                src="/static/images/avatar/1.jpg"
-                // sx={{ width: 200, height: 200 }}
-              />
-              <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
-                Edil Abe{" "}
-              </Typography>
-            </Grid>
-            <Typography sx={{ mt: 2, ml: 2 }}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-              itaque in officiis? Neque, ducimus error! Atque molestias aliquid
-              facere animi modi praesentium, illo enim reprehenderit omnis
-              corrupti beatae sint voluptate?
-            </Typography>
-            <Divider />
-            <Grid sx={{ display: "flex", flexDirection: "row" }}>
-              <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-              <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-                Helpful
-              </Typography>
-            </Grid>
-          </Box>
-          <Box
-            sx={{
-              height: 200,
-              width: 800,
-              mt: 3,
-              ml: 3,
-              bgcolor: "white",
-            }}
-          >
-            <Rating
-              name="user-rating"
-              sx={{ mt: 2, ml: 2 }}
-              value={value}
-              readOnly
-            />
-            <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
-              <Avatar
-                alt="Remy Sharp"
-                src="/static/images/avatar/1.jpg"
-                // sx={{ width: 200, height: 200 }}
-              />
-              <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
-                Joram Bosir{" "}
-              </Typography>
-            </Grid>
-            <Typography sx={{ mt: 2, ml: 2 }}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-              itaque in officiis? Neque, ducimus error! Atque molestias aliquid
-              facere animi modi praesentium, illo enim reprehenderit omnis
-              corrupti beatae sint voluptate?
-            </Typography>
-            <Divider />
-            <Grid sx={{ display: "flex", flexDirection: "row" }}>
-              <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-              <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-                Helpful
-              </Typography>
-            </Grid>
-          </Box>
-          <Box
-            sx={{
-              height: 200,
-              width: 800,
-              mt: 3,
-              ml: 3,
-              bgcolor: "white",
-            }}
-          >
-            <Rating
-              name="user-rating"
-              sx={{ mt: 2, ml: 2 }}
-              value={value}
-              readOnly
-            />
-            <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
-              <Avatar
-                alt="Remy Sharp"
-                src="/static/images/avatar/1.jpg"
-                // sx={{ width: 200, height: 200 }}
-              />
-              <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
-                Vernon Owenga
-              </Typography>
-            </Grid>
-            <Typography sx={{ mt: 2, ml: 2 }}>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa
-              itaque in officiis? Neque, ducimus error! Atque molestias aliquid
-              facere animi modi praesentium, illo enim reprehenderit omnis
-              corrupti beatae sint voluptate?
-            </Typography>
-            <Divider />
-            <Grid sx={{ display: "flex", flexDirection: "row" }}>
-              <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-              <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-                Helpful
-              </Typography>
-            </Grid>
-          </Box>
+        <Typography sx={{ mt: 2, ml: 2 }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
+          in officiis? Neque, ducimus error! Atque molestias aliquid facere
+          animi modi praesentium, illo enim reprehenderit omnis corrupti beatae
+          sint voluptate?
+        </Typography>
+        <Divider />
+        <Grid sx={{ display: "flex", flexDirection: "row" }}>
+          <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+          <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+            Helpful
+          </Typography>
         </Grid>
-      </Grid>
-    </Box>
+      </Box>
+      <Box
+        sx={{
+          height: 200,
+          width: 800,
+          mt: 3,
+          ml: 3,
+          bgcolor: "white",
+        }}
+      >
+        <Rating
+          name="user-rating"
+          sx={{ mt: 2, ml: 2 }}
+          value={value}
+          readOnly
+        />
+        <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
+          <Avatar
+            alt="Remy Sharp"
+            src="/static/images/avatar/1.jpg"
+            // sx={{ width: 200, height: 200 }}
+          />
+          <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
+            Vernon Owenga
+          </Typography>
+        </Grid>
+        <Typography sx={{ mt: 2, ml: 2 }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
+          in officiis? Neque, ducimus error! Atque molestias aliquid facere
+          animi modi praesentium, illo enim reprehenderit omnis corrupti beatae
+          sint voluptate?
+        </Typography>
+        <Divider />
+        <Grid sx={{ display: "flex", flexDirection: "row" }}>
+          <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+          <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+            Helpful
+          </Typography>
+        </Grid>
+      </Box>
+    </Grid>
   );
 }
