@@ -25,7 +25,7 @@ const createReviews = async (userIds, listingIds) => {
     ),
     (
       'Its a decent place to stay for a night',
-      ${listingIds[2]},
+      ${listingIds[1]},
       ${userIds[1]}
     
     ),
