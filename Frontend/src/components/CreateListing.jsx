@@ -24,17 +24,18 @@ import Login from './Login';
 import apiClient from '../services/apiClient';
 
 export default function CreateListing({ user, isLoading }) {
+
   const navigate = useNavigate();
   const steps = ['Listing Details', 'Add Photos', 'Review Listing'];
 
   const [page, setPage] = useState(0);
   const [form, setForm] = useState({
-    price: '20',
-    location: 'Boston',
-    maxAccomodation: '2',
-    make: '2',
-    model: '2',
-    year: '2',
+    price: '',
+    location: '',
+    maxAccomodation: '',
+    make: '',
+    model: '',
+    year: '',
     description: '',
   });
   const [images, setImages] = useState([]); // element: { url: '', file: null }
