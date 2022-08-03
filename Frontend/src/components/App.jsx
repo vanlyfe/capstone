@@ -11,6 +11,7 @@ import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
 import EditListing from "./EditListing";
 import BookListing from "./BookListing";
+import oc from "date-fns/locale/oc";
 
 import NotFound from "./notFound";
 import { Navbar } from "./Navbar";
@@ -22,10 +23,13 @@ import PastOrders from "./UsersProfile/PastOrders";
 import PastListings from "./UsersProfile/PastListings";
 import Reviews from "./UsersProfile/Reviews";
 import EditUser from "./UsersProfile/EditUser";
+import OrderConfirmation from "./OrderConfirmation";
+
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   //const { user, setUser } = useAuthContext();
 
   useEffect(() => {
@@ -62,6 +66,8 @@ export default function App() {
             element={<Register user={user} setUser={setUser} />}
           />
           <Route path="/listings" element={<Listings />} />
+          <Route path="/orderconfirmation" element={<OrderConfirmation />} />
+          
           <Route path="/createlisting" element={<CreateListing />} />
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
