@@ -12,6 +12,7 @@ CREATE TABLE users(
     updatedAt      TIMESTAMP NOT NULL DEFAULT NOW(),
     gender         TEXT,
     bio            TEXT,
+    rating         FLOAT,
     phone          INTEGER
 
 );
