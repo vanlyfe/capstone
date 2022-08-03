@@ -26,6 +26,7 @@ import EditUser from './UsersProfile/EditUser';
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   //const { user, setUser } = useAuthContext();
 
@@ -38,14 +39,18 @@ export default function App() {
       if (error) {
         setError(error);
       }
+      setIsLoading(false);
     };
 
+    setIsLoading(true);
     const token = localStorage.getItem('vanlyfe_token');
     if (token) {
       apiClient.setToken(token);
       fetchUser();
+    } else {
+      setIsLoading(false);
     }
-  }, [setUser]);
+  }, []);
 
   return (
     <Box>
@@ -63,7 +68,10 @@ export default function App() {
             element={<Register user={user} setUser={setUser} />}
           />
           <Route path="/listings" element={<Listings />} />
-          <Route path="/createlisting" element={<CreateListing />} />
+          <Route
+            path="/createlisting"
+            element={<CreateListing user={user} isLoading={isLoading}/>}
+          />
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
