@@ -53,23 +53,20 @@ describe("POST listing", () => {
       });
     expect(res.statusCode).toEqual(200);
 
-    // console.log(res.message);
+    
 
-    const { listing } = res.body;
+    var { listing } = res.body;
 
-    // cast to proper datatypes
-    listing.price = Number(listing.price);
+    listing = listing[0]
 
-    expect(listing[0]).toEqual({
-      id: expect.any(Number),
+    expect(listing).toEqual({
+      model: "Tesla",
       user_id: expect.any(Number),
-      
-      location: listing.location,
-      image_url: listing.image_url,
+      max_accomodation : 3,
+      location: "Canada",
+      image_url: "https://images.unsplash.com/photo-1539437829697-1b4ed5aebd19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
+      price: 200,
      
-      price: listing.price,
-      createdAt: expect.any(String),
-      updatedAt: expect.any(String),
     });
   });
 
