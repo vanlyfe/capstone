@@ -1,5 +1,6 @@
 const db = require('../db');
 const { BadRequestError } = require('../utils/errors');
+const { s3 } = require('../config');
 
 class Listing {
   static async getListings() {
@@ -109,7 +110,7 @@ class Listing {
     return res;
   }
 
-  static async postListing({ listings, user }) {
+  static async postListing(listings, user, images) {
     const requiredFields = [
       'price',
       'location',
@@ -119,7 +120,7 @@ class Listing {
     ];
 
     requiredFields.forEach((field) => {
-      if (!listings.hasOwnProperty(field)) {
+      if (!Object.prototype.hasOwnProperty.call(listings, field)) {
         throw new BadRequestError(`Missing ${field} in request body.`);
       }
     });
@@ -132,10 +133,6 @@ class Listing {
       throw new BadRequestError('No car model provided');
     }
 
-    // if (listings.image_url.length < 1) {
-    //   throw new BadRequestError('No car image provided');
-    // }
-
     if (listings.make.length < 1) {
       throw new BadRequestError('No car make provided');
     }
@@ -146,7 +143,25 @@ class Listing {
       );
     }
 
-    console.log(listings);
+    const imagesArray = Object.entries(images);
+
+    if (imagesArray.length === 0 || imagesArray.length > 5) {
+      throw new BadRequestError(
+        'You must upload at least one image and no more than five images.'
+      );
+    }
+
+    await this.postPhotostoS3(imagesArray);
+    const urls = this.getS3Urls(Object.keys(images));
+
+    let listingText = "";
+    let listingNumbers = "";
+
+    imagesArray.slice(1).forEach((_, i) => {
+      listingText += `,image_url${i + 2} `;
+      listingNumbers += `,$${i+10}`;
+    })
+    
 
     const result = await db.query(
       `
@@ -158,11 +173,12 @@ class Listing {
                 model,
                 year,
                 user_id,
-                description
+                description,
+                image_url
+                ${listingText}
                 )
-           VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-           RETURNING price, location, max_accomodation, make, model, year, user_id, description;
-
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9${listingNumbers})
+           RETURNING *;
           `,
       [
         Number(listings.price),
@@ -173,6 +189,7 @@ class Listing {
         Number(listings.year),
         user.id,
         listings.description,
+        ...urls,
       ]
     );
 
@@ -196,12 +213,10 @@ class Listing {
       throw new BadRequestError('Invalid vehicle model');
     }
 
-
     var results = {};
 
     for (var [key, value] of Object.entries(listingUpdate)) {
-      const query =
-      `UPDATE listings
+      const query = `UPDATE listings
         SET ${key}= $1,
         updatedAt = NOW()
         WHERE id = $2
@@ -225,6 +240,35 @@ class Listing {
       `,
       [listingId]
     );
+  }
+
+  // Helper functions for S3
+
+  static getS3Urls(Keys) {
+    const urls = [];
+
+    for (let Key of Keys) {
+      const params = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key,
+      };
+      const url = s3.getSignedUrl('getObject', params);
+      urls.push(url)
+    }
+
+    return urls;
+  }
+
+  static async postPhotostoS3(photos) {
+    for (var [Key, image] of photos) {
+      await s3
+        .upload({
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key,
+          Body: image.data,
+        })
+        .promise();
+    }
   }
 }
 
