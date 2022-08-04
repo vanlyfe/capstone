@@ -1,5 +1,5 @@
-const db = require("../db");
-const { BadRequestError } = require("../utils/errors");
+const db = require('../db');
+const { BadRequestError } = require('../utils/errors');
 
 class Listing {
   static async getListings() {
@@ -111,11 +111,11 @@ class Listing {
 
   static async postListing({ listings, user }) {
     const requiredFields = [
-      "price",
-      "location",
-      "max_accomodation",
-      "model",
-      "image_url",
+      'price',
+      'location',
+      'max_accomodation',
+      'model',
+      'make',
     ];
 
     requiredFields.forEach((field) => {
@@ -125,22 +125,28 @@ class Listing {
     });
 
     if (listings.location.length < 1) {
-      throw new BadRequestError("No location provided");
+      throw new BadRequestError('No location provided');
     }
 
     if (listings.model.length < 1) {
-      throw new BadRequestError("No car model provided");
+      throw new BadRequestError('No car model provided');
     }
 
-    if (listings.image_url.length < 1) {
-      throw new BadRequestError("No car image provided");
+    // if (listings.image_url.length < 1) {
+    //   throw new BadRequestError('No car image provided');
+    // }
+
+    if (listings.make.length < 1) {
+      throw new BadRequestError('No car make provided');
     }
 
     if (listings.max_accomodation < 1) {
       throw new BadRequestError(
-        "Maximum vehicle accomodation cannot be less than 1"
+        'Maximum vehicle accomodation cannot be less than 1'
       );
     }
+
+    console.log(listings);
 
     const result = await db.query(
       `
@@ -148,20 +154,23 @@ class Listing {
                 price,
                 location,
                 max_accomodation,
+                make,
                 model,
-                image_url,
+                year,
                 user_id,
                 description
                 )
-           VALUES ($1,$2,$3,$4,$5,$6,$7)
-           RETURNING price, location, max_accomodation, model, image_url, user_id;
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+           RETURNING price, location, max_accomodation, make, model, year, user_id, description;
+
           `,
       [
-        listings.price,
+        Number(listings.price),
         listings.location,
         listings.max_accomodation,
+        listings.make,
         listings.model,
-        listings.image_url,
+        Number(listings.year),
         user.id,
         listings.description,
       ]
@@ -174,26 +183,19 @@ class Listing {
 
   static async editListing({ listingUpdate, listingId }) {
     if (listingUpdate.location?.length < 1) {
-      throw new BadRequestError("Invalid location");
+      throw new BadRequestError('Invalid location');
     }
 
-    
     if (listingUpdate?.max_accomodation < 1) {
       throw new BadRequestError(
-        "Vehicle should be able to accomodate at least one person"
+        'Vehicle should be able to accomodate at least one person'
       );
     }
-    
 
     if (listingUpdate.model?.length < 1) {
-      throw new BadRequestError("Invalid vehicle model");
+      throw new BadRequestError('Invalid vehicle model');
     }
 
-    if (listingUpdate.image_url?.length < 1) {
-      throw new BadRequestError(
-        "Invalid image, listing must have at least one image"
-      );
-    }
 
     var results = {};
 
@@ -215,18 +217,17 @@ class Listing {
     return results;
   }
 
-  static async deleteListing(listingId){
+  static async deleteListing(listingId) {
     await db.query(
       `
       DELETE FROM listings
       WHERE id = $1;
      
       
-      `, [listingId]
-    )
+      `,
+      [listingId]
+    );
   }
-
-
 }
 
 module.exports = Listing;
