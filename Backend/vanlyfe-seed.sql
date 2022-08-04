@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-
-
-=======
->>>>>>> main
 INSERT INTO users (username, firstName, lastName, email, password, gender, image_url, birthdate)
 VALUES (
   'jbosire',
