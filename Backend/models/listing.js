@@ -116,6 +116,7 @@ class Listing {
       'max_accomodation',
       'model',
       'make',
+      'year'
     ];
 
     requiredFields.forEach((field) => {

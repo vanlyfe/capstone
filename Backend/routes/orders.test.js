@@ -111,7 +111,13 @@ describe("POST /order/:listingId", () => {
     const res = await request(app)
       .post(`/order/${listingId}`)
       .set("authorization", `Bearer ${testTokens.edilToken}`)
-      .send({ taxes: 15.22, guests: 3, startDate: "5/9/9", endDate: "9/9/9", total : 50 });
+      .send({
+        taxes: 15.22,
+        guests: 3,
+        startDate: "5/9/9",
+        endDate: "9/9/9",
+        total: 50,
+      });
 
     expect(res.statusCode).toEqual(200);
 

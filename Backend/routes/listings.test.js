@@ -23,7 +23,9 @@ const vernonListing = {
   max_accomodation: 1,
   image_url:
     "https://static.tcimg.net/vehicles/primary/122f4b2eb5fe71e0/2022-GMC-Savana_Cargo_Van-silver-full_color-driver_side_front_quarter.png",
-  model: "GMC Savana",
+  make: "GMC",
+  model: "Savana Cargo Van",
+  year: 2022,
   description: "Clean 3 year old van",
   fees: 4,
 };
@@ -31,14 +33,7 @@ const vernonListing = {
 /************************************** POST /listings/ */
 describe("POST listing", () => {
   test("Authed user can create new listing", async () => {
-    const listings = {
-      location: "Canada",
-      model: "Tesla",
-      max_accomodation: 3,
-      price: 200,
-      image_url:
-        "https://images.unsplash.com/photo-1539437829697-1b4ed5aebd19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
-    };
+   
 
     const res = await request(app)
       .post(`/listing`)
@@ -48,28 +43,26 @@ describe("POST listing", () => {
         model: "Tesla",
         max_accomodation: 3,
         price: 200,
+        make: "latest",
+        year : 2020,
         image_url:
           "https://images.unsplash.com/photo-1539437829697-1b4ed5aebd19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
       });
     expect(res.statusCode).toEqual(200);
 
-    // console.log(res.message);
+    var { listing } = res.body;
 
-    const { listing } = res.body;
+    listing = listing[0];
 
-    // cast to proper datatypes
-    listing.price = Number(listing.price);
-
-    expect(listing[0]).toEqual({
-      id: expect.any(Number),
+    expect(listing).toEqual({
+      model: "Tesla",
       user_id: expect.any(Number),
-      
-      location: listing.location,
-      image_url: listing.image_url,
-     
-      price: listing.price,
-      createdAt: expect.any(String),
-      updatedAt: expect.any(String),
+      max_accomodation: 3,
+      location: "Canada",
+      description :null,
+      make :"latest",
+      year : 2020,
+       price: 200,
     });
   });
 
@@ -90,21 +83,25 @@ describe("GET /listing", () => {
 
     const { listings } = res.body;
 
-    expect(listings.length).toEqual(12);
+    expect(listings.length).toEqual(13);
 
-    const listingVernon = listings.find((l) => l.model === "GMC Savana");
+    const listingVernon = listings.find((l) => l.model === "Savana Cargo Van");
     const {
       user_id,
       price,
       location,
       image_url,
       max_accomodation,
+      make,
+      year,
       model,
       fees,
       description,
     } = listingVernon;
     expect({
       user_id,
+      make,
+      year,
       price,
       location,
       image_url,
@@ -121,9 +118,10 @@ describe("GET /listing", () => {
 
     const { listings } = res.body;
 
-    expect(listings.length).toEqual(12);
+    expect(listings.length).toEqual(13);
 
-    const listingVernon = listings.find((l) => l.model === "GMC Savana");
+    const listingVernon = listings.find((l) => l.model === "Savana Cargo Van");
+  
     const {
       user_id,
       price,
@@ -132,12 +130,16 @@ describe("GET /listing", () => {
       max_accomodation,
       model,
       fees,
+      make,
+      year,
       description,
     } = listingVernon;
     expect({
       user_id,
       price,
       location,
+      make,
+      year,
       image_url,
       max_accomodation,
       model,
@@ -181,7 +183,7 @@ describe("GET listing/user/:userId", () => {
 
     var { listings } = res.body;
 
-    const listingVernon = listings.find((l) => l.model === "GMC Savana");
+    const listingVernon = listings.find((l) => l.model === "Savana Cargo Van");
     const {
       user_id,
       price,
@@ -191,6 +193,8 @@ describe("GET listing/user/:userId", () => {
       model,
       fees,
       description,
+      make,
+      year
     } = listingVernon;
     expect({
       user_id,
@@ -198,6 +202,8 @@ describe("GET listing/user/:userId", () => {
       location,
       image_url,
       max_accomodation,
+      make,
+      year,
       model,
       fees,
       description,
@@ -212,7 +218,10 @@ describe("GET listing/user/:userId", () => {
 
     var { listings } = res.body;
 
-    const listingVernon = listings.find((l) => l.model === "GMC Savana");
+
+    const listingVernon = listings.find((l) => l.model === "Savana Cargo Van");
+
+   
     const {
       user_id,
       price,
@@ -222,6 +231,8 @@ describe("GET listing/user/:userId", () => {
       model,
       fees,
       description,
+      make,
+      year
     } = listingVernon;
     expect({
       user_id,
@@ -232,6 +243,8 @@ describe("GET listing/user/:userId", () => {
       model,
       fees,
       description,
+      make,
+      year
     }).toEqual(vernonListing);
   });
 });
@@ -245,7 +258,6 @@ describe("GET /listing/:listingId", () => {
       .get(`/listing/${listingId}/`)
       .set("authorization", `Bearer ${testTokens.vernonToken}`);
     expect(res.statusCode).toEqual(200);
-    // console.log("This is res", res.text)
 
     var { listing } = res.body;
     listing = listing[0];
@@ -259,6 +271,8 @@ describe("GET /listing/:listingId", () => {
       model,
       fees,
       description,
+      make,
+      year
     } = listing;
     expect({
       user_id,
@@ -267,6 +281,8 @@ describe("GET /listing/:listingId", () => {
       image_url,
       max_accomodation,
       model,
+      make,
+      year,
       fees,
       description,
     }).toEqual(vernonListing);
@@ -276,7 +292,6 @@ describe("GET /listing/:listingId", () => {
     const listingId = testListingIds[1];
     const res = await request(app).get(`/listing/${listingId}/`);
     expect(res.statusCode).toEqual(200);
-    // console.log("This is res", res.text)
 
     var { listing } = res.body;
     listing = listing[0];
@@ -290,6 +305,9 @@ describe("GET /listing/:listingId", () => {
       model,
       fees,
       description,
+      make,
+      year,
+
     } = listing;
     expect({
       user_id,
@@ -299,6 +317,8 @@ describe("GET /listing/:listingId", () => {
       max_accomodation,
       model,
       fees,
+      make,
+      year,
       description,
     }).toEqual(vernonListing);
   });
