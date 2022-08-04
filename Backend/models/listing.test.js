@@ -40,7 +40,7 @@ describe("Test getListingById", () => {
       max_accomodation: 3,
       image_url:
         "https://cdn.motor1.com/images/mgl/Q12M1/s1/2021-tesla-model-s-plaid.jpg",
-      model: "Tesla Model S",
+      model: "Model S",
       description:
         "5 Month old tesla, clean and in great condition, driving around not allowed",
       fees: 4.5,
@@ -50,6 +50,8 @@ describe("Test getListingById", () => {
       image_url3: null,
       image_url4: null,
       image_url5: null,
+      make : "Tesla",
+      year: 2020,
       rating: null,
       updatedat: expect.any(Date),
     });
@@ -97,6 +99,8 @@ describe("Test postListing", () => {
       max_accomodation: 4,
       model: "Mercedes",
       image_url: "mercedesurlgobrr",
+      make : "mercmake",
+      year : 2001
     };
 
     const user = {
@@ -110,8 +114,10 @@ describe("Test postListing", () => {
       location: "Salesforce",
       max_accomodation: 4,
       model: "Mercedes",
-      image_url: "mercedesurlgobrr",
       user_id: expect.any(Number),
+      make : "mercmake",
+      year : 2001,
+      description: null
     });
   });
 
@@ -172,7 +178,7 @@ describe("Test editListing", () => {
       price: 20.99,
       location: "San Francisco, California",
       max_accomodation: 3,
-      model: "Tesla Model S",
+      model: "Model S",
       description: "updateddescription",
       image_url: "updatedurl",
       fees: 4.5,
