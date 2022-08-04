@@ -118,7 +118,6 @@ export default function Listings() {
                 options={locations}
                 label="Year"
                 type="number"
-                
               />
             </Typography>
 
@@ -133,17 +132,10 @@ export default function Listings() {
                 alignItems: "center",
               }}
             >
-<<<<<<< HEAD
               <FormControl sx={{ mt: 2, width: "40%" }}>
                 <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
-=======
-              <FormControl  sx={{ mt: 2, width: "40%" }}>
-                <InputLabel  htmlFor="outlined-adornment-amount">Min</InputLabel>
->>>>>>> main
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  
-                   
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -300,7 +292,7 @@ export default function Listings() {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Typography gutterBottom variant="h5" component="div">
-                      {listing.make  + " " + listing.model + " " + listing.year}
+                      {listing.make + " " + listing.model + " " + listing.year}
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                       <Typography variant="body2" color="text.secondary">

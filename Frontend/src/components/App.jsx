@@ -1,43 +1,27 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import React from "react";
+import Box from "@mui/material/Box";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-import apiClient from '../services/apiClient';
-import LandingPage from './LandingPage';
-import Login from './Login';
-import Listings from './Listings';
-import Register from './Register';
-import CreateListing from './CreateListing';
-import ListingDetails from './ListingDetails';
-import EditListing from './EditListing';
-import BookListing from './BookListing';
+import apiClient from "../services/apiClient";
+import LandingPage from "./LandingPage";
+import Login from "./Login";
+import Listings from "./Listings";
+import Register from "./Register";
+import CreateListing from "./CreateListing";
+import ListingDetails from "./ListingDetails";
+import EditListing from "./EditListing";
+import BookListing from "./BookListing";
 
-<<<<<<< HEAD
-import NotFound from "./notFound";
+import NotFound from "./NotFound";
 import { Navbar } from "./Navbar";
 import User from "./User";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-=======
-import NotFound from './notFound';
-import { Navbar } from './Navbar';
-import User from './User';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import ActiveOrders from './UsersProfile/ActiveOrders';
-import PastOrders from './UsersProfile/PastOrders';
-import PastListings from './UsersProfile/PastListings';
-import Reviews from './UsersProfile/Reviews';
-import EditUser from './UsersProfile/EditUser';
->>>>>>> main
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
-<<<<<<< HEAD
-=======
   const [isLoading, setIsLoading] = useState(true);
->>>>>>> main
   const [error, setError] = useState(null);
   //const { user, setUser } = useAuthContext();
 
@@ -55,7 +39,7 @@ export default function App() {
     };
 
     setIsLoading(true);
-    const token = localStorage.getItem('vanlyfe_token');
+    const token = localStorage.getItem("vanlyfe_token");
     if (token) {
       apiClient.setToken(token);
       fetchUser();
@@ -70,14 +54,10 @@ export default function App() {
         <Navbar user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={user ? <Listings /> : <LandingPage />} />
-<<<<<<< HEAD
           <Route
             path="/user/:id"
             element={<User user={user} setUser={setUser} />}
           />
-=======
-          <Route path="/user/:id" element={<User />} />
->>>>>>> main
           <Route
             path="/login"
             element={<Login user={user} setUser={setUser} />}
@@ -89,7 +69,7 @@ export default function App() {
           <Route path="/listings" element={<Listings />} />
           <Route
             path="/createlisting"
-            element={<CreateListing user={user} isLoading={isLoading}/>}
+            element={<CreateListing user={user} isLoading={isLoading} />}
           />
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />

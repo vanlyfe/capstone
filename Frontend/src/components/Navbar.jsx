@@ -13,21 +13,12 @@ import {
   ListItemButton,
   ListItemText,
   Drawer,
-<<<<<<< HEAD
 } from "@mui/material";
 import logo from "../assets/LogoDarkBg.svg";
 import Avatar from "@mui/material/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Navigate, useNavigate } from "react-router-dom";
 import apiClient from "../services/apiClient";
-=======
-} from '@mui/material';
-import logo from '../assets/LogoDarkBg.svg';
-import Avatar from '@mui/material/Avatar';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Navigate, useNavigate } from 'react-router-dom';
-import apiClient from '../services/apiClient';
->>>>>>> main
 
 // added the following for the links
 
@@ -40,11 +31,7 @@ export const Navbar = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { window } = props;
 
-<<<<<<< HEAD
   const navItems = ["Add Listing", "Register"];
-=======
-  const navItems = ['Add Listing', 'Register'];
->>>>>>> main
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -54,11 +41,7 @@ export const Navbar = (props) => {
     await apiClient.logoutUser();
     props.setUser(null);
     // setError(null);
-<<<<<<< HEAD
     navigate("/");
-=======
-    navigate('/');
->>>>>>> main
   };
 
   const drawer = (
@@ -79,11 +62,6 @@ export const Navbar = (props) => {
     </Box>
   );
 
-<<<<<<< HEAD
-  console.log(props.user);
-
-=======
->>>>>>> main
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
@@ -137,26 +115,17 @@ export const Navbar = (props) => {
               sx={{ height: 65 }}
               component={Link}
               to="/listings"
-<<<<<<< HEAD
               color="inherit"
             >
-=======
-              color="inherit">
->>>>>>> main
               View Listings
             </Button>
 
             <Button
               sx={{ height: 65 }}
               component={Link}
-<<<<<<< HEAD
               to={props.user ? "/createListing" : "/login"}
               color="inherit"
             >
-=======
-              to={props.user ? '/createListing' : '/login'}
-              color="inherit">
->>>>>>> main
               Add Listing
             </Button>
 
@@ -164,16 +133,10 @@ export const Navbar = (props) => {
               <Button
                 sx={{ height: 65 }}
                 component={Link}
-<<<<<<< HEAD
                 to={"/login"}
                 onClick={handleLogout}
                 color="inherit"
               >
-=======
-                to={'/login'}
-                onClick={handleLogout}
-                color="inherit">
->>>>>>> main
                 Log out
               </Button>
             ) : null}
@@ -182,20 +145,15 @@ export const Navbar = (props) => {
               <Button
                 sx={{ height: 65 }}
                 component={Link}
-<<<<<<< HEAD
                 to={"/register"}
                 color="inherit"
               >
-=======
-                to={'/register'}
-                color="inherit">
->>>>>>> main
                 Register
               </Button>
             )}
             <Avatar
               component={Link}
-              to={props.user ? '/user/' + props.user.id : '/login'}
+              to={props.user ? "/user/" + props.user.id : "/login"}
               alt="Travis Howard"
               src={props.user ? props.user.image_url : null}
               // src="/static/images/avatar/2.jpg"
