@@ -90,7 +90,7 @@ export default function OrderConfirmation() {
         </Box>
         <Box>
           <List
-            sx={{ width: "100%", bgcolor: "red" }}
+            sx={{ width: "100%", bgcolor: "#e1e9f0" }}
             aria-labelledby="nested-list-subheader"
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">

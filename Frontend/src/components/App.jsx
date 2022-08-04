@@ -25,7 +25,6 @@ import Reviews from "./UsersProfile/Reviews";
 import EditUser from "./UsersProfile/EditUser";
 import OrderConfirmation from "./OrderConfirmation";
 
-
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
@@ -67,7 +66,7 @@ export default function App() {
           />
           <Route path="/listings" element={<Listings />} />
           <Route path="/orderconfirmation" element={<OrderConfirmation />} />
-          
+
           <Route path="/createlisting" element={<CreateListing />} />
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />

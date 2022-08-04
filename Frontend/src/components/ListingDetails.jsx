@@ -40,24 +40,190 @@ import DateOut from "./DateOut";
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import apiClient from "../services/apiClient";
+
+import { useState } from "react";
 
 export default function ListingDetails() {
-  const [expanded, setExpanded] = React.useState(false);
-  const [value, setValue] = React.useState();
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const [carDetails, setCarDetails] = useState([]);
+  const [hostDetails, setHostDetails] = useState([]);
+  //const [newHostDetails, setNewHostDetails] = useState([]);
+  const [carReviews, setCarReviews] = useState([]);
+  const [reviewerDetails, setReviewerDetails] = useState([]);
+  //const [newReviewerDetails, setNewReviewerDetails] = useState([]);
 
-  const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  }));
+  // fetches the car details
+  useEffect(() => {
+    const makeAPIcalls = async () => {
+      const fetchCarDetails = async () => {
+        const { data, error } = await apiClient.fetchListingById(1);
+        console.log("car details data", data.listing[0]);
+        if (data) {
+          setCarDetails(data.listing[0]);
+          //setPrice(data.listing.price)
+          console.log("car details", carDetails);
+        }
+      };
+
+      // const fetchHostDetails = async () => {
+      //   const host_id = carDetails.user_id;
+      //   console.log("carDetails ", carDetails);
+
+      //   const { data, error } = await apiClient.fetchUserFromId(host_id);
+      //   console.log(" host iddata ", data);
+
+      //   if (data) {
+      //     setHostDetails(data.user);
+      //     //setPrice(data.listing.price)
+      //     console.log("host details", hostDetails);
+      //   }
+      // };
+
+      //fetch reviews
+
+      const fetchCarReviews = async () => {
+        const { data, error } = await apiClient.getReviewsForListing(1);
+        console.log("data car reviews", data);
+
+        if (data) {
+          setCarReviews(data.reviews);
+          // console.log("review", carReviews);
+
+          console.log("car review", carReviews);
+        }
+      };
+
+      //Fetches the reviewrs
+
+      //console.log("carrev", carReviews); // this is an array
+      //console.log("carrev[0]", carReviews[0]); // this is the first element of the array
+
+      //console.log("Id", carReviews[0].user_id);
+
+      // const fetchReviewerDetails = async () => {
+      //   if (carReviews.user_id) {
+      //     const reviewer_id = carReviews.user_id;
+      //     console.log("reviewer_id", reviewer_id);
+      //     const { data, error } = await apiClient.fetchUserFromId(reviewer_id);
+      //     console.log("data reviewer_id", data);
+      //     if (data) {
+      //       setReviewerDetails(data.user);
+      //       //setPrice(data.listing.price)
+
+      //       console.log("reviewer details ", reviewerDetails);
+      //     }
+      //   }
+      // };
+
+      fetchCarDetails();
+
+      fetchCarReviews();
+    };
+
+    makeAPIcalls();
+  }, []);
+
+  useEffect(() => {
+    const fetchHostDetails = async () => {
+      const host_id = carDetails.user_id;
+      console.log("carDetails ", carDetails);
+
+      const { data, error } = await apiClient.fetchUserFromId(host_id);
+      console.log(" host iddata ", data);
+
+      if (data) {
+        setHostDetails(data.user);
+        //setPrice(data.listing.price)
+        console.log("host details", hostDetails);
+      }
+    };
+
+    fetchHostDetails();
+  }, [carDetails]);
+
+  useEffect(() => {
+    const fetchReviewerDetails = async () => {
+      const reviewer_id = carReviews[0].user_id;
+      console.log("reviewer_id", reviewer_id);
+      const { data, error } = await apiClient.fetchUserFromId(reviewer_id);
+      console.log("data reviewer_id", data);
+      if (data) {
+        setReviewerDetails(data.user);
+        //setPrice(data.listing.price)
+
+        console.log("reviewer details ", reviewerDetails);
+      }
+    };
+
+    fetchReviewerDetails();
+  }, [carReviews]);
+
+  // const host_id = carDetails.user_id;
+
+  // console.log(host_id, "host_id");
+
+  /// fetches the host details
+
+  // useEffect(() => {
+  //   const fetchHostDetails = async () => {
+  //     console.log("host_id", host_id);
+
+  //     const { data, error } = await apiClient.fetchUserFromId(host_id);
+  //     console.log("data ", data);
+
+  //     if (data) {
+  //       setHostDetails(data.user);
+  //       //setPrice(data.listing.price)
+  //     }
+  //   };
+
+  //   console.log("host details", hostDetails);
+
+  //   fetchHostDetails();
+  // }, []);
+
+  // fetches the reviews
+
+  // useEffect(() => {
+  //   const fetchCarReviews = async () => {
+  //     const { data, error } = await apiClient.getReviewsForListing(1);
+  //     console.log("data", data);
+
+  //     if (data) {
+  //       setCarReviews(data.reviews);
+  //       console.log("review", carReviews);
+  //     }
+  //   };
+
+  //   fetchCarReviews();
+  // }, []);
+
+  //Fetches the reviewrs
+
+  //console.log("carrev", carReviews); // this is an array
+  //console.log("carrev[0]", carReviews[0]); // this is the first element of the array
+
+  //console.log("Id", carReviews[0].user_id);
+
+  // const reviewer_id = carReviews[0].user_id;
+
+  // useEffect(() => {
+  //   const fetchReviewerDetails = async () => {
+  //     //console.log("reviewer_id", reviewer_id);
+
+  //     const { data, error } = await apiClient.fetchUserFromId(reviewer_id);
+  //     console.log("reviewer data ", data);
+
+  //     if (data) {
+  //       setReviewerDetails(data.user);
+  //       //setPrice(data.listing.price)
+
+  //       console.log("reviewer details ", reviewerDetails);
+  //     }
+  //   };
+
+  //   fetchReviewerDetails();
+  // }, []);
 
   return (
     <Box>
@@ -77,19 +243,20 @@ export default function ListingDetails() {
           }}
         >
           <Card sx={{ width: "100%", maxWidth: "100%" }}>
-            <CardHeader
+            {/* <CardHeader
               avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                   V
                 </Avatar>
               }
-              title="Vernon Otieno"
-              subheader="September 14, 2021"
-            />
+              title= {hostDetails.firstname + " " + hostDetails.lastname} 
+              //subheader="September 14, 2021"
+            /> */}
             <CardMedia
               component="img"
               height="400"
-              image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dm9sa3N3YWdlbiUyMHZhbnxlbnwwfHwwfHw%3D&w=1000&q=80"
+              image={carDetails.image_url}
+              //image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dm9sa3N3YWdlbiUyMHZhbnxlbnwwfHwwfHw%3D&w=1000&q=80"
               alt="Paella dish"
             />
             <CardContent sx={{ display: "flex", flexDirection: "row" }}>
@@ -108,7 +275,7 @@ export default function ListingDetails() {
                     fontSize: 20,
                   }}
                 >
-                  San Manteo,CA
+                  {carDetails.location}
                 </Typography>
                 <Box
                   sx={{
@@ -127,7 +294,7 @@ export default function ListingDetails() {
                   >
                     25 Reviews
                   </Typography>
-                  <Rating name="read-only" value={3} readOnly />
+                  <Rating value={carDetails.rating || 0} />
                 </Box>
                 <Typography
                   sx={{
@@ -137,7 +304,7 @@ export default function ListingDetails() {
                     fontSize: 40,
                   }}
                 >
-                  $200/Night
+                  ${carDetails.price}/Night
                 </Typography>{" "}
                 <Typography
                   sx={{
@@ -148,7 +315,7 @@ export default function ListingDetails() {
                     fontSize: 15,
                   }}
                 >
-                  Thor Majestic Class C
+                  {carDetails.model}
                 </Typography>{" "}
                 <Typography
                   sx={{
@@ -159,7 +326,7 @@ export default function ListingDetails() {
                     fontSize: 15,
                   }}
                 >
-                  Sleeps 4
+                  Sleeps {carDetails.max_accomodation}
                 </Typography>
               </Box>
               <Box>
@@ -186,13 +353,14 @@ export default function ListingDetails() {
                 >
                   <Avatar
                     alt="Remy Sharp"
-                    src="/static/images/avatar/1.jpg"
+                    //src="/static/images/avatar/1.jpg"
+                    src={hostDetails.image_url}
                     // sx={{ width: 200, height: 200 }}
                   />
                   <Typography
                     sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
                   >
-                    Vernon Owenga
+                    {hostDetails.firstname + " " + hostDetails.lastname}
                   </Typography>
                 </Box>
                 <Box
@@ -223,7 +391,9 @@ export default function ListingDetails() {
                   <Typography
                     sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
                   >
-                    +1 773 754 9759
+                    {hostDetails.phone
+                      ? hostDetails.phone
+                      : "Phone Number Unavailable"}
                   </Typography>
                 </Box>
                 <Box
@@ -233,7 +403,7 @@ export default function ListingDetails() {
                   <Typography
                     sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
                   >
-                    vernon@gmail.com
+                    {hostDetails.email}
                   </Typography>
                 </Box>
               </Box>
@@ -483,162 +653,55 @@ export default function ListingDetails() {
         >
           Reviews
         </Typography>
-        <Box
-          sx={{
-            height: 200,
-            width: 800,
-            mt: 3,
-            ml: 3,
-            bgcolor: "white",
-          }}
-        >
-          <Rating
-            name="user-rating"
-            sx={{ mt: 2, ml: 2 }}
-            value={value}
-            readOnly
-          />
-          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
-            <Avatar
-              alt="Remy Sharp"
-              src="/static/images/avatar/1.jpg"
-              // sx={{ width: 200, height: 200 }}
-            />
-            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
-              Vernon Owenga
-            </Typography>
-          </Grid>
-          <Typography sx={{ mt: 2, ml: 2 }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
-            in officiis? Neque, ducimus error! Atque molestias aliquid facere
-            animi modi praesentium, illo enim reprehenderit omnis corrupti
-            beatae sint voluptate?
-          </Typography>
-          <Divider />
-          <Grid sx={{ display: "flex", flexDirection: "row" }}>
-            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-              Helpful
-            </Typography>
-          </Grid>
-        </Box>
-        <Box
-          sx={{
-            height: 200,
-            width: 800,
-            mt: 3,
-            ml: 3,
-            bgcolor: "white",
-          }}
-        >
-          <Rating
-            name="user-rating"
-            sx={{ mt: 2, ml: 2 }}
-            value={value}
-            readOnly
-          />
-          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
-            <Avatar
-              alt="Remy Sharp"
-              src="/static/images/avatar/1.jpg"
-              // sx={{ width: 200, height: 200 }}
-            />
-            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
-              Vernon Owenga
-            </Typography>
-          </Grid>
-          <Typography sx={{ mt: 2, ml: 2 }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
-            in officiis? Neque, ducimus error! Atque molestias aliquid facere
-            animi modi praesentium, illo enim reprehenderit omnis corrupti
-            beatae sint voluptate?
-          </Typography>
-          <Divider />
-          <Grid sx={{ display: "flex", flexDirection: "row" }}>
-            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-              Helpful
-            </Typography>
-          </Grid>
-        </Box>
-        <Box
-          sx={{
-            height: 200,
-            width: 800,
-            mt: 3,
-            ml: 3,
-            bgcolor: "white",
-          }}
-        >
-          <Rating
-            name="user-rating"
-            sx={{ mt: 2, ml: 2 }}
-            value={value}
-            readOnly
-          />
-          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
-            <Avatar
-              alt="Remy Sharp"
-              src="/static/images/avatar/1.jpg"
-              // sx={{ width: 200, height: 200 }}
-            />
-            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
-              Vernon Owenga
-            </Typography>
-          </Grid>
-          <Typography sx={{ mt: 2, ml: 2 }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
-            in officiis? Neque, ducimus error! Atque molestias aliquid facere
-            animi modi praesentium, illo enim reprehenderit omnis corrupti
-            beatae sint voluptate?
-          </Typography>
-          <Divider />
-          <Grid sx={{ display: "flex", flexDirection: "row" }}>
-            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-              Helpful
-            </Typography>
-          </Grid>
-        </Box>
-        <Box
-          sx={{
-            height: 200,
-            width: 800,
-            mt: 3,
-            ml: 3,
-            bgcolor: "white",
-          }}
-        >
-          <Rating
-            name="user-rating"
-            sx={{ mt: 2, ml: 2 }}
-            value={value}
-            readOnly
-          />
-          <Grid sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}>
-            <Avatar
-              alt="Remy Sharp"
-              src="/static/images/avatar/1.jpg"
-              // sx={{ width: 200, height: 200 }}
-            />
-            <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}>
-              Vernon Owenga
-            </Typography>
-          </Grid>
-          <Typography sx={{ mt: 2, ml: 2 }}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa itaque
-            in officiis? Neque, ducimus error! Atque molestias aliquid facere
-            animi modi praesentium, illo enim reprehenderit omnis corrupti
-            beatae sint voluptate?
-          </Typography>
-          <Divider />
-          <Grid sx={{ display: "flex", flexDirection: "row" }}>
-            <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-            <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-              Helpful
-            </Typography>
-          </Grid>
-        </Box>
+        {/*map all the reviews related to the selected listing*/}
+
+        {carReviews?.length > 0
+          ? carReviews.map((review, idx) => {
+              return (
+                <Box
+                  sx={{
+                    height: 200,
+                    width: 800,
+                    mt: 3,
+                    ml: 3,
+                    bgcolor: "white",
+                  }}
+                >
+                  <Rating
+                    name="user-rating"
+                    sx={{ mt: 2, ml: 2 }}
+                    value={4}
+                    readOnly
+                  />
+                  <Grid
+                    sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
+                  >
+                    <Avatar
+                      alt="Remy Sharp"
+                      src={reviewerDetails.image_url}
+                      //src="/static/images/avatar/1.jpg"
+                      // sx={{ width: 200, height: 200 }}
+                    />
+                    <Typography
+                      sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
+                    >
+                      {reviewerDetails.firstname +
+                        " " +
+                        reviewerDetails.lastname}
+                    </Typography>
+                  </Grid>
+                  <Typography sx={{ mt: 2, ml: 2 }}>{review.review}</Typography>
+                  <Divider />
+                  <Grid sx={{ display: "flex", flexDirection: "row" }}>
+                    <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+                    <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+                      Helpful
+                    </Typography>
+                  </Grid>
+                </Box>
+              );
+            })
+          : ""}
       </Grid>
     </Box>
   );
