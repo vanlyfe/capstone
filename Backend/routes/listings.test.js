@@ -240,7 +240,7 @@ describe("GET /listing/:listingId", () => {
       .get(`/listing/${listingId}/`)
       .set("authorization", `Bearer ${testTokens.vernonToken}`);
     expect(res.statusCode).toEqual(200);
-    // console.log("This is res", res.text)
+    
 
     var { listing } = res.body;
     listing = listing[0];
@@ -271,7 +271,7 @@ describe("GET /listing/:listingId", () => {
     const listingId = testListingIds[1];
     const res = await request(app).get(`/listing/${listingId}/`);
     expect(res.statusCode).toEqual(200);
-    // console.log("This is res", res.text)
+    
 
     var { listing } = res.body;
     listing = listing[0];
