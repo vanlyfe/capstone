@@ -1,10 +1,11 @@
-const express = require("express");
-const Listing = require("../models/listing");
-const security = require("../middleware/security");
-const permissions = require("../middleware/permissions");
+const express = require('express');
+const Listing = require('../models/listing');
+const security = require('../middleware/security');
+const permissions = require('../middleware/permissions');
 const router = express.Router();
+const { s3 } = require('../config');
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     var listings = await Listing.getListings();
 
@@ -14,7 +15,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/best", async (req, res, next) => {
+router.get('/best', async (req, res, next) => {
   try {
     var listings = await Listing.getBestListings();
     return res.status(200).json({ listings: listings });
@@ -24,8 +25,8 @@ router.get("/best", async (req, res, next) => {
 });
 
 router.get(
-  "/user/:userId",
- 
+  '/user/:userId',
+
   async (req, res, next) => {
     try {
       var userId = req.params.userId;
@@ -38,7 +39,7 @@ router.get(
   }
 );
 
-router.get("/:listingId", async (req, res, next) => {
+router.get('/:listingId', async (req, res, next) => {
   try {
     var id = req.params.listingId;
 
@@ -49,10 +50,10 @@ router.get("/:listingId", async (req, res, next) => {
   }
 });
 
-router.post("/", security.requireAuthenticatedUser, async (req, res, next) => {
+router.post('/', security.requireAuthenticatedUser, async (req, res, next) => {
   try {
     const { user } = res.locals;
-  
+
     const listings = req.body;
     const listing = await Listing.postListing({ listings, user });
     return res.status(200).json({ listing: listing });
@@ -61,8 +62,35 @@ router.post("/", security.requireAuthenticatedUser, async (req, res, next) => {
   }
 });
 
+router.put('/image/:listingId', async (req, res, next) => {
+  try {
+    const { listingId } = req.params.listingId;
+    const images = Object.entries(req.files);
+
+    if (images.length === 0 || images.length > 3) {
+      return res.status(400).json({ error: 'You must upload 1-3 images' });
+    }
+
+    const uploadedImage = await s3
+      .upload({
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: req.files.image.name,
+        Body: image.data,
+      })
+      .promise();
+
+    const listing = await Listing.editListing({
+      listingUpdate: { image_url: uploadedImage.Location },
+      listingId,
+    });
+    return res.status(200).json({ listing });
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.put(
-  "/:listingId",
+  '/:listingId',
   security.requireAuthenticatedUser,
   permissions.userOwnsListing,
   async (req, res, next) => {
@@ -82,7 +110,7 @@ router.put(
 );
 
 router.delete(
-  "/:listingId",
+  '/:listingId',
   security.requireAuthenticatedUser,
   permissions.userOwnsListing,
   async (req, res, next) => {

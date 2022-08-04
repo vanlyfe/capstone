@@ -201,13 +201,11 @@ class Listing {
 
     for (var [key, value] of Object.entries(listingUpdate)) {
       const query =
-        `UPDATE listings
-                       SET ` +
-        key +
-        ` = $1,
-                       updatedAt = NOW()
-                   WHERE id = $2
-                   RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, fees, createdAt, updatedAt;`;
+      `UPDATE listings
+        SET ${key}= $1,
+        updatedAt = NOW()
+        WHERE id = $2
+        RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, fees, createdAt, updatedAt;`;
 
       const result = await db.query(query, [value, listingId]);
 

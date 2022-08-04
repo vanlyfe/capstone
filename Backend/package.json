@@ -17,18 +17,19 @@
     "test:models:rating": "jest -i models/rating.test.js",
     "test:models:review": "jest -i models/review.test.js",
     "test:models:user": "jest -i models/user.test.js",
-    "test:utils:tokens" : "jest -i utils/tokens.test.js"
-
+    "test:utils:tokens": "jest -i utils/tokens.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1188.0",
     "bcrypt": "^5.0.1",
     "colors": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^5.0.0-beta.1",
+    "express-fileupload": "^1.4.0",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.19",
