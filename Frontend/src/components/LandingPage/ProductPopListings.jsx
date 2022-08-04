@@ -91,8 +91,8 @@ function ProductHowItWorks() {
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center" className="modelLimit">
-                  {listings[0].make + " " + listings[0].model}
+                <Typography variant="h6" align="center" className="modelLimit">
+                  {listings[0].make + " " + listings[0].model + " " + listings[0].year}
                 </Typography>
                 <Typography variant="body1" align="center" className="lineLimit">
                  {listings[0].description}
@@ -109,8 +109,8 @@ function ProductHowItWorks() {
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center" className="modelLimit">
-                {listings[1].make + " " + listings[1].model}
+                <Typography variant="h6" align="center" className="modelLimit">
+                {listings[1].make + " " + listings[1].model + " " + listings[1].year}
                 </Typography>
                 <Typography variant="body1" align="center" className="lineLimit">
                 {listings[1].description}
@@ -127,8 +127,8 @@ function ProductHowItWorks() {
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center" className="modelLimit">
-                {listings[2].make + " " + listings[2].model}
+                <Typography variant="h6" align="center" className="modelLimit">
+                {listings[2].make + " " + listings[2].model + " " + listings[2].year}
                 </Typography>
                 <Typography variant="body1" align="center" className="lineLimit">
                 {listings[2].description}
@@ -145,8 +145,8 @@ function ProductHowItWorks() {
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center" className="modelLimit">
-                {listings[3].make + " " + listings[3].model}
+                <Typography variant="h6" align="center" className="modelLimit">
+                {listings[3].make + " " + listings[3].model + " " + listings[3].year}
                 </Typography>
                 <Typography variant="body1" align="center" className="lineLimit">
                 {listings[3].description}
