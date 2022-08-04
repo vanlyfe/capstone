@@ -12,7 +12,9 @@ class User {
       email: user.email,
       username: user.username,
       birthdate: user.birthdate,
-      createdAt : user.createdat
+      createdAt : user.createdat,
+      image_url : user.image_url
+
   
     
     };
@@ -136,7 +138,7 @@ class User {
             rating
         )
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-        RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt, rating;
+        RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt, rating, image_url;
         `,
       [
         credentials.firstName,
@@ -259,7 +261,7 @@ class User {
         ` = $1,
                        updatedAt = NOW()
                    WHERE id = $2
-                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;`;
+                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, image_url, updatedAt;`;
 
       const result = await db.query(query, [
         key === 'password' ? hashedPassword : value,

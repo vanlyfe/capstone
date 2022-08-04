@@ -3,9 +3,12 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
+import {Rating} from "@mui/material";
 import Button from './Button';
 import Typography from './Typography';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import apiClient from '../../services/apiClient';
 
 const item = {
   display: 'flex',
@@ -27,6 +30,28 @@ const image = {
 };
 
 function ProductHowItWorks() {
+
+  const [error, setError] = useState("");
+  const [listings, setListings] = useState([]);
+  const [ratings, setRatings] = useState([])
+  
+  useEffect(() => {
+    
+    const getListings = async () => {
+      const response = await apiClient.fetchBestListings();
+     
+      if (response?.data?.listings) {
+        setListings(response.data.listings);
+      } else {
+        setError("No listings found");
+      }
+    };
+
+    getListings();
+  },[]);
+
+ 
+
   return (
     <Box
       component="section"
@@ -54,78 +79,83 @@ function ProductHowItWorks() {
         <Typography variant="h4" marked="center" component="h2" sx={{ mb: 14 }}>
           Popular Listings
         </Typography>
-        <div>
+        {listings[0] ?
+        <div  className='bestListings'>
           <Grid container spacing={5} mb={10}>
             <Grid item xs={12} md={3}>
               <Box sx={item}>
                 <Box
+                  className='bestImage'
                   component="img"
-                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  src={listings[0].image_url}
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center">
-                  Vehicle Name
+                <Typography variant="h5" align="center" className="modelLimit">
+                  {listings[0].make + " " + listings[0].model}
                 </Typography>
-                <Typography variant="body1" align="center">
-                  Product Description: Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit.
+                <Typography variant="body1" align="center" className="lineLimit">
+                 {listings[0].description}
                 </Typography>
+                <Rating value={listings[0].rating}/>
               </Box>
             </Grid>
             <Grid item xs={12} md={3}>
               <Box sx={item}>
                 <Box
+                className='bestImage'
                   component="img"
-                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  src={listings[1].image_url}
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center">
-                  Vehicle Name
+                <Typography variant="h5" align="center" className="modelLimit">
+                {listings[1].make + " " + listings[1].model}
                 </Typography>
-                <Typography variant="body1" align="center">
-                  Product Description: Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit.
+                <Typography variant="body1" align="center" className="lineLimit">
+                {listings[1].description}
                 </Typography>
+                <Rating value={listings[1].rating}/>
               </Box>
             </Grid>
             <Grid item xs={12} md={3}>
               <Box sx={item}>
                 <Box
+                className='bestImage'
                   component="img"
-                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  src={listings[2].image_url}
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center">
-                  Vehicle Name
+                <Typography variant="h5" align="center" className="modelLimit">
+                {listings[2].make + " " + listings[2].model}
                 </Typography>
-                <Typography variant="body1" align="center">
-                  Product Description: Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit.
+                <Typography variant="body1" align="center" className="lineLimit">
+                {listings[2].description}
                 </Typography>
+                <Rating value={listings[2].rating}/>
               </Box>
             </Grid>
             <Grid item xs={12} md={3}>
               <Box sx={item}>
                 <Box
+                className='bestImage'
                   component="img"
-                  src="/static/themes/onepirate/productHowItWorks1.svg"
+                  src={listings[3].image_url}
                   alt="vehicle listing"
                   sx={image}
                 />
-                <Typography variant="h5" align="center">
-                  Vehicle Name
+                <Typography variant="h5" align="center" className="modelLimit">
+                {listings[3].make + " " + listings[3].model}
                 </Typography>
-                <Typography variant="body1" align="center">
-                  Product Description: Lorem ipsum dolor sit amet, consectetur
-                  adipiscing elit.
+                <Typography variant="body1" align="center" className="lineLimit">
+                {listings[3].description}
                 </Typography>
+                <Rating value={listings[3].rating}/>
               </Box>
             </Grid>
           </Grid>
-        </div>
+        </div> : null}
         {/* <Button
           color="secondary"
           size="large"
