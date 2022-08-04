@@ -1,20 +1,10 @@
 const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
 
-<<<<<<< HEAD
-
-class Order{
-    
-
-    static async getOrdersByUserId(userId){
-        const result = await db.query(
-            `
-=======
 class Order {
   static async getOrdersByUserId(userId) {
     const result = await db.query(
       `
->>>>>>> main
             SELECT * 
             FROM orders
             WHERE user_id = $1
