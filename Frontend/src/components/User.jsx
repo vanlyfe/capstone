@@ -24,7 +24,12 @@ export default function User({ user, setUser }) {
             justifyContent: "space-between",
           }}
         >
-          <UserInfo editProfile={editProfile} setEditProfile={setEditProfile} />
+          <UserInfo
+            editProfile={editProfile}
+            setEditProfile={setEditProfile}
+            user={user}
+            setUser={setUser}
+          />
           <Grid
             sx={{
               mt: 1,

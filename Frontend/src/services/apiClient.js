@@ -209,7 +209,7 @@ class ApiClient {
   async postReview(listingId, review) {
     return await this.request({
       endpoint: `review/` + listingId,
-      method: `GET`,
+      method: `POST`,
       data: review,
     });
   }

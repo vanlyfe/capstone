@@ -17,11 +17,6 @@ import { Navbar } from "./Navbar";
 import User from "./User";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import ActiveOrders from "./UsersProfile/ActiveOrders";
-import PastOrders from "./UsersProfile/PastOrders";
-import PastListings from "./UsersProfile/PastListings";
-import Reviews from "./UsersProfile/Reviews";
-import EditUser from "./UsersProfile/EditUser";
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -54,7 +49,10 @@ export default function App() {
         <Navbar user={user} setUser={setUser} />
         <Routes>
           <Route path="/" element={user ? <Listings /> : <LandingPage />} />
-          <Route path="/user/:id" element={<User />} />
+          <Route
+            path="/user/:id"
+            element={<User user={user} setUser={setUser} />}
+          />
           <Route
             path="/login"
             element={<Login user={user} setUser={setUser} />}
@@ -68,12 +66,6 @@ export default function App() {
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
-
-          <Route path="/user/:id/profile" element={<EditUser />} />
-          <Route
-            path="/user/:id"
-            element={<User user={user} setUser={setUser} />}
-          />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

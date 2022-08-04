@@ -386,7 +386,12 @@ export default function ListingDetails() {
               </Button>
             </Box>
 
-            <Button component={Link} to="/listings" color="inherit" sx={{mt:10}}>
+            <Button
+              component={Link}
+              to="/listings"
+              color="inherit"
+              sx={{ mt: 10 }}
+            >
               Back to Listings
             </Button>
 
