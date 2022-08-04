@@ -62,8 +62,6 @@ export const Navbar = (props) => {
     </Box>
   );
 
-  console.log(props.user);
-
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
