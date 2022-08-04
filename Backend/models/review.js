@@ -6,9 +6,17 @@ class Review {
   static async getReviewsByListingId(listingId) {
     const result = await db.query(
       `
-            SELECT * 
-            FROM reviews
-            WHERE listing_id = $1
+            SELECT u.id , r.listing_id, u.firstName, u.lastName, review, u.image_url, ra.rating
+            FROM reviews AS r
+            JOIN users AS u ON u.id = r.user_id
+            JOIN (
+              SELECT ratings.rating , ratings.user_id
+              FROM ratings
+              JOIN users ON users.id = ratings.user_id
+              WHERE listing_id = $1
+
+            ) AS ra ON ra.user_id = r.user_id
+            WHERE r.listing_id = $1
             `,
       [listingId]
     );

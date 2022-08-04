@@ -229,6 +229,33 @@ class Listing {
       [listingId]
     );
   }
+
+
+
+
+  static async filterYear(year){
+
+  }
+
+  static async filterModel(model){
+
+  } 
+
+  static async filterMake(make){
+
+  }
+
+  static async filterLocation(location){
+
+  }
+
+  static async filterPrice(min, max){
+
+  }
+
+  static async filterRating(rating){
+
+  }
 }
 
 module.exports = Listing;

@@ -118,6 +118,14 @@ class Order{
     
         return res;
       }
+
+      static async getUserPastOrders(userId){
+
+      }
+
+      static async getUserActiveOrders(userId){
+        
+      }
 }
 
 
