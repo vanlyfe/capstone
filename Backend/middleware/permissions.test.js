@@ -17,7 +17,6 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-
 describe("profilePermissions", () => {
   describe("Test userOwnsProfile", () => {
     test("Throws error if user doesn't own the account", async () => {
@@ -61,29 +60,27 @@ describe("listingPermissions", () => {
       const next = (err) => expect(err).toBeTruthy();
       await permissions.userOwnsListing(req, res, next);
     });
-  })
+  });
 
   describe("Test userIsNotListingOwner", () => {
     test("Throws error if user owns the listing", async () => {
-        expect.assertions(2);
+      expect.assertions(2);
       const res = { locals: { user: { id: testUserIds[5] } } };
       const req = { params: { listingId: testListingIds[4] } };
       const next = (err) => expect(err).toBeTruthy();
       await permissions.userIsNotListingOwner(req, res, next);
-
-    })
-  })
+    });
+  });
 });
 
-
 describe("reviewPermissions", () => {
-    describe("Test userOwnsReview", () => {
-        test("Throws error if user does not own the review", async () =>{
-            expect.assertions(1);
-            const res = { locals: { user: { id: testUserIds[1] } } };
-            const req = { params: { reviewId: testReviewIds[2] } };
-            const next = (err) => expect(err).toBeTruthy();
-            await permissions.userOwnsReview(req, res, next);
-        })
-    })
-})
+  describe("Test userOwnsReview", () => {
+    test("Throws error if user does not own the review", async () => {
+      expect.assertions(1);
+      const res = { locals: { user: { id: testUserIds[1] } } };
+      const req = { params: { reviewId: testReviewIds[2] } };
+      const next = (err) => expect(err).toBeTruthy();
+      await permissions.userOwnsReview(req, res, next);
+    });
+  });
+});

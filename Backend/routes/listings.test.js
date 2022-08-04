@@ -53,20 +53,18 @@ describe("POST listing", () => {
       });
     expect(res.statusCode).toEqual(200);
 
-    
-
     var { listing } = res.body;
 
-    listing = listing[0]
+    listing = listing[0];
 
     expect(listing).toEqual({
       model: "Tesla",
       user_id: expect.any(Number),
-      max_accomodation : 3,
+      max_accomodation: 3,
       location: "Canada",
-      image_url: "https://images.unsplash.com/photo-1539437829697-1b4ed5aebd19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
+      image_url:
+        "https://images.unsplash.com/photo-1539437829697-1b4ed5aebd19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
       price: 200,
-     
     });
   });
 

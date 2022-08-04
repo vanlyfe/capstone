@@ -41,14 +41,14 @@ describe("Test getOrdersByUserId", () => {
   });
 
   test("Returns nothing if user doesn't exist", async () => {
-    const orders = await Order.getOrdersByUserId(-1)
-    expect(orders.length).toEqual(0)
+    const orders = await Order.getOrdersByUserId(-1);
+    expect(orders.length).toEqual(0);
   });
 
   test("Returns nothing if user doesn't have any orders", async () => {
-    const userId = testUserIds[3]
-    const orders = await Order.getOrdersByUserId(userId)
-    expect(orders.length).toEqual(0)
+    const userId = testUserIds[3];
+    const orders = await Order.getOrdersByUserId(userId);
+    expect(orders.length).toEqual(0);
   });
 });
 /************************************** Order.getOrderById */
@@ -56,7 +56,7 @@ describe("Test getOrdersByUserId", () => {
 describe("Test getOrderById", () => {
   test("Can successfully get an order by id", async () => {
     const orderId = testOrderIds[0];
-    const order = await Order.getOrderById(orderId)
+    const order = await Order.getOrderById(orderId);
 
     expect(order[0]).toEqual({
       id: expect.any(Number),
@@ -70,82 +70,74 @@ describe("Test getOrderById", () => {
       startdate: expect.any(Date),
       enddate: expect.any(Date),
       listing_id: expect.any(Number),
-    })
+    });
   });
 
   test("Returns nothing if order doesn't exist", async () => {
-    const order = await Order.getOrderById(-1)
-    expect(order[0]).toBeFalsy()
+    const order = await Order.getOrderById(-1);
+    expect(order[0]).toBeFalsy();
   });
 });
 /************************************** Order.postOrder */
 
 describe("Test postOrder", () => {
   test("Can successfully post an order", async () => {
-    
-    const listingId = testListingIds[0]
-    const user = {id : testUserIds[1]}
+    const listingId = testListingIds[0];
+    const user = { id: testUserIds[1] };
     const orders = {
-      taxes : 10.11,
-      total : 10000,
-      guests : 1000,
-      startDate : 9/9/9,
-      endDate : 10/10/10
-    }
+      taxes: 10.11,
+      total: 10000,
+      guests: 1000,
+      startDate: 9 / 9 / 9,
+      endDate: 10 / 10 / 10,
+    };
 
-    const order = await Order.postOrder({listingId, orders, user})
-    
+    const order = await Order.postOrder({ listingId, orders, user });
 
-    
     expect(order[0]).toEqual({
-      id : expect.any(Number),
-      taxes : 10.11,
-      total : 10000,
-      guests : 1000,
-      user_id : expect.any(Number),
-      listing_id : expect.any(Number),
-      startdate : expect.any(Date),
-      enddate : expect.any(Date),
-      fees : null
-
-    })
+      id: expect.any(Number),
+      taxes: 10.11,
+      total: 10000,
+      guests: 1000,
+      user_id: expect.any(Number),
+      listing_id: expect.any(Number),
+      startdate: expect.any(Date),
+      enddate: expect.any(Date),
+      fees: null,
+    });
   });
 
   test("Throws error if required field is missing", async () => {
-    const listingId = testListingIds[0]
-    const user = {id : testUserIds[1]}
+    const listingId = testListingIds[0];
+    const user = { id: testUserIds[1] };
     const orders = {
-      guests : 1000,
-      startDate : 9/9/9,
-      endDate : 10/10/10
-    }
+      guests: 1000,
+      startDate: 9 / 9 / 9,
+      endDate: 10 / 10 / 10,
+    };
 
-    try{
-
-      await Order.postOrder({listingId, orders, user})
-
-    } catch(err){
-      expect(err instanceof BadRequestError).toBeTruthy()
+    try {
+      await Order.postOrder({ listingId, orders, user });
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
     }
   });
 
   test("Throws error if invalid field is provided", async () => {
-    const listingId = testListingIds[0]
-    const user = {id : testUserIds[1]}
+    const listingId = testListingIds[0];
+    const user = { id: testUserIds[1] };
     const orders = {
-      taxes : 10.11,
-      total : 10000,
-      guests : 1000,
-      endDate : 9/9/9,
-      startDate : 10/10/10
-    }
+      taxes: 10.11,
+      total: 10000,
+      guests: 1000,
+      endDate: 9 / 9 / 9,
+      startDate: 10 / 10 / 10,
+    };
 
-    try{
-
-      await Order.postOrder({listingId, orders, user})
-
-    } catch(err){
-      expect(err instanceof BadRequestError).toBeTruthy()
+    try {
+      await Order.postOrder({ listingId, orders, user });
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
     }
   });
 });

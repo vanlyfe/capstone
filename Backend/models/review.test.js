@@ -25,106 +25,100 @@ describe("Test getReviewsByListingId", () => {
     const listingId = testListingIds[1];
     const reviews = await Review.getReviewsByListingId(listingId);
     expect(reviews[0]).toEqual({
-      id : expect.any(Number),
-      review : "Its a decent place to stay for a night",
-      listing_id : expect.any(Number),
-      user_id : expect.any(Number),
-      createdat : expect.any(Date),
-      updatedat : expect.any(Date)
+      id: expect.any(Number),
+      review: "Its a decent place to stay for a night",
+      listing_id: expect.any(Number),
+      user_id: expect.any(Number),
+      createdat: expect.any(Date),
+      updatedat: expect.any(Date),
     });
   });
 
- test("Returns nothing if listingid doesn't exist", async () => {
-  const reviews = await Review.getReviewsByListingId(-1);
+  test("Returns nothing if listingid doesn't exist", async () => {
+    const reviews = await Review.getReviewsByListingId(-1);
 
-  expect(reviews.length).toEqual(0)
- });
+    expect(reviews.length).toEqual(0);
+  });
 
   test("Returns nothing if listing has no reviews", async () => {
-    const listingId = testListingIds[12]
+    const listingId = testListingIds[12];
 
     const reviews = await Review.getReviewsByListingId(listingId);
 
-  expect(reviews.length).toEqual(0)
-
+    expect(reviews.length).toEqual(0);
   });
 });
 
 /************************************** Review.getReviewsByUserId */
 describe("Test getReviewsByUserId", () => {
   test("Returns all reviews for a user", async () => {
-    const userId = testUserIds[1]
-    const reviews = await Review.getReviewsByUserId(userId)
-    expect(reviews.length).toEqual(4)
+    const userId = testUserIds[1];
+    const reviews = await Review.getReviewsByUserId(userId);
+    expect(reviews.length).toEqual(4);
   });
 
   test("Returns nothing if user doesn't exist", async () => {
-    const reviews = await Review.getReviewsByUserId(-1)
-    expect(reviews.length).toEqual(0)
+    const reviews = await Review.getReviewsByUserId(-1);
+    expect(reviews.length).toEqual(0);
   });
 
   test("Returns nothing if user has no reviews", async () => {
-    const userId = testUserIds[3]
-    const reviews = await Review.getReviewsByUserId(userId)
-    expect(reviews.length).toEqual(0)
+    const userId = testUserIds[3];
+    const reviews = await Review.getReviewsByUserId(userId);
+    expect(reviews.length).toEqual(0);
   });
 });
 
 /************************************** Review.postReview */
 describe("Test postReview", () => {
   test("Successfully post a new review", async () => {
-    const listingId = testListingIds[0]
+    const listingId = testListingIds[0];
     const reviews = {
-      review : "Just making a cool review"
-    }
+      review: "Just making a cool review",
+    };
 
     const user = {
-      id : testUserIds[2]
-    }
+      id: testUserIds[2],
+    };
 
-    const review =  await Review.postReview({listingId, reviews, user})
+    const review = await Review.postReview({ listingId, reviews, user });
     expect(review[0]).toEqual({
-      id : expect.any(Number),
-      listing_id : expect.any(Number),
-      user_id : expect.any(Number),
-      review : "Just making a cool review"
-    })
+      id: expect.any(Number),
+      listing_id: expect.any(Number),
+      user_id: expect.any(Number),
+      review: "Just making a cool review",
+    });
   });
 
   test("Throws bad request error if required field is missing", async () => {
-    const listingId = testListingIds[0]
-    const reviews = {
-     
-    }
+    const listingId = testListingIds[0];
+    const reviews = {};
 
     const user = {
-      id : testUserIds[2]
+      id: testUserIds[2],
+    };
+
+    try {
+      await Review.postReview({ listingId, reviews, user });
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
     }
-
-    try{
-      await Review.postReview({listingId, reviews,user})
-
-    } catch(err){
-      expect(err instanceof BadRequestError).toBeTruthy()
-    }
-
   });
 
   test("Throws bad request error if invalid review provided", async () => {
-    const listingId = testListingIds[0]
+    const listingId = testListingIds[0];
     const reviews = {
-      review: ""
-    }
+      review: "",
+    };
 
     const user = {
-      id : testUserIds[2]
-    }
+      id: testUserIds[2],
+    };
 
-    try{
-      await Review.postReview({listingId, reviews,user})
-
-    } catch(err){
-      expect(err instanceof BadRequestError).toBeTruthy()
+    try {
+      await Review.postReview({ listingId, reviews, user });
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
     }
   });
 });
@@ -133,37 +127,33 @@ describe("Test postReview", () => {
 describe("Test editReview", () => {
   test("Can successfully edit a review", async () => {
     const reviewUpdate = {
-      review : "An updated review"
-    }
+      review: "An updated review",
+    };
 
-    const reviewId = testReviewIds[0]
+    const reviewId = testReviewIds[0];
 
-  
-
-  const review = await Review.editReview({reviewUpdate, reviewId})
-  expect(review).toEqual({
-    id : expect.any(Number),
-    review : "An updated review",
-    createdat : expect.any(Date),
-    updatedat : expect.any(Date),
-    listing_id : expect.any(Number),
-    user_id : expect.any(Number)
-  })
+    const review = await Review.editReview({ reviewUpdate, reviewId });
+    expect(review).toEqual({
+      id: expect.any(Number),
+      review: "An updated review",
+      createdat: expect.any(Date),
+      updatedat: expect.any(Date),
+      listing_id: expect.any(Number),
+      user_id: expect.any(Number),
+    });
   });
 
   test("Throws bad request error if invalid review given", async () => {
     const reviewUpdate = {
-      review : ""
-    }
+      review: "",
+    };
 
-    const reviewId = testReviewIds[0]
+    const reviewId = testReviewIds[0];
 
-    try{
-      await Review.editReview({reviewUpdate,reviewId})
-
-    } catch(err){
-      expect(err instanceof BadRequestError).toBeTruthy()
+    try {
+      await Review.editReview({ reviewUpdate, reviewId });
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
     }
   });
 });
-
