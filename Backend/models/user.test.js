@@ -1,110 +1,172 @@
-// const { NotFoundError, BadRequestError, UnauthorizedError } = require("../utils/errors")
-// const User = require("./user")
-// const { commonBeforeAll, commonBeforeEach, commonAfterEach, commonAfterAll } = require("../tests/common")
+const {
+  NotFoundError,
+  BadRequestError,
+  UnauthorizedError,
+} = require("../utils/errors");
+const User = require("./user");
+const {
+  commonBeforeAll,
+  commonBeforeEach,
+  commonAfterEach,
+  commonAfterAll,
+} = require("../tests/common");
 
-// beforeAll(commonBeforeAll)
-// beforeEach(commonBeforeEach)
-// afterEach(commonAfterEach)
-// afterAll(commonAfterAll)
+beforeAll(commonBeforeAll);
+beforeEach(commonBeforeEach);
+afterEach(commonAfterEach);
+afterAll(commonAfterAll);
 
-// describe("User", () => {
-//   /************************************** User.login */
+/************************************** User.login */
 
-//   describe("Test login", () => {
-//     test("User can login successfully with proper credentials", async () => {
-//       const user = await User.login({ email: "lebron@james.io", password: "password1" })
+describe("Test login", () => {
+  test("User can login successfully with proper credentials", async () => {
+    const user = await User.login({
+      email: "etsehay@salesforce.com",
+      password: "password",
+    });
 
-//       expect(user).toEqual({
-//         id: expect.any(Number),
-//         username: "lebron",
-//         firstName: "LeBron",
-//         lastName: "James",
-//         email: "lebron@james.io",
-//         isAdmin: false,
-//         createdAt: expect.any(Date),
-//       })
-//     })
+    expect(user).toEqual({
+      id: expect.any(Number),
+      username: "etsehay",
+      firstName: "Edilawit",
+      lastName: "Tsehay",
+      email: "etsehay@salesforce.com",
+      birthdate: expect.any(Date),
+      createdAt: expect.any(Date),
+    });
+  });
 
-//     test("Unknown email throw unauthorized error", async () => {
-//       expect.assertions(1)
+  test("Unknown email throw unauthorized error", async () => {
+    try {
+      await User.login({ email: "somebody@else.io", password: "password" });
+    } catch (err) {
+      expect(err instanceof UnauthorizedError).toBeTruthy();
+    }
+  });
 
-//       try {
-//         await User.login({ email: "somebody@else.io", password: "password" })
-//       } catch (err) {
-//         expect(err instanceof UnauthorizedError).toBeTruthy()
-//       }
-//     })
+  test("Invalid credentials throw unauthorized error", async () => {
+    expect.assertions(1);
 
-//     test("Invalid credentials throw unauthorized error", async () => {
-//       expect.assertions(1)
+    try {
+      await User.login({ email: "etsehay@salesforce.com", password: "wrong" });
+    } catch (err) {
+      expect(err instanceof UnauthorizedError).toBeTruthy();
+    }
+  });
+});
 
-//       try {
-//         await User.login({ email: "lebron@james.io", password: "wrong" })
-//       } catch (err) {
-//         expect(err instanceof UnauthorizedError).toBeTruthy()
-//       }
-//     })
-//   })
+/************************************** User.register */
 
-//   /************************************** User.register */
+describe("Test register", () => {
+  const newUser = {
+    username: "new",
+    firstName: "Test",
+    lastName: "Tester",
+    email: "test@test.io",
+    password: "password",
+    birthdate: "9/9/2000",
+  };
 
-//   describe("Test register", () => {
-//     const newUser = {
-//       username: "new",
-//       firstName: "Test",
-//       lastName: "Tester",
-//       email: "test@test.io",
-//       isAdmin: false,
-//     }
+  test("User can successfully register with proper credentials", async () => {
+    const user = await User.register({ ...newUser });
+    expect(user).toEqual({
+      id: expect.any(Number),
+      username: newUser.username,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      email: newUser.email,
+      birthdate: expect.any(Date),
+      createdAt: expect.any(Date),
+    });
+  });
 
-//     test("User can successfully register with proper credentials", async () => {
-//       const user = await User.register({ ...newUser, password: "pw" })
-//       expect(user).toEqual({
-//         id: expect.any(Number),
-//         username: newUser.username,
-//         firstName: newUser.firstName,
-//         lastName: newUser.lastName,
-//         email: newUser.email,
-//         isAdmin: newUser.isAdmin,
-//         createdAt: expect.any(Date),
-//       })
-//     })
+  test("Registering with duplicate email throws error", async () => {
+    newUser.email = "votieno@salesforce.com";
 
-//     test("Registering with duplicate email throws error", async () => {
-//       expect.assertions(1)
+    try {
+      await User.register({
+        ...newUser,
+      });
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
+    }
+  });
 
-//       try {
-//         await User.register({
-//           ...newUser,
-//           password: "pw",
-//         })
-//         await User.register({
-//           ...newUser,
-//           password: "pw",
-//         })
-//       } catch (err) {
-//         expect(err instanceof BadRequestError).toBeTruthy()
-//       }
-//     })
+  test("Registering with duplicate username throws error", async () => {
+    newUser.username = "jbosire";
 
-//     test("Registering with duplicate username throws error", async () => {
-//       expect.assertions(1)
+    try {
+      await User.register({
+        ...newUser,
+      });
+    } catch (err) {
+      expect(err instanceof BadRequestError).toBeTruthy();
+    }
+  });
 
-//       try {
-//         await User.register({
-//           ...newUser,
-//           password: "pw",
-//         })
-//         await User.register({
-//           ...newUser,
-//           email: "different@different.io",
-//           password: "pw",
-//         })
-//       } catch (err) {
-//         expect(err instanceof BadRequestError).toBeTruthy()
-//       }
-//     })
-//   })
+  test("Throws bad request error if registering with invalid email", async () => {});
+
+  test("Throws bad request error if required credentials are missing", async () => {});
+
+  test("Throw bad request error if younger than 18", async () => {});
+});
+
+/************************************** User.getUserRating */
+
+describe("Test getUserRating", () => {
+  test("Returns average of user's listings ratings", async () => {});
+
+  test("Returns nothing if invalid id", async () => {});
+});
+
+/************************************** User.fetchUserByEmail */
+
+describe("Test fetchUserByEmail", () => {
+  test("Can fetch a user by email", async () => {});
+
+  test("Unknown email returns nothing", async () => {});
+
+  test("Throws bad request error if invalid email", async () => {});
+});
+
+/************************************** User.fetchUserById */
+
+describe("Test fetchUserById", () => {
+  test("Can fetch a user by id", async () => {});
+
+  test("Unknown id returns nothing", async () => {});
+});
+
+/************************************** User.checkUsername */
+
+describe("Test checkUsername", () => {
+  test("Can fetch a user by username", async () => {});
+
+  test("Unknown username returns nothing", async () => {});
+});
+
+/************************************** User.editUser */
+describe("Test editUser", () => {
+  test("User can successfully edit their profile", async () => {});
+
+  test("Throws bad request error if invalid email provided", async () => {});
+
+  test("Throws bad request error if duplicate email", async () => {});
+
+  test("Throws bad request error if duplicate username", async () => {});
+
+  test("Throws bad request error if invalid credentials provided", async () => {});
+});
+
+/************************************** User.deleteUser */
+describe("Test deleteUser", () => {
+  test("User can successfully delete account", async () => {});
+});
+
+/************************************** User.authenricatebirthdate */
+describe("Test authenticateBirthdate", () => {
+  test("Throws bad request error if birthdate is less than 18 years ago", async () => {});
+});
 
 //   /************************************** fetchUserByEmail */
 
@@ -153,4 +215,3 @@
 //       expect(user).toBeFalsy()
 //     })
 //   })
-// })

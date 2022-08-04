@@ -13,6 +13,7 @@ class User {
       username: user.username,
       birthdate: user.birthdate,
       createdAt : user.createdat
+  
     
     };
   }
