@@ -1,10 +1,6 @@
 const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
-<<<<<<< HEAD
-const User = require("./user")
-=======
 const User = require("./user");
->>>>>>> main
 
 class Review {
   static async getReviewsByListingId(listingId) {
@@ -30,17 +26,9 @@ class Review {
     return res;
   }
 
-<<<<<<< HEAD
-
-    static async getReviewsByUserId(userId){
-      
-      var result = await db.query(
-        `
-=======
   static async getReviewsByUserId(userId) {
     var result = await db.query(
       `
->>>>>>> main
         SELECT r.user_id AS reveiwer_id, u.id AS host_id, rater.firstName, rater.lastName, rater.image_url, rater.updatedAt, r.review AS review, rates.rating AS rating, r.id AS review_id
         FROM reviews AS r
         JOIN listings AS l ON l.id = r.listing_id
@@ -68,30 +56,6 @@ class Review {
         
         
         
-<<<<<<< HEAD
-        ` , [userId]
-      )
-
-      
-
-      var res = result.rows
-      var acc = []
-      var ans = []
-     
-
-      res.forEach((elem) => {
-       
-        if(!acc.includes(elem.review_id)){
-          acc.push(elem.review_id)
-          ans.push(elem)
-
-        }
-         
-      })
-
-
-      return ans
-=======
         `,
       [userId]
     );
@@ -121,7 +85,6 @@ class Review {
 
     if (reviews.review.length < 1) {
       throw new BadRequestError("Kindly provide a review");
->>>>>>> main
     }
 
     const result = await db.query(
