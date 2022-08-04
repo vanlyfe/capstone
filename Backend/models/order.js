@@ -1,6 +1,7 @@
 const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
 
+<<<<<<< HEAD
 
 class Order{
     
@@ -8,81 +9,72 @@ class Order{
     static async getOrdersByUserId(userId){
         const result = await db.query(
             `
+=======
+class Order {
+  static async getOrdersByUserId(userId) {
+    const result = await db.query(
+      `
+>>>>>>> main
             SELECT * 
             FROM orders
             WHERE user_id = $1
             
             
-            `, [userId]
-        )
+            `,
+      [userId]
+    );
 
+    const res = result.rows;
+    return res;
+  }
 
-        const res = result.rows
-        return res
-
-    }
-    
-    static async getOrderById(id){
-        const result = await db.query(
-            `
+  static async getOrderById(id) {
+    const result = await db.query(
+      `
 
             SELECT *
             FROM orders
             WHERE id = $1
             
-            `, [id]
-        )
+            `,
+      [id]
+    );
 
+    const res = result.rows;
 
-        const res = result.rows
+    return res;
+  }
 
-        return res
+  static async postOrder({ listingId, orders, user }) {
+    const requiredFields = ["taxes", "total", "guests", "startDate", "endDate"];
+
+    requiredFields.forEach((field) => {
+      if (!orders.hasOwnProperty(field)) {
+        throw new BadRequestError(`Missing ${field} in request body.`);
+      }
+    });
+
+    if (orders.taxes === 0) {
+      throw new BadRequestError("Taxes cannot be zero");
     }
 
-    static async postOrder({listingId, orders, user }) {
-        const requiredFields = [
-          "taxes",
-          "total",
-          "guests",
-          "startDate",
-          "endDate",
-          
-          
-        ];
-    
-        requiredFields.forEach((field) => {
-          if (!orders.hasOwnProperty(field)) {
-            throw new BadRequestError(`Missing ${field} in request body.`);
-          }
-        });
-    
-        if(orders.taxes === 0){
-            throw new BadRequestError("Taxes cannot be zero")
-    
-        }
-    
-        if(orders.total === 0){
-            throw new BadRequestError("Total cannot be zero")
-    
-        }
-    
-        if(orders.guests < 1){
-            throw new BadRequestError("Cannot have less than one guest")
-    
-        }
+    if (orders.total === 0) {
+      throw new BadRequestError("Total cannot be zero");
+    }
 
-        const start = new Date(orders.startDate)
-        const end = new Date(orders.endDate)
+    if (orders.guests < 1) {
+      throw new BadRequestError("Cannot have less than one guest");
+    }
 
+    const start = new Date(orders.startDate);
+    const end = new Date(orders.endDate);
 
-        if(start > end){
-            throw new BadRequestError("Start date cannot be after end date")
-        }
-    
-        
-    
-        const result = await db.query(
-          `
+    if (start > end) {
+      throw new BadRequestError("Start date cannot be after end date");
+    }
+
+    const result = await db.query(
+      `
               INSERT INTO orders(
                     taxes,
                     total,
@@ -98,29 +90,54 @@ class Order{
                VALUES ($1,$2,$3,$4,$5,$6,$7, $8)
                RETURNING id, taxes, total, guests, user_id, listing_id, startDate, endDate, fees;
               `,
-          [
-            orders.taxes,
-            orders.total, 
-            orders.guests,
-            user.id,
-            listingId,
-            start,
-            end,
-            orders.fees
+      [
+        orders.taxes,
+        orders.total,
+        orders.guests,
+        user.id,
+        listingId,
+        start,
+        end,
+        orders.fees,
+      ]
+    );
 
+    const res = result.rows;
 
+    return res;
+  }
 
-            
-          ]
-        );
-    
-        const res = result.rows;
-    
-        return res;
-      }
+  static async getUserPastOrders(userId) {
+    const result = await db.query(
+      `
+          SELECT * 
+          FROM orders
+          WHERE user_id = $1 AND NOW() > endDate
+          
+          
+          `,
+      [userId]
+    );
+
+    const res = result.rows;
+    return res;
+  }
+
+  static async getUserActiveOrders(userId) {
+    const result = await db.query(
+      `
+          SELECT * 
+          FROM orders
+          WHERE user_id = $1 AND NOW() < endDate
+          
+          
+          `,
+      [userId]
+    );
+
+    const res = result.rows;
+    return res;
+  }
 }
-
-
-
 
 module.exports = Order;

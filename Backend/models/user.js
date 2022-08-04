@@ -11,12 +11,16 @@ class User {
       lastName: user.lastname,
       email: user.email,
       username: user.username,
-      image_url: user.image_url,
-      bio: user.bio,
-      gender: user.gender,
-      location: user.location,
       birthdate: user.birthdate,
+<<<<<<< HEAD
       rating : user.rating
+=======
+      createdAt : user.createdat,
+      image_url : user.image_url
+
+  
+    
+>>>>>>> main
     };
   }
 
@@ -138,7 +142,11 @@ class User {
             rating
         )
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
+<<<<<<< HEAD
         RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt, rating;
+=======
+        RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt, rating, image_url;
+>>>>>>> main
         `,
       [
         credentials.firstName,
@@ -154,9 +162,17 @@ class User {
     );
 
     var user = result.rows[0];
+<<<<<<< HEAD
     user = User.makePublicUser(user)
     const rate = await this.getUserRating(user.id)
     user.rating = rate ? rate.avg : null
+=======
+    console.log(user)
+    user = User.makePublicUser(user)
+    
+    // const rate = await this.getUserRating(user.id)
+    // user.rating = rate ? rate.avg : null
+>>>>>>> main
     return user;
   }
 
@@ -259,7 +275,7 @@ class User {
         ` = $1,
                        updatedAt = NOW()
                    WHERE id = $2
-                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, updatedAt;`;
+                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, image_url, updatedAt;`;
 
       const result = await db.query(query, [
         key === 'password' ? hashedPassword : value,

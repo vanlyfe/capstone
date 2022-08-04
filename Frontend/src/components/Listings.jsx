@@ -105,9 +105,27 @@ export default function Listings() {
                 <TextField {...params} label="Location" />
               )}
             />
+            <Autocomplete
+              disablePortal
+              id="locations-auto-complete"
+              options={locations}
+              sx={{ width: "90%", mt: 2 }}
+              renderInput={(params) => <TextField {...params} label="Model" />}
+            />
+            <Typography variant="p" sx={{ width: "90%", mt: 2 }}>
+              <TextField
+                id="outlined-number"
+                options={locations}
+                label="Year"
+                type="number"
+                
+              />
+            </Typography>
+
             <Typography variant="p" align="center" mt={2}>
               {`Price Range`}
             </Typography>
+
             <Box
               sx={{
                 display: "flex",
@@ -115,12 +133,17 @@ export default function Listings() {
                 alignItems: "center",
               }}
             >
+<<<<<<< HEAD
               <FormControl sx={{ mt: 2, width: "40%" }}>
                 <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
+=======
+              <FormControl  sx={{ mt: 2, width: "40%" }}>
+                <InputLabel  htmlFor="outlined-adornment-amount">Min</InputLabel>
+>>>>>>> main
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  // value={5}
-                  // onChange={handleChange('amount')}
+                  
+                   
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -132,8 +155,7 @@ export default function Listings() {
                 <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  // value={5}
-                  // onChange={handleChange('amount')}
+                  type="number"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -141,6 +163,13 @@ export default function Listings() {
                 />
               </FormControl>
             </Box>
+            <Button
+              className="filterButton"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              SEARCH
+            </Button>
           </Box>
 
           {/* <FormControl sx={{ ml: 3, my: 2 }}>
@@ -271,7 +300,7 @@ export default function Listings() {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Typography gutterBottom variant="h5" component="div">
-                      {listing.model}
+                      {listing.make  + " " + listing.model + " " + listing.year}
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
                       <Typography variant="body2" color="text.secondary">

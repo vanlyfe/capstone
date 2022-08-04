@@ -5,7 +5,23 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest -i",
+    "test:middleware:security" : "jest -i middleware/security.test.js",
+    "test:middleware:permissions": "jest -i middleware/permissions.test.js",
+    "test:routes:auth": "jest -i routes/auth.test.js",
+    "test:routes:listings": "jest -i routes/listings.test.js",
+    "test:routes:orders": "jest -i routes/orders.test.js",
+    "test:routes:ratings": "jest -i routes/ratings.test.js",
+    "test:routes:reviews": "jest -i routes/reviews.test.js",
+    "test:models:listing": "jest -i models/listing.test.js",
+    "test:models:order": "jest -i models/order.test.js",
+    "test:models:rating": "jest -i models/rating.test.js",
+    "test:models:review": "jest -i models/review.test.js",
+    "test:models:user": "jest -i models/user.test.js",
+    "test:utils:tokens" : "jest -i utils/tokens.test.js",
+    "test:app" : "jest -i app.test.js",
+    "test:config" : "jest -i config.test.js"
+
   },
   "keywords": [],
   "author": "",
@@ -20,5 +36,9 @@
     "morgan": "^1.10.0",
     "nodemon": "^2.0.19",
     "pg": "^8.7.3"
+  },
+  "devDependencies": {
+    "jest": "^28.1.3",
+    "supertest": "^6.2.4"
   }
 }

@@ -23,6 +23,36 @@ router.get(
 );
 
 router.get(
+  "/user/past/:userId",
+  
+  async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const orders = await Order.getUserPastOrders(userId);
+
+      return res.status(200).json({ orders: orders });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
+  "/user/active/:userId",
+  
+  async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+      const orders = await Order.getUserActiveOrders(userId);
+
+      return res.status(200).json({ orders: orders });
+    } catch (error) {
+      next(error);
+    }
+  }
+);
+
+router.get(
   "/:orderId",
   security.requireAuthenticatedUser,
   permissions.userOwnsOrder,
