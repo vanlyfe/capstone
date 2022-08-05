@@ -1,5 +1,5 @@
-const db = require('../db');
-const { BadRequestError } = require('../utils/errors');
+const db = require("../db");
+const { BadRequestError } = require("../utils/errors");
 
 class Listing {
   static async getListings() {
@@ -111,12 +111,12 @@ class Listing {
 
   static async postListing({ listings, user }) {
     const requiredFields = [
-      'price',
-      'location',
-      'max_accomodation',
-      'model',
-      'make',
-      'year'
+      "price",
+      "location",
+      "max_accomodation",
+      "model",
+      "make",
+      "year",
     ];
 
     requiredFields.forEach((field) => {
@@ -126,11 +126,11 @@ class Listing {
     });
 
     if (listings.location.length < 1) {
-      throw new BadRequestError('No location provided');
+      throw new BadRequestError("No location provided");
     }
 
     if (listings.model.length < 1) {
-      throw new BadRequestError('No car model provided');
+      throw new BadRequestError("No car model provided");
     }
 
     // if (listings.image_url.length < 1) {
@@ -138,12 +138,12 @@ class Listing {
     // }
 
     if (listings.make.length < 1) {
-      throw new BadRequestError('No car make provided');
+      throw new BadRequestError("No car make provided");
     }
 
     if (listings.max_accomodation < 1) {
       throw new BadRequestError(
-        'Maximum vehicle accomodation cannot be less than 1'
+        "Maximum vehicle accomodation cannot be less than 1"
       );
     }
 
@@ -184,19 +184,18 @@ class Listing {
 
   static async editListing({ listingUpdate, listingId }) {
     if (listingUpdate.location?.length < 1) {
-      throw new BadRequestError('Invalid location');
+      throw new BadRequestError("Invalid location");
     }
 
     if (listingUpdate?.max_accomodation < 1) {
       throw new BadRequestError(
-        'Vehicle should be able to accomodate at least one person'
+        "Vehicle should be able to accomodate at least one person"
       );
     }
 
     if (listingUpdate.model?.length < 1) {
-      throw new BadRequestError('Invalid vehicle model');
+      throw new BadRequestError("Invalid vehicle model");
     }
-
 
     var results = {};
 
@@ -230,24 +229,70 @@ class Listing {
     );
   }
 
-
-
-  static async filterListings(search){
-    const minPrice = search.minPrice
-    const maxPrice = search.maxPrice
-    const minRating = search.minRating
-    const location = search.location
-    const model = search.model
-
-    
-
-
+  static intersection(first, second) {
+    if (!first && !second) {
+      return null;
+    } else if (!first) {
+      return second;
+    } else if (!second) {
+      return first;
+    } else {
+      let intersection = first.filter((a) =>
+        second.some((b) => a.id === b.id)
+      );
+      return intersection;
+    }
   }
 
+  static async filterListings(search) {
+    if (
+      search.minPrice === "" &&
+      search.maxPrice === "" &&
+      search.minRating === "" &&
+      search.model === "" &&
+      search.location === "" &&
+      search.year === ""
+    ) {
+      throw new BadRequestError("Must have at least one filter variable");
+    }
 
-  static async filterYear(year){
+    const minPrice = search.minPrice;
+    const maxPrice = search.maxPrice;
+
+    var price =
+      minPrice && maxPrice
+        ? await this.filterPrice(minPrice, maxPrice)
+        : minPrice && !maxPrice
+        ? await this.filterPrice(minPrice, null)
+        : !minPrice && maxPrice
+        ? await this.filterPrice(null, maxPrice)
+        : null;
+
+    var minRating =
+      search.minRating === ""
+        ? null
+        : await this.filterRating(search.minRating);
+    var location =
+      search.location === ""
+        ? null
+        : await this.filterLocation(search.location);
+
+    var year = search.year === "" ? null : await this.filterYear(search.year);
+    var model =
+      search.model === "" ? null : await this.filterMake(search.model);
     
-    const result = await db.query(`
+
+    var res = this.intersection(price, minRating);
+    res = this.intersection(res, location);
+    res = this.intersection(res, model);
+    res = this.intersection(res, year)
+
+    return res;
+  }
+
+  static async filterYear(year) {
+    const result = await db.query(
+      `
            SELECT *
              FROM listings
              LEFT JOIN (
@@ -257,26 +302,23 @@ class Listing {
                     GROUP BY listing_id
                 ) AS acc ON acc.listing_id = listings.id
             WHERE year =` +
-                year +
-                    `;
+        year +
+        `;
 
          
 
    
-        `);
-
+        `
+    );
 
     const res = result.rows;
 
     return res;
-
   }
 
-  
-
-  static async filterMake(make){
-
-    const result = await db.query(`
+  static async filterMake(make) {
+    const result = await db.query(
+      `
            SELECT * 
              FROM listings
              LEFT JOIN (
@@ -291,19 +333,18 @@ class Listing {
      
 
    
-        `, [ make.toLowerCase()]);
-
-        
+        `,
+      [make.toLowerCase()]
+    );
 
     const res = result.rows;
-    
-    return res;
 
+    return res;
   }
 
-  static async filterLocation(location){
-   
-    const result = await db.query(`
+  static async filterLocation(location) {
+    const result = await db.query(
+      `
            SELECT * 
              FROM listings
              LEFT JOIN (
@@ -317,16 +358,16 @@ class Listing {
           
 
    
-        `, [location.toLowerCase()]);
-
+        `,
+      [location.toLowerCase()]
+    );
 
     const res = result.rows;
 
     return res;
-
   }
 
-  static async filterPrice(min, max){
+  static async filterPrice(min, max) {
     const result = await db.query(`
            SELECT * 
              FROM listings
@@ -336,22 +377,23 @@ class Listing {
                     LEFT JOIN ratings ON ratings.listing_id = listings.id
                     GROUP BY listing_id
                 ) AS acc ON acc.listing_id = listings.id
-            WHERE price > ${min ? min : 0} AND price < ${max ? max : Number.MAX_VALUE};
+            WHERE price > ${min ? min : 0} AND price < ${
+      max ? max : Number.MAX_VALUE
+    };
 
           
 
    
         `);
 
-
     const res = result.rows;
 
     return res;
-
   }
 
-  static async filterRating(rating){
-    const result = await db.query(`
+  static async filterRating(rating) {
+    const result = await db.query(
+      `
            SELECT * 
              FROM listings
              LEFT JOIN (
@@ -361,19 +403,18 @@ class Listing {
                     GROUP BY listing_id
                 ) AS acc ON acc.listing_id = listings.id
             WHERE rating >` +
-                rating +
-                    `;
+        rating +
+        `;
 
           
 
    
-        `);
-
+        `
+    );
 
     const res = result.rows;
 
     return res;
-
   }
 }
 

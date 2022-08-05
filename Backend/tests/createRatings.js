@@ -35,6 +35,16 @@ const createRatings = async (userIds, listingIds) => {
       3,
       ${listingIds[4]},
       ${userIds[0]}
+    ),
+    (
+      3,
+      ${listingIds[1]},
+      ${userIds[1]}
+    ),
+    (
+      3,
+      ${listingIds[1]},
+      ${userIds[2]}
     );
     `
   )

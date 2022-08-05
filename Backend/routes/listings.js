@@ -2,6 +2,7 @@ const express = require("express");
 const Listing = require("../models/listing");
 const security = require("../middleware/security");
 const permissions = require("../middleware/permissions");
+
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
@@ -23,21 +24,21 @@ router.get("/best", async (req, res, next) => {
   }
 });
 
-
-router.get("/filter", async (req, res, next) => {
-  try{
+router.post("/filter", async (req, res, next) => {
+  try {
     
-    var listings = await Listing.filterLocation("SEatTLE");
-    return res.status(200).json({listings : listings})
-
-  } catch(error){
-    next(error)
+   // const search = {minPrice : "", maxPrice : "50", location : "", model : "Chevrolet", year : "", minRating: ""}
+   // var listings = await Listing.filterListings(search)
+    var listings = await Listing.filterListings(req.body);
+    return res.status(200).json({ listings: listings });
+  } catch (error) {
+    next(error);
   }
-})
+});
 
 router.get(
   "/user/:userId",
- 
+
   async (req, res, next) => {
     try {
       var userId = req.params.userId;
@@ -64,7 +65,7 @@ router.get("/:listingId", async (req, res, next) => {
 router.post("/", security.requireAuthenticatedUser, async (req, res, next) => {
   try {
     const { user } = res.locals;
-  
+
     const listings = req.body;
     const listing = await Listing.postListing({ listings, user });
     return res.status(200).json({ listing: listing });

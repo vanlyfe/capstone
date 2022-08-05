@@ -24,14 +24,7 @@ describe("Test getReviewsByListingId", () => {
   test("Can successfully fetch all reviews for a listing", async () => {
     const listingId = testListingIds[1];
     const reviews = await Review.getReviewsByListingId(listingId);
-    expect(reviews[0]).toEqual({
-      id: expect.any(Number),
-      review: "Its a decent place to stay for a night",
-      listing_id: expect.any(Number),
-      user_id: expect.any(Number),
-      createdat: expect.any(Date),
-      updatedat: expect.any(Date),
-    });
+    expect(reviews.length).toEqual(2);
   });
 
   test("Returns nothing if listingid doesn't exist", async () => {

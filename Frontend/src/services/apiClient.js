@@ -110,6 +110,8 @@ class ApiClient {
     });
   }
 
+  
+
   //POST requests
 
   async postListing(listing) {
@@ -118,6 +120,14 @@ class ApiClient {
       method: `POST`,
       data: listing,
     });
+  }
+
+  async filterListings(data){
+    return await this.request({
+      endpoint : `listing/filter`,
+      method: `POST`,
+      data : data,
+    })
   }
 
   // DELETE requests

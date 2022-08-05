@@ -31,6 +31,7 @@ describe("POST /auth/login", () => {
         firstName: "Ammar",
         lastName: "Fakih",
         email: "afakih@salesforce.com",
+        image_url: "https://www.fodors.com/wp-content/uploads/2022/04/jake-blucker-8LlJNFLTEm0-unsplash.jpg",
         birthdate: expect.any(String),
         createdAt: expect.any(String),
       },
@@ -93,6 +94,7 @@ describe("POST /auth/register", () => {
         email: "new@email.com",
         createdAt: expect.any(String),
         birthdate: expect.any(String),
+        image_url : null
       },
     });
   });
@@ -214,6 +216,7 @@ describe("PUT auth/:userId", () => {
       username: "etsehay",
       location: null,
       birthdate: expect.any(String),
+      image_url: "https://i.natgeofe.com/n/0652a07e-42ed-4f3d-b2ea-0538de0c5ba3/seattle-travel_3x2.jpg",
       gender: "female",
       createdat: expect.any(String),
       updatedat: expect.any(String),
