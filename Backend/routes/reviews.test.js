@@ -68,18 +68,7 @@ describe("GET /review/user/:userId", () => {
     expect(res.statusCode).toEqual(200);
     var { reviews } = res.body;
 
-    expect(reviews[0]).toEqual({
-      firstname: "Vernon",
-      lastname: "Otieno",
-      image_url:
-        "https://i.natgeofe.com/k/5b396b5e-59e7-43a6-9448-708125549aa1/new-york-statue-of-liberty_16x9.jpg",
-      updatedat: expect.any(String),
-      host_id: expect.any(Number),
-      reveiwer_id: expect.any(Number),
-      rating: expect.any(Number),
-      review_id: expect.any(Number),
-      review: "Its a decent place to stay for a night",
-    });
+    expect(reviews.length).toEqual(4);
   });
 
   test("Anonymous user can fetch a user's reviews", async () => {
@@ -89,18 +78,7 @@ describe("GET /review/user/:userId", () => {
     expect(res.statusCode).toEqual(200);
     var { reviews } = res.body;
 
-    expect(reviews[0]).toEqual({
-      firstname: "Vernon",
-      lastname: "Otieno",
-      image_url:
-        "https://i.natgeofe.com/k/5b396b5e-59e7-43a6-9448-708125549aa1/new-york-statue-of-liberty_16x9.jpg",
-      updatedat: expect.any(String),
-      host_id: expect.any(Number),
-      reveiwer_id: expect.any(Number),
-      rating: expect.any(Number),
-      review_id: expect.any(Number),
-      review: "Its a decent place to stay for a night",
-    });
+    expect(reviews.length).toEqual(4);
   });
 });
 

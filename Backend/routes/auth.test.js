@@ -7,7 +7,7 @@ const {
   commonAfterEach,
   commonAfterAll,
   testTokens,
-  testUserIds
+  testUserIds,
 } = require("../tests/common");
 
 beforeAll(commonBeforeAll);
@@ -152,136 +152,123 @@ describe("GET auth/me", () => {
     const res = await request(app)
       .get(`/auth/me`)
       .set("authorization", `Bearer ${testTokens.vernonToken}`);
-    
-    expect(res.statusCode).toEqual(200)
-    
 
-    const {user} = res.body
-    expect(user.firstName).toEqual("Vernon")
-    expect(user.lastName).toEqual("Otieno")
+    expect(res.statusCode).toEqual(200);
+
+    const { user } = res.body;
+    expect(user.firstName).toEqual("Vernon");
+    expect(user.lastName).toEqual("Otieno");
   });
 
   test("Throws unauthorized error when anonymous user tries to access user account", async () => {
-    const res = await request(app)
-      .get(`/auth/me`)
-      
-    
-    expect(res.statusCode).toEqual(401)
+    const res = await request(app).get(`/auth/me`);
+
+    expect(res.statusCode).toEqual(401);
   });
 });
 
 describe("GET auth/:userId", () => {
   test("Authed user can fetch a user's profile details by user id", async () => {
-    const userId = testUserIds[1]
+    const userId = testUserIds[1];
     const res = await request(app)
       .get(`/auth/${userId}`)
       .set("authorization", `Bearer ${testTokens.ammarToken}`);
-    
-    expect(res.statusCode).toEqual(200)
 
-    const {user} = res.body
-    expect(user.firstname).toEqual("Vernon")
-    expect(user.lastname).toEqual("Otieno")
+    expect(res.statusCode).toEqual(200);
+
+    const { user } = res.body;
+    expect(user.firstname).toEqual("Vernon");
+    expect(user.lastname).toEqual("Otieno");
   });
 
   test("Anonymous user can fetch a user's profile details by user id", async () => {
-    const userId = testUserIds[1]
-    const res = await request(app)
-      .get(`/auth/${userId}`)
+    const userId = testUserIds[1];
+    const res = await request(app).get(`/auth/${userId}`);
 
-    
-    expect(res.statusCode).toEqual(200)
+    expect(res.statusCode).toEqual(200);
 
-    const {user} = res.body
-    expect(user.firstname).toEqual("Vernon")
-    expect(user.lastname).toEqual("Otieno")
+    const { user } = res.body;
+    expect(user.firstname).toEqual("Vernon");
+    expect(user.lastname).toEqual("Otieno");
   });
 });
 
 describe("PUT auth/:userId", () => {
   test("Authed user can update their own profile", async () => {
-    const userId = testUserIds[2]
+    const userId = testUserIds[2];
 
     const res = await request(app)
       .put(`/auth/${userId}`)
-      .set("authorization", `Bearer ${testTokens.edilToken}`).send({firstName : "NotEdil", lastName : "NotTsehay"});
-    
-    expect(res.statusCode).toEqual(200)
+      .set("authorization", `Bearer ${testTokens.edilToken}`)
+      .send({ firstName: "NotEdil", lastName: "NotTsehay" });
 
-    const {user} = res.body
+    expect(res.statusCode).toEqual(200);
 
+    const { user } = res.body;
 
     expect(user).toEqual({
-      id : expect.any(Number),
-      firstname : "NotEdil",
-      lastname : "NotTsehay",
-      email : "etsehay@salesforce.com",
-      username : "etsehay",
-      location : null,
-      birthdate : expect.any(String),
-      gender : "female",
-      createdat : expect.any(String),
-      updatedat : expect.any(String),
-      rating : expect.any(Number)
-
-
-    })
-
+      id: expect.any(Number),
+      firstname: "NotEdil",
+      lastname: "NotTsehay",
+      email: "etsehay@salesforce.com",
+      username: "etsehay",
+      location: null,
+      birthdate: expect.any(String),
+      gender: "female",
+      createdat: expect.any(String),
+      updatedat: expect.any(String),
+      rating: expect.any(Number),
+    });
   });
 
   test("Throws forbidden error when authed user tries to update other user's profile", async () => {
-    const userId = testUserIds[2]
+    const userId = testUserIds[2];
 
     const res = await request(app)
       .put(`/auth/${userId}`)
-      .set("authorization", `Bearer ${testTokens.vernonToken}`).send({firstName : "NotEdil", lastName : "NotTsehay"});
-    
-    expect(res.statusCode).toEqual(403)
+      .set("authorization", `Bearer ${testTokens.vernonToken}`)
+      .send({ firstName: "NotEdil", lastName: "NotTsehay" });
 
-    
+    expect(res.statusCode).toEqual(403);
   });
 
   test("Throws unauthorized error when anonymous user tries to update a profile", async () => {
-    const userId = testUserIds[2]
+    const userId = testUserIds[2];
 
     const res = await request(app)
       .put(`/auth/${userId}`)
-      .send({firstName : "NotEdil", lastName : "NotTsehay"});
-    
-    expect(res.statusCode).toEqual(401)
+      .send({ firstName: "NotEdil", lastName: "NotTsehay" });
 
-   
+    expect(res.statusCode).toEqual(401);
   });
 });
 
 describe("DELETE auth/:userId", () => {
   test("Authed user can delete their own account", async () => {
-    const userId = testUserIds[2]
+    const userId = testUserIds[2];
 
     const res = await request(app)
       .delete(`/auth/${userId}`)
-      .set("authorization", `Bearer ${testTokens.edilToken}`)
-    
-    expect(res.statusCode).toEqual(200)
+      .set("authorization", `Bearer ${testTokens.edilToken}`);
+
+    expect(res.statusCode).toEqual(200);
   });
 
   test("Throws forbidden error when authed user tries to delete other user's account", async () => {
-    const userId = testUserIds[2]
+    const userId = testUserIds[2];
 
     const res = await request(app)
       .delete(`/auth/${userId}`)
-      .set("authorization", `Bearer ${testTokens.ammarToken}`)
-    
-    expect(res.statusCode).toEqual(403)
+      .set("authorization", `Bearer ${testTokens.ammarToken}`);
+
+    expect(res.statusCode).toEqual(403);
   });
 
   test("Throws unauthorized error when anonymous user tries to delete an account", async () => {
-    const userId = testUserIds[2]
+    const userId = testUserIds[2];
 
-    const res = await request(app)
-      .delete(`/auth/${userId}`)
-      
-    
-    expect(res.statusCode).toEqual(401)
+    const res = await request(app).delete(`/auth/${userId}`);
+
+    expect(res.statusCode).toEqual(401);
   });
 });

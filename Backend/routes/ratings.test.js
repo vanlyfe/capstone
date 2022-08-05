@@ -58,18 +58,15 @@ describe("POST /rating/:listingId", () => {
       .send({ rating: 3.9 });
     expect(res.statusCode).toEqual(200);
 
-
     const { rating } = res.body;
-    
 
     expect(rating[0]).toEqual({
-        user_id : expect.any(Number),
-        listing_id : expect.any(Number),
-        id : expect.any(Number),
-        rating : 3.9
+      user_id: expect.any(Number),
+      listing_id: expect.any(Number),
+      id: expect.any(Number),
+      rating: 3.9,
     });
   });
-
 
   test("Throws forbidden error when authed user tries to rate their own listing", async () => {
     const listingId = testListingIds[1];

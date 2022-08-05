@@ -128,6 +128,7 @@ class Listing {
       'max_accomodation',
       'model',
       'make',
+      'year'
     ];
 
     requiredFields.forEach((field) => {
@@ -300,6 +301,32 @@ class Listing {
 
       console.log(respon);
     }
+
+
+
+
+  static async filterYear(year){
+
+  }
+
+  static async filterModel(model){
+
+  } 
+
+  static async filterMake(make){
+
+  }
+
+  static async filterLocation(location){
+
+  }
+
+  static async filterPrice(min, max){
+
+  }
+
+  static async filterRating(rating){
+
   }
 }
 
