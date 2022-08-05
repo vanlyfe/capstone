@@ -107,7 +107,7 @@ describe("Test postListing", () => {
       id: testUserIds[3],
     };
 
-    const res = await Listing.postListing({ listings, user });
+    const res = await Listing.postListing( listings, user, "fds" );
 
     expect(res[0]).toEqual({
       price: 50,
@@ -181,6 +181,10 @@ describe("Test editListing", () => {
       model: "Model S",
       description: "updateddescription",
       image_url: "updatedurl",
+      image_url2: null,
+       image_url3: null,
+       image_url4: null,
+       image_url5: null,
       fees: 4.5,
       createdat: expect.any(Date),
       updatedat: expect.any(Date),

@@ -296,6 +296,9 @@ export default function Listings() {
                 />
               </FormControl>
             </Box>
+            {errors.price && (
+              <span className="filterErrors">{errors.price}</span>
+            )}
             <Button
               className="filterButton"
               variant="contained"
@@ -313,6 +316,7 @@ export default function Listings() {
             >
               SEARCH
             </Button>
+            
 
             <Button
               className="filterButton"
@@ -324,9 +328,7 @@ export default function Listings() {
               RESET
             </Button>
 
-            {errors.price && (
-              <span className="filterErrors">{errors.price}</span>
-            )}
+            
           </Box>
 
           {/* <FormControl sx={{ ml: 3, my: 2 }}>

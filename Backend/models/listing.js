@@ -318,12 +318,6 @@ class Listing {
   }
 
 
-
-
-  static async filterYear(year){
-
-  }
-
   static async filterListings(search) {
     if (
       search.minPrice === "" &&
