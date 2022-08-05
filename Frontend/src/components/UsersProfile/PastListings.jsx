@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -19,8 +19,9 @@ import apiClient from "../../services/apiClient";
 
 export default function PastListings() {
   const [error, setError] = useState();
-  const [listings, setListings] = useState(null);
+  const [listings, setListings] = useState([]);
   let { id } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserListings(id);
@@ -34,6 +35,10 @@ export default function PastListings() {
 
     getData();
   }, []);
+
+  const handleOnClick = () => {
+    navigate("/listing/" + listings[0].id);
+  };
 
   return (
     <Grid
@@ -73,11 +78,11 @@ export default function PastListings() {
                 <TableCell align="right">Number of Guests</TableCell>
                 <TableCell align="right">Price</TableCell>
 
-                <TableCell align="center">Reviews</TableCell>
+                <TableCell align="center">Ratings</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {listings
+              {listings.length > 0
                 ? listings.map((row) => (
                     <TableRow
                       key={row.id}
@@ -85,14 +90,14 @@ export default function PastListings() {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      // onClick = {handleOnClick}
+                      onClick={handleOnClick}
                     >
                       <TableCell component="th" scope="row">
                         {row.model}
                       </TableCell>
                       {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
-                      <TableCell align="right">{row.location}</TableCell>
+                      <TableCell align="center">{row.location}</TableCell>
                       <TableCell align="right">{row.createdat}</TableCell>
 
                       <TableCell align="right">
@@ -100,30 +105,12 @@ export default function PastListings() {
                         <Group /> {row.max_accomodation}{" "}
                       </TableCell>
                       <TableCell align="right">${row.price}</TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          textDecoration: "none",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
+                      <TableCell align="center">
                         <Rating value={row.rating} />
-                        <Link
-                          href="/listing/:id"
-                          sx={{
-                            textDecoration: "none",
-
-                            color: "#6E85B7",
-                          }}
-                        >
-                          see reviews
-                        </Link>
                       </TableCell>
                     </TableRow>
                   ))
-                : error}
+                : "No listings yet"}
             </TableBody>
           </Table>
         </TableContainer>

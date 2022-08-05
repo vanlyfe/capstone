@@ -94,14 +94,15 @@ export default function UserInfo(props) {
           </Grid>
         </Box>
         <Box sx={{ flexWrap: "wrap", width: "50% " }}>
-          <Button
-            variant="contained"
-            onClick={handleOnEditProfile}
-            sx={{ alignContent: "baseline", mb: 4, ml: 55 }}
-          >
-            EDIT PROFILE
-          </Button>
-
+          {props.user ? (
+            <Button
+              variant="contained"
+              onClick={handleOnEditProfile}
+              sx={{ alignContent: "baseline", mb: 4, ml: 55 }}
+            >
+              EDIT PROFILE
+            </Button>
+          ) : null}
           <Typography>{bio}</Typography>
         </Box>
       </Toolbar>

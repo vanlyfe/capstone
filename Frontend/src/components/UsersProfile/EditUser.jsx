@@ -6,7 +6,7 @@ import Typography from "../LandingPage/Typography";
 //import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import ActiveListings from "./ActiveListings";
 
-export default function EditUser() {
+export default function EditUser(props) {
   const [value, setValue] = React.useState();
 
   // const [value, setValue] = React.useState<Date | null>(new Date());
@@ -31,7 +31,7 @@ export default function EditUser() {
       }}
     >
       {/* <Grid> */}
-      <Link onClick={handleOnClick}>
+      <Link href={props.user ? "/user/" + props.user.id : "/login"}>
         <ArrowBackIcon sx={{ fontSize: 60 }} />
       </Link>
 

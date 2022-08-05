@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 
 import {
   Box,
+  Paper,
   Grid,
   Typography,
   Divider,
@@ -56,7 +57,8 @@ export default function Reviews(props) {
       </Box>
       {reviews
         ? reviews.map((rev) => (
-            <Box
+            <Paper
+              elevation={3}
               sx={{
                 height: 200,
                 width: 800,
@@ -92,7 +94,7 @@ export default function Reviews(props) {
                   Helpful
                 </Typography>
               </Grid>
-            </Box>
+            </Paper>
           ))
         : error}
     </Grid>

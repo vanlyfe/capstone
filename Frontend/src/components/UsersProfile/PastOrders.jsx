@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -23,20 +23,27 @@ import apiClient from "../../services/apiClient";
 export default function PastOrders() {
   const [error, setError] = useState();
   const [open, setOpen] = useState(false);
-  const [listings, setListings] = useState(null);
+  const [orders, setOrders] = useState([]);
   let { id } = useParams();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [reviews, setReviews] = useState([]);
   const [review, setReview] = useState();
   const [reviewText, setReviewText] = useState("");
-
+  const [listings, setListings] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const getData = async () => {
-      const resData = await apiClient.fetchUserListings(id);
-      console.log("res: ", resData.data);
-      if (resData?.data?.listings) {
-        setListings(resData.data.listings);
+      const resData = await apiClient.fetchUserPastOrders(id);
+      const res = await apiClient.fetchUserListings(id);
+      console.log("res past orders: ", resData.data);
+      if (resData?.data?.orders) {
+        setOrders(resData.data.orders);
+      } else {
+        setError("No orders yet");
+      }
+      if (res?.data?.listings) {
+        setListings(res.data.listings);
       } else {
         setError("No Listings yet");
       }
@@ -44,6 +51,10 @@ export default function PastOrders() {
 
     getData();
   }, []);
+
+  const handleOnClick = () => {
+    navigate("/listing/" + listings[0].id);
+  };
 
   const style = {
     position: "absolute",
@@ -121,130 +132,118 @@ export default function PastOrders() {
         </Button>
       </Box>
 
-      <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
+      <Box
+        sx={{
+          height: 400,
+          width: "100%",
+          mt: 1,
+          ml: 1,
+        }}
+      >
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Vehicle Model</TableCell>
+                <TableCell>Post Date</TableCell>
 
-                {/* <TableCell align="right">Check in </TableCell>
-                <TableCell align="right"> Check out</TableCell> */}
-                <TableCell align="center">Location</TableCell>
-                <TableCell align="center">Post Date</TableCell>
+                <TableCell align="right">Check in </TableCell>
+                <TableCell align="right"> Check out</TableCell>
 
                 <TableCell align="right">Number of Guests</TableCell>
                 <TableCell align="right">Price</TableCell>
 
-                <TableCell align="center">Reviews</TableCell>
+                <TableCell align="center">Ratings</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {listings
-                ? listings.map((row) => (
+            {orders.length > 0
+              ? orders.map((row) => (
+                  <TableBody>
                     <TableRow
                       key={row.id}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      // onClick = {handleOnClick}
+                      onClick={handleOnClick}
                     >
                       <TableCell component="th" scope="row">
-                        {row.model}
+                        {row.createdat}
                       </TableCell>
-                      {/* <TableCell align="right">l{row.getStartDate}</TableCell>
-                      <TableCell align="right">{row.getEndDate}</TableCell> */}
-                      <TableCell align="right">{row.location}</TableCell>
-                      <TableCell align="right">{row.createdat}</TableCell>
+                      <TableCell align="right">l{row.startdate}</TableCell>
+                      <TableCell align="right">{row.enddate}</TableCell>
 
                       <TableCell align="right">
                         {" "}
-                        <Group /> {row.max_accomodation}{" "}
+                        <Group /> {row.guests}{" "}
                       </TableCell>
-                      <TableCell align="right">${row.price}</TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          textDecoration: "none",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
+                      <TableCell align="right">${row.total}</TableCell>
+                      <TableCell align="center">
                         <Rating value={row.rating} />
-                        <Link
-                          sx={{
-                            textDecoration: "none",
-                            cursor: "pointer",
-
-                            color: "#6E85B7",
-                          }}
-                          onClick={handleOpen}
-                        >
-                          add reviews
-                        </Link>
-                        <Modal
-                          open={open}
-                          onClose={handleClose}
-                          aria-labelledby="modal-modal-title"
-                          aria-describedby="modal-modal-description"
-                        >
-                          <Box sx={style}>
-                            <Typography
-                              id="modal-modal-title"
-                              variant="h6"
-                              component="h2"
-                              sx={{ textalign: "center" }}
-                            >
-                              Rate and review
-                            </Typography>
-                            <Typography>
-                              Share your experience to help others
-                            </Typography>
-                            {/* <Typography
-                              id="modal-modal-description"
-                              sx={{ mt: 2 }}
-                            >
-                              Duis mollis, est non commodo luctus, nisi erat
-                              porttitor ligula.
-                            </Typography> */}
-                            <Rating />
-                            <TextareaAutosize
-                              aria-label="minimum height"
-                              minRows={3}
-                              placeholder="Describe your experience"
-                              style={{ width: 500, height: 100 }}
-                              // onChange={handleOnReviewTextChange}
-                              value={reviewText}
-                            />
-
-                            <Typography>
-                              Your review will be posted publicly on the web.
-                            </Typography>
-
-                            <Grid sx={{ mt: 2, ml: 40 }}>
-                              {/* <ReviewCharacterCount
-                                textLength={reviewText.length}
-                              /> */}
-                              {/* <ReviewSubmitButton
-                                handleOnSubmit={handleOnSubmit}
-                              /> */}
-                              <Button
-                                onClick={handleClose}
-                                sx={{ ml: 4, color: "#669bbc" }}
-                              >
-                                CANCEL
-                              </Button>
-                            </Grid>
-                          </Box>
-                        </Modal>
                       </TableCell>
                     </TableRow>
-                  ))
-                : error}
-            </TableBody>
+                  </TableBody>
+                ))
+              : " No orders yet"}
           </Table>
+
+          {/* <Box
+                align="right"
+                sx={{
+                  textDecoration: "none",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
+              > */}
+          <Link
+            sx={{
+              textDecoration: "none",
+              cursor: "pointer",
+
+              color: "#6E85B7",
+            }}
+            onClick={handleOpen}
+          >
+            add reviews
+          </Link>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <Typography
+                id="modal-modal-title"
+                variant="h6"
+                component="h2"
+                sx={{ textalign: "center" }}
+              >
+                Rate and review
+              </Typography>
+              <Typography>Share your experience to help others</Typography>
+
+              <Rating />
+              <TextareaAutosize
+                aria-label="minimum height"
+                minRows={3}
+                placeholder="Describe your experience"
+                style={{ width: 500, height: 100 }}
+                // onChange={handleOnReviewTextChange}
+                value={reviewText}
+              />
+
+              <Typography>
+                Your review will be posted publicly on the web.
+              </Typography>
+
+              <Grid sx={{ mt: 2, ml: 40 }}>
+                <Button onClick={handleClose} sx={{ ml: 4, color: "#669bbc" }}>
+                  CANCEL
+                </Button>
+              </Grid>
+            </Box>
+          </Modal>
         </TableContainer>
       </Box>
     </Grid>

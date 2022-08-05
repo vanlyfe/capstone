@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -19,14 +19,23 @@ import apiClient from "../../services/apiClient";
 
 export default function ActiveOrders() {
   const [error, setError] = useState();
-  const [listings, setListings] = useState(null);
+  const [orders, setOrders] = useState([]);
   let { id } = useParams();
+  const [listings, setListings] = useState([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const getData = async () => {
-      const resData = await apiClient.fetchUserListings(id);
-      console.log("res: ", resData.data);
-      if (resData?.data?.listings) {
-        setListings(resData.data.listings);
+      const resData = await apiClient.fetchUserActiveOrders(id);
+      const res = await apiClient.fetchUserListings(id);
+      console.log("res active orders: ", resData.data);
+
+      if (resData?.data?.orders) {
+        setOrders(resData.data.orders);
+      } else {
+        setError("No orders yet");
+      }
+      if (res?.data?.listings) {
+        setListings(res.data.listings);
       } else {
         setError("No Listings yet");
       }
@@ -35,6 +44,9 @@ export default function ActiveOrders() {
     getData();
   }, []);
 
+  const handleOnClick = () => {
+    navigate("/listing/" + listings[0].id);
+  };
   return (
     <Grid
       sx={{
@@ -43,6 +55,7 @@ export default function ActiveOrders() {
         height: "70%",
         width: "100%",
         mt: 1,
+        id: 3,
       }}
     >
       <Box>
@@ -63,67 +76,40 @@ export default function ActiveOrders() {
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Vehicle Model</TableCell>
+                <TableCell>Post Date</TableCell>
 
-                {/* <TableCell align="right">Check in </TableCell>
-                <TableCell align="right"> Check out</TableCell> */}
-                <TableCell align="center">Location</TableCell>
-                <TableCell align="center">Post Date</TableCell>
+                <TableCell align="right">Check in </TableCell>
+                <TableCell align="right"> Check out</TableCell>
 
                 <TableCell align="right">Number of Guests</TableCell>
                 <TableCell align="right">Price</TableCell>
-
-                <TableCell align="center">Reviews</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {listings
-                ? listings.map((row) => (
+              {orders.length > 0
+                ? orders.map((row) => (
                     <TableRow
                       key={row.id}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      // onClick = {handleOnClick}
+                      onClick={handleOnClick}
                     >
                       <TableCell component="th" scope="row">
-                        {row.model}
+                        {row.createdat}
                       </TableCell>
-                      {/* <TableCell align="right">l{row.getStartDate}</TableCell>
-                      <TableCell align="right">{row.getEndDate}</TableCell> */}
-                      <TableCell align="right">{row.location}</TableCell>
-                      <TableCell align="right">{row.createdat}</TableCell>
+                      <TableCell align="right">{row.startdate}</TableCell>
+                      <TableCell align="right">{row.enddate}</TableCell>
 
                       <TableCell align="right">
                         {" "}
-                        <Group /> {row.max_accomodation}{" "}
+                        <Group /> {row.guests}{" "}
                       </TableCell>
-                      <TableCell align="right">${row.price}</TableCell>
-                      <TableCell
-                        align="right"
-                        sx={{
-                          textDecoration: "none",
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Rating value={row.rating} />
-                        <Link
-                          href="/listing/:id"
-                          sx={{
-                            textDecoration: "none",
-
-                            color: "#6E85B7",
-                          }}
-                        >
-                          see reviews
-                        </Link>
-                      </TableCell>
+                      <TableCell align="right">${row.total}</TableCell>
                     </TableRow>
                   ))
-                : error}
+                : "No orders yet"}
             </TableBody>
           </Table>
         </TableContainer>
