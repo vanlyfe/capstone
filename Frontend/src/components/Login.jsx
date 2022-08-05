@@ -157,7 +157,7 @@ export default function Login({ returnEndpoint = "/listings", ...props}) {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link to="/forgot-password" variant="body2" style={{textDecoration: "none"}}>
+                  <Link to="/passwordreset" variant="body2" style={{textDecoration: "none"}}>
                     Forgot password?
                   </Link>
                 </Grid>
