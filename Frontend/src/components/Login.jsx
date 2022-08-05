@@ -40,7 +40,7 @@ function Copyright(props) {
 
 // const theme = createTheme();
 
-export default function Login(props) {
+export default function Login({ returnEndpoint = "/listings", ...props}) {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [form, setForm] = useState({
@@ -86,7 +86,7 @@ export default function Login(props) {
     if (data?.user) {
       props.setUser(data.user)
       setIsLoading(false);
-      navigate("/listings");
+      navigate(returnEndpoint);
       apiClient.setToken(data.token);
       setIsLoading(false);
      

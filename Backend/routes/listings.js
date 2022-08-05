@@ -1,11 +1,11 @@
-const express = require("express");
-const Listing = require("../models/listing");
-const security = require("../middleware/security");
-const permissions = require("../middleware/permissions");
-
+const express = require('express');
+const Listing = require('../models/listing');
+const security = require('../middleware/security');
+const permissions = require('../middleware/permissions');
 const router = express.Router();
+const { s3 } = require('../config');
 
-router.get("/", async (req, res, next) => {
+router.get('/', async (req, res, next) => {
   try {
     var listings = await Listing.getListings();
 
@@ -15,7 +15,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get("/best", async (req, res, next) => {
+router.get('/best', async (req, res, next) => {
   try {
     var listings = await Listing.getBestListings();
     return res.status(200).json({ listings: listings });
@@ -37,7 +37,7 @@ router.post("/filter", async (req, res, next) => {
 });
 
 router.get(
-  "/user/:userId",
+  '/user/:userId',
 
   async (req, res, next) => {
     try {
@@ -51,7 +51,7 @@ router.get(
   }
 );
 
-router.get("/:listingId", async (req, res, next) => {
+router.get('/:listingId', async (req, res, next) => {
   try {
     var id = req.params.listingId;
 
@@ -62,20 +62,24 @@ router.get("/:listingId", async (req, res, next) => {
   }
 });
 
-router.post("/", security.requireAuthenticatedUser, async (req, res, next) => {
+router.post('/', security.requireAuthenticatedUser, async (req, res, next) => {
   try {
     const { user } = res.locals;
 
-    const listings = req.body;
-    const listing = await Listing.postListing({ listings, user });
+    const images = req.files;
+    const listingInfo = req.body;
+
+    const listing = await Listing.postListing( listingInfo, user, images );
+
     return res.status(200).json({ listing: listing });
   } catch (err) {
     next(err);
   }
 });
 
+
 router.put(
-  "/:listingId",
+  '/:listingId',
   security.requireAuthenticatedUser,
   permissions.userOwnsListing,
   async (req, res, next) => {
@@ -95,7 +99,7 @@ router.put(
 );
 
 router.delete(
-  "/:listingId",
+  '/:listingId',
   security.requireAuthenticatedUser,
   permissions.userOwnsListing,
   async (req, res, next) => {

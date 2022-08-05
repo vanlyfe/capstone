@@ -386,21 +386,14 @@ export default function ListingDetails() {
               </Button>
             </Box>
 
-            <Button component={Link} to="/listings" color="inherit" sx={{mt:10}}>
+            <Button
+              component={Link}
+              to="/listings"
+              color="inherit"
+              sx={{ mt: 10 }}
+            >
               Back to Listings
             </Button>
-
-            {/* <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: "40%",
-                width: "60%",
-                backgroundColor:"red",
-
-                ml: "5%",
-              }}
-            ></Box> */}
           </Box>
         </Grid>
       </Grid>

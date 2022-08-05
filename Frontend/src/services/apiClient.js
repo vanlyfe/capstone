@@ -12,10 +12,10 @@ class ApiClient {
     localStorage.setItem(this.tokenName, token);
   }
 
-  async request({ endpoint, method = `GET`, data = {} }) {
+  async request({ endpoint, method = `GET`, data = {}, contentType = "application/json" }) {
     const url = `${this.remoteHostUrl}/${endpoint}`;
     const headers = {
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
     };
 
     if (this.token) {
@@ -119,6 +119,7 @@ class ApiClient {
       endpoint: `listing`,
       method: `POST`,
       data: listing,
+      contentType: "multipart/form-data",
     });
   }
 
@@ -233,7 +234,7 @@ class ApiClient {
   async postReview(listingId, review) {
     return await this.request({
       endpoint: `review/` + listingId,
-      method: `GET`,
+      method: `POST`,
       data: review,
     });
   }
@@ -261,6 +262,64 @@ class ApiClient {
   async logoutUser() {
     this.setToken(null);
     localStorage.setItem(this.tokenName, "");
+  }
+
+  //RATINGS requests
+
+  // GET requests
+  async getRating(listingId) {
+    return await this.request({
+      endpoint: `rating/` + listingId,
+      method: `GET`,
+    });
+  }
+  // POST requests
+
+  async postRating(listingId, rating) {
+    return await this.request({
+      endpoint: `rating/` + listingId,
+      method: `POST`,
+      data: rating,
+    });
+  }
+
+  //REVIEWS requests
+
+  // GET requests
+
+  async getReviews(listingId) {
+    return await this.request({
+      endpoint: `review/` + listingId,
+      method: `GET`,
+    });
+  }
+
+  // POST requests
+
+  async postReview(listingId, review) {
+    return await this.request({
+      endpoint: `review/` + listingId,
+      method: `GET`,
+      data: review,
+    });
+  }
+
+  // DELETE requests
+
+  async deleteReview(reviewId) {
+    return await this.request({
+      endpoint: `review/` + reviewId,
+      method: `DELETE`,
+    });
+  }
+  // PUT requests
+
+  async updateReview(reviewId, reviewUpdate) {
+    return await this.request({
+      endpoint: `review/` + reviewId,
+      method: `PUT`,
+      data: reviewUpdate,
+    });
   }
 }
 

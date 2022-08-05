@@ -1,7 +1,7 @@
-const bcrypt = require('bcrypt');
-const db = require('../db');
-const { BCRYPT_WORK_FACTOR } = require('../config');
-const { BadRequestError, UnauthorizedError } = require('../utils/errors');
+const bcrypt = require("bcrypt");
+const db = require("../db");
+const { BCRYPT_WORK_FACTOR } = require("../config");
+const { BadRequestError, UnauthorizedError } = require("../utils/errors");
 
 class User {
   static makePublicUser(user) {
@@ -12,28 +12,25 @@ class User {
       email: user.email,
       username: user.username,
       birthdate: user.birthdate,
-      createdAt : user.createdat,
-      image_url : user.image_url
-
-  
-    
+      createdAt: user.createdat,
+      image_url: user.image_url,
     };
   }
 
   static async login(credentials) {
-    const requiredFields = ['email', 'password'];
+    const requiredFields = ["email", "password"];
     requiredFields.forEach((field) => {
       if (!credentials.hasOwnProperty(field)) {
         throw new BadRequestError(`Missing ${field} in request body.`);
       }
     });
 
-    if (credentials.email.indexOf('@') <= 0) {
-      throw new BadRequestError('Invalid email.');
+    if (credentials.email.indexOf("@") <= 0) {
+      throw new BadRequestError("Invalid email.");
     }
 
     if (credentials.password.length < 1) {
-      throw new BadRequestError('Please input password');
+      throw new BadRequestError("Please input password");
     }
 
     const user = await User.fetchUserByEmail(credentials.email);
@@ -45,10 +42,10 @@ class User {
       }
     }
 
-    throw new UnauthorizedError('Invalid email/password combo');
+    throw new UnauthorizedError("Invalid email/password combo");
   }
 
-  static async getUserRating(userId){
+  static async getUserRating(userId) {
     const result = await db.query(
       `
       SELECT AVG(rating), l.user_id
@@ -60,22 +57,23 @@ class User {
     
       
 
-      `, [userId]
-    )
+      `,
+      [userId]
+    );
 
-    const res = result.rows[0]
+    const res = result.rows[0];
 
-    return res
+    return res;
   }
 
   static async register(credentials) {
     const requiredFields = [
-      'firstName',
-      'lastName',
-      'username',
-      'email',
-      'password',
-      'birthdate',
+      "firstName",
+      "lastName",
+      "username",
+      "email",
+      "password",
+      "birthdate",
     ];
     requiredFields.forEach((field) => {
       if (!credentials.hasOwnProperty(field)) {
@@ -83,26 +81,26 @@ class User {
       }
     });
 
-    this.authenticateBirthdate(credentials.birthdate)
+    this.authenticateBirthdate(credentials.birthdate);
 
-    if (credentials.email.indexOf('@') <= 0 || credentials.email.length < 1) {
-      throw new BadRequestError('Invalid email.');
+    if (credentials.email.indexOf("@") <= 0 || credentials.email.length < 1) {
+      throw new BadRequestError("Invalid email.");
     }
 
     if (credentials.password.length < 1) {
-      throw new BadRequestError('Please input password');
+      throw new BadRequestError("Please input password");
     }
 
     if (credentials.firstName.length < 1) {
-      throw new BadRequestError('Please input first name');
+      throw new BadRequestError("Please input first name");
     }
 
     if (credentials.lastName.length < 1) {
-      throw new BadRequestError('Please input last name');
+      throw new BadRequestError("Please input last name");
     }
 
     if (credentials.username.length < 1) {
-      throw new BadRequestError('Please input username');
+      throw new BadRequestError("Please input username");
     }
 
     const existingUser = await User.fetchUserByEmail(credentials.email);
@@ -149,14 +147,14 @@ class User {
         credentials.gender,
         credentials.birthdate,
         credentials.location,
-        null
+        null,
       ]
     );
 
     var user = result.rows[0];
-    console.log(user)
-    user = User.makePublicUser(user)
-    
+    console.log(user);
+    user = User.makePublicUser(user);
+
     // const rate = await this.getUserRating(user.id)
     // user.rating = rate ? rate.avg : null
     return user;
@@ -164,56 +162,56 @@ class User {
 
   static async fetchUserByEmail(email) {
     if (!email) {
-      throw new BadRequestError('No email provided');
+      throw new BadRequestError("No email provided");
     }
 
-    if (email.indexOf('@') <= 0) {
-      throw new BadRequestError('Invalid email.');
+    if (email.indexOf("@") <= 0) {
+      throw new BadRequestError("Invalid email.");
     }
 
     const query = `SELECT * FROM users WHERE email = $1`;
     const result = await db.query(query, [email.toLowerCase()]);
     var user = result.rows[0];
-    if(user?.id){
-    const rate = await this.getUserRating(user.id)
-    user.rating = rate ? rate.avg : null
+    if (user?.id) {
+      const rate = await this.getUserRating(user.id);
+      user.rating = rate ? rate.avg : null;
     }
     return user;
   }
 
   static async fetchUserById(id) {
     if (!id) {
-      throw new BadRequestError('No id provided');
+      throw new BadRequestError("No id provided");
     }
 
     const query = `SELECT * FROM users WHERE id = $1`;
     const result = await db.query(query, [id]);
     const user = result.rows[0];
-    const rate = await this.getUserRating(user.id)
-    user.rating = rate ? rate.avg : null
+    const rate = await this.getUserRating(user.id);
+    user.rating = rate ? rate.avg : null;
 
     return user;
   }
 
   static async checkUsername(username) {
     if (!username && !update) {
-      throw new BadRequestError('No username provided');
+      throw new BadRequestError("No username provided");
     }
 
     const query = `SELECT * FROM users WHERE username = $1`;
     const result = await db.query(query, [username]);
     var user = result.rows[0];
-    if(user?.id){
-    const rate = await this.getUserRating(user.id)
-    user.rating = rate ? rate.avg : null
+    if (user?.id) {
+      const rate = await this.getUserRating(user.id);
+      user.rating = rate ? rate.avg : null;
     }
     return user;
   }
 
   static async editUser({ userUpdate, userId }) {
     if (userUpdate.email) {
-      if (userUpdate.email.indexOf('@') <= 0 || userUpdate.email.length < 1) {
-        throw new BadRequestError('Invalid email.');
+      if (userUpdate.email.indexOf("@") <= 0 || userUpdate.email.length < 1) {
+        throw new BadRequestError("Invalid email.");
       }
 
       const existingUser = await User.fetchUserByEmail(userUpdate.email);
@@ -223,19 +221,19 @@ class User {
     }
 
     if (userUpdate.password?.length < 1) {
-      throw new BadRequestError('Please input valid password');
+      throw new BadRequestError("Please input valid password");
     }
 
     if (userUpdate.firstName?.length < 1) {
-      throw new BadRequestError('Please input valid first name');
+      throw new BadRequestError("Please input valid first name");
     }
 
     if (userUpdate.lastName?.length < 1) {
-      throw new BadRequestError('Please input valid last name');
+      throw new BadRequestError("Please input valid last name");
     }
 
     if (userUpdate.username?.length < 1) {
-      throw new BadRequestError('Please input valid username');
+      throw new BadRequestError("Please input valid username");
     }
 
     if (userUpdate.username) {
@@ -250,7 +248,7 @@ class User {
     var hashedPassword;
 
     for (var [key, value] of Object.entries(userUpdate)) {
-      if (key === 'password') {
+      if (key === "password") {
         hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR);
       }
 
@@ -264,14 +262,14 @@ class User {
                    RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, image_url, updatedAt;`;
 
       const result = await db.query(query, [
-        key === 'password' ? hashedPassword : value,
+        key === "password" ? hashedPassword : value,
         userId,
       ]);
 
       results = result.rows[0];
     }
-    const rate = await this.getUserRating(results.id)
-    results.rating = rate ? rate.avg : null
+    const rate = await this.getUserRating(results.id);
+    results.rating = rate ? rate.avg : null;
     return results;
   }
 
@@ -304,7 +302,7 @@ class User {
     }
 
     if (age < 18) {
-      throw new BadRequestError('You must be over 18 to register');
+      throw new BadRequestError("You must be over 18 to register");
     }
   }
 }

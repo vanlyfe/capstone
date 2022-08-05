@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   AppBar,
   Toolbar,
@@ -13,17 +13,17 @@ import {
   ListItemButton,
   ListItemText,
   Drawer,
-} from '@mui/material';
-import logo from '../assets/LogoDarkBg.svg';
-import Avatar from '@mui/material/Avatar';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Navigate, useNavigate } from 'react-router-dom';
-import apiClient from '../services/apiClient';
+} from "@mui/material";
+import logo from "../assets/LogoDarkBg.svg";
+import Avatar from "@mui/material/Avatar";
+import MenuIcon from "@mui/icons-material/Menu";
+import { Navigate, useNavigate } from "react-router-dom";
+import apiClient from "../services/apiClient";
 
 // added the following for the links
 
 //import NavLink from "./NavLink";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export const Navbar = (props) => {
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ export const Navbar = (props) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { window } = props;
 
-  const navItems = ['Add Listing', 'Register'];
+  const navItems = ["Add Listing", "Register"];
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -41,19 +41,19 @@ export const Navbar = (props) => {
     await apiClient.logoutUser();
     props.setUser(null);
     // setError(null);
-    navigate('/');
+    navigate("/");
   };
 
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
         VanLyfe
       </Typography>
       <Divider />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
+          <ListItem key={item}>
+            <ListItemButton sx={{ textAlign: "center" }}>
               <ListItemText primary={item} />
             </ListItemButton>
           </ListItem>
@@ -71,11 +71,12 @@ export const Navbar = (props) => {
         <Toolbar>
           {/* Desktop logo */}
           <IconButton
-            sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}
+            sx={{ display: { xs: "none", sm: "none", md: "block" } }}
             size="large"
             edge="start"
             color="inherit"
-            aria-label="logo">
+            aria-label="logo"
+          >
             <Link to="/">
               <img src={logo} width="86" height="65" />
             </Link>
@@ -87,7 +88,8 @@ export const Navbar = (props) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}>
+            sx={{ mr: 2, display: { md: "none" } }}
+          >
             <MenuIcon />
           </IconButton>
 
@@ -95,14 +97,16 @@ export const Navbar = (props) => {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1 }}></Typography>
+            sx={{ flexGrow: 1 }}
+          ></Typography>
 
           {/* Desktop Menu */}
           <Stack
             direction="row"
             spacing={2}
             alignItems="center"
-            sx={{ display: { xs: 'none', md: 'flex' } }}>
+            sx={{ display: { xs: "none", md: "flex" } }}
+          >
             {/* <Button sx={{ height: 65 }} color="inherit">
             Feature1
           </Button> */}
@@ -111,15 +115,17 @@ export const Navbar = (props) => {
               sx={{ height: 65 }}
               component={Link}
               to="/listings"
-              color="inherit">
+              color="inherit"
+            >
               View Listings
             </Button>
 
             <Button
               sx={{ height: 65 }}
               component={Link}
-              to={props.user ? '/createListing' : '/login'}
-              color="inherit">
+              to={props.user ? "/createListing" : "/login"}
+              color="inherit"
+            >
               Add Listing
             </Button>
 
@@ -127,9 +133,10 @@ export const Navbar = (props) => {
               <Button
                 sx={{ height: 65 }}
                 component={Link}
-                to={'/login'}
+                to={"/login"}
                 onClick={handleLogout}
-                color="inherit">
+                color="inherit"
+              >
                 Log out
               </Button>
             ) : null}
@@ -138,14 +145,15 @@ export const Navbar = (props) => {
               <Button
                 sx={{ height: 65 }}
                 component={Link}
-                to={'/register'}
-                color="inherit">
+                to={"/register"}
+                color="inherit"
+              >
                 Register
               </Button>
             )}
             <Avatar
               component={Link}
-              to={props.user ? '/user/' + props.user.id : '/login'}
+              to={props.user ? "/user/" + props.user.id : "/login"}
               alt="Travis Howard"
               src={props.user ? props.user.image_url : null}
               // src="/static/images/avatar/2.jpg"
@@ -167,12 +175,13 @@ export const Navbar = (props) => {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
-            display: { xs: 'block', sm: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
+            display: { xs: "block", sm: "block", md: "none" },
+            "& .MuiDrawer-paper": {
+              boxSizing: "border-box",
               width: 240,
             },
-          }}>
+          }}
+        >
           {drawer}
         </Drawer>
       </Box>

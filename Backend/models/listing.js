@@ -1,5 +1,6 @@
-const db = require("../db");
-const { BadRequestError } = require("../utils/errors");
+const db = require('../db');
+const { BadRequestError } = require('../utils/errors');
+const { s3 } = require('../config');
 
 class Listing {
   static async getListings() {
@@ -18,14 +19,25 @@ class Listing {
 
     SELECT * FROM temptable;
     DROP TABLE temptable;
-
-    
-    
-     
-   
         `);
 
     const res = result[2].rows;
+
+    return res;
+  }
+
+  /**
+   * return number of listings in database
+   * @returns
+   */
+  static async getListingsCount() {
+    const result = await db.query(
+      `
+      SELECT COUNT(*) FROM listings;
+      `
+    );
+
+    const res = result.rows[0].count;
 
     return res;
   }
@@ -109,7 +121,7 @@ class Listing {
     return res;
   }
 
-  static async postListing({ listings, user }) {
+  static async postListing(listings, user, images) {
     const requiredFields = [
       "price",
       "location",
@@ -120,7 +132,7 @@ class Listing {
     ];
 
     requiredFields.forEach((field) => {
-      if (!listings.hasOwnProperty(field)) {
+      if (!Object.prototype.hasOwnProperty.call(listings, field)) {
         throw new BadRequestError(`Missing ${field} in request body.`);
       }
     });
@@ -133,10 +145,6 @@ class Listing {
       throw new BadRequestError("No car model provided");
     }
 
-    // if (listings.image_url.length < 1) {
-    //   throw new BadRequestError('No car image provided');
-    // }
-
     if (listings.make.length < 1) {
       throw new BadRequestError("No car make provided");
     }
@@ -147,7 +155,15 @@ class Listing {
       );
     }
 
-    console.log(listings);
+    const imagesArray = Object.values(images);
+
+    if (imagesArray.length === 0 || imagesArray.length > 5) {
+      throw new BadRequestError(
+        'You must upload at least one image and no more than five images.'
+      );
+    }
+
+    // console.log(imagesArray);
 
     const result = await db.query(
       `
@@ -162,8 +178,7 @@ class Listing {
                 description
                 )
            VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
-           RETURNING price, location, max_accomodation, make, model, year, user_id, description;
-
+           RETURNING id;
           `,
       [
         Number(listings.price),
@@ -177,17 +192,41 @@ class Listing {
       ]
     );
 
-    const res = result.rows;
+    const id = result.rows[0].id;
+
+    await this.postPhotostoS3(imagesArray, id);
+    const urls = this.getS3Urls(imagesArray.length, id);
+
+    console.log(urls);
+
+    let toUpdateImages = { image_url: urls[0] };
+
+    imagesArray.slice(1).forEach((_, i) => {
+      toUpdateImages[`image_url${i + 2}`] = urls[i + 1];
+    });
+
+    const res = await this.editListing({
+      listingUpdate: toUpdateImages,
+      listingId: id,
+    });
 
     return res;
   }
 
+  // {
+  //  listingUpdate: { image_url: 'https://s3.amazonaws.com/...', image_url2: 'https://s3.amazonaws.com/...' },
+  //  listingId: id,
+  // }
+  //
+
   static async editListing({ listingUpdate, listingId }) {
-    if (listingUpdate.location?.length < 1) {
-      throw new BadRequestError("Invalid location");
+    
+
+    if (listingUpdate?.location?.length < 1) {
+      throw new BadRequestError('Invalid location');
     }
 
-    if (listingUpdate?.max_accomodation < 1) {
+    if (listingUpdate.max_accomodation < 1) {
       throw new BadRequestError(
         "Vehicle should be able to accomodate at least one person"
       );
@@ -197,22 +236,25 @@ class Listing {
       throw new BadRequestError("Invalid vehicle model");
     }
 
-    var results = {};
-
-    for (var [key, value] of Object.entries(listingUpdate)) {
-      const query =
-        `UPDATE listings
-                       SET ` +
-        key +
-        ` = $1,
-                       updatedAt = NOW()
-                   WHERE id = $2
-                   RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, fees, createdAt, updatedAt;`;
-
-      const result = await db.query(query, [value, listingId]);
-
-      results = result.rows[0];
+    let queryString = '';
+    let listingUpdateEntries = Object.entries(listingUpdate);
+    for (let i = 0; i < listingUpdateEntries.length; i++) {
+      queryString += `${listingUpdateEntries[i][0]} = $${i + 1}, `;
     }
+
+    const query = `UPDATE listings
+        SET ${queryString}
+        updatedAt = NOW()
+        WHERE id = $${listingUpdateEntries.length + 1}
+        RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
+
+    console.log(query);
+    const result = await db.query(query, [
+      ...listingUpdateEntries.map((entry) => entry[1]),
+      listingId,
+    ]);
+
+    const results = result.rows[0];
 
     return results;
   }
@@ -242,6 +284,44 @@ class Listing {
       );
       return intersection;
     }
+  }
+  // Helper functions for S3
+
+  static getS3Urls(imagesLength, id) {
+    const urls = [];
+
+    for (let i = 0; i < imagesLength; i++) {
+      const params = {
+        Bucket: process.env.AWS_S3_BUCKET_NAME,
+        Key: `${id}-${i}`,
+      };
+      const url = s3.getSignedUrl('getObject', params);
+      urls.push(url);
+    }
+
+    return urls;
+  }
+
+  static async postPhotostoS3(photos, id) {
+    for (let i = 0; i < photos.length; i++) {
+      const photo = Buffer.from(photos[i].data, 'base64');
+      const respon = await s3
+        .upload({
+          Bucket: process.env.AWS_S3_BUCKET_NAME,
+          Key: `${id}-${i}`,
+          Body: photo,
+        })
+        .promise();
+
+      console.log(respon);
+    }
+  }
+
+
+
+
+  static async filterYear(year){
+
   }
 
   static async filterListings(search) {

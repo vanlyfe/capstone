@@ -24,28 +24,33 @@ import Login from './Login';
 import apiClient from '../services/apiClient';
 
 export default function CreateListing({ user, isLoading }) {
-
   const navigate = useNavigate();
   const steps = ['Listing Details', 'Add Photos', 'Review Listing'];
 
   const [page, setPage] = useState(0);
   const [form, setForm] = useState({
-    price: '',
-    location: '',
-    maxAccomodation: '',
-    make: '',
-    model: '',
-    year: '',
+    price: '20',
+    location: 'Boston',
+    maxAccomodation: '2',
+    make: 'Toyota',
+    model: 'Camry',
+    year: '2022',
     description: '',
+    images: [], //element: { url: '', file: null }
   });
-  const [images, setImages] = useState([]); // element: { url: '', file: null }
   const [error, setError] = useState('');
+  const [submitIsLoading, setSubmitIsLoading] = useState(false);
 
   const handleImageInput = (e) => {
-    setImages([
-      ...images,
+    const newImages = [
+      ...form.images,
       { url: URL.createObjectURL(e.target.files[0]), file: e.target.files[0] },
-    ]);
+    ];
+
+    setForm({
+      ...form,
+      images: newImages,
+    });
   };
 
   function isNumeric(n) {
@@ -71,7 +76,7 @@ export default function CreateListing({ user, isLoading }) {
         setError('Please fill out all fields');
       }
     } else if (page === 1) {
-      if (images.length > 0) {
+      if (form.images.length > 0) {
         setPage(page + 1);
         setError('');
       } else {
@@ -81,11 +86,11 @@ export default function CreateListing({ user, isLoading }) {
   };
 
   const renderImages = () => {
-    return images.map((image, index) => (
+    return form.images.map((image, index) => (
       <Grid item xs={12} sm={4} key={index}>
         <Paper
           sx={{
-            height: "200px",
+            height: '200px',
             display: 'flex',
             alignItems: 'center',
             overflow: 'hidden',
@@ -95,7 +100,7 @@ export default function CreateListing({ user, isLoading }) {
             width="100%"
             src={image.url}
             alt={`image ${index}`}
-            style={{objectFit: 'cover'}}
+            style={{ objectFit: 'cover' }}
           />
         </Paper>
       </Grid>
@@ -103,6 +108,7 @@ export default function CreateListing({ user, isLoading }) {
   };
 
   const handleOnInputChange = (e) => {
+    
     const { name, value } = e.target;
 
     if (
@@ -117,6 +123,7 @@ export default function CreateListing({ user, isLoading }) {
   };
 
   const handleOnSubmit = async (e) => {
+    setSubmitIsLoading(true)
     try {
       for (const key in form) {
         if (key !== 'description' && !form[key]) {
@@ -124,6 +131,8 @@ export default function CreateListing({ user, isLoading }) {
           return;
         }
       }
+
+      const images = form.images.map((image) => image.file);
 
       const data = await apiClient.postListing({
         price: form.price,
@@ -133,14 +142,26 @@ export default function CreateListing({ user, isLoading }) {
         model: form.model,
         year: form.year,
         description: form.description,
+        images
       });
       console.log(data);
     } catch (e) {
       console.log(e);
     }
-
-    navigate("/")
+    setSubmitIsLoading(false)
+    navigate('/');
   };
+
+  if (submitIsLoading) {
+    return (
+      <Fade in={submitIsLoading}>
+        <Box sx={{display: "flex", justifyContent: "center", mt: 20}}>
+              <CircularProgress  size={70}/>
+        </Box>
+    
+      </Fade>
+    );
+    }
 
   return (
     <>
@@ -173,37 +194,37 @@ export default function CreateListing({ user, isLoading }) {
                     })}
                   </Stepper>
                   <Box
-                  sx={{
-                    // borderBottom: '1px solid #e0e0e0',
-                    width: '100%',
-                    pb: 2,
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Button
-                    onClick={() => {
-                      if (page > 0) {
-                        setPage(page - 1);
-                      }
-                    }}
-                    sx={{ mt: 2 }}
-                    disabled={page === 0}
-                    variant="contained">
-                    Back
-                  </Button>
-                  <Button
-                    sx={{ mt: 2 }}
-                    onClick={() => {
-                      if (page === steps.length -1) {
-                        handleOnSubmit();
-                      } else {
-                        handleFormNext();
-                      }
-                    }}
-                    variant="contained">
-                    {page === steps.length - 1 ? 'Submit' : 'Next'}
-                  </Button>
-                </Box>
+                    sx={{
+                      // borderBottom: '1px solid #e0e0e0',
+                      width: '100%',
+                      pb: 2,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Button
+                      onClick={() => {
+                        if (page > 0) {
+                          setPage(page - 1);
+                        }
+                      }}
+                      sx={{ mt: 2 }}
+                      disabled={page === 0}
+                      variant="contained">
+                      Back
+                    </Button>
+                    <Button
+                      sx={{ mt: 2 }}
+                      onClick={() => {
+                        if (page === steps.length - 1) {
+                          handleOnSubmit();
+                        } else {
+                          handleFormNext();
+                        }
+                      }}
+                      variant="contained">
+                      {page === steps.length - 1 ? 'Submit' : 'Next'}
+                    </Button>
+                  </Box>
                   {error && <Typography color="red">*{error}</Typography>}
 
                   {/* Confirm Info Page */}
@@ -385,7 +406,7 @@ export default function CreateListing({ user, isLoading }) {
                           <Button
                             variant="contained"
                             component="label"
-                            disabled={images.length > 2}>
+                            disabled={form.images.length > 4}>
                             Add Image
                             <input
                               onChange={handleImageInput}
@@ -400,11 +421,10 @@ export default function CreateListing({ user, isLoading }) {
                     </Box>
                   </Fade>
                 </Box>
-                
               </Container>
             </Box>
           ) : (
-            <Login />
+            <Login returnEndpoint='/createListing'/>
           )}
         </>
       )}

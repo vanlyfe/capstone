@@ -121,6 +121,7 @@ export default function Listings() {
   useEffect(() => {
     const getListings = async () => {
       const response = await apiClient.fetchListings();
+      console.log("response:", response.data);
       if (response?.data?.listings) {
         setListings(response.data.listings);
       } else {
