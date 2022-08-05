@@ -19,6 +19,7 @@ export default function UserInfo(props) {
   const [image, setImage] = React.useState();
   const [Error, setError] = React.useState();
   const [email, setEmail] = React.useState();
+  const [profileImage, setProfileImage] = React.useState()
   const handleOnEditProfile = () => {
     props.setEditProfile("profile");
   };
@@ -36,6 +37,7 @@ export default function UserInfo(props) {
         setFirstName(response.data.user.firstname);
         setRating(response.data.user.rating);
         setEmail(response.data.user.email);
+        setProfileImage(response.data.user.image_url)
 
         // setImage(response.data.user[0].user[0].image_url);
       } else {
@@ -75,7 +77,7 @@ export default function UserInfo(props) {
             spacing={1}
           >
             <Grid>
-              <Avatar alt="profile picture" sx={{ width: 200, height: 200 }} />
+              <Avatar src={profileImage}  alt="profile picture" sx={{ width: 200, height: 200 }} />
             </Grid>
             <Grid>
               <Box>
