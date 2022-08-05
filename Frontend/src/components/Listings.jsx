@@ -458,7 +458,7 @@ export default function Listings() {
                   <Box
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h5" component="div" className="modeLimit">
                       {listing.make + " " + listing.model + " " + listing.year}
                     </Typography>
                     <Box sx={{ display: "flex", justifyContent: "center" }}>
