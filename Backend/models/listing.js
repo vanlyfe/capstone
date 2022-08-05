@@ -19,14 +19,25 @@ class Listing {
 
     SELECT * FROM temptable;
     DROP TABLE temptable;
-
-    
-    
-     
-   
         `);
 
     const res = result[2].rows;
+
+    return res;
+  }
+
+  /**
+   * return number of listings in database
+   * @returns
+   */
+  static async getListingsCount() {
+    const result = await db.query(
+      `
+      SELECT COUNT(*) FROM listings;
+      `
+    );
+
+    const res = result.rows[0].count;
 
     return res;
   }
@@ -143,7 +154,7 @@ class Listing {
       );
     }
 
-    const imagesArray = Object.entries(images);
+    const imagesArray = Object.values(images);
 
     if (imagesArray.length === 0 || imagesArray.length > 5) {
       throw new BadRequestError(
@@ -151,17 +162,7 @@ class Listing {
       );
     }
 
-    await this.postPhotostoS3(imagesArray);
-    const urls = this.getS3Urls(Object.keys(images));
-
-    let listingText = "";
-    let listingNumbers = "";
-
-    imagesArray.slice(1).forEach((_, i) => {
-      listingText += `,image_url${i + 2} `;
-      listingNumbers += `,$${i+10}`;
-    })
-    
+    // console.log(imagesArray);
 
     const result = await db.query(
       `
@@ -173,12 +174,10 @@ class Listing {
                 model,
                 year,
                 user_id,
-                description,
-                image_url
-                ${listingText}
+                description
                 )
-           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9${listingNumbers})
-           RETURNING *;
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+           RETURNING id;
           `,
       [
         Number(listings.price),
@@ -189,21 +188,44 @@ class Listing {
         Number(listings.year),
         user.id,
         listings.description,
-        ...urls,
       ]
     );
 
-    const res = result.rows;
+    const id = result.rows[0].id;
+
+    await this.postPhotostoS3(imagesArray, id);
+    const urls = this.getS3Urls(imagesArray.length, id);
+
+    console.log(urls);
+
+    let toUpdateImages = { image_url: urls[0] };
+
+    imagesArray.slice(1).forEach((_, i) => {
+      toUpdateImages[`image_url${i + 2}`] = urls[i + 1];
+    });
+
+    const res = await this.editListing({
+      listingUpdate: toUpdateImages,
+      listingId: id,
+    });
 
     return res;
   }
 
+  // {
+  //  listingUpdate: { image_url: 'https://s3.amazonaws.com/...', image_url2: 'https://s3.amazonaws.com/...' },
+  //  listingId: id,
+  // }
+  //
+
   static async editListing({ listingUpdate, listingId }) {
-    if (listingUpdate.location?.length < 1) {
+    console.log(listingUpdate);
+
+    if (listingUpdate?.location?.length < 1) {
       throw new BadRequestError('Invalid location');
     }
 
-    if (listingUpdate?.max_accomodation < 1) {
+    if (listingUpdate.max_accomodation < 1) {
       throw new BadRequestError(
         'Vehicle should be able to accomodate at least one person'
       );
@@ -213,19 +235,25 @@ class Listing {
       throw new BadRequestError('Invalid vehicle model');
     }
 
-    var results = {};
-
-    for (var [key, value] of Object.entries(listingUpdate)) {
-      const query = `UPDATE listings
-        SET ${key}= $1,
-        updatedAt = NOW()
-        WHERE id = $2
-        RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, fees, createdAt, updatedAt;`;
-
-      const result = await db.query(query, [value, listingId]);
-
-      results = result.rows[0];
+    let queryString = '';
+    let listingUpdateEntries = Object.entries(listingUpdate);
+    for (let i = 0; i < listingUpdateEntries.length; i++) {
+      queryString += `${listingUpdateEntries[i][0]} = $${i + 1}, `;
     }
+
+    const query = `UPDATE listings
+        SET ${queryString}
+        updatedAt = NOW()
+        WHERE id = $${listingUpdateEntries.length + 1}
+        RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
+
+    console.log(query);
+    const result = await db.query(query, [
+      ...listingUpdateEntries.map((entry) => entry[1]),
+      listingId,
+    ]);
+
+    const results = result.rows[0];
 
     return results;
   }
@@ -244,30 +272,33 @@ class Listing {
 
   // Helper functions for S3
 
-  static getS3Urls(Keys) {
+  static getS3Urls(imagesLength, id) {
     const urls = [];
 
-    for (let Key of Keys) {
+    for (let i = 0; i < imagesLength; i++) {
       const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key,
+        Key: `${id}-${i}`,
       };
       const url = s3.getSignedUrl('getObject', params);
-      urls.push(url)
+      urls.push(url);
     }
 
     return urls;
   }
 
-  static async postPhotostoS3(photos) {
-    for (var [Key, image] of photos) {
-      await s3
+  static async postPhotostoS3(photos, id) {
+    for (let i = 0; i < photos.length; i++) {
+      const photo = Buffer.from(photos[i].data, 'base64');
+      const respon = await s3
         .upload({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
-          Key,
-          Body: image.data,
+          Key: `${id}-${i}`,
+          Body: photo,
         })
         .promise();
+
+      console.log(respon);
     }
   }
 }

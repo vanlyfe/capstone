@@ -12,10 +12,10 @@ class ApiClient {
     localStorage.setItem(this.tokenName, token);
   }
 
-  async request({ endpoint, method = `GET`, data = {} }) {
+  async request({ endpoint, method = `GET`, data = {}, contentType = "application/json" }) {
     const url = `${this.remoteHostUrl}/${endpoint}`;
     const headers = {
-      "Content-Type": "application/json",
+      "Content-Type": contentType,
     };
 
     if (this.token) {
@@ -117,6 +117,7 @@ class ApiClient {
       endpoint: `listing`,
       method: `POST`,
       data: listing,
+      contentType: "multipart/form-data",
     });
   }
 
