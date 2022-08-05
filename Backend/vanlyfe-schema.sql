@@ -7,11 +7,12 @@ CREATE TABLE users(
     username       TEXT NOT NULL UNIQUE,
     image_url      TEXT,
     location       TEXT,
-    birthdate      TEXT,
+    birthdate      DATE NOT NULL,
     createdAt      TIMESTAMP NOT NULL DEFAULT NOW(),
     updatedAt      TIMESTAMP NOT NULL DEFAULT NOW(),
     gender         TEXT,
     bio            TEXT,
+    rating         FLOAT,
     phone          INTEGER
 
 );
