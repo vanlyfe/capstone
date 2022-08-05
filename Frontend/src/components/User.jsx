@@ -15,7 +15,7 @@ export default function User({ user, setUser }) {
   return (
     <Box>
       {editProfile === "profile" ? (
-        <EditUser user={user} setUser={setUser} />
+        <EditUser user={user} setUser={setUser} setEditProfile={setEditProfile}/>
       ) : (
         <Box
           sx={{

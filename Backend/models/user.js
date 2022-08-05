@@ -224,17 +224,17 @@ class User {
       throw new BadRequestError("Please input valid password");
     }
 
-    if (userUpdate.firstName?.length < 1) {
-      throw new BadRequestError("Please input valid first name");
-    }
+    // if (userUpdate.firstName?.length < 1) {
+    //   throw new BadRequestError("Please input valid first name");
+    // }
 
-    if (userUpdate.lastName?.length < 1) {
-      throw new BadRequestError("Please input valid last name");
-    }
+    // if (userUpdate.lastName?.length < 1) {
+    //   throw new BadRequestError("Please input valid last name");
+    // }
 
-    if (userUpdate.username?.length < 1) {
-      throw new BadRequestError("Please input valid username");
-    }
+    // if (userUpdate.username?.length < 1) {
+    //   throw new BadRequestError("Please input valid username");
+    // }
 
     if (userUpdate.username) {
       const existingUsername = await User.checkUsername(userUpdate.username);
@@ -244,10 +244,21 @@ class User {
         );
       }
     }
+
+    if(userUpdate.birthdate){
+      this.authenticateBirthdate(userUpdate.birthdate);
+    }
+
+
     var results = {};
     var hashedPassword;
 
     for (var [key, value] of Object.entries(userUpdate)) {
+      if(value === ""){
+        continue
+      }
+
+
       if (key === "password") {
         hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR);
       }
