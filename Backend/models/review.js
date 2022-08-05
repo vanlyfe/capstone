@@ -1,29 +1,34 @@
 const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
-const User = require("./user")
+const User = require("./user");
 
+class Review {
+  static async getReviewsByListingId(listingId) {
+    const result = await db.query(
+      `
+            SELECT u.id , r.listing_id, u.firstName, u.lastName, review, u.image_url, ra.rating
+            FROM reviews AS r
+            JOIN users AS u ON u.id = r.user_id
+            JOIN (
+              SELECT ratings.rating , ratings.user_id
+              FROM ratings
+              JOIN users ON users.id = ratings.user_id
+              WHERE listing_id = $1
 
-class Review{
+            ) AS ra ON ra.user_id = r.user_id
+            WHERE r.listing_id = $1
+            `,
+      [listingId]
+    );
 
-    static async getReviewsByListingId(listingId){
-        const result = await db.query(
-            `
-            SELECT * 
-            FROM reviews
-            WHERE listing_id = $1
-            `, [listingId]
-        )
+    const res = result.rows;
 
-        const res = result.rows
-        
-        return res
-    }
+    return res;
+  }
 
-
-    static async getReviewsByUserId(userId){
-      
-      var result = await db.query(
-        `
+  static async getReviewsByUserId(userId) {
+    var result = await db.query(
+      `
         SELECT r.user_id AS reveiwer_id, u.id AS host_id, rater.firstName, rater.lastName, rater.image_url, rater.updatedAt, r.review AS review, rates.rating AS rating, r.id AS review_id
         FROM reviews AS r
         JOIN listings AS l ON l.id = r.listing_id
@@ -51,48 +56,39 @@ class Review{
         
         
         
-        ` , [userId]
-      )
+        `,
+      [userId]
+    );
 
-      
+    var res = result.rows;
+    var acc = [];
+    var ans = [];
 
-      var res = result.rows
-      var acc = []
-      var ans = []
-     
+    res.forEach((elem) => {
+      if (!acc.includes(elem.review_id)) {
+        acc.push(elem.review_id);
+        ans.push(elem);
+      }
+    });
 
-      res.forEach((elem) => {
-       
-        if(!acc.includes(elem.review_id)){
-          acc.push(elem.review_id)
-          ans.push(elem)
+    return ans;
+  }
 
-        }
-         
-      })
+  static async postReview({ listingId, reviews, user }) {
+    const requiredFields = ["review"];
 
+    requiredFields.forEach((field) => {
+      if (!reviews.hasOwnProperty(field)) {
+        throw new BadRequestError(`Missing ${field} in request body.`);
+      }
+    });
 
-      return ans
+    if (reviews.review.length < 1) {
+      throw new BadRequestError("Kindly provide a review");
     }
 
-
-    static async postReview({listingId, reviews, user}){
-        const requiredFields = [
-            "review",   
-          ];
-      
-          requiredFields.forEach((field) => {
-            if (!reviews.hasOwnProperty(field)) {
-              throw new BadRequestError(`Missing ${field} in request body.`);
-            }
-          });
-
-          if(reviews.review.length < 1){
-            throw new BadRequestError("Kindly provide a review")
-          }
-
-          const result = await db.query(
-            `
+    const result = await db.query(
+      `
             INSERT INTO reviews(
                 review,
                 listing_id,
@@ -101,53 +97,48 @@ class Review{
             VALUES ($1,$2,$3)
             RETURNING id, review, listing_id, user_id
             
-            `, [reviews.review, listingId, user.id]
-          )
+            `,
+      [reviews.review, listingId, user.id]
+    );
 
-          const res = result.rows
-          return res
+    const res = result.rows;
+    return res;
+  }
 
-
+  static async editReview({ reviewUpdate, reviewId }) {
+    if (!reviewUpdate.review) {
+      throw new BadRequestError(
+        "Review must have at least one character, otherwise delete the review"
+      );
     }
 
-    static async editReview({ reviewUpdate, reviewId }) {
-      
-      if(!reviewUpdate.review){
-        throw new BadRequestError("Review must have at least one character, otherwise delete the review")
-      }
-  
-      const result = await db.query(
-        `
+    const result = await db.query(
+      `
         UPDATE reviews
                 SET review = $1,
                 updatedAt = NOW()
                 WHERE id = $2
                 RETURNING id, review, createdAt, updatedAt, listing_id, user_id;
-        `, [reviewUpdate.review, reviewId]
-      )
+        `,
+      [reviewUpdate.review, reviewId]
+    );
 
-      const res = result.rows[0]
-     
-      return res;
-    }
+    const res = result.rows[0];
 
-    static async deleteReview(reviewId){
-       await db.query(
-        `
+    return res;
+  }
+
+  static async deleteReview(reviewId) {
+    await db.query(
+      `
         DELETE FROM reviews
         WHERE id = $1;
        
         
-        `, [reviewId]
-      )
-
-      
-
-    }
-    
+        `,
+      [reviewId]
+    );
+  }
 }
-
-
-
 
 module.exports = Review;

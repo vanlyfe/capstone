@@ -17,7 +17,7 @@ import {
 import { Person, Group } from "@mui/icons-material";
 import apiClient from "../../services/apiClient";
 
-export default function PastListings() {
+export default function ActiveListings() {
   const [error, setError] = useState();
   const [listings, setListings] = useState(null);
   let { id } = useParams();
@@ -47,7 +47,7 @@ export default function PastListings() {
     >
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2 }}>
-          Past Listings
+          Active Listings
         </Button>
         <Button
           variant="contained"

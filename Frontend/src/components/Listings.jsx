@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 import {
   Autocomplete,
   Container,
@@ -24,10 +24,10 @@ import {
   Rating,
   Slide,
   TextField,
-} from '@mui/material';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import PersonIcon from '@mui/icons-material/Person';
+} from "@mui/material";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+import PersonIcon from "@mui/icons-material/Person";
 
 import apiClient from "../services/apiClient";
 
@@ -42,6 +42,7 @@ export default function Listings() {
   useEffect(() => {
     const getListings = async () => {
       const response = await apiClient.fetchListings();
+      console.log("response:", response.data);
       if (response?.data?.listings) {
         setListings(response.data.listings);
       } else {
@@ -68,8 +69,8 @@ export default function Listings() {
             mr: 3,
             height: "80vh",
             width: 280,
-            
-          }}>
+          }}
+        >
           <Typography variant="h5" align="center" sx={{ my: 2 }}>
             {`Filter`}
           </Typography>
@@ -104,9 +105,26 @@ export default function Listings() {
                 <TextField {...params} label="Location" />
               )}
             />
+            <Autocomplete
+              disablePortal
+              id="locations-auto-complete"
+              options={locations}
+              sx={{ width: "90%", mt: 2 }}
+              renderInput={(params) => <TextField {...params} label="Model" />}
+            />
+            <Typography variant="p" sx={{ width: "90%", mt: 2 }}>
+              <TextField
+                id="outlined-number"
+                options={locations}
+                label="Year"
+                type="number"
+              />
+            </Typography>
+
             <Typography variant="p" align="center" mt={2}>
               {`Price Range`}
             </Typography>
+
             <Box
               sx={{
                 display: "flex",
@@ -118,8 +136,6 @@ export default function Listings() {
                 <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  // value={5}
-                  // onChange={handleChange('amount')}
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -131,8 +147,7 @@ export default function Listings() {
                 <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  // value={5}
-                  // onChange={handleChange('amount')}
+                  type="number"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -140,6 +155,13 @@ export default function Listings() {
                 />
               </FormControl>
             </Box>
+            <Button
+              className="filterButton"
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              SEARCH
+            </Button>
           </Box>
 
           {/* <FormControl sx={{ ml: 3, my: 2 }}>
@@ -241,9 +263,10 @@ export default function Listings() {
         <Grid
           container
           // bgcolor="red"
-          sx={{ width: '100%', height: '100%' }}
+          sx={{ width: "100%", height: "100%" }}
           spacing={{ xs: 2, md: 3, lg: 5, xl: 7 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}>
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
           <Grid item xs={12}>
             <Typography variant="h5" sx={{ mb: 2, mt: 4 }}>
               {`Browse Active Listings`}
@@ -251,10 +274,11 @@ export default function Listings() {
           </Grid>
           {listings.map((listing, i) => (
             <Grid key={i} item xs={4} justifyContent="center">
-              <Card sx={{ width: '100%' }}>
+              <Card sx={{ width: "100%" }}>
                 <Link
-                  style={{ textDecoration: 'none' }}
-                  to={`/listing/${listing.id}`}>
+                  style={{ textDecoration: "none" }}
+                  to={`/listing/${listing.id}`}
+                >
                   <CardMedia
                     component="img"
                     height="140"
@@ -265,11 +289,12 @@ export default function Listings() {
 
                 <CardContent>
                   <Box
-                    sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
                     <Typography gutterBottom variant="h5" component="div">
-                      {listing.model}
+                      {listing.make + " " + listing.model + " " + listing.year}
                     </Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
                       <Typography variant="body2" color="text.secondary">
                         {listing.max_accomodation}
                       </Typography>
@@ -278,27 +303,31 @@ export default function Listings() {
                   </Box>
 
                   <Box
-                    sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
                     <Typography variant="body2" color="text.secondary">
                       {listing.location}
                     </Typography>
                     <Typography
                       variant="body2"
                       color="text.secondary"
-                      fontStyle="italic">
+                      fontStyle="italic"
+                    >
                       ${listing.price}
                     </Typography>
                   </Box>
                 </CardContent>
                 <CardActions>
                   <Link
-                    style={{ textDecoration: 'none' }}
-                    to={`/listing/${listing.id}/book`}>
+                    style={{ textDecoration: "none" }}
+                    to={`/listing/${listing.id}/book`}
+                  >
                     <Button size="small">Book Now</Button>
                   </Link>
                   <Link
-                    style={{ textDecoration: 'none' }}
-                    to={`/listing/${listing.id}`}>
+                    style={{ textDecoration: "none" }}
+                    to={`/listing/${listing.id}`}
+                  >
                     <Button size="small">Learn More</Button>
                   </Link>
                 </CardActions>
