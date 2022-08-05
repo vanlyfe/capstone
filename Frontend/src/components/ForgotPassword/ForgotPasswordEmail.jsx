@@ -5,9 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import {Link} from "react-router-dom"
-
-
+import { Link } from "react-router-dom";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -29,9 +27,13 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" to="https://mui.com/" style={{textDecoration: "none"}}>
+      <Link
+        color="inherit"
+        to="https://mui.com/"
+        style={{ textDecoration: "none" }}
+      >
         vanlyfe
-      </Link >{" "}
+      </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -84,12 +86,11 @@ export default function ForgotPasswordEmail() {
     }
 
     if (data?.user) {
-      props.setUser(data.user)
+      props.setUser(data.user);
       setIsLoading(false);
       navigate(returnEndpoint);
       apiClient.setToken(data.token);
       setIsLoading(false);
-     
     }
   };
 
@@ -97,55 +98,63 @@ export default function ForgotPasswordEmail() {
     <div className="login">
       <Box justifyContent="centre">
         {/* <ThemeProvider theme={theme}> */}
-        
+
         <Container component="main" maxWidth="xs">
           <CssBaseline />
-        
-            <Box component="form" noValidate sx={{
+
+          <Box
+            component="form"
+            noValidate
+            sx={{
               marginTop: 8,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-            }}>
+            }}
+          >
             <img src={logo} />
 
             <Typography component="h1" variant="h5">
-              Enter your email address and follow the instructions sent to your email
+              Enter your email address and follow the instructions sent to your
+              email
             </Typography>
-            
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                onChange={handleOnInputChange}
-                autoComplete="email"
-                autoFocus
-              />
+
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              onChange={handleOnInputChange}
+              autoComplete="email"
+              autoFocus
+            />
 
             <Button
-             //   onClick={handleOnSubmit}
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Continue
-              </Button>
+              //   onClick={handleOnSubmit}
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Continue
+            </Button>
 
-              <Grid item>
-                  <Link to="/register" variant="body2" style={{textDecoration: "none"}}>
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-          
-            
-          <Copyright sx={{ mt: 8, mb: 4 }} />
-       
-        {/* </ThemeProvider> */}
-      </Box>
-      </Container>
+            <Grid item>
+              <Link
+                to="/register"
+                variant="body2"
+                style={{ textDecoration: "none" }}
+              >
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+
+            <Copyright sx={{ mt: 8, mb: 4 }} />
+
+            {/* </ThemeProvider> */}
+          </Box>
+        </Container>
       </Box>
     </div>
   );
