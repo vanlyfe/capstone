@@ -16,6 +16,7 @@ import { Navbar } from "./Navbar";
 import User from "./User";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ForgotPassword from "./ForgotPassword";
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -73,6 +74,7 @@ export default function App() {
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
+          <Route path="/passwordreset" element = {<ForgotPassword />} />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>
