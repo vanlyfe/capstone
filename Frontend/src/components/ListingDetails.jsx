@@ -601,7 +601,7 @@ export default function ListingDetails() {
                   <Rating
                     name="user-rating"
                     sx={{ mt: 2, ml: 2 }}
-                    value={4}
+                    value={review.rating}
                     readOnly
                   />
                   <Grid
@@ -609,16 +609,16 @@ export default function ListingDetails() {
                   >
                     <Avatar
                       alt="Remy Sharp"
-                      src={reviewerDetails.image_url}
+                      src={review.image_url}
                       //src="/static/images/avatar/1.jpg"
                       // sx={{ width: 200, height: 200 }}
                     />
                     <Typography
                       sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
                     >
-                      {reviewerDetails.firstname +
+                      {review.firstname +
                         " " +
-                        reviewerDetails.lastname}
+                        review.lastname}
                     </Typography>
                   </Grid>
                   <Typography sx={{ mt: 2, ml: 2 }}>{review.review}</Typography>
