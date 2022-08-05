@@ -9,8 +9,11 @@ import {
   ListItemButton,
   ListItemText,
 } from "@mui/material";
+import { useParams } from "react-router-dom";
 
 export default function Categories(props) {
+  let { id } = useParams();
+
   const handleOnPastOrders = () => {
     props.setCategory("po");
   };
