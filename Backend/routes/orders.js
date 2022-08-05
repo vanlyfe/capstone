@@ -24,6 +24,8 @@ router.get(
 
 router.get(
   "/user/past/:userId",
+  security.requireAuthenticatedUser,
+  permissions.userOwnsProfile,
   
   async (req, res, next) => {
     try {
@@ -39,6 +41,8 @@ router.get(
 
 router.get(
   "/user/active/:userId",
+  security.requireAuthenticatedUser,
+  permissions.userOwnsProfile,
   
   async (req, res, next) => {
     try {

@@ -157,14 +157,18 @@ class ApiClient {
     return await this.request({ endpoint: `order/` + orderId, method: `GET` });
   }
 
-  async fetchUserPastOrders(userId){
-    return await this.request({endpoint:  `order/user/past/` + userId , method:`GET`})
+  async fetchUserPastOrders(userId) {
+    return await this.request({
+      endpoint: `order/user/past/` + userId,
+      method: `GET`,
+    });
+  }
 
-  } 
-
-  async fetchUserActiveOrders(userId){
-    return await this.request({endpoint: `order/user/active/` + userId, method:`GET`})
-
+  async fetchUserActiveOrders(userId) {
+    return await this.request({
+      endpoint: `order/user/active/` + userId,
+      method: `GET`,
+    });
   }
 
   // POST requests

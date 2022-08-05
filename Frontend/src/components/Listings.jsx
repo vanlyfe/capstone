@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import variables from "../assets/variables.js"
 import {
   Autocomplete,
   Container,
@@ -36,8 +37,80 @@ export default function Listings() {
   const [listings, setListings] = React.useState([]);
   const [error, setError] = React.useState(null);
   const [rating, setRating] = React.useState(0);
+  const [errors, setErrors] = React.useState({})
+  const [form, setForm] = React.useState({
+    minRating : "",
+    location : "",
+    model : "",
+    year : "",
+    minPrice: "",
+    maxPrice : ""
 
-  const locations = ["San Francisco", "Los Angeles", "New York"];
+  })
+
+
+
+  const locations = variables.locations
+  const models = variables.makes
+
+  const handleOnInputChange = (event) => {
+    
+    if(event.target.name === "minPrice"){
+     
+      if(form.maxPrice !== ""){
+        if(Number(event.target.value) > Number(form.maxPrice)){
+          setErrors((e) => ({ ...e, price: "Max price cannot be less than min price" }));
+        } else{
+          setErrors((e) => ({ ...e, price: null }));
+        }
+      } else{
+        setErrors((e) => ({ ...e, price: null }));
+      }
+      
+    }
+
+    if(event.target.name === "maxPrice"){
+      
+      if(form.minPrice !== ""){
+        if(Number(event.target.value) < Number(form.minPrice)){
+          setErrors((e) => ({ ...e, price: "Max price cannot be less than min price" }));
+        } else{
+          setErrors((e) => ({ ...e, price: null }));
+        }
+      } else{
+        setErrors((e) => ({ ...e, price: null }));
+      }
+      if(event.target.value === ""){
+        setErrors((e) => ({ ...e, price: null }));
+      }
+      
+    }
+
+
+    setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
+    
+  };
+
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    
+    setErrors((e) => ({ ...e, form: null }));
+
+   // const { data, error } = await apiClient
+      
+      setErrors((e) => ({ ...e, form: error }));
+    
+
+    if (data?.user) {
+     
+     
+    }
+  };
+  
+
+
+  
 
   useEffect(() => {
     const getListings = async () => {
@@ -88,33 +161,36 @@ export default function Listings() {
               {`Minimum Rating`}
             </Typography>
             <Rating
-              name="min-rating"
+              name="minRating"
               value={rating}
               precision={0.5}
               onChange={(event, newValue) => {
                 setRating(newValue);
+                setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
               }}
             />
             <Autocomplete
+      
               disablePortal
               id="locations-auto-complete"
               options={locations}
               sx={{ width: "90%", mt: 2 }}
               renderInput={(params) => (
-                <TextField {...params} label="Location" />
+                <TextField {...params} label="Location" name="location" onChange={handleOnInputChange} onSelect={handleOnInputChange}/>
               )}
             />
             <Autocomplete
               disablePortal
               id="locations-auto-complete"
-              options={locations}
+              options={models}
               sx={{ width: "90%", mt: 2 }}
-              renderInput={(params) => <TextField {...params} label="Model" />}
+              renderInput={(params) => <TextField {...params} label="Model" name="model" onChange={handleOnInputChange} onSelect={handleOnInputChange} />}
             />
             <Typography variant="p" sx={{ width: "90%", mt: 2 }}>
               <TextField
                 id="outlined-number"
-                options={locations}
+                name="year"
+                onChange={handleOnInputChange}
                 label="Year"
                 type="number"
                 
@@ -136,7 +212,9 @@ export default function Listings() {
                 <InputLabel  htmlFor="outlined-adornment-amount">Min</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"
-                  
+                  type="number"
+                  name="minPrice"
+                  onChange={handleOnInputChange}
                    
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
@@ -150,6 +228,8 @@ export default function Listings() {
                 <OutlinedInput
                   id="outlined-adornment-amount"
                   type="number"
+                  onChange={handleOnInputChange}
+                  name="maxPrice"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -161,9 +241,14 @@ export default function Listings() {
               className="filterButton"
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={errors?.price || form.minRating === "" && form.model === "" && form.year === "" && form.location === "" && form.minPrice === "" && form.maxPrice === ""}
             >
               SEARCH
             </Button>
+
+            {errors.price && (
+                <span className="filterErrors">{errors.price }</span>
+              )}
           </Box>
 
           {/* <FormControl sx={{ ml: 3, my: 2 }}>

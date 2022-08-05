@@ -23,6 +23,18 @@ router.get("/best", async (req, res, next) => {
   }
 });
 
+
+router.get("/filter", async (req, res, next) => {
+  try{
+    
+    var listings = await Listing.filterLocation("SEatTLE");
+    return res.status(200).json({listings : listings})
+
+  } catch(error){
+    next(error)
+  }
+})
+
 router.get(
   "/user/:userId",
  

@@ -44,7 +44,7 @@ INSERT INTO listings(user_id, price, location, max_accomodation, image_url, make
 VALUES (
   1,
   20.99,
-  'San Francisco, California',
+  'San Francisco',
   3,
   'https://cdn.motor1.com/images/mgl/Q12M1/s1/2021-tesla-model-s-plaid.jpg',
   'Tesla',
@@ -57,7 +57,7 @@ VALUES (
 (
   1,
   40.99,
-  'San Diego, California',
+  'San Diego',
   1,
   'https://static.tcimg.net/vehicles/primary/122f4b2eb5fe71e0/2022-GMC-Savana_Cargo_Van-silver-full_color-driver_side_front_quarter.png',
   'GMC',
@@ -70,7 +70,7 @@ VALUES (
 (
   1,
   30.00,
-  'San Mateo, California',
+  'San Mateo',
   2,
   'https://global.toyota/pages/news/images/2019/11/05/1100/20191105_02_01_s.jpg',
   'Toyota',
@@ -83,7 +83,7 @@ VALUES (
 (
   2,
   170.50,
-  'Menlo Park, California',
+  'Menlo Park',
   8,
   'https://static.foxbusiness.com/foxbusiness.com/content/uploads/2021/01/RV.jpg',
   'Mazda',
@@ -96,7 +96,7 @@ VALUES (
 (
   2,
   72.05,
-  'Newark, New York',
+  'Newark',
   3,
   'https://www.topgear.com/sites/default/files/2022/05/037.jpg',
   'Peugeot',
@@ -109,7 +109,7 @@ VALUES (
 (
   2,
   15.99,
-  'Los Angeles, California',
+  'Los Angeles',
   3,
   'https://media.ed.edmunds-media.com/audi/a8/2022/oem/2022_audi_a8_sedan_l_fq_oem_1_1600.jpg',
   'Audi',
@@ -122,7 +122,7 @@ VALUES (
 (
   3,
   20.99,
-  'Seattle, Washington',
+  'Seattle',
   1,
   'https://s1.cdn.autoevolution.com/images/models/MERCEDES-BENZ_GLC-2022_main.jpg',
   'Mercedes-Benz',
@@ -135,7 +135,7 @@ VALUES (
 (
   3,
   59.99,
-  'Nairobi, Kenya',
+  'Nairobi',
   3,
   'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2022-bmw-alpina-b8-gran-coupe-4-1646929819.jpg?crop=0.670xw:0.670xh;0.162xw,0.162xh&resize=640:*',
   'BMW',
@@ -148,7 +148,7 @@ VALUES (
 (
   3,
   99.99,
-  'Santa Cruz, California',
+  'Santa Cruz',
   5,
   'https://www.topgear.com/sites/default/files/cars-car/image/2020/07/dsc09285.jpg',
   'Ferrari',
@@ -161,7 +161,7 @@ VALUES (
 (
   4,
   23.00,
-  'Oakland, California',
+  'Oakland',
   3,
   'https://www.lamborghini.com/sites/it-en/files/DAM/lamborghini/facelift_2019/homepage/families-gallery/2022/04_12/family_chooser_tecnica.jpg',
   'Lamborghini',
@@ -174,7 +174,7 @@ VALUES (
 (
   4,
   17.80,
-  'Poughkeepsie, New York',
+  'Poughkeepsie',
   5,
   'https://www.chevrolet.com/content/dam/chevrolet/na/us/english/portable-nav/small-vehicle-jellies/2022-camaro-2ss-gcf-colorizer.jpg?imwidth=960',
   'Chevrolet',
@@ -187,7 +187,7 @@ VALUES (
 (
   4,
   66.66,
-  'Boston, Massachusetts',
+  'Boston',
   8,
   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Chevrolet_Corvette_Z06_-_Flickr_-_Alexandre_Pr%C3%A9vot_%287%29_%28cropped%29.jpg/1200px-Chevrolet_Corvette_Z06_-_Flickr_-_Alexandre_Pr%C3%A9vot_%287%29_%28cropped%29.jpg',
   'Chevrolet',
