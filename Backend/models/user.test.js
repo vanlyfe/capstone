@@ -33,6 +33,7 @@ describe("Test login", () => {
       firstName: "Edilawit",
       lastName: "Tsehay",
       email: "etsehay@salesforce.com",
+      image_url : "https://i.natgeofe.com/n/0652a07e-42ed-4f3d-b2ea-0538de0c5ba3/seattle-travel_3x2.jpg",
       birthdate: expect.any(Date),
       createdAt: expect.any(Date),
     });
@@ -77,6 +78,7 @@ describe("Test register", () => {
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       email: newUser.email,
+      image_url : null,
       birthdate: expect.any(Date),
       createdAt: expect.any(Date),
     });
@@ -281,6 +283,7 @@ describe("Test editUser", () => {
       createdat: expect.any(Date),
       birthdate: expect.any(Date),
       updatedat: expect.any(Date),
+      image_url: "https://a.cdn-hotels.com/gdcs/production92/d1580/9a28fc70-9bea-11e8-a1b5-0242ac110053.jpg",
       gender: "male",
       location: null,
       rating: null,

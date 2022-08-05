@@ -24,6 +24,18 @@ router.get('/best', async (req, res, next) => {
   }
 });
 
+router.post("/filter", async (req, res, next) => {
+  try {
+    
+   // const search = {minPrice : "", maxPrice : "50", location : "", model : "Chevrolet", year : "", minRating: ""}
+   // var listings = await Listing.filterListings(search)
+    var listings = await Listing.filterListings(req.body);
+    return res.status(200).json({ listings: listings });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.get(
   '/user/:userId',
 

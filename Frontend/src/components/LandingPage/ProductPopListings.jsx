@@ -97,7 +97,7 @@ function ProductHowItWorks() {
                 <Typography variant="body1" align="center" className="lineLimit">
                  {listings[0].description}
                 </Typography>
-                <Rating value={listings[0].rating}/>
+                <Rating readOnly={true} value={listings[0].rating}/>
               </Box>
             </Grid>
             <Grid item xs={12} md={3}>
@@ -115,7 +115,7 @@ function ProductHowItWorks() {
                 <Typography variant="body1" align="center" className="lineLimit">
                 {listings[1].description}
                 </Typography>
-                <Rating value={listings[1].rating}/>
+                <Rating readOnly={true} value={listings[1].rating}/>
               </Box>
             </Grid>
             <Grid item xs={12} md={3}>
@@ -133,7 +133,7 @@ function ProductHowItWorks() {
                 <Typography variant="body1" align="center" className="lineLimit">
                 {listings[2].description}
                 </Typography>
-                <Rating value={listings[2].rating}/>
+                <Rating readOnly={true} value={listings[2].rating}/>
               </Box>
             </Grid>
             <Grid item xs={12} md={3}>
@@ -151,7 +151,7 @@ function ProductHowItWorks() {
                 <Typography variant="body1" align="center" className="lineLimit">
                 {listings[3].description}
                 </Typography>
-                <Rating value={listings[3].rating}/>
+                <Rating readOnly={true} value={listings[3].rating}/>
               </Box>
             </Grid>
           </Grid>

@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import variables from "../assets/variables.js";
 import {
   Autocomplete,
   Container,
@@ -36,8 +37,86 @@ export default function Listings() {
   const [listings, setListings] = React.useState([]);
   const [error, setError] = React.useState(null);
   const [rating, setRating] = React.useState(0);
+  const [errors, setErrors] = React.useState({});
+  const [value, setValue] = React.useState(null);
+  const [modelVal, setModelVal] = React.useState("");
+  const [locationVal, setLocationVal] = React.useState("");
 
-  const locations = ["San Francisco", "Los Angeles", "New York"];
+  const [form, setForm] = React.useState({
+    minRating: "",
+    location: "",
+    model: "",
+    year: "",
+    minPrice: "",
+    maxPrice: "",
+  });
+
+  
+
+  const locations = variables.locations;
+  const models = variables.makes;
+
+  const handleOnInputChange = (event) => {
+    if (event.target.name === "model") {
+      setModelVal(event.target.value);
+    }
+
+    if (event.target.name === "location") {
+      setLocationVal(event.target.value);
+    }
+
+    if (event.target.name === "minPrice") {
+      if (form.maxPrice !== "") {
+        if (Number(event.target.value) > Number(form.maxPrice)) {
+          setErrors((e) => ({
+            ...e,
+            price: "Max price cannot be less than min price",
+          }));
+        } else {
+          setErrors((e) => ({ ...e, price: null }));
+        }
+      } else {
+        setErrors((e) => ({ ...e, price: null }));
+      }
+    }
+
+    if (event.target.name === "maxPrice") {
+      if (form.minPrice !== "") {
+        if (Number(event.target.value) < Number(form.minPrice)) {
+          setErrors((e) => ({
+            ...e,
+            price: "Max price cannot be less than min price",
+          }));
+        } else {
+          setErrors((e) => ({ ...e, price: null }));
+        }
+      } else {
+        setErrors((e) => ({ ...e, price: null }));
+      }
+      if (event.target.value === "") {
+        setErrors((e) => ({ ...e, price: null }));
+      }
+    }
+
+    setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
+  };
+
+  const resetForm = () => {
+    setValue("");
+
+    setTimeout(function () {
+      setValue(null);
+    }, 500);
+
+    setForm({
+      minRating: "",
+      location: form.location,
+      model: form.model,
+      year: "",
+      minPrice: "",
+      maxPrice: "",
+    });
+  };
 
   useEffect(() => {
     const getListings = async () => {
@@ -52,6 +131,41 @@ export default function Listings() {
 
     getListings();
   }, []);
+
+  const handleOnReset = async (e) => {
+    const getListings = async () => {
+      const response = await apiClient.fetchListings();
+      if (response?.data?.listings) {
+        setListings(response.data.listings);
+      } else {
+        setError("No listings found");
+      }
+    };
+
+    getListings();
+
+  }
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+   
+    setErrors((e) => ({ ...e, form: null }));
+    setRating(0);
+    setModelVal("");
+    setLocationVal("");
+    const { data, error } = await apiClient.filterListings(form);
+
+  
+
+    if (error) {
+      setErrors((e) => ({ ...e, form: error }));
+    }
+
+    if (data?.listings) {
+      setListings(data.listings)
+    }
+    resetForm();
+  };
 
   return (
     <Container maxWidth="100%" sx={{ mt: 0, my: 0 }}>
@@ -89,11 +203,15 @@ export default function Listings() {
               {`Minimum Rating`}
             </Typography>
             <Rating
-              name="min-rating"
+              name="minRating"
               value={rating}
               precision={0.5}
               onChange={(event, newValue) => {
                 setRating(newValue);
+                setForm((f) => ({
+                  ...f,
+                  [event.target.name]: event.target.value,
+                }));
               }}
             />
             <Autocomplete
@@ -102,22 +220,38 @@ export default function Listings() {
               options={locations}
               sx={{ width: "90%", mt: 2 }}
               renderInput={(params) => (
-                <TextField {...params} label="Location" />
+                <TextField
+                  {...params}
+                  label="Location"
+                  name="location"
+                  onChange={handleOnInputChange}
+                  onSelect={handleOnInputChange}
+                />
               )}
             />
             <Autocomplete
               disablePortal
               id="locations-auto-complete"
-              options={locations}
+              options={models}
               sx={{ width: "90%", mt: 2 }}
-              renderInput={(params) => <TextField {...params} label="Model" />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Model"
+                  name="model"
+                  onChange={handleOnInputChange}
+                  onSelect={handleOnInputChange}
+                />
+              )}
             />
             <Typography variant="p" sx={{ width: "90%", mt: 2 }}>
               <TextField
                 id="outlined-number"
-                options={locations}
+                name="year"
+                onChange={handleOnInputChange}
                 label="Year"
                 type="number"
+                value={value}
               />
             </Typography>
 
@@ -136,6 +270,10 @@ export default function Listings() {
                 <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
                 <OutlinedInput
                   id="outlined-adornment-amount"
+                  type="number"
+                  name="minPrice"
+                  onChange={handleOnInputChange}
+                  value={value}
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -148,6 +286,9 @@ export default function Listings() {
                 <OutlinedInput
                   id="outlined-adornment-amount"
                   type="number"
+                  value={value}
+                  onChange={handleOnInputChange}
+                  name="maxPrice"
                   startAdornment={
                     <InputAdornment position="start">$</InputAdornment>
                   }
@@ -155,13 +296,39 @@ export default function Listings() {
                 />
               </FormControl>
             </Box>
+            {errors.price && (
+              <span className="filterErrors">{errors.price}</span>
+            )}
             <Button
               className="filterButton"
               variant="contained"
+              onClick={handleOnSubmit}
               sx={{ mt: 3, mb: 2 }}
+              disabled={
+                errors?.price ||
+                (form.minRating === "" &&
+                  form.model === "" &&
+                  form.year === "" &&
+                  form.location === "" &&
+                  form.minPrice === "" &&
+                  form.maxPrice === "")
+              }
             >
               SEARCH
             </Button>
+            
+
+            <Button
+              className="filterButton"
+              variant="contained"
+              onClick={handleOnReset}
+              sx={{ mt: 3, mb: 2 }}
+              
+            >
+              RESET
+            </Button>
+
+            
           </Box>
 
           {/* <FormControl sx={{ ml: 3, my: 2 }}>
@@ -268,11 +435,11 @@ export default function Listings() {
           columns={{ xs: 4, sm: 8, md: 12 }}
         >
           <Grid item xs={12}>
-            <Typography variant="h5" sx={{ mb: 2, mt: 4 }}>
+            <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
               {`Browse Active Listings`}
             </Typography>
           </Grid>
-          {listings.map((listing, i) => (
+         {listings.length > 0 ? listings.map((listing, i) => (
             <Grid key={i} item xs={4} justifyContent="center">
               <Card sx={{ width: "100%" }}>
                 <Link
@@ -330,10 +497,11 @@ export default function Listings() {
                   >
                     <Button size="small">Learn More</Button>
                   </Link>
+                  <Rating readOnly={true} className="listRating" value={listing.rating}/>
                 </CardActions>
               </Card>
             </Grid>
-          ))}
+          )) : <div className="noItems">No items meet your search criteria</div> }
         </Grid>
       </Box>
     </Container>

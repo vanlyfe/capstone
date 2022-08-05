@@ -110,6 +110,8 @@ class ApiClient {
     });
   }
 
+  
+
   //POST requests
 
   async postListing(listing) {
@@ -119,6 +121,14 @@ class ApiClient {
       data: listing,
       contentType: "multipart/form-data",
     });
+  }
+
+  async filterListings(data){
+    return await this.request({
+      endpoint : `listing/filter`,
+      method: `POST`,
+      data : data,
+    })
   }
 
   // DELETE requests
@@ -158,14 +168,18 @@ class ApiClient {
     return await this.request({ endpoint: `order/` + orderId, method: `GET` });
   }
 
-  async fetchUserPastOrders(userId){
-    return await this.request({endpoint:  `order/user/past/` + userId , method:`GET`})
+  async fetchUserPastOrders(userId) {
+    return await this.request({
+      endpoint: `order/user/past/` + userId,
+      method: `GET`,
+    });
+  }
 
-  } 
-
-  async fetchUserActiveOrders(userId){
-    return await this.request({endpoint: `order/user/active/` + userId, method:`GET`})
-
+  async fetchUserActiveOrders(userId) {
+    return await this.request({
+      endpoint: `order/user/active/` + userId,
+      method: `GET`,
+    });
   }
 
   // POST requests

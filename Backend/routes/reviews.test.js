@@ -20,7 +20,7 @@ afterAll(commonAfterAll);
 /************************************** GET /review/:listingId */
 describe("GET /review/:listingId", () => {
   test("Authed user can fetch a listing's reviews", async () => {
-    const listingId = testListingIds[0];
+    const listingId = testListingIds[1];
 
     const res = await request(app)
       .get(`/review/${listingId}`)
@@ -28,31 +28,17 @@ describe("GET /review/:listingId", () => {
 
     expect(res.statusCode).toEqual(200);
     const { reviews } = res.body;
-    expect(reviews[0]).toEqual({
-      createdat: expect.any(String),
-      updatedat: expect.any(String),
-      listing_id: expect.any(Number),
-      id: expect.any(Number),
-      user_id: expect.any(Number),
-      review: "Noisy neighbourhood with constant fireworks and very insecure",
-    });
+    expect(reviews.length).toEqual(2);
   });
 
   test("Anonymous user can fetch a listing's reviews", async () => {
-    const listingId = testListingIds[0];
+    const listingId = testListingIds[1];
 
     const res = await request(app).get(`/review/${listingId}`);
 
     expect(res.statusCode).toEqual(200);
     const { reviews } = res.body;
-    expect(reviews[0]).toEqual({
-      createdat: expect.any(String),
-      updatedat: expect.any(String),
-      listing_id: expect.any(Number),
-      id: expect.any(Number),
-      user_id: expect.any(Number),
-      review: "Noisy neighbourhood with constant fireworks and very insecure",
-    });
+    expect(reviews.length).toEqual(2);
   });
 });
 
