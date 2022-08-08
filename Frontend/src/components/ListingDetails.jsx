@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Navigate,
+  useNavigate,
+} from "react-router-dom";
 import {
   AppBar,
   Toolbar,
@@ -36,6 +42,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DatePicker from "./DatePicker";
 // used the separate calendars is instead of the datepicker
 import DateIn from "./DateIn";
+
 import DateOut from "./DateOut";
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
@@ -43,20 +50,29 @@ import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import apiClient from "../services/apiClient";
 
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import Login from "./Login";
 
-export default function ListingDetails() {
+export default function ListingDetails({ user }) {
+  const navigate = useNavigate();
   const [carDetails, setCarDetails] = useState([]);
   const [hostDetails, setHostDetails] = useState([]);
-  //const [newHostDetails, setNewHostDetails] = useState([]);
+
   const [carReviews, setCarReviews] = useState([]);
   const [reviewerDetails, setReviewerDetails] = useState([]);
-  //const [newReviewerDetails, setNewReviewerDetails] = useState([]);
+  const [dateInValue, setDateInValue] = useState("");
+  const [dateOutValue, setDateOutValue] = useState("");
+  const [numGuests, setNumGuests] = useState("");
+
+  let { id } = useParams();
+
+  console.log("product id ", id);
 
   // fetches the car details
   useEffect(() => {
     const makeAPIcalls = async () => {
       const fetchCarDetails = async () => {
-        const { data, error } = await apiClient.fetchListingById(1);
+        const { data, error } = await apiClient.fetchListingById(id);
         console.log("car details data", data.listing[0]);
         if (data) {
           setCarDetails(data.listing[0]);
@@ -68,7 +84,7 @@ export default function ListingDetails() {
       //fetch reviews
 
       const fetchCarReviews = async () => {
-        const { data, error } = await apiClient.getReviewsForListing(1);
+        const { data, error } = await apiClient.getReviewsForListing(id);
         console.log("data car reviews", data);
 
         if (data) {
@@ -91,21 +107,22 @@ export default function ListingDetails() {
 
   useEffect(() => {
     const fetchHostDetails = async () => {
-      const host_id = carDetails.user_id;
-      console.log("carDetails ", carDetails);
+      const user_id = carDetails.user_id;
 
-      const { data, error } = await apiClient.fetchUserFromId(host_id);
+      const { data, error } = await apiClient.fetchUserFromId(user_id);
       console.log(" host iddata ", data);
 
       if (data) {
         setHostDetails(data.user);
-        //setPrice(data.listing.price)
-        console.log("host details", hostDetails);
+
+        //console.log("host details", hostDetails);
       }
     };
 
     fetchHostDetails();
   }, [carDetails]);
+
+  console.log(" user detailsa ", hostDetails);
 
   useEffect(() => {
     const fetchReviewerDetails = async () => {
@@ -124,74 +141,135 @@ export default function ListingDetails() {
     fetchReviewerDetails();
   }, [carReviews]);
 
-  //the book part of the page
+  //CREATE THE FOLLOWING DETAILS TO BE POSTED TO ORDER  ["taxes", "total", "guests", "startDate", "endDate"];
 
-  // const navigate = useNavigate();
-  // const [errors, setErrors] = useState({});
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [form, setForm] = useState({
-  //   email: "",
-  //   firstName: "",
-  //   lastName: "",
-  //   username: "",
-  // });
+  //CONSTANTS:
 
-  // const handleOnInputChange = (event) => {
-  //   if (event.target.name === "email") {
-  //     if (event.target.value.indexOf("@") < 1) {
-  //       setErrors((e) => ({ ...e, email: "Please enter a valid email." }));
-  //     } else {
-  //       setErrors((e) => ({ ...e, email: null }));
-  //     }
+  const taxeRate = 0.15;
+  const min = 1;
+  const max = 10;
+
+  const price = carDetails.price;
+  const date_in = dateInValue;
+  const date_out = dateOutValue;
+
+  function getNumberOfDays(start, end) {
+    const date1 = new Date(start);
+    const date2 = new Date(end);
+
+    // One day in milliseconds
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    // Calculating the time difference between two dates
+    const diffInTime = date2.getTime() - date1.getTime();
+
+    // Calculating the no. of days between two dates
+    const diffInDays = Math.round(diffInTime / oneDay);
+
+    return diffInDays;
+  }
+
+  const days = getNumberOfDays(date_in, date_out);
+
+  const subTotal = days * price;
+  const roundSubTotal = Math.round(subTotal * 100) / 100;
+  const taxes = taxeRate * roundSubTotal;
+  const roundTaxes = Math.round(taxes * 100) / 100;
+  const total = Math.round((roundTaxes + roundSubTotal) * 100) / 100;
+
+  //const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+  //const [isLoading, setIsLoading] = useState(false);
+  const [form, setForm] = useState({
+    taxes: 0,
+    total: 0,
+    guests: 1,
+    startDate: null,
+    endDate: null,
+  });
+
+  const handleOnInputChange = (e) => {
+    if (e.target.name === "numGuests") {
+      console.log("text input value", e.target.value);
+      setNumGuests(e.target.value);
+      if (
+        (e.target.value != "" && isNaN(e.target.value)) ||
+        e.target.value == "e" ||
+        e.target.value == "-"
+      ) {
+        console.log("is NAN", isNaN(e.target.value));
+        setErrors((e) => ({
+          ...e,
+          guests: "Please enter a number.",
+        }));
+      }
+      if ((e.target.value != "" && e.target.value > 5) || e.target.value < 1) {
+        setErrors((e) => ({
+          ...e,
+          guests: "Please enter a value between 1 and 5.",
+        }));
+      } else {
+        setErrors((e) => ({ ...e, guests: null }));
+        setNumGuests(e.target.value);
+      }
+    }
+
+    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+  };
+
+  // function validate(value) {
+  //   if ((value != "" && isNaN(value)) || value == "e" || value == "-") {
+  //     console.log("is NAN", isNaN(value));
+  //     setErrors((e) => ({
+  //       ...e,
+  //       guests: "Please enter a number.",
+  //     }));
   //   }
 
-  //   if (event.target.name === "firstName") {
-  //     if (event.target.value.length === 0) {
-  //       setErrors((e) => ({
-  //         ...e,
-  //         firstName: "Please enter your first name.",
-  //       }));
-  //     } else {
-  //       setErrors((e) => ({ ...e, firstName: null }));
-  //     }
+  //   if ((value != "" && value > 5) || value < 1) {
+  //     setErrors((e) => ({
+  //       ...e,
+  //       guests: "Please enter a value between 1 and 5.",
+  //     }));
+  //   } else {
+  //     setErrors((e) => ({ ...e, guests: null }));
   //   }
 
-  //   if (event.target.name === "lastName") {
-  //     if (event.target.value.length === 0) {
-  //       setErrors((e) => ({ ...e, lastName: "Please enter your last name." }));
-  //     } else {
-  //       setErrors((e) => ({ ...e, lastName: null }));
-  //     }
-  //   }
-
-  //   setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   // };
 
-  // const handleOnSubmit = async () => {
-  //   setIsLoading(true);
-  //   setErrors((e) => ({ ...e, form: null }));
+  // useEffect(() => {
 
-  //   const { data, error } = await apiClient.postOrder(
-  //     {
-  //       email: form.email,
-  //       firstName: form.firstName,
-  //       lastName: form.lastName,
-  //     },
-  //     id
-  //   );``
+  //   validate(numGuests);
 
-  //   // if (error) {
-  //   //   setErrors((e) => ({ ...e, form: error }));
-  //   //   setIsLoading(false);
-  //   // }
+  // }, [numGuests]);
 
-  //   // if (data) {
-  //   //  
+  const handleOnSubmit = async () => {
+    setErrors((e) => ({ ...e, form: null }));
 
-  //   //   setIsLoading(false);
+    const { data, error } = await apiClient.postOrder(
+      {
+        taxes: taxes,
+        total: total,
+        guests: form.guests,
+        startDate: date_in,
+        endDate: date_out,
+      },
+      1
+    );
+    ``;
 
-  //   // }
-  // };
+    if (error) {
+      setErrors((e) => ({ ...e, form: error }));
+    }
+
+    console.log("posted data", data);
+    console.log("posted data id", data.order[0].id);
+
+    const order_id = data.order[0].id;
+
+    navigate(user ? `/orderconfirmation/${id}/${order_id}` : "/login");
+    //{user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
+  };
 
   return (
     <Box>
@@ -228,12 +306,6 @@ export default function ListingDetails() {
               alt="Paella dish"
             />
             <CardContent sx={{ display: "flex", flexDirection: "row" }}>
-              {/* <Typography variant="body2" color="text.secondary">
-                This impressive paella is a perfect party dish and a fun meal to
-                cook together with your guests. Add 1 cup of frozen peas along
-                with the mussels, if you like.
-              </Typography> */}
-
               <Box>
                 <Typography
                   sx={{
@@ -375,45 +447,6 @@ export default function ListingDetails() {
                   </Typography>
                 </Box>
               </Box>
-              {/* <Box sx={{ display: "flex", flexDirection: "row" }}>
-                <TextField
-                  required
-                  id="outlined-required"
-                  label="Required"
-                  placeholder="First Name"
-                  sx={{ ml: 2, mt: 2, mr: 2 }}
-                />
-                <TextField
-                  required
-                  id="outlined-required"
-                  label="Required"
-                  placeholder="Last Name"
-                  sx={{ ml: 10, mt: 2 }}
-                />
-              </Box>
-
-              <TextField
-                required
-                id="outlined-required"
-                label="Required"
-                placeholder="email"
-                sx={{ ml: 2, mt: 2, width: "80%" }}
-              />
-                <TextField
-                required
-                id="outlined-required"
-                label="Required"
-                placeholder="Phone"
-                sx={{ ml: 2, mt: 2, width: "50%" }}
-              />
-
-              <Button
-                variant="contained"
-                size="medium"
-                sx={{ mt: 2, ml: 2, mr: 2 }}
-              >
-                Message
-              </Button> */}
             </Box>
           </Card>{" "}
         </Grid>
@@ -426,47 +459,6 @@ export default function ListingDetails() {
             justifyContent: "center",
           }}
         >
-          {/* <DatePicker /> */}
-          {/* <Box sx={{mb:30}}>
-            <Typography
-              sx={{
-                fontSize: 25,
-                mt: 3,
-                ml: 3,
-                //color: "white",
-                align: "center",
-              }}
-            >
-              Request This Listing
-            </Typography>
-
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
-              <Box sx={{ mt: 10, ml: 5 }}>
-                <Typography>From:</Typography>
-
-                <DateIn />
-              </Box>
-
-              <Box sx={{ mt: 10, ml: 5 }}>
-                <Typography>To:</Typography>
-                <DateOut />
-              </Box>
-            </Box>
-          </Box> */}
-          {/* //commenting this box out */}
-          {/* <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              //backgroundColor: "blue",
-              //height: "40%",
-              width: "60%",
-              alignItems: "center",
-              justifyContent: "center",
-              p: 2,
-            }}
-          > */}
-
           <Typography
             sx={{
               fontSize: 25,
@@ -480,47 +472,36 @@ export default function ListingDetails() {
           </Typography>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <TextField
-              required
-              id="firstName"
-              placeholder="First Name"
-              sx={{ ml: 10, mt: 5, mr: 2 }}
-              //onChange={handleOnInputChange}
-
-              autoComplete="given-name"
-              name="firstName"
-              fullWidth
-              //onChange={handleOnInputChange}
-              label="First Name"
-              autoFocus
-            />
-            <TextField
-              required
-              id="outlined-required"
-              label="Last Name"
-              placeholder="Last Name"
-              sx={{ ml: 10, mt: 5 }}
+              type="number"
+              name="numGuests"
+              label="Number of guests"
+              //variant="filled"
+              onChange={handleOnInputChange}
+              value={numGuests}
+              // InputLabelProps={{
+              //   shrink: true,
+              // }}
+              inputProps={{ type: "number" }}
             />
           </Box>
-
-          <TextField
-            required
-            id="outlined-required"
-            label="Email"
-            placeholder="email"
-            sx={{ ml: 10, mt: 5, width: "80%" }}
-          />
 
           <Box sx={{ mb: 20 }}>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Box sx={{ mt: 10, ml: 10 }}>
                 <Typography>From:</Typography>
 
-                <DateIn />
+                <DateIn
+                  dateInValue={dateInValue}
+                  setDateInValue={setDateInValue}
+                />
               </Box>
 
               <Box sx={{ mt: 10, ml: 15 }}>
                 <Typography>To:</Typography>
-                <DateOut />
+                <DateOut
+                  dateOutValue={dateOutValue}
+                  setDateOutValue={setDateOutValue}
+                />
               </Box>
             </Box>
           </Box>
@@ -529,9 +510,11 @@ export default function ListingDetails() {
             variant="contained"
             size="medium"
             sx={{ mt: 2, ml: 2, mr: 2 }}
-            component={Link}
-            to="/orderconfirmation"
+            //component={Link}
+            //to={user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
+            //to="/orderconfirmation"
             color="inherit"
+            onClick={handleOnSubmit}
           >
             Submit Request
           </Button>
@@ -545,18 +528,6 @@ export default function ListingDetails() {
           >
             Back to Listings
           </Button>
-
-          {/* <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: "40%",
-                width: "60%",
-                backgroundColor:"red",
-
-                ml: "5%",
-              }}
-            ></Box> */}
         </Grid>
       </Grid>
       <Grid
@@ -616,9 +587,7 @@ export default function ListingDetails() {
                     <Typography
                       sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
                     >
-                      {review.firstname +
-                        " " +
-                        review.lastname}
+                      {review.firstname + " " + review.lastname}
                     </Typography>
                   </Grid>
                   <Typography sx={{ mt: 2, ml: 2 }}>{review.review}</Typography>
