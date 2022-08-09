@@ -57,7 +57,7 @@ export default function ForgotPasswordConfirm(props) {
 
   //const what = useParams()
 
-  console.log("This is it")
+  console.log("This is it fds")
   return (
     <div className="register">
       <Box>
