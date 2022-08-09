@@ -192,65 +192,81 @@ export default function ListingDetails({ user }) {
     if (e.target.name === "numGuests") {
       console.log("text input value", e.target.value);
       setNumGuests(e.target.value);
-      if (
-        (e.target.value != "" && isNaN(e.target.value)) ||
-        e.target.value == "e" ||
-        e.target.value == "-"
-      ) {
-        console.log("is NAN", isNaN(e.target.value));
-        setErrors((e) => ({
-          ...e,
-          guests: "Please enter a number.",
-        }));
-      }
-      if ((e.target.value != "" && e.target.value > 5) || e.target.value < 1) {
-        setErrors((e) => ({
-          ...e,
-          guests: "Please enter a value between 1 and 5.",
-        }));
-      } else {
-        setErrors((e) => ({ ...e, guests: null }));
-        setNumGuests(e.target.value);
-      }
+      // if (
+      //   (e.target.value != "" && isNaN(e.target.value)) ||
+      //   e.target.value == "e" ||
+      //   e.target.value == "-"
+      // ) {
+      //   console.log("is NAN", isNaN(e.target.value));
+      //   setErrors((e) => ({
+      //     ...e,
+      //     guests: "Please enter a number.",
+      //   }));
+      // }
+      // if ((e.target.value != "" && e.target.value > 5) || e.target.value < 1) {
+      //   setErrors((e) => ({
+      //     ...e,
+      //     guests: "Please enter a value between 1 and 5.",
+      //   }));
+      // } else {
+      //   setErrors((e) => ({ ...e, guests: null }));
+      //   setNumGuests(e.target.value);
+      // }
     }
 
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  // function validate(value) {
-  //   if ((value != "" && isNaN(value)) || value == "e" || value == "-") {
-  //     console.log("is NAN", isNaN(value));
-  //     setErrors((e) => ({
-  //       ...e,
-  //       guests: "Please enter a number.",
-  //     }));
-  //   }
+  function validateGuests(value) {
+    if (value == "") {
+      setErrors((e) => ({
+        ...e,
+        guests: "Number of guests is required",
+      }));
+    } else if (isNaN(value) || value == "e" || value == "-") {
+      console.log("is NAN", isNaN(value));
+      setErrors((e) => ({
+        ...e,
+        guests: "Please enter a number.",
+      }));
+    } else if (value > 5 || value < 1) {
+      setErrors((e) => ({
+        ...e,
+        guests: "Please enter a value between 1 and 5.",
+      }));
+    } else {
+      setErrors((e) => ({ ...e, guests: null }));
+    }
+  }
 
-  //   if ((value != "" && value > 5) || value < 1) {
-  //     setErrors((e) => ({
-  //       ...e,
-  //       guests: "Please enter a value between 1 and 5.",
-  //     }));
-  //   } else {
-  //     setErrors((e) => ({ ...e, guests: null }));
-  //   }
+  useEffect(() => {
+    validateGuests(numGuests);
+  }, [numGuests]);
 
-  // };
+  function validateDates(begin, end) {
+    if (getNumberOfDays(begin, end) < 0) {
+      setErrors((e) => ({
+        ...e,
+        endDate: "The End Date Must be after the Start Date",
+      }));
+    }
+  }
 
-  // useEffect(() => {
+  useEffect(() => {
+    validateDates(dateInValue, dateOutValue);
+  }, [dateInValue, dateOutValue]);
 
-  //   validate(numGuests);
+  const handleOnSubmit = async (evt) => {
 
-  // }, [numGuests]);
-
-  const handleOnSubmit = async () => {
+    console.log(evt)
     setErrors((e) => ({ ...e, form: null }));
 
     const { data, error } = await apiClient.postOrder(
       {
         taxes: taxes,
         total: total,
-        guests: form.guests,
+        //guests: form.guests,
+        guests: numGuests,
         startDate: date_in,
         endDate: date_out,
       },
@@ -470,9 +486,22 @@ export default function ListingDetails({ user }) {
           >
             Request This Listing
           </Typography>
+
+          <Typography
+            sx={{
+              fontSize: 15,
+              mt: 3,
+              ml: 3,
+              mb: 3,
+              //color: "white",
+              align: "center",
+            }}
+          >
+            {errors.guests && <span className="error">{errors.guests}</span>}
+          </Typography>
           <Box sx={{ display: "flex", flexDirection: "row" }}>
             <TextField
-              type="number"
+              //type="number"
               name="numGuests"
               label="Number of guests"
               //variant="filled"
@@ -481,11 +510,23 @@ export default function ListingDetails({ user }) {
               // InputLabelProps={{
               //   shrink: true,
               // }}
-              inputProps={{ type: "number" }}
+              //inputProps={{ type: "number" }}
             />
           </Box>
 
           <Box sx={{ mb: 20 }}>
+            <Typography
+              sx={{
+                fontSize: 15,
+                mt: 3,
+                ml: 3,
+                mb: 3,
+                //color: "white",
+                align: "center",
+              }}
+            >
+              {errors.endDate && <span className="error">{errors.endDate}</span>}
+            </Typography>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <Box sx={{ mt: 10, ml: 10 }}>
                 <Typography>From:</Typography>
@@ -515,6 +556,7 @@ export default function ListingDetails({ user }) {
             //to="/orderconfirmation"
             color="inherit"
             onClick={handleOnSubmit}
+            disabled = {errors.guests||errors.endDate}
           >
             Submit Request
           </Button>
