@@ -43,7 +43,8 @@ function Copyright(props) {
 
 // const theme = createTheme();
 
-export default function Register(props) {
+export default function ForgotPasswordConfirm(props) {
+  const [error, setError] = useState(null)
   return (
     <div className="register">
       <Box>
@@ -65,6 +66,8 @@ export default function Register(props) {
             <Typography component="h1" variant="h5">
               Reset Password
             </Typography>
+
+            {error && <span className="error">{error}</span>}
 
             <Box component="form" noValidate sx={{ mt: 3 }}>
               <Grid container spacing={2}>

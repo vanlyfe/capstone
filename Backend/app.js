@@ -9,6 +9,7 @@ const listingRoutes = require("./routes/listings")
 const orderRoutes = require("./routes/orders")
 const ratingRoutes = require("./routes/ratings")
 const reviewRoutes = require("./routes/reviews")
+const indexRoutes = require("./routes/index")
 
 
 const config = require("./config");
@@ -32,6 +33,7 @@ app.use("/listing", listingRoutes)
 app.use("/rating", ratingRoutes)
 app.use("/review", reviewRoutes)
 app.use("/order", orderRoutes)
+app.use("/index", indexRoutes)
 
 
 app.get("/", function (req, res) {

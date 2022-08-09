@@ -2,6 +2,9 @@ const bcrypt = require("bcrypt");
 const db = require("../db");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 const { BadRequestError, UnauthorizedError } = require("../utils/errors");
+const Token = require("../utils/tokens");
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey("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");
 
 class User {
   static makePublicUser(user) {
@@ -245,19 +248,17 @@ class User {
       }
     }
 
-    if(userUpdate.birthdate){
+    if (userUpdate.birthdate) {
       this.authenticateBirthdate(userUpdate.birthdate);
     }
-
 
     var results = {};
     var hashedPassword;
 
     for (var [key, value] of Object.entries(userUpdate)) {
-      if(value === ""){
-        continue
+      if (value === "") {
+        continue;
       }
-
 
       if (key === "password") {
         hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR);
@@ -316,6 +317,48 @@ class User {
       throw new BadRequestError("You must be over 18 to register");
     }
   }
+
+  static async requestPasswordReset(email) {
+    const user = await this.fetchUserByEmail(email);
+   
+    if(!user){
+      throw new BadRequestError("The email does not exist")
+    }
+
+    var resetToken = Token.createResetToken(user);
+    var link = `${process.env.CLIENT_URL}passwordreset?token=${resetToken}&id=${user.id}`;
+   
+    return link;
+  }
+
+  static async updatePassword(password, id) {
+
+
+    var hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+    const result = await db.query(
+      `UPDATE users
+              SET password = $1,
+              updatedAt = NOW()
+                   WHERE id = $2
+                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, image_url, updatedAt;`,
+                   [hashedPassword,id]
+    );
+
+    const res = result.rows
+    return res
+  }
+
+  static sendmail(email, link){
+    const msg = {
+      to: email,
+      from: 'vanlyfe.com@gmail.com',
+      subject: 'PASSWORD RESET',
+      text: `Text`,
+      html: `Kindly click <a href=${link}>this link</a> to reset your password. The link expires in 5 minutes.`,
+    };
+    sgMail.send(msg);
+  }
 }
 
 module.exports = User;
+ 

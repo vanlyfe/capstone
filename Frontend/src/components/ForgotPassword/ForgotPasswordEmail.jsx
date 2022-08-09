@@ -6,7 +6,11 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { Link } from "react-router-dom";
-
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -16,6 +20,7 @@ import Container from "@mui/material/Container";
 import logo from "../../assets/Logo2.svg";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import apiClient from "../../services/apiClient";
 import "../App.css";
 
 function Copyright(props) {
@@ -44,54 +49,36 @@ function Copyright(props) {
 
 export default function ForgotPasswordEmail() {
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
+  const [error, setError] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [success, setSuccess] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnInputChange = (event) => {
-    if (event.target.name === "email") {
-      if (event.target.value.indexOf("@") < 1) {
-        setErrors((e) => ({ ...e, email: "Please enter a valid email." }));
-      } else {
-        setErrors((e) => ({ ...e, email: null }));
-      }
-    }
-
-    if (event.target.name === "password") {
-      if (event.target.value.length < 1) {
-        setErrors((e) => ({ ...e, password: "Please enter your password." }));
-      } else {
-        setErrors((e) => ({ ...e, password: null }));
-      }
-    }
-
-    setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
+    setEmail(event.target.value);
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setErrors((e) => ({ ...e, form: null }));
 
-    const { data, error } = await apiClient.loginUser({
-      email: form.email,
-      password: form.password,
-    });
+    setError(null);
+
+    const { data, error } = await apiClient.requestreset({ email: email });
     if (error) {
       setIsLoading(false);
-      setErrors((e) => ({ ...e, form: error }));
+      setError(error);
     }
 
-    if (data?.user) {
-      props.setUser(data.user);
-      setIsLoading(false);
-      navigate(returnEndpoint);
-      apiClient.setToken(data.token);
-      setIsLoading(false);
+    console.log(data);
+
+    if (data) {
+      setSuccess(true);
     }
+  };
+
+  const handleOnDone = async () => {
+    setSuccess(false);
   };
 
   return (
@@ -101,6 +88,36 @@ export default function ForgotPasswordEmail() {
 
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+          <Dialog
+            open={success}
+            // onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle
+              id="alert-dialog-title"
+              sx={{
+                fontSize: 20,
+                alignItems: "center",
+              }}
+            >
+              A reset link has been sent to the email provided
+            </DialogTitle>
+
+            <DialogActions>
+              <Button
+              onClick={handleOnDone}
+                className="resetDialog"
+                sx={{
+                  border: "solid",
+                  border: 1,
+                  borderColor: "grey",
+                }}
+              >
+                Done
+              </Button>
+            </DialogActions>
+          </Dialog>
 
           <Box
             component="form"
@@ -119,6 +136,8 @@ export default function ForgotPasswordEmail() {
               email
             </Typography>
 
+            {error && <span className="error">{error}</span>}
+
             <TextField
               margin="normal"
               required
@@ -132,7 +151,7 @@ export default function ForgotPasswordEmail() {
             />
 
             <Button
-              //   onClick={handleOnSubmit}
+              onClick={handleOnSubmit}
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}

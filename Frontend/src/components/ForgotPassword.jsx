@@ -3,5 +3,5 @@ import ForgotPasswordEmail from "./ForgotPassword/ForgotPasswordEmail";
 import ForgotPasswordConfirm from "./ForgotPassword/ForgotPasswordConfirm";
 
 export default function ForgotPassword() {
-  return <ForgotPasswordConfirm />;
+  return <ForgotPasswordEmail />;
 }

@@ -2,8 +2,10 @@ const express = require("express");
 const User = require("../models/user");
 
 const { createUserJwt } = require("../utils/tokens");
+
 const security = require("../middleware/security");
 const permissions = require("../middleware/permissions");
+const { Router } = require("express");
 const router = express.Router();
 
 router.post("/login", async (req, res, next) => {
@@ -28,6 +30,7 @@ router.post("/register", async (req, res, next) => {
   }
 });
 
+
 router.get("/me", security.requireAuthenticatedUser, async (req, res, next) => {
   try {
     const { id } = res.locals.user;
@@ -41,7 +44,6 @@ router.get("/me", security.requireAuthenticatedUser, async (req, res, next) => {
     next(err);
   }
 });
-
 
 router.get("/:userId", async (req, res, next) => {
   try {
@@ -68,6 +70,8 @@ router.put(
     }
   }
 );
+
+
 
 router.delete(
   "/:userId",
