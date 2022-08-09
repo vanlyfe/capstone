@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import variables from '../assets/variables.js';
+import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import variables from "../assets/variables.js";
 import {
   Autocomplete,
   Container,
@@ -25,12 +25,12 @@ import {
   Rating,
   Slide,
   TextField,
-} from '@mui/material';
-import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import KeyboardDoubleArrowDownIcon from '@mui/icons-material/KeyboardDoubleArrowDown';
-import PersonIcon from '@mui/icons-material/Person';
+} from "@mui/material";
+import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
+import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
+import PersonIcon from "@mui/icons-material/Person";
 
-import apiClient from '../services/apiClient';
+import apiClient from "../services/apiClient";
 
 export default function Listings() {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
@@ -39,36 +39,36 @@ export default function Listings() {
   const [rating, setRating] = React.useState(0);
   const [errors, setErrors] = React.useState({});
   const [value, setValue] = React.useState(null);
-  const [modelVal, setModelVal] = React.useState('');
-  const [locationVal, setLocationVal] = React.useState('');
+  const [modelVal, setModelVal] = React.useState("");
+  const [locationVal, setLocationVal] = React.useState("");
 
   const [form, setForm] = React.useState({
-    minRating: '',
-    location: '',
-    model: '',
-    year: '',
-    minPrice: '',
-    maxPrice: '',
+    minRating: "",
+    location: "",
+    model: "",
+    year: "",
+    minPrice: "",
+    maxPrice: "",
   });
 
   const locations = variables.locations;
   const models = variables.makes;
 
   const handleOnInputChange = (event) => {
-    if (event.target.name === 'model') {
+    if (event.target.name === "model") {
       setModelVal(event.target.value);
     }
 
-    if (event.target.name === 'location') {
+    if (event.target.name === "location") {
       setLocationVal(event.target.value);
     }
 
-    if (event.target.name === 'minPrice') {
-      if (form.maxPrice !== '') {
+    if (event.target.name === "minPrice") {
+      if (form.maxPrice !== "") {
         if (Number(event.target.value) > Number(form.maxPrice)) {
           setErrors((e) => ({
             ...e,
-            price: 'Max price cannot be less than min price',
+            price: "Max price cannot be less than min price",
           }));
         } else {
           setErrors((e) => ({ ...e, price: null }));
@@ -78,12 +78,12 @@ export default function Listings() {
       }
     }
 
-    if (event.target.name === 'maxPrice') {
-      if (form.minPrice !== '') {
+    if (event.target.name === "maxPrice") {
+      if (form.minPrice !== "") {
         if (Number(event.target.value) < Number(form.minPrice)) {
           setErrors((e) => ({
             ...e,
-            price: 'Max price cannot be less than min price',
+            price: "Max price cannot be less than min price",
           }));
         } else {
           setErrors((e) => ({ ...e, price: null }));
@@ -91,7 +91,7 @@ export default function Listings() {
       } else {
         setErrors((e) => ({ ...e, price: null }));
       }
-      if (event.target.value === '') {
+      if (event.target.value === "") {
         setErrors((e) => ({ ...e, price: null }));
       }
     }
@@ -100,30 +100,30 @@ export default function Listings() {
   };
 
   const resetForm = () => {
-    setValue('');
+    setValue("");
 
     setTimeout(function () {
       setValue(null);
     }, 500);
 
     setForm({
-      minRating: '',
+      minRating: "",
       location: form.location,
       model: form.model,
-      year: '',
-      minPrice: '',
-      maxPrice: '',
+      year: "",
+      minPrice: "",
+      maxPrice: "",
     });
   };
 
   useEffect(() => {
     const getListings = async () => {
       const response = await apiClient.fetchListings();
-      console.log('response:', response.data);
+      console.log("response:", response.data);
       if (response?.data?.listings) {
         setListings(response.data.listings);
       } else {
-        setError('No listings found');
+        setError("No listings found");
       }
     };
 
@@ -136,7 +136,7 @@ export default function Listings() {
       if (response?.data?.listings) {
         setListings(response.data.listings);
       } else {
-        setError('No listings found');
+        setError("No listings found");
       }
     };
 
@@ -148,8 +148,8 @@ export default function Listings() {
 
     setErrors((e) => ({ ...e, form: null }));
     setRating(0);
-    setModelVal('');
-    setLocationVal('');
+    setModelVal("");
+    setLocationVal("");
     const { data, error } = await apiClient.filterListings(form);
 
     if (error) {
@@ -165,13 +165,14 @@ export default function Listings() {
   const filterItems = (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
-        height: '100%',
-        alignItems: 'center',
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
+        alignItems: "center",
         mt: 2,
-      }}>
+      }}
+    >
       <Typography variant="p" align="center">
         {`Minimum Rating`}
       </Typography>
@@ -191,7 +192,7 @@ export default function Listings() {
         disablePortal
         id="locations-auto-complete"
         options={locations}
-        sx={{ width: '90%', mt: 2 }}
+        sx={{ width: "90%", mt: 2 }}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -207,7 +208,7 @@ export default function Listings() {
         disablePortal
         id="model-auto-complete"
         options={models}
-        sx={{ width: '90%', mt: 2 }}
+        sx={{ width: "90%", mt: 2 }}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -221,7 +222,7 @@ export default function Listings() {
 
       <TextField
         id="outlined-number"
-        sx={{ width: '90%', mt: 2 }}
+        sx={{ width: "90%", mt: 2 }}
         name="year"
         onChange={handleOnInputChange}
         label="Year"
@@ -235,11 +236,12 @@ export default function Listings() {
 
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-        }}>
-        <FormControl sx={{ mt: 2, width: '40%' }}>
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        <FormControl sx={{ mt: 2, width: "40%" }}>
           <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
           <OutlinedInput
             id="outlined-adornment-amount"
@@ -252,7 +254,7 @@ export default function Listings() {
           />
         </FormControl>
         <Typography variant="h5">-</Typography>
-        <FormControl sx={{ mt: 2, width: '40%' }}>
+        <FormControl sx={{ mt: 2, width: "40%" }}>
           <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
           <OutlinedInput
             id="outlined-adornment-amount"
@@ -273,13 +275,14 @@ export default function Listings() {
         sx={{ mt: 3, mb: 2 }}
         disabled={
           errors?.price ||
-          (form.minRating === '' &&
-            form.model === '' &&
-            form.year === '' &&
-            form.location === '' &&
-            form.minPrice === '' &&
-            form.maxPrice === '')
-        }>
+          (form.minRating === "" &&
+            form.model === "" &&
+            form.year === "" &&
+            form.location === "" &&
+            form.minPrice === "" &&
+            form.maxPrice === "")
+        }
+      >
         SEARCH
       </Button>
 
@@ -287,7 +290,8 @@ export default function Listings() {
         className="filterButton"
         variant="contained"
         onClick={handleOnReset}
-        sx={{ mt: 3, mb: 2 }}>
+        sx={{ mt: 3, mb: 2 }}
+      >
         RESET
       </Button>
       {/* <FormControl sx={{ ml: 3, my: 2 }}>
@@ -322,15 +326,16 @@ export default function Listings() {
           elevation={3}
           xs={2}
           sx={{
-            display: { xs: 'none', md: 'block' },
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
+            display: { xs: "none", md: "block" },
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
             mt: 5,
             mr: 3,
-            height: '80vh',
+            height: "80vh",
             width: 280,
-          }}>
+          }}
+        >
           <Typography variant="h5" align="center" sx={{ my: 2 }}>
             {`Filter`}
           </Typography>
@@ -344,26 +349,29 @@ export default function Listings() {
           elevation={3}
           sx={{
             zIndex: 1,
-            display: { xs: 'block', md: 'none' },
-            position: 'fixed',
+            display: { xs: "block", md: "none" },
+            position: "fixed",
             bottom: 0,
             left: 0,
             right: 0,
-            height: '7vh',
-            width: '100%',
-          }}>
+            height: "7vh",
+            width: "100%",
+          }}
+        >
           <Box
             sx={{
-              height: '100%',
-              display: 'flex',
-              justifyContent: 'flex-end',
-              alignItems: 'center',
+              height: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              alignItems: "center",
               mr: 3,
-            }}>
+            }}
+          >
             <Button
               onClick={() => {
                 setMobileMenuOpen(true);
-              }}>
+              }}
+            >
               <Typography variant="h6">{`Filter`}</Typography>
               <KeyboardDoubleArrowUpIcon />
             </Button>
@@ -371,42 +379,45 @@ export default function Listings() {
         </Paper>
 
         {/* Mobile Filter Menu */}
-        <Slide direction={'up'} in={mobileMenuOpen} mountOnEnter>
+        <Slide direction={"up"} in={mobileMenuOpen} mountOnEnter>
           <Paper
             sx={{
               zIndex: 1,
-              height: '80vh',
-              width: '100%',
-              position: 'fixed',
+              height: "80vh",
+              width: "100%",
+              position: "fixed",
               bottom: 0,
               left: 0,
-              display: { xs: 'flex', md: 'none' },
-              justifyContent: 'flex-end',
-              overflowY: 'scroll',
+              display: { xs: "flex", md: "none" },
+              justifyContent: "flex-end",
+              overflowY: "scroll",
             }}
-            elevation={3}>
+            elevation={3}
+          >
             <Button
               sx={{
-                position: 'absolute',
+                position: "absolute",
                 top: 5,
               }}
               onClick={() => {
                 setMobileMenuOpen(false);
-              }}>
+              }}
+            >
               <Typography variant="h6">{`Filter`}</Typography>
 
               <KeyboardDoubleArrowDownIcon />
             </Button>
             <Box
               sx={{
-                height: '100%',
-                width: '100%',
-                bgColor: 'red',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                height: "100%",
+                width: "100%",
+                bgColor: "red",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 mt: 8,
-              }}>
+              }}
+            >
               {filterItems}
             </Box>
           </Paper>
@@ -415,9 +426,10 @@ export default function Listings() {
         <Grid
           container
           // bgcolor="red"
-          sx={{ width: '100%', height: '100%' }}
+          sx={{ width: "100%", height: "100%" }}
           spacing={{ xs: 2, md: 3, lg: 5, xl: 7 }}
-          columns={{ xs: 4, sm: 8, md: 12 }}>
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
           <Grid item xs={12}>
             <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
               {`Browse Active Listings`}
@@ -426,10 +438,11 @@ export default function Listings() {
           {listings.length > 0 ? (
             listings.map((listing, i) => (
               <Grid key={i} item xs={4} justifyContent="center">
-                <Card sx={{ width: '100%' }}>
+                <Card sx={{ width: "100%" }}>
                   <Link
-                    style={{ textDecoration: 'none' }}
-                    to={`/listing/${listing.id}`}>
+                    style={{ textDecoration: "none" }}
+                    to={`/listing/${listing.id}`}
+                  >
                     <CardMedia
                       component="img"
                       height="140"
@@ -440,19 +453,21 @@ export default function Listings() {
 
                   <CardContent>
                     <Box
-                      sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
                       <Typography
                         gutterBottom
                         variant="h5"
                         component="div"
-                        className="modeLimit">
+                        className="modeLimit"
+                      >
                         {listing.make +
-                          ' ' +
+                          " " +
                           listing.model +
-                          ' ' +
+                          " " +
                           listing.year}
                       </Typography>
-                      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <Typography variant="body2" color="text.secondary">
                           {listing.max_accomodation}
                         </Typography>
@@ -461,27 +476,31 @@ export default function Listings() {
                     </Box>
 
                     <Box
-                      sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
                       <Typography variant="body2" color="text.secondary">
                         {listing.location}
                       </Typography>
                       <Typography
                         variant="body2"
                         color="text.secondary"
-                        fontStyle="italic">
+                        fontStyle="italic"
+                      >
                         ${listing.price}
                       </Typography>
                     </Box>
                   </CardContent>
                   <CardActions>
                     <Link
-                      style={{ textDecoration: 'none' }}
-                      to={`/listing/${listing.id}/book`}>
+                      style={{ textDecoration: "none" }}
+                      to={`/listing/${listing.id}/book`}
+                    >
                       <Button size="small">Book Now</Button>
                     </Link>
                     <Link
-                      style={{ textDecoration: 'none' }}
-                      to={`/listing/${listing.id}`}>
+                      style={{ textDecoration: "none" }}
+                      to={`/listing/${listing.id}`}
+                    >
                       <Button size="small">Learn More</Button>
                     </Link>
                     <Rating
