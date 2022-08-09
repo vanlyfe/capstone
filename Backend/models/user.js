@@ -326,13 +326,27 @@ class User {
     }
 
     var resetToken = Token.createResetToken(user);
-    var link = `${process.env.CLIENT_URL}passwordconfirm?token=${resetToken}&id=${user.id}`;
+    console.log(resetToken)
+    var link = `${process.env.CLIENT_URL}passwordconfirm?token=${resetToken}`;
    
     return link;
   }
 
-  static async updatePassword(password, id) {
+  static async updatePassword({password, token}) {
 
+    if(password.length < 1){
+      throw new BadRequestError("Invalid password")
+    }
+
+    const validated = Token.validateToken(token)
+
+    if(!validated?.id){
+      throw new BadRequestError("This password request session has expired, kindly try again")
+
+    }
+
+    const id = validated.id
+    
 
     var hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
     const result = await db.query(

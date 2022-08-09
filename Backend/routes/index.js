@@ -16,7 +16,7 @@ router.post("/requestreset", async (req, res, next) => {
       );
 
       const what = User.sendmail(req.body.email, requestPasswordResetService)
-      console.log(what)
+   
   
       return res.json(requestPasswordResetService);
     } catch (error) {
@@ -26,10 +26,10 @@ router.post("/requestreset", async (req, res, next) => {
 
 router.put("/updatepassword", async (req, res, next) => {
   try {
-    console.log(req.body);
-    const { id } = req.body;
+   
+    const {token} = req.body
     const { password } = req.body;
-    const user = await User.updatePassword(password, id);
+    const user = await User.updatePassword({password, token});
 
     return res.status(200).json({ user });
   } catch (error) {

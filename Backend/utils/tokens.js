@@ -3,7 +3,7 @@ const{SECRET_KEY} = require("../config")
 
 const generateToken = (data) => jwt.sign(data, SECRET_KEY, {expiresIn:"24h"})
 
-const generateResetToken = (data) => jwt.sign(data, SECRET_KEY,{expiresIn: "50s"})
+const generateResetToken = (data) => jwt.sign(data, SECRET_KEY,{expiresIn: "300s"})
 
 const createResetToken = (user) => {
     const payload = {

@@ -11,7 +11,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import logo from "../../assets/Logo2.svg";
 import Container from "@mui/material/Container";
-
+import { useParams } from "react-router-dom";
 
 
 
@@ -46,18 +46,34 @@ export default function ForgotPasswordConfirm(props) {
 
   const handleOnInputChange = (event) => {
     if(event.target.name === password){
-      setPassword(e)
+      setPassword(event.target.value)
 
     }
 
     if(event.target.name === passwordConfirm){
+      setConfirm(event.target.value)
 
     }
   };
 
-  //const what = useParams()
+  const handleOnSubmit = () =>{
+    setError(null)
 
-  console.log("This is it fds")
+    if(password !== confirm){
+      setError("Passwords do not match")
+    }
+
+
+  }
+
+  const queryParams = new URLSearchParams(window.location.search)
+
+  
+  const token = queryParams.get("token")
+  
+  console.log("This is querytoken", token)
+  
+  
   return (
     <div className="register">
       <Box>
@@ -86,6 +102,7 @@ export default function ForgotPasswordConfirm(props) {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
+                  onChange={handleOnInputChange}
                     required
                     fullWidth
                     name="password"
@@ -97,6 +114,7 @@ export default function ForgotPasswordConfirm(props) {
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
+                    onChange={handleOnInputChange}
                     required
                     fullWidth
                     name="passwordConfirm"
@@ -107,7 +125,7 @@ export default function ForgotPasswordConfirm(props) {
                   />
                 </Grid>
               </Grid>
-              <Button fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button onClick={handleOnSubmit} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                 Confirm
               </Button>
               <Grid container justifyContent="flex-end">
