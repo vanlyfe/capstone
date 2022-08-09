@@ -226,7 +226,7 @@ export default function ListingDetails({ user }) {
     if (value == "") {
       setErrors((e) => ({
         ...e,
-        guests: "Number of guests is required",
+        guests: "*Required",
       }));
     } else if (isNaN(value) || value == "e" || value == "-") {
       console.log("is NAN", isNaN(value));
