@@ -3,8 +3,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -12,16 +11,13 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import logo from "../../assets/Logo2.svg";
 import Container from "@mui/material/Container";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-// import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Navigate, useNavigate } from "react-router-dom";
+
+
 
 import { useState } from "react";
 import "../App.css";
-import axios from "axios";
+
 
 function Copyright(props) {
   return (
@@ -45,6 +41,23 @@ function Copyright(props) {
 
 export default function ForgotPasswordConfirm(props) {
   const [error, setError] = useState(null)
+  const [password, setPassword] = useState(null)
+  const [confirm, setConfirm] = useState(null)
+
+  const handleOnInputChange = (event) => {
+    if(event.target.name === password){
+      setPassword(e)
+
+    }
+
+    if(event.target.name === passwordConfirm){
+
+    }
+  };
+
+  //const what = useParams()
+
+  console.log("This is it")
   return (
     <div className="register">
       <Box>
