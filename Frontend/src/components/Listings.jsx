@@ -8,7 +8,6 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import variables from "../assets/variables.js";
-import Footer from "./Footer";
 import {
   Autocomplete,
   Container,
@@ -163,365 +162,361 @@ export default function Listings() {
     resetForm();
   };
 
+  const filterItems = (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
+        alignItems: "center",
+        mt: 2,
+      }}
+    >
+      <Typography variant="p" align="center">
+        {`Minimum Rating`}
+      </Typography>
+      <Rating
+        name="minRating"
+        value={rating}
+        precision={0.5}
+        onChange={(event, newValue) => {
+          setRating(newValue);
+          setForm((f) => ({
+            ...f,
+            [event.target.name]: event.target.value,
+          }));
+        }}
+      />
+      <Autocomplete
+        disablePortal
+        id="locations-auto-complete"
+        options={locations}
+        sx={{ width: "90%", mt: 2 }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Location"
+            name="location"
+            onChange={handleOnInputChange}
+            onSelect={handleOnInputChange}
+          />
+        )}
+      />
+
+      <Autocomplete
+        disablePortal
+        id="model-auto-complete"
+        options={models}
+        sx={{ width: "90%", mt: 2 }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Model"
+            name="model"
+            onChange={handleOnInputChange}
+            onSelect={handleOnInputChange}
+          />
+        )}
+      />
+
+      <TextField
+        id="outlined-number"
+        sx={{ width: "90%", mt: 2 }}
+        name="year"
+        onChange={handleOnInputChange}
+        label="Year"
+        type="number"
+        value={value}
+      />
+
+      <Typography variant="p" align="center" mt={2}>
+        {`Price Range`}
+      </Typography>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-around",
+          alignItems: "center",
+        }}
+      >
+        <FormControl sx={{ mt: 2, width: "40%" }}>
+          <InputLabel htmlFor="outlined-adornment-amount">Min</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+            type="number"
+            name="minPrice"
+            onChange={handleOnInputChange}
+            value={value}
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            label="Amount"
+          />
+        </FormControl>
+        <Typography variant="h5">-</Typography>
+        <FormControl sx={{ mt: 2, width: "40%" }}>
+          <InputLabel htmlFor="outlined-adornment-amount">Max</InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-amount"
+            type="number"
+            value={value}
+            onChange={handleOnInputChange}
+            name="maxPrice"
+            startAdornment={<InputAdornment position="start">$</InputAdornment>}
+            label="Amount"
+          />
+        </FormControl>
+      </Box>
+      {errors.price && <span className="filterErrors">{errors.price}</span>}
+      <Button
+        className="filterButton"
+        variant="contained"
+        onClick={handleOnSubmit}
+        sx={{ mt: 3, mb: 2 }}
+        disabled={
+          errors?.price ||
+          (form.minRating === "" &&
+            form.model === "" &&
+            form.year === "" &&
+            form.location === "" &&
+            form.minPrice === "" &&
+            form.maxPrice === "")
+        }
+      >
+        SEARCH
+      </Button>
+
+      <Button
+        className="filterButton"
+        variant="contained"
+        onClick={handleOnReset}
+        sx={{ mt: 3, mb: 2 }}
+      >
+        RESET
+      </Button>
+      {/* <FormControl sx={{ ml: 3, my: 2 }}>
+    <FormLabel id="demo-radio-buttons-group-label">
+      Vehicle Type
+    </FormLabel>
+    <RadioGroup
+      aria-labelledby="demo-radio-buttons-group-label"
+      defaultValue="female"
+      name="radio-buttons-group">
+      <FormControlLabel
+        value="female"
+        control={<Radio />}
+        label="Female"
+      />
+      <FormControlLabel value="male" control={<Radio />} label="Male" />
+      <FormControlLabel
+        value="other"
+        control={<Radio />}
+        label="Other"
+      />
+    </RadioGroup>
+  </FormControl> */}
+    </Box>
+  );
+
   return (
-    <Box>
-      <Container maxWidth="100%" sx={{ mt: 0, my: 0, mb: 20 }}>
-        <Box container spacing={2} display="flex">
-          {/* Desktop Filter List */}
-          <Paper
-            elevation={3}
-            xs={2}
+    <Container maxWidth="100%" sx={{ mt: 0, my: 0 }}>
+      <Box container spacing={2} display="flex">
+        {/* Desktop Filter List */}
+        <Paper
+          elevation={3}
+          xs={2}
+          sx={{
+            display: { xs: "none", md: "block" },
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            mt: 5,
+            mr: 3,
+            height: "80vh",
+            width: 280,
+          }}
+        >
+          <Typography variant="h5" align="center" sx={{ my: 2 }}>
+            {`Filter`}
+          </Typography>
+          <Divider />
+          {filterItems}
+        </Paper>
+
+        {/* Mobile Filter Bottom Bar */}
+
+        <Paper
+          elevation={3}
+          sx={{
+            zIndex: 1,
+            display: { xs: "block", md: "none" },
+            position: "fixed",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "7vh",
+            width: "100%",
+          }}
+        >
+          <Box
             sx={{
+              height: "100%",
               display: "flex",
-              flexDirection: "column",
+              justifyContent: "flex-end",
               alignItems: "center",
-              justifyContent: "center",
-              mt: 5,
               mr: 3,
-              height: "80vh",
-              width: 280,
             }}
           >
-            <Typography variant="h5" align="center" sx={{ my: 2 }}>
-              {`Filter`}
-            </Typography>
-            <Divider />
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                width: "100%",
-                height: "100%",
-                alignItems: "center",
-                mt: 2,
+            <Button
+              onClick={() => {
+                setMobileMenuOpen(true);
               }}
             >
-              <Typography variant="p" align="center">
-                {`Minimum Rating`}
-              </Typography>
-              <Rating
-                name="minRating"
-                value={rating}
-                precision={0.5}
-                onChange={(event, newValue) => {
-                  setRating(newValue);
-                  setForm((f) => ({
-                    ...f,
-                    [event.target.name]: event.target.value,
-                  }));
-                }}
-              />
-              <Autocomplete
-                disablePortal
-                id="locations-auto-complete"
-                options={locations}
-                sx={{ width: "90%", mt: 2 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Location"
-                    name="location"
-                    onChange={handleOnInputChange}
-                    onSelect={handleOnInputChange}
-                  />
-                )}
-              />
-              <Autocomplete
-                disablePortal
-                id="locations-auto-complete"
-                options={models}
-                sx={{ width: "90%", mt: 2 }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="Model"
-                    name="model"
-                    onChange={handleOnInputChange}
-                    onSelect={handleOnInputChange}
-                  />
-                )}
-              />
-              <Typography variant="p" sx={{ width: "90%", mt: 2 }}>
-                <TextField
-                  id="outlined-number"
-                  name="year"
-                  onChange={handleOnInputChange}
-                  label="Year"
-                  type="number"
-                  value={value}
-                />
-              </Typography>
+              <Typography variant="h6">{`Filter`}</Typography>
+              <KeyboardDoubleArrowUpIcon />
+            </Button>
+          </Box>
+        </Paper>
 
-              <Typography variant="p" align="center" mt={2}>
-                {`Price Range`}
-              </Typography>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-around",
-                  alignItems: "center",
-                }}
-              >
-                <FormControl sx={{ mt: 2, width: "40%" }}>
-                  <InputLabel htmlFor="outlined-adornment-amount">
-                    Min
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-amount"
-                    type="number"
-                    name="minPrice"
-                    onChange={handleOnInputChange}
-                    value={value}
-                    startAdornment={
-                      <InputAdornment position="start">$</InputAdornment>
-                    }
-                    label="Amount"
-                  />
-                </FormControl>
-                <Typography variant="h5">-</Typography>
-                <FormControl sx={{ mt: 2, width: "40%" }}>
-                  <InputLabel htmlFor="outlined-adornment-amount">
-                    Max
-                  </InputLabel>
-                  <OutlinedInput
-                    id="outlined-adornment-amount"
-                    type="number"
-                    value={value}
-                    onChange={handleOnInputChange}
-                    name="maxPrice"
-                    startAdornment={
-                      <InputAdornment position="start">$</InputAdornment>
-                    }
-                    label="Amount"
-                  />
-                </FormControl>
-              </Box>
-              {errors.price && (
-                <span className="filterErrors">{errors.price}</span>
-              )}
-              <Button
-                className="filterButton"
-                variant="contained"
-                onClick={handleOnSubmit}
-                sx={{ mt: 3, mb: 2 }}
-                disabled={
-                  errors?.price ||
-                  (form.minRating === "" &&
-                    form.model === "" &&
-                    form.year === "" &&
-                    form.location === "" &&
-                    form.minPrice === "" &&
-                    form.maxPrice === "")
-                }
-              >
-                SEARCH
-              </Button>
-
-              <Button
-                className="filterButton"
-                variant="contained"
-                onClick={handleOnReset}
-                sx={{ mt: 3, mb: 2 }}
-              >
-                RESET
-              </Button>
-            </Box>
-
-            {/* <FormControl sx={{ ml: 3, my: 2 }}>
-            <FormLabel id="demo-radio-buttons-group-label">
-              Vehicle Type
-            </FormLabel>
-            <RadioGroup
-              aria-labelledby="demo-radio-buttons-group-label"
-              defaultValue="female"
-              name="radio-buttons-group">
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label="Other"
-              />
-            </RadioGroup>
-          </FormControl> */}
-          </Paper>
-          {/* Mobile Filter Bottom Bar */}
+        {/* Mobile Filter Menu */}
+        <Slide direction={"up"} in={mobileMenuOpen} mountOnEnter>
           <Paper
-            elevation={3}
             sx={{
               zIndex: 1,
-              display: { xs: "block", md: "none" },
+              height: "80vh",
+              width: "100%",
               position: "fixed",
               bottom: 0,
               left: 0,
-              right: 0,
-              height: "7vh",
-              width: "100%",
+              display: { xs: "flex", md: "none" },
+              justifyContent: "flex-end",
+              overflowY: "scroll",
             }}
+            elevation={3}
           >
+            <Button
+              sx={{
+                position: "absolute",
+                top: 5,
+              }}
+              onClick={() => {
+                setMobileMenuOpen(false);
+              }}
+            >
+              <Typography variant="h6">{`Filter`}</Typography>
+
+              <KeyboardDoubleArrowDownIcon />
+            </Button>
             <Box
               sx={{
                 height: "100%",
+                width: "100%",
+                bgColor: "red",
                 display: "flex",
-                justifyContent: "flex-end",
                 alignItems: "center",
-                mr: 3,
+                justifyContent: "center",
+                mt: 8,
               }}
             >
-              <Button
-                onClick={() => {
-                  setMobileMenuOpen(true);
-                }}
-              >
-                <Typography variant="h6">{`Filter`}</Typography>
-                <KeyboardDoubleArrowUpIcon />
-              </Button>
+              {filterItems}
             </Box>
           </Paper>
-          {/* Mobile Filter Menu */}
-          <Slide direction={"up"} in={mobileMenuOpen} mountOnEnter>
-            <Paper
-              sx={{
-                zIndex: 1,
-                height: "80vh",
-                width: "100%",
-                position: "fixed",
-                bottom: 0,
-                left: 0,
-                display: { xs: "block", md: "none" },
-              }}
-              elevation={3}
-            >
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: 0,
-                  height: "7vh",
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "flex-end",
-                  alignItems: "center",
-                  mr: 4,
-                }}
-              >
-                <Button
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  <Typography variant="h6">{`Filter`}</Typography>
-                  <KeyboardDoubleArrowDownIcon />
-                </Button>
-              </Box>
-            </Paper>
-          </Slide>
-          <Grid
-            container
-            // bgcolor="red"
-            sx={{ width: "100%", height: "100%" }}
-            spacing={{ xs: 2, md: 3, lg: 5, xl: 7 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-          >
-            <Grid item xs={12}>
-              <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
-                {`Browse Active Listings`}
-              </Typography>
-            </Grid>
-            {listings.length > 0 ? (
-              listings.map((listing, i) => (
-                <Grid key={i} item xs={4} justifyContent="center">
-                  <Card sx={{ width: "100%" }}>
+        </Slide>
+
+        <Grid
+          container
+          // bgcolor="red"
+          sx={{ width: "100%", height: "100%" }}
+          spacing={{ xs: 2, md: 3, lg: 5, xl: 7 }}
+          columns={{ xs: 4, sm: 8, md: 12 }}
+        >
+          <Grid item xs={12}>
+            <Typography variant="h6" sx={{ mb: 2, mt: 4 }}>
+              {`Browse Active Listings`}
+            </Typography>
+          </Grid>
+          {listings.length > 0 ? (
+            listings.map((listing, i) => (
+              <Grid key={i} item xs={4} justifyContent="center">
+                <Card sx={{ width: "100%" }}>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={`/listing/${listing.id}`}
+                  >
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={listing.image_url}
+                      alt="listing photo"
+                    />
+                  </Link>
+
+                  <CardContent>
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography
+                        gutterBottom
+                        variant="h5"
+                        component="div"
+                        className="modeLimit"
+                      >
+                        {listing.make +
+                          " " +
+                          listing.model +
+                          " " +
+                          listing.year}
+                      </Typography>
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                        <Typography variant="body2" color="text.secondary">
+                          {listing.max_accomodation}
+                        </Typography>
+                        <PersonIcon fontSize="small" />
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={{ display: "flex", justifyContent: "space-between" }}
+                    >
+                      <Typography variant="body2" color="text.secondary">
+                        {listing.location}
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        fontStyle="italic"
+                      >
+                        ${listing.price}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                  <CardActions>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={`/listing/${listing.id}/book`}
+                    >
+                      <Button size="small">Book Now</Button>
+                    </Link>
                     <Link
                       style={{ textDecoration: "none" }}
                       to={`/listing/${listing.id}`}
                     >
-                      <CardMedia
-                        component="img"
-                        height="140"
-                        image={listing.image_url}
-                        alt="listing photo"
-                      />
+                      <Button size="small">Learn More</Button>
                     </Link>
-
-                    <CardContent>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Typography
-                          gutterBottom
-                          variant="h5"
-                          component="div"
-                          className="modeLimit"
-                        >
-                          {listing.make +
-                            " " +
-                            listing.model +
-                            " " +
-                            listing.year}
-                        </Typography>
-                        <Box sx={{ display: "flex", justifyContent: "center" }}>
-                          <Typography variant="body2" color="text.secondary">
-                            {listing.max_accomodation}
-                          </Typography>
-                          <PersonIcon fontSize="small" />
-                        </Box>
-                      </Box>
-
-                      <Box
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <Typography variant="body2" color="text.secondary">
-                          {listing.location}
-                        </Typography>
-                        <Typography
-                          variant="body2"
-                          color="text.secondary"
-                          fontStyle="italic"
-                        >
-                          ${listing.price}
-                        </Typography>
-                      </Box>
-                    </CardContent>
-                    <CardActions>
-                      <Link
-                        style={{ textDecoration: "none" }}
-                        to={`/listing/${listing.id}/book`}
-                      >
-                        <Button size="small">Book Now</Button>
-                      </Link>
-                      <Link
-                        style={{ textDecoration: "none" }}
-                        to={`/listing/${listing.id}`}
-                      >
-                        <Button size="small">Learn More</Button>
-                      </Link>
-                      <Rating
-                        readOnly={true}
-                        className="listRating"
-                        value={listing.rating}
-                      />
-                    </CardActions>
-                  </Card>
-                </Grid>
-              ))
-            ) : (
-              <div className="noItems">No items meet your search criteria</div>
-            )}
-          </Grid>
-        </Box>
-      </Container>
-      <Footer />;
-    </Box>
+                    <Rating
+                      readOnly={true}
+                      className="listRating"
+                      value={listing.rating}
+                    />
+                  </CardActions>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <div className="noItems">No items meet your search criteria</div>
+          )}
+        </Grid>
+      </Box>
+    </Container>
   );
 }
