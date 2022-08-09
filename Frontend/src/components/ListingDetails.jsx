@@ -9,6 +9,7 @@ import {
 import {
   AppBar,
   Toolbar,
+  Paper,
   Typography,
   Stack,
   Button,
@@ -63,6 +64,10 @@ export default function ListingDetails({ user }) {
   const [dateInValue, setDateInValue] = useState("");
   const [dateOutValue, setDateOutValue] = useState("");
   const [numGuests, setNumGuests] = useState("");
+
+  // using this as an alternative to test the submit button
+
+  const [order_id, setOrderId] = useState(null);
 
   let { id } = useParams();
 
@@ -122,7 +127,7 @@ export default function ListingDetails({ user }) {
     fetchHostDetails();
   }, [carDetails]);
 
-  console.log(" user detailsa ", hostDetails);
+  console.log(" user details ", hostDetails);
 
   useEffect(() => {
     const fetchReviewerDetails = async () => {
@@ -190,7 +195,7 @@ export default function ListingDetails({ user }) {
 
   const handleOnInputChange = (e) => {
     if (e.target.name === "numGuests") {
-      console.log("text input value", e.target.value);
+      //console.log("text input value", e.target.value);
       setNumGuests(e.target.value);
       // if (
       //   (e.target.value != "" && isNaN(e.target.value)) ||
@@ -257,22 +262,24 @@ export default function ListingDetails({ user }) {
   }, [dateInValue, dateOutValue]);
 
   const handleOnSubmit = async (evt) => {
+    console.log(evt);
 
-    console.log(evt)
     setErrors((e) => ({ ...e, form: null }));
+
+    if (!user) {
+      navigate("/login");
+    }
 
     const { data, error } = await apiClient.postOrder(
       {
         taxes: taxes,
         total: total,
-        //guests: form.guests,
         guests: numGuests,
         startDate: date_in,
         endDate: date_out,
       },
-      1
+      id
     );
-    ``;
 
     if (error) {
       setErrors((e) => ({ ...e, form: error }));
@@ -283,8 +290,10 @@ export default function ListingDetails({ user }) {
 
     const order_id = data.order[0].id;
 
-    navigate(user ? `/orderconfirmation/${id}/${order_id}` : "/login");
-    //{user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
+    ///setOrderId(order_id);
+
+    //navigate(user ? `/orderconfirmation/${id}/${order_id}` : "/login");
+    navigate(`/orderconfirmation/${id}/${order_id}`);
   };
 
   return (
@@ -292,110 +301,138 @@ export default function ListingDetails({ user }) {
       <Grid
         sx={{
           display: "flex",
-          flexDirection: "rows",
           width: "100vw",
-          height: 900,
+          height: 1100,
+          //bgcolor: "red",
+          flexDirection: "column",
+          //alignItems: "center",
+          //justifyContent: "center",
         }}
       >
         <Grid
           sx={{
             display: "flex",
-            flexDirection: "row",
-            width: "50%",
+            flexDirection: "column",
+            //width: "50%",
+            //bgcolor: "yellow",
           }}
         >
-          <Card sx={{ width: "100%", maxWidth: "100%" }}>
-            {/* <CardHeader
-              avatar={
-                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                  V
-                </Avatar>
-              }
-              title= {hostDetails.firstname + " " + hostDetails.lastname} 
-              //subheader="September 14, 2021"
-            /> */}
-            <CardMedia
-              component="img"
-              height="400"
-              image={carDetails.image_url}
-              //image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dm9sa3N3YWdlbiUyMHZhbnxlbnwwfHwwfHw%3D&w=1000&q=80"
-              alt="Paella dish"
-            />
-            <CardContent sx={{ display: "flex", flexDirection: "row" }}>
-              <Box>
-                <Typography
-                  sx={{
-                    fontFamily: "sans-serif",
-                    color: "#1e1e1f",
-                    fontWeight: 300,
-                    fontSize: 20,
-                  }}
-                >
-                  {carDetails.location}
-                </Typography>
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: "Arial",
-                      color: "#1d3557",
+          <Box sx={{ display: "flex", flexDirection: "row", mt: 5, ml: 20 }}>
+            <Typography
+              sx={{
+                fontFamily: "sans-serif",
+                color: "#1e1e1f",
+                fontWeight: 300,
+                fontSize: 20,
+                ml: 5,
+                mr: 5,
+              }}
+            >
+              {carDetails.location}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                ml: 20,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "Arial",
+                  color: "#1d3557",
 
-                      fontWeight: 600,
-                      fontSize: 15,
-                    }}
-                  >
-                    25 Reviews
-                  </Typography>
-                  <Rating value={carDetails.rating || 0} />
-                </Box>
-                <Typography
-                  sx={{
-                    fontFamily: "Chalkduster, fantasy",
-                    color: "003049",
-                    fontWeight: 600,
-                    fontSize: 40,
-                  }}
-                >
-                  ${carDetails.price}/Night
-                </Typography>{" "}
-                <Typography
-                  sx={{
-                    fontFamily: "Arial",
-                    color: "#343a40",
+                  fontWeight: 600,
+                  fontSize: 15,
+                }}
+              >
+                25 Reviews
+              </Typography>
+              <Rating value={carDetails.rating || 0} />
+            </Box>
+          </Box>
 
-                    fontWeight: 600,
-                    fontSize: 15,
-                  }}
-                >
-                  {carDetails.model}
-                </Typography>{" "}
-                <Typography
-                  sx={{
-                    fontFamily: "Arial",
-                    color: "#bbd0ff",
+          <Box
+            component="img"
+            // height="400"
+            //width="600"
+            //image={carDetails.image_url}
+            //image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dm9sa3N3YWdlbiUyMHZhbnxlbnwwfHwwfHw%3D&w=1000&q=80"
+            alt="car image"
+            sx={{
+              height: 400,
+              width: 600,
+              //maxHeight: { xs: 233, md: 167 },
+              //maxWidth: { xs: 350, md: 250 },
+              mt: 5,
+              ml: 20,
+            }}
+            src={carDetails.image_url}
+          />
 
-                    fontWeight: 600,
-                    fontSize: 15,
-                  }}
-                >
-                  Sleeps {carDetails.max_accomodation}
-                </Typography>
-              </Box>
-              <Box>
-                <BookmarkSharpIcon sx={{ justify: "end" }} />
-              </Box>
-            </CardContent>
+          <Box sx={{ display: "flex", flexDirection: "row", mt: 5, ml: 20 }}>
+            <Typography
+              sx={{
+                //fontFamily: "Chalkduster, fantasy",
+                //color: "003049",
+                //fontWeight: 600,
+                //fontSize: 40,
 
+                fontWeight: 600,
+                fontSize: 20,
+                ml: 5,
+              }}
+            >
+              ${carDetails.price}/Night
+            </Typography>{" "}
+            <Typography
+              sx={{
+                fontFamily: "Arial",
+                color: "#343a40",
+
+                fontWeight: 600,
+                fontSize: 15,
+                ml: 10,
+              }}
+            >
+              {carDetails.model}
+            </Typography>{" "}
+            <Typography
+              sx={{
+                fontFamily: "Arial",
+                color: "#bbd0ff",
+
+                fontWeight: 600,
+                fontSize: 15,
+                ml: 10,
+              }}
+            >
+              Sleeps {carDetails.max_accomodation}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid
+          sx={{
+            display: "flex",
+            flexDirection: " row",
+          }}
+        >
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: " column",
+              width: "50%",
+              //alignItems: "center",
+              //justifyContent: "center",
+            }}
+          >
             <Box sx={{ display: "flex", flexDirection: "column" }}>
               <Typography
                 sx={{
                   fontSize: 25,
                   mt: 3,
-                  ml: 20,
+                  ml: 3,
+                  mb: 3,
                   //color: "white",
                   align: "center",
                 }}
@@ -464,15 +501,153 @@ export default function ListingDetails({ user }) {
                 </Box>
               </Box>
             </Box>
-          </Card>{" "}
+          </Grid>
+
+          <Paper
+            elevation={3}
+            sx={{
+              mr: 3,
+              display: "flex",
+              flexDirection: " column",
+              width: "50%",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            {/* //  <Paper elevation ={3}> */}
+            <Typography
+              sx={{
+                fontSize: 25,
+                mt: 2,
+                ml: 3,
+                //color: "white",
+                align: "center",
+                padding: "2em",
+              }}
+            >
+              Reserve This Listing
+            </Typography>
+
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: " column",
+
+                alignItems: "left",
+                justifyContent: "left",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontSize: 15,
+                  mt: 3,
+
+                  mb: 3,
+                  color: "red",
+                  align: "center",
+                }}
+              >
+                {errors.guests && (
+                  <span className="error">{errors.guests}</span>
+                )}
+              </Typography>
+              <Box sx={{ display: "flex", flexDirection: "row" }}>
+                <TextField
+                  //type="number"
+                  sx={{ width: "100%" }}
+                  name="numGuests"
+                  label="Number of guests"
+                  //variant="filled"
+                  onChange={handleOnInputChange}
+                  value={numGuests}
+                  // InputLabelProps={{
+                  //   shrink: true,
+                  // }}
+                  //inputProps={{ type: "number" }}
+                />
+              </Box>
+
+              <Box sx={{ mb: 5 }}>
+                <Typography
+                  sx={{
+                    fontSize: 15,
+                    mt: 1,
+                    ml: 3,
+                    mb: 3,
+                    color: "red",
+                    align: "center",
+                  }}
+                >
+                  {errors.endDate && (
+                    <span className="error">{errors.endDate}</span>
+                  )}
+                </Typography>
+                <Box sx={{ display: "flex", flexDirection: "row" }}>
+                  <Box sx={{ mt: 1 }}>
+                    <Typography sx={{ mt: 1, ml: 1, mb:1 }}>Check In:</Typography>
+
+                    <DateIn
+                      dateInValue={dateInValue}
+                      setDateInValue={setDateInValue}
+                    />
+                  </Box>
+
+                  <Box sx={{ mt: 1, ml: 3 }}>
+                    <Typography sx={{ mt: 1, ml: 1, mb:1 }}>Check Out:</Typography>
+                    <DateOut
+                      dateOutValue={dateOutValue}
+                      setDateOutValue={setDateOutValue}
+                    />
+                  </Box>
+                </Box>
+              </Box>
+
+              <Button
+                variant="contained"
+                size="medium"
+                sx={{ mt: 1, ml: 2, mr: 2 }}
+                //component={Link}
+                //to={user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
+                color="inherit"
+                onClick={handleOnSubmit}
+                disabled={errors.guests || errors.endDate}
+              >
+                Submit Request
+              </Button>
+
+              <Button
+                component={Link}
+                to="/listings"
+                color="inherit"
+                sx={{ mt: 10 }}
+              >
+                Back to Listings
+              </Button>
+            </Box>
+            {/* //</Paper> */}
+          </Paper>
         </Grid>
-        <Grid
+      </Grid>
+      <Grid
+        sx={{
+          display: "flex",
+          flexDirection: " column",
+          //alignContent: "center",
+          //alignItems: "center",
+          //justifyContent: "center",
+          width: "100vw",
+          // alignContent: "center",
+          // height: 800,
+          pb: 10,
+          mt: 10,
+        }}
+      >
+        <Box
           sx={{
             display: "flex",
             flexDirection: " column",
-            width: "50%",
+            alignContent: "center",
             alignItems: "center",
-            justifyContent: "center",
           }}
         >
           <Typography
@@ -481,131 +656,22 @@ export default function ListingDetails({ user }) {
               mt: 3,
               ml: 3,
               //color: "white",
-              align: "center",
             }}
           >
-            Request This Listing
+            Reviews
           </Typography>
+        </Box>
 
-          <Typography
-            sx={{
-              fontSize: 15,
-              mt: 3,
-              ml: 3,
-              mb: 3,
-              //color: "white",
-              align: "center",
-            }}
-          >
-            {errors.guests && <span className="error">{errors.guests}</span>}
-          </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <TextField
-              //type="number"
-              name="numGuests"
-              label="Number of guests"
-              //variant="filled"
-              onChange={handleOnInputChange}
-              value={numGuests}
-              // InputLabelProps={{
-              //   shrink: true,
-              // }}
-              //inputProps={{ type: "number" }}
-            />
-          </Box>
-
-          <Box sx={{ mb: 20 }}>
-            <Typography
-              sx={{
-                fontSize: 15,
-                mt: 3,
-                ml: 3,
-                mb: 3,
-                //color: "white",
-                align: "center",
-              }}
-            >
-              {errors.endDate && <span className="error">{errors.endDate}</span>}
-            </Typography>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
-              <Box sx={{ mt: 10, ml: 10 }}>
-                <Typography>From:</Typography>
-
-                <DateIn
-                  dateInValue={dateInValue}
-                  setDateInValue={setDateInValue}
-                />
-              </Box>
-
-              <Box sx={{ mt: 10, ml: 15 }}>
-                <Typography>To:</Typography>
-                <DateOut
-                  dateOutValue={dateOutValue}
-                  setDateOutValue={setDateOutValue}
-                />
-              </Box>
-            </Box>
-          </Box>
-
-          <Button
-            variant="contained"
-            size="medium"
-            sx={{ mt: 2, ml: 2, mr: 2 }}
-            //component={Link}
-            //to={user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
-            //to="/orderconfirmation"
-            color="inherit"
-            onClick={handleOnSubmit}
-            disabled = {errors.guests||errors.endDate}
-          >
-            Submit Request
-          </Button>
-          {/* </Box> */}
-
-          <Button
-            component={Link}
-            to="/listings"
-            color="inherit"
-            sx={{ mt: 10 }}
-          >
-            Back to Listings
-          </Button>
-        </Grid>
-      </Grid>
-      <Grid
-        sx={{
-          bgcolor: "#73777B",
-          display: "flex",
-          flexDirection: " column",
-          //alignContent: "center",
-          alignItems: "center",
-          justifyContent: "center",
-          width: "100vw",
-          alignContent: "center",
-          // height: 800,
-          pb: 10,
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: 25,
-            mt: 3,
-            ml: 3,
-            color: "white",
-            align: "center",
-          }}
-        >
-          Reviews
-        </Typography>
         {/*map all the reviews related to the selected listing*/}
 
         {carReviews?.length > 0
           ? carReviews.map((review, idx) => {
               return (
-                <Box
+                <Paper
+                  elevation={3}
                   sx={{
                     height: 200,
-                    width: 800,
+                    width: "80%",
                     mt: 3,
                     ml: 3,
                     bgcolor: "white",
@@ -640,7 +706,7 @@ export default function ListingDetails({ user }) {
                       Helpful
                     </Typography>
                   </Grid>
-                </Box>
+                </Paper>
               );
             })
           : ""}
