@@ -15,7 +15,8 @@ router.post("/requestreset", async (req, res, next) => {
         req.body.email
       );
 
-      User.sendmail(req.body.email, requestPasswordResetService)
+      const what = User.sendmail(req.body.email, requestPasswordResetService)
+      console.log(what)
   
       return res.json(requestPasswordResetService);
     } catch (error) {

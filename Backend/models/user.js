@@ -326,7 +326,7 @@ class User {
     }
 
     var resetToken = Token.createResetToken(user);
-    var link = `${process.env.CLIENT_URL}passwordreset?token=${resetToken}&id=${user.id}`;
+    var link = `${process.env.CLIENT_URL}passwordconfirm?token=${resetToken}&id=${user.id}`;
    
     return link;
   }
