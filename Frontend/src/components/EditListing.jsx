@@ -11,12 +11,12 @@ import {
 } from "@mui/material";
 
 import apiClient from "../services/apiClient";
-
-import SnackbarContent from "@mui/material/SnackbarContent";
 import variables from "../assets/variables.js";
 
+import SnackbarContent from "@mui/material/SnackbarContent";
 
-export default function EditListing(props) {
+
+export default function EditUser(props) {
   const [success, setSuccess] = React.useState(false);
   const [value, setValue] = React.useState();
   const [form, setForm] = React.useState({
@@ -32,13 +32,11 @@ export default function EditListing(props) {
   });
   const [errors, setErrors] = React.useState({});
 
-
-  const locations = variables.locations;
-  const models = variables.makes;
-
   const handleOnCancel = () => {
     props.setEditProfile(null);
   };
+
+  const locations = variables.locations;
 
   const handleOnSubmit = async () => {
     setErrors((e) => ({ ...e, form: null }));
@@ -60,7 +58,7 @@ export default function EditListing(props) {
   };
 
   const handleOnInputChange = (event) => {
-   
+    //   setValue(event.target.value);
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
@@ -73,12 +71,12 @@ export default function EditListing(props) {
         justifyContent: "space-evenly",
       }}
     >
-     
+      {/* <Grid> */}
       <Link href={props.user ? "/user/" + props.user.id : "/login"}>
         <ArrowBackIcon className="arrowBack" sx={{ fontSize: 60 }} />
       </Link>
 
-    
+      {/* </Grid> */}
 
       <Grid
         sx={{
@@ -105,7 +103,7 @@ export default function EditListing(props) {
             sx={{ width: 200, height: 200, mt: 3, mb: 1 }}
           />{" "}
         </Box>
-       
+        {/* <Typography sx={{ ml: 3 }}>Upload Photo</Typography> */}
         <Button variant="text" href="/user/:id/activeListing" sx={{ ml: 4 }}>
           Upload Photo
         </Button>
@@ -128,113 +126,74 @@ export default function EditListing(props) {
 
         <Box>
           <Box sx={{ ml: 2, mb: 7 }}>
-            <TextField
-              id="filled-multiline-flexible"
-              label="First Name"
-              name="firstName"
-              maxRows={4}
-              onChange={handleOnInputChange}
-              variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
-            />
-            <TextField
-              id="filled-multiline-flexible"
-              label="Last Name"
-              name="lastName"
-              maxRows={4}
-              onChange={handleOnInputChange}
-              variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
-            />{" "}
-            <TextField
-              id="filled-multiline-flexible"
-              label="Email"
-              name="email"
-              onChange={handleOnInputChange}
-              maxRows={4}
-            
-              variant="filled"
-              sx={{ width: 500, mr: 3, mb: 5 }}
-            />{" "}
-            <Grid
-              container
-              spacing={4}
-              justifyItems="center"
-              style={{ marginTop: "2px", marginBottom: "40px" }}
-            >
-              <TextField
-                id="filled-multiline-flexible"
-                label="Username"
-                name="username"
-                onChange={handleOnInputChange}
-                maxRows={4}
-                //     onChange={handleChange}
-                variant="filled"
-                sx={{ width: 240, mr: 2.5, ml: 4 }}
-              />{" "}
-              <Autocomplete
+            <Grid sx={{ display : "flex", flexDirection : "row" , mb : 5}}>
+            <Autocomplete
                 disablePortal
                 id="locations-auto-complete"
-                options={["Male", "Female", "Do not specify"]}
-                sx={{ width: 240, background: "rgba(0, 0, 0, 0.06)" }}
+                options={locations}
+                sx={{ width: 240, background: "rgba(0, 0, 0, 0.06)" , mr : 3}}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Gender"
-                    name="gender"
+                    label="Location"
+                    name="location"
                     onChange={handleOnInputChange}
                     onSelect={handleOnInputChange}
                   />
                 )}
               />
+              <TextField
+                id="filled-multiline-flexible"
+                label="Max accomodation"
+                name="max_accomodation"
+                maxRows={4}
+                onChange={handleOnInputChange}
+                variant="filled"
+                type= "number"
+                sx={{ width: 240}}
+              />{" "}
             </Grid>
+            
             <Grid
               container
               spacing={4}
               justifyItems="center"
-              style={{ marginTop: "2px", marginBottom: "20px" }}
+              style={{ marginTop: "2px", marginBottom: "40px", marginLeft : 1 }}
             >
               <TextField
                 id="filled-multiline-flexible"
-                label="Date of Birth"
-                name="birthdate"
-                type="date"
+                label="Fees"
+                name="fees"
                 onChange={handleOnInputChange}
-                variant="filled"
-                sx={{ width: 240, mr: 2.5, ml: 4 }}
-              />
-            
-              <TextField
-                id="filled-multiline-flexible"
-                label="Phone Number"
-                name="phone"
                 maxRows={4}
-                onChange={handleOnInputChange}
-                type="number"
+                type = "number"
                
                 variant="filled"
-                sx={{ width: 240, mb: 5 }}
+                sx={{ width: 240, mr: 3 }}
+              />{" "}
+              <TextField
+                id="filled-multiline-flexible"
+                label="Price"
+                name="price"
+                onChange={handleOnInputChange}
+                maxRows={4}
+                type = "number"
+               
+                variant="filled"
+                sx={{ width: 240 }}
               />{" "}
             </Grid>
-            <TextField
-              id="filled-multiline-flexible"
-              label="City"
-              name="location"
-              onChange={handleOnInputChange}
-              maxRows={4}
-             
-              variant="filled"
-              sx={{ width: 500, mr: 3 }}
-            />{" "}
+            
+          
             <TextField
               id="filled-multiline-static"
-              label="Describe Yourself"
-              name="bio"
+              label="Describe the car"
+              name="description"
               onChange={handleOnInputChange}
               multiline
               rows={4}
               variant="filled"
-              sx={{ width: 500, mt: 5 }}
+              sx={{ width: 500}}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row", ml: 15 }}>
@@ -268,8 +227,7 @@ export default function EditListing(props) {
           </Box>
         </Box>
       </Grid>
-     
+      {/* <Grid sx={{ width: "50%", ml: 60, mt: 8 }}></Grid> */}
     </Grid>
   );
 }
-

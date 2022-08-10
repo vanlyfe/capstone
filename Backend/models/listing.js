@@ -239,6 +239,10 @@ class Listing {
     let queryString = '';
     let listingUpdateEntries = Object.entries(listingUpdate);
     for (let i = 0; i < listingUpdateEntries.length; i++) {
+      if(listingUpdateEntries[i][0] === ""){
+        continue;
+      }
+
       queryString += `${listingUpdateEntries[i][0]} = $${i + 1}, `;
     }
 
