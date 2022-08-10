@@ -11,60 +11,59 @@ import {
 } from "@mui/material";
 
 import apiClient from "../services/apiClient";
-
-import SnackbarContent from "@mui/material/SnackbarContent";
 import variables from "../assets/variables.js";
+import { useNavigate, useParams } from "react-router-dom";
+import SnackbarContent from "@mui/material/SnackbarContent";
 
-
-export default function EditListing(props) {
+export default function EditUser(props) {
   const [success, setSuccess] = React.useState(false);
   const [value, setValue] = React.useState();
   const [form, setForm] = React.useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    birthdate: "",
-    gender: "",
-    phone: "",
+    image_url: "",
     location: "",
-    bio: "",
-    email: "",
+    max_accomodation: "",
+    fees: "",
+    price: "",
+    description: "",
   });
   const [errors, setErrors] = React.useState({});
 
 
-  const locations = variables.locations;
-  const models = variables.makes;
+  const navigate = useNavigate();
+  const { id } = useParams();
 
   const handleOnCancel = () => {
-    props.setEditProfile(null);
+    navigate("/user/" + props.user.id);
   };
+
+  const locations = variables.locations;
 
   const handleOnSubmit = async () => {
     setErrors((e) => ({ ...e, form: null }));
-    const { data, error } = await apiClient.updateUser(form, props.user.id);
+    const { data, error } = await apiClient.updateListing(form, id);
 
     if (error) {
       setErrors((e) => ({ ...e, form: error }));
     }
 
-    if (data?.user) {
-      props.setUser(data.user);
+    
 
+    if (data?.listing) {
+      
       setSuccess(true);
       setTimeout(function () {
         setSuccess(false);
-        props.setEditProfile(null);
+        navigate("/user/" + props.user.id);
+        
       }, 2000);
     }
   };
 
   const handleOnInputChange = (event) => {
-   
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
-  console.log(form);
+  
   return (
     <Grid
       sx={{
@@ -73,12 +72,12 @@ export default function EditListing(props) {
         justifyContent: "space-evenly",
       }}
     >
-     
-      <Link href={props.user ? "/user/" + props.user.id : "/login"}>
+      {/* <Grid> */}
+      <Link href={"/user/" + props.user.id }>
         <ArrowBackIcon className="arrowBack" sx={{ fontSize: 60 }} />
       </Link>
 
-    
+      {/* </Grid> */}
 
       <Grid
         sx={{
@@ -105,7 +104,7 @@ export default function EditListing(props) {
             sx={{ width: 200, height: 200, mt: 3, mb: 1 }}
           />{" "}
         </Box>
-       
+        {/* <Typography sx={{ ml: 3 }}>Upload Photo</Typography> */}
         <Button variant="text" href="/user/:id/activeListing" sx={{ ml: 4 }}>
           Upload Photo
         </Button>
@@ -128,113 +127,71 @@ export default function EditListing(props) {
 
         <Box>
           <Box sx={{ ml: 2, mb: 7 }}>
-            <TextField
-              id="filled-multiline-flexible"
-              label="First Name"
-              name="firstName"
-              maxRows={4}
-              onChange={handleOnInputChange}
-              variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
-            />
-            <TextField
-              id="filled-multiline-flexible"
-              label="Last Name"
-              name="lastName"
-              maxRows={4}
-              onChange={handleOnInputChange}
-              variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
-            />{" "}
-            <TextField
-              id="filled-multiline-flexible"
-              label="Email"
-              name="email"
-              onChange={handleOnInputChange}
-              maxRows={4}
-            
-              variant="filled"
-              sx={{ width: 500, mr: 3, mb: 5 }}
-            />{" "}
-            <Grid
-              container
-              spacing={4}
-              justifyItems="center"
-              style={{ marginTop: "2px", marginBottom: "40px" }}
-            >
-              <TextField
-                id="filled-multiline-flexible"
-                label="Username"
-                name="username"
-                onChange={handleOnInputChange}
-                maxRows={4}
-                //     onChange={handleChange}
-                variant="filled"
-                sx={{ width: 240, mr: 2.5, ml: 4 }}
-              />{" "}
+            <Grid sx={{ display: "flex", flexDirection: "row", mb: 5 }}>
               <Autocomplete
                 disablePortal
                 id="locations-auto-complete"
-                options={["Male", "Female", "Do not specify"]}
-                sx={{ width: 240, background: "rgba(0, 0, 0, 0.06)" }}
+                options={locations}
+                sx={{ width: 240, background: "rgba(0, 0, 0, 0.06)", mr: 3 }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Gender"
-                    name="gender"
+                    label="Location"
+                    name="location"
                     onChange={handleOnInputChange}
                     onSelect={handleOnInputChange}
                   />
                 )}
               />
+              <TextField
+                id="filled-multiline-flexible"
+                label="Max accomodation"
+                name="max_accomodation"
+                maxRows={4}
+                onChange={handleOnInputChange}
+                variant="filled"
+                type="number"
+                sx={{ width: 240 }}
+              />{" "}
             </Grid>
+
             <Grid
               container
               spacing={4}
               justifyItems="center"
-              style={{ marginTop: "2px", marginBottom: "20px" }}
+              style={{ marginTop: "2px", marginBottom: "40px", marginLeft: 1 }}
             >
               <TextField
                 id="filled-multiline-flexible"
-                label="Date of Birth"
-                name="birthdate"
-                type="date"
+                label="Fees"
+                name="fees"
                 onChange={handleOnInputChange}
+                maxRows={4}
+                type="number"
                 variant="filled"
-                sx={{ width: 240, mr: 2.5, ml: 4 }}
-              />
-            
+                sx={{ width: 240, mr: 3 }}
+              />{" "}
               <TextField
                 id="filled-multiline-flexible"
-                label="Phone Number"
-                name="phone"
-                maxRows={4}
+                label="Price"
+                name="price"
                 onChange={handleOnInputChange}
+                maxRows={4}
                 type="number"
-               
                 variant="filled"
-                sx={{ width: 240, mb: 5 }}
+                sx={{ width: 240 }}
               />{" "}
             </Grid>
-            <TextField
-              id="filled-multiline-flexible"
-              label="City"
-              name="location"
-              onChange={handleOnInputChange}
-              maxRows={4}
-             
-              variant="filled"
-              sx={{ width: 500, mr: 3 }}
-            />{" "}
+
             <TextField
               id="filled-multiline-static"
-              label="Describe Yourself"
-              name="bio"
+              label="Describe the car"
+              name="description"
               onChange={handleOnInputChange}
               multiline
               rows={4}
               variant="filled"
-              sx={{ width: 500, mt: 5 }}
+              sx={{ width: 500 }}
             />
           </Box>
           <Box sx={{ display: "flex", flexDirection: "row", ml: 15 }}>
@@ -242,15 +199,12 @@ export default function EditListing(props) {
               variant="contained"
               onClick={handleOnSubmit}
               disabled={
-                form.firstName === "" &&
-                form.lastName === "" &&
-                form.username === "" &&
-                form.birthdate === "" &&
-                form.gender === "" &&
+                form.image_url === "" &&
                 form.location === "" &&
-                form.phone === "" &&
-                form.bio === "" &&
-                form.email === ""
+                form.max_accomodation === "" &&
+                form.fees === "" &&
+                form.price === "" &&
+                form.description === ""
               }
               sx={{ mt: 1, mb: 1, ml: 1 }}
             >
@@ -268,8 +222,7 @@ export default function EditListing(props) {
           </Box>
         </Box>
       </Grid>
-     
+      {/* <Grid sx={{ width: "50%", ml: 60, mt: 8 }}></Grid> */}
     </Grid>
   );
 }
-

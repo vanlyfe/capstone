@@ -83,7 +83,7 @@ export default function App() {
           />
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails user={user} />} />
-          <Route path="/listing/:id/edit" element={<EditListing />} />
+          <Route path="/listing/:id/edit" element={<EditListing user={user} setUser={setUser}/>} />
           <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
           <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
           <Route path="/reseterror" element={<ResetError />} />
