@@ -78,7 +78,7 @@ export default function UserInfo(props) {
     <AppBar
       position="relative"
       sx={{
-        zIndex: (theme) => theme.zIndex.drawer + 1,
+        zIndex: (theme) => theme.zIndex.drawer -1,
         bgcolor: "#e1e9f0",
         color: "black",
         p: 3,
@@ -149,7 +149,7 @@ export default function UserInfo(props) {
             width: "100%",
           }}
         >
-          {Number(props.user.id) === Number(id) ? (
+          {props.user?.id && Number(props.user.id) === Number(id) && (
             <Box
               sx={{
                 display: "flex",
@@ -173,7 +173,7 @@ export default function UserInfo(props) {
                 DELETE PROFILE
               </Button>
             </Box>
-          ) : null}
+          )}
           <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
             {bio}
           </Typography>

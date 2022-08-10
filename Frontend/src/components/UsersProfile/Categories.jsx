@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Grid,
@@ -8,59 +8,66 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-} from "@mui/material";
-import { useParams } from "react-router-dom";
+  Drawer,
+  AppBar,
+  ListSubheader,
+} from '@mui/material';
+import { useParams } from 'react-router-dom';
+
+const drawerWidth = 250;
 
 export default function Categories(props) {
   let { id } = useParams();
 
   const handleOnPastOrders = () => {
-    props.setCategory("po");
+    props.setCategory('po');
   };
 
   const handleOnPastListings = () => {
-    props.setCategory("pl");
+    props.setCategory('pl');
   };
 
   const handleOnActiveOrders = () => {
-    props.setCategory("ao");
+    props.setCategory('ao');
   };
 
   const handleOnActiveListings = () => {
-    props.setCategory("al");
+    props.setCategory('al');
   };
 
   const handleOnReviews = () => {
-    props.setCategory("r");
+    props.setCategory('r');
   };
   return (
-    <Grid
-      sx={{
-        mt: 1,
-        bgcolor: "#e1e9f0",
-        width: "25%",
-        mt: 1,
-        mr: 1,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <Box
+    <Box sx={{ zIndex: 1 }}>
+      <Drawer
         sx={{
-          height: 400,
-          width: "80%",
-          mr: 1,
-          ml: 3,
-          display: "flex",
-          flexDirection: "column",
+          width: drawerWidth,
+          zIndex: 1,
+          display: { xs: 'none', md: 'block' },
         }}
-      >
-        <List>
-          <Typography>Host</Typography>
+        variant="permanent">
+        <Box sx={{ height: 370 }} />
 
-          <ListItem sx={{ display: "flex", flexDirection: "column" }}>
+        {/* <Box sx={{height: 500}}/> */}
+        <List sx={{ width: drawerWidth }}>
+          <ListItem
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              background: '#fafafa',
+            }}>
+            <ListSubheader
+              component="div"
+              id="nested-list-subheader"
+              sx={{ fontSize: 22, background: '#fcfcfc' }}>
+              Host
+            </ListSubheader>
+          </ListItem>
+
+          <ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
             <ListItemButton onClick={handleOnActiveListings}>
-              <ListItemText> Active Listings</ListItemText>
+              <ListItemText>Active Listings</ListItemText>
             </ListItemButton>
             <ListItemButton onClick={handleOnPastListings}>
               <ListItemText>Past Listings</ListItemText>
@@ -68,32 +75,44 @@ export default function Categories(props) {
           </ListItem>
         </List>
         <Divider />
-        {Number(props.user.id) === Number(id) ? (
+        {props.user?.id && Number(props.user.id) === Number(id) && (
           <List>
-            <Typography>Renter</Typography>
+            <ListItem
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                background: '#fafafa',
+              }}>
+              <ListSubheader
+                component="div"
+                id="nested-list-subheader"
+                sx={{ fontSize: 22, background: '#fcfcfc' }}>
+                Renter
+              </ListSubheader>
+            </ListItem>
 
-            <ListItem sx={{ display: "flex", flexDirection: "column" }}>
+            <ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
               <ListItemButton onClick={handleOnActiveOrders}>
-                <ListItemText> Active Orders</ListItemText>
+                <ListItemText>Active Orders</ListItemText>
               </ListItemButton>
               <ListItemButton onClick={handleOnPastOrders}>
-                <ListItemText> Past Orders</ListItemText>
+                <ListItemText>Past Orders</ListItemText>
               </ListItemButton>
             </ListItem>
           </List>
-        ) : null}
+        )}
         <Divider />
 
         <List>
-          <ListItem>
+          <ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
             <ListItemButton onClick={handleOnReviews}>
-              <ListItemText sx={{ display: "flex", flexDirection: "column" }}>
-                Reviews
-              </ListItemText>
+              <ListItemText>Reviews</ListItemText>
             </ListItemButton>
           </ListItem>
         </List>
-      </Box>
-    </Grid>
+      </Drawer>
+    </Box>
+
+    // </Box>
   );
 }

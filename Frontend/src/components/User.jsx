@@ -13,10 +13,6 @@ import { useParams } from "react-router-dom";
 export default function User({ user, setUser }) {
   const [category, setCategory] = useState(null);
   const [editProfile, setEditProfile] = useState(null);
-  
-
-  console.log(user)
-
  
   return (
     <Box>
