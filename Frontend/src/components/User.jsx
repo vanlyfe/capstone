@@ -9,13 +9,25 @@ import PastOrders from "./UsersProfile/PastOrders";
 import Reviews from "./UsersProfile/Reviews";
 import EditUser from "./UsersProfile/EditUser";
 import { Box, Grid } from "@mui/material";
+import { useParams } from "react-router-dom";
 export default function User({ user, setUser }) {
   const [category, setCategory] = useState(null);
   const [editProfile, setEditProfile] = useState(null);
+  const [isUser, setIsUser] = useState(false);
+
+  const { id } = useParams();
+
+  // if (id != user.id) {
+  //   setIsUser(false);
+  // }
   return (
     <Box>
       {editProfile === "profile" ? (
-        <EditUser user={user} setUser={setUser} setEditProfile={setEditProfile}/>
+        <EditUser
+          user={user}
+          setUser={setUser}
+          setEditProfile={setEditProfile}
+        />
       ) : (
         <Box
           sx={{
@@ -29,6 +41,8 @@ export default function User({ user, setUser }) {
             setEditProfile={setEditProfile}
             user={user}
             setUser={setUser}
+            isUser={isUser}
+            setIsUser={setIsUser}
           />
           <Grid
             sx={{
@@ -39,7 +53,12 @@ export default function User({ user, setUser }) {
               flexDirection: "row",
             }}
           >
-            <Categories category={category} setCategory={setCategory} />
+            <Categories
+              category={category}
+              setCategory={setCategory}
+              isUser={isUser}
+              setIsUser={setIsUser}
+            />
 
             {category === "ao" ? (
               <ActiveOrders user={user} setUser={setUser} />

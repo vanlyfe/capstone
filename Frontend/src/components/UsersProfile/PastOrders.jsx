@@ -146,9 +146,7 @@ export default function PastOrders() {
   //   );
   // }
 
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
+  
 
   return (
     <Grid
@@ -204,7 +202,8 @@ export default function PastOrders() {
                     }}
                   >
                     <TableRow key={row.id} hover={true} onClick={() => {
-                      navigate("/listing/" + row.listing_id)
+                     
+                      navigate("/orderconfirmation/" + row.listing_id + "/" + row.id)
                     }}>
                       <TableCell
                         component="th"

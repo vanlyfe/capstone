@@ -44,9 +44,7 @@ export default function ActiveOrders() {
     getData();
   }, []);
 
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
+  
   return (
     <Grid
       sx={{
@@ -94,7 +92,9 @@ export default function ActiveOrders() {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      onClick={handleOnClick}
+                      onClick={() => {
+                        navigate("/orderconfirmation/" + row.listing_id + "/" + row.id)
+                      }}
                     >
                       <TableCell component="th" scope="row">
                         {row.createdat.slice(0,10)}

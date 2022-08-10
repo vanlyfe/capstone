@@ -191,7 +191,7 @@ export default function ActiveListings() {
                           borderTop: "none",
                         }}
                       >
-                        <Rating value={row.rating} />
+                        <Rating value={row.rating} readOnly={true}/>
                       </TableCell>
                     </TableRow>
                     <Button

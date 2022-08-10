@@ -106,7 +106,7 @@ export default function PastListings() {
                       </TableCell>
                       <TableCell align="center">${row.price}</TableCell>
                       <TableCell align="center">
-                        <Rating value={row.rating} />
+                        <Rating value={row.rating} readOnly={true}/>
                       </TableCell>
                     </TableRow>
                   ))

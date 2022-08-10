@@ -58,12 +58,13 @@ export default function ListingDetails({ user }) {
   const navigate = useNavigate();
   const [carDetails, setCarDetails] = useState([]);
   const [hostDetails, setHostDetails] = useState([]);
+  const [isUser, setIsUser] = useState(false)
 
   const [carReviews, setCarReviews] = useState([]);
   const [reviewerDetails, setReviewerDetails] = useState([]);
-  const [dateInValue, setDateInValue] = useState("");
-  const [dateOutValue, setDateOutValue] = useState("");
-  const [numGuests, setNumGuests] = useState("");
+  const [dateInValue, setDateInValue] = useState(null);
+  const [dateOutValue, setDateOutValue] = useState(null);
+  const [numGuests, setNumGuests] = useState(null);
 
   // using this as an alternative to test the submit button
 
@@ -71,19 +72,22 @@ export default function ListingDetails({ user }) {
 
   let { id } = useParams();
 
-  console.log("product id ", id);
+  
+  
 
   // fetches the car details
   useEffect(() => {
     const makeAPIcalls = async () => {
       const fetchCarDetails = async () => {
         const { data, error } = await apiClient.fetchListingById(id);
-        console.log("car details data", data.listing[0]);
+     //   console.log("car details data", data.listing[0]);
         if (data) {
           setCarDetails(data.listing[0]);
-          //setPrice(data.listing.price)
-          console.log("car details", carDetails);
+          setIsUser(data.listing[0].user_id === user.id)
+          // console.log("This is data", data.listing[0])
+          // console.log("car details", carDetails);
         }
+       
       };
 
       //fetch reviews
@@ -180,7 +184,8 @@ export default function ListingDetails({ user }) {
   const roundSubTotal = Math.round(subTotal * 100) / 100;
   const taxes = taxeRate * roundSubTotal;
   const roundTaxes = Math.round(taxes * 100) / 100;
-  const total = Math.round((roundTaxes + roundSubTotal) * 100) / 100;
+  const fees = carDetails.fees ? carDetails.fees : 0
+  const total = Math.round((roundTaxes + roundSubTotal + fees) * 100) / 100;
 
   //const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -222,44 +227,33 @@ export default function ListingDetails({ user }) {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  function validateGuests(value) {
-    if (value == "") {
-      setErrors((e) => ({
-        ...e,
-        guests: "*Required",
-      }));
-    } else if (isNaN(value) || value == "e" || value == "-") {
-      console.log("is NAN", isNaN(value));
-      setErrors((e) => ({
-        ...e,
-        guests: "Please enter a number.",
-      }));
-    } else if (value > 5 || value < 1) {
-      setErrors((e) => ({
-        ...e,
-        guests: "Please enter a value between 1 and 5.",
-      }));
-    } else {
-      setErrors((e) => ({ ...e, guests: null }));
-    }
-  }
+  // function validateGuests(value) {
+  //   if (value == "") {
+  //     setErrors((e) => ({
+  //       ...e,
+  //       guests: "*Required",
+  //     }));
+  //   }  else {
+  //     setErrors((e) => ({ ...e, guests: null }));
+  //   }
+  // }
 
-  useEffect(() => {
-    validateGuests(numGuests);
-  }, [numGuests]);
+  // useEffect(() => {
+  //   validateGuests(numGuests);
+  // }, [numGuests]);
 
-  function validateDates(begin, end) {
-    if (getNumberOfDays(begin, end) < 0) {
-      setErrors((e) => ({
-        ...e,
-        endDate: "The End Date Must be after the Start Date",
-      }));
-    }
-  }
+  // function validateDates(begin, end) {
+  //   if (getNumberOfDays(begin, end) < 0) {
+  //     setErrors((e) => ({
+  //       ...e,
+  //       endDate: "The End Date Must be after the Start Date",
+  //     }));
+  //   }
+  // }
 
-  useEffect(() => {
-    validateDates(dateInValue, dateOutValue);
-  }, [dateInValue, dateOutValue]);
+  // useEffect(() => {
+  //   validateDates(dateInValue, dateOutValue);
+  // }, [dateInValue, dateOutValue]);
 
   const handleOnSubmit = async (evt) => {
     console.log(evt);
@@ -346,9 +340,9 @@ export default function ListingDetails({ user }) {
                   fontSize: 15,
                 }}
               >
-                25 Reviews
+                {carReviews.length} Reviews
               </Typography>
-              <Rating value={carDetails.rating || 0} />
+              <Rating value={carDetails.rating || 0} readOnly={true}/>
             </Box>
           </Box>
 
@@ -499,10 +493,14 @@ export default function ListingDetails({ user }) {
                     {hostDetails.email}
                   </Typography>
                 </Box>
+                <Button variant="contained" sx={{mt:3, ml:3}} onClick={() => {
+                  navigate("/user/" + hostDetails.id)
+                }}>View host</Button>
               </Box>
             </Box>
           </Grid>
 
+{ !isUser ?
           <Paper
             elevation={3}
             sx={{
@@ -559,7 +557,9 @@ export default function ListingDetails({ user }) {
                   label="Number of guests"
                   //variant="filled"
                   onChange={handleOnInputChange}
-                  value={numGuests}
+                  InputProps={{ inputProps: { min: 0, max: 10 } }}
+                
+                  type="number"
                   // InputLabelProps={{
                   //   shrink: true,
                   // }}
@@ -591,6 +591,8 @@ export default function ListingDetails({ user }) {
                     <DateIn
                       dateInValue={dateInValue}
                       setDateInValue={setDateInValue}
+                      errors={errors}
+                      setErrors={setErrors}
                     />
                   </Box>
 
@@ -601,10 +603,16 @@ export default function ListingDetails({ user }) {
                     <DateOut
                       dateOutValue={dateOutValue}
                       setDateOutValue={setDateOutValue}
+                      errors={errors}
+                      setErrors={setErrors}
                     />
                   </Box>
                 </Box>
               </Box>
+
+              {errors.form && (
+                  <span className="listingError">{errors.form}</span>
+                )}
 
               <Button
                 variant="contained"
@@ -614,7 +622,7 @@ export default function ListingDetails({ user }) {
                 //to={user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
                 color="inherit"
                 onClick={handleOnSubmit}
-                disabled={errors.guests || errors.endDate}
+                disabled={!numGuests || !dateInValue || !dateOutValue}
               >
                 Submit Request
               </Button>
@@ -629,7 +637,8 @@ export default function ListingDetails({ user }) {
               </Button>
             </Box>
             {/* //</Paper> */}
-          </Paper>
+          </Paper> : null}
+
         </Grid>
       </Grid>
       <Grid
@@ -678,7 +687,8 @@ export default function ListingDetails({ user }) {
                     width: "80%",
                     mt: 3,
                     ml: 3,
-                    bgcolor: "white",
+                    bgcolor: "white"
+                
                   }}
                 >
                   <Rating

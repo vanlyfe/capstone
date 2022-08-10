@@ -13,7 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import apiClient from "../../services/apiClient";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function UserInfo(props) {
   const [firstName, setFirstName] = React.useState();
@@ -47,12 +47,15 @@ export default function UserInfo(props) {
     setIsDelete(false);
   };
 
+  const { id } = useParams();
+
   useEffect(() => {
     const getUser = async () => {
-      const response = await apiClient.fetchUserFromId(props.user.id);
-      console.log("user id:", props.user.id);
-      console.log("user info: ", response.data.user);
-      console.log("firstname: ", response.data.user.firstname);
+      const response = await apiClient.fetchUserFromId(id);
+
+      // console.log("user id:", props.user.id);
+      // console.log("user info: ", response.data.user);
+      // console.log("firstname: ", response.data.user.firstname);
 
       if (response?.data?.user) {
         setBio(response.data.user.bio);
@@ -146,10 +149,14 @@ export default function UserInfo(props) {
             width: "100%",
           }}
         >
-          <Box
-            sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
-          >
-            {props.user ? (
+          {props.isUser ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
+              }}
+            >
               <Button
                 variant="contained"
                 onClick={handleOnEditProfile}
@@ -157,8 +164,7 @@ export default function UserInfo(props) {
               >
                 EDIT PROFILE
               </Button>
-            ) : null}
-            {props.user ? (
+
               <Button
                 variant="contained"
                 onClick={handleOnClickDelete}
@@ -166,9 +172,9 @@ export default function UserInfo(props) {
               >
                 DELETE PROFILE
               </Button>
-            ) : null}
-          </Box>
-          <Typography sx={{ fontSize:"20px", fontWeight:"bold"}}>
+            </Box>
+          ) : null}
+          <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
             {bio}
           </Typography>
         </Box>

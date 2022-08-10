@@ -115,6 +115,8 @@ export default function OrderConfirmation() {
     fetchCarDetails();
   }, []);
 
+  const fees = carDetails.fees ? carDetails.fees : 0
+
   function getNumberOfDays(start, end) {
     const date1 = new Date(start);
     const date2 = new Date(end);
@@ -242,18 +244,26 @@ export default function OrderConfirmation() {
                   <TableCell align="right">{order.guests}</TableCell>
                 </TableRow>
                 <TableRow>
+                  <TableCell>Check in</TableCell>
+                  <TableCell align="right">{order.startdate.slice(0,10)}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>Check out</TableCell>
+                  <TableCell align="right">{order.enddate.slice(0,10)}</TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>No of Nights</TableCell>
                   <TableCell align="right">{days}</TableCell>
                 </TableRow>
 
                 <TableRow>
-                  <TableCell rowSpan={3} />
+                  {/* <TableCell rowSpan={3} /> */}
                   <TableCell>Subtotal</TableCell>
-                  <TableCell align="right">$140</TableCell>
+                  <TableCell align="right">${Math.round((order.total - order.taxes - fees) * 100)/ 100}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Tax</TableCell>
-                  <TableCell align="right">${Math.round(order.taxes*100)/100}</TableCell>
+                  <TableCell>Tax and fees</TableCell>
+                  <TableCell align="right">${Math.round((order.taxes + fees)*100)/100}</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Total</TableCell>
