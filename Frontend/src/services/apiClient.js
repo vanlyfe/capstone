@@ -344,6 +344,16 @@ class ApiClient {
       data : update,
     })
   }
+
+
+  async validate(token){
+    return this.request({
+      endpoint : `index/validate`,
+      method : `POST`,
+      data : token
+    })
+  }
+
 }
 
 export default new ApiClient("http://localhost:3001");

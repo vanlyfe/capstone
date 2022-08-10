@@ -3,6 +3,7 @@ const User = require("../models/user");
 
 const { createUserJwt } = require("../utils/tokens");
 const { createResetToken } = require("../utils/tokens");
+const {validateToken} = require("../utils/tokens");
 const security = require("../middleware/security");
 const permissions = require("../middleware/permissions");
 const { Router } = require("express");
@@ -27,14 +28,29 @@ router.post("/requestreset", async (req, res, next) => {
 router.put("/updatepassword", async (req, res, next) => {
   try {
    
-    const {token} = req.body
+    const {id} = req.body
     const { password } = req.body;
-    const user = await User.updatePassword({password, token});
+    const {confirm} = req.body
+    const user = await User.updatePassword({confirm, password, id});
 
     return res.status(200).json({ user });
   } catch (error) {
     next(error);
   }
 });
+
+router.post("/validate", async (req, res, next) => {
+  try{
+    const {token} = req.body
+    const validate = validateToken(token)
+    return res.status(200).json(validate)
+
+  } catch(error){
+    next(error)
+
+  }
+})
+
+
 
 module.exports = router;

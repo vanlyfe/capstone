@@ -332,21 +332,19 @@ class User {
     return link;
   }
 
-  static async updatePassword({password, token}) {
+  static async updatePassword({confirm, password, id}) {
 
     if(password.length < 1){
       throw new BadRequestError("Invalid password")
     }
 
-    const validated = Token.validateToken(token)
-
-    if(!validated?.id){
-      throw new BadRequestError("This password request session has expired, kindly try again")
+    if(password !== confirm){
+      throw new BadRequestError("Passwords do not match")
 
     }
 
-    const id = validated.id
     
+  
 
     var hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
     const result = await db.query(
@@ -358,7 +356,7 @@ class User {
                    [hashedPassword,id]
     );
 
-    const res = result.rows
+    const res = result.rows[0]
     return res
   }
 

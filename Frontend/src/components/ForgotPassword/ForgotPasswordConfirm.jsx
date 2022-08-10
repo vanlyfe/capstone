@@ -3,6 +3,9 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
@@ -11,13 +14,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import logo from "../../assets/Logo2.svg";
 import Container from "@mui/material/Container";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 
-
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../App.css";
-
+import apiClient from "../../services/apiClient";
 
 function Copyright(props) {
   return (
@@ -40,46 +41,102 @@ function Copyright(props) {
 // const theme = createTheme();
 
 export default function ForgotPasswordConfirm(props) {
-  const [error, setError] = useState(null)
-  const [password, setPassword] = useState(null)
-  const [confirm, setConfirm] = useState(null)
+  const [errors, setErrors] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [confirm, setConfirm] = useState(null);
+  const [reset, setReset] = useState(null);
+  const [success, setSuccess] = useState(false)
+  const navigate = useNavigate();
 
   const handleOnInputChange = (event) => {
-    if(event.target.name === password){
-      setPassword(event.target.value)
-
+    if (event.target.name === "password") {
+      setPassword(event.target.value);
     }
 
-    if(event.target.name === passwordConfirm){
-      setConfirm(event.target.value)
-
+    if (event.target.name === "passwordConfirm") {
+      setConfirm(event.target.value);
     }
   };
 
-  const handleOnSubmit = () =>{
-    setError(null)
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
 
-    if(password !== confirm){
-      setError("Passwords do not match")
+    const token = queryParams.get("token");
+
+    const fetchUser = async () => {
+      var user = await apiClient.validate({token});
+      user = user.data
+      console.log(user);
+      if (!user.id) {
+        navigate("/reseterror");
+      } else {
+        setReset(user);
+      }
+    };
+    fetchUser();
+  }, []);
+
+
+
+  const handleOnSubmit = async () => {
+    setErrors(null);
+
+    const id = reset.id;
+
+    const { data, error } = await apiClient.updatepassword({ confirm, password, id });
+
+    if (error) {
+      setErrors(error);
+    } else{
+      setSuccess(true)
     }
 
+    
+  };
 
+  const handleOnDone = () => {
+    setSuccess(false)
+    navigate("/login")
   }
 
-  const queryParams = new URLSearchParams(window.location.search)
-
-  
-  const token = queryParams.get("token")
-  
-  console.log("This is querytoken", token)
-  
-  
   return (
     <div className="register">
       <Box>
         {/* <ThemeProvider theme={theme}> */}
         <Container component="main" maxWidth="xs">
           <CssBaseline />
+
+          <Dialog
+            open={success}
+            // onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle
+              id="alert-dialog-title"
+              sx={{
+                fontSize: 20,
+                alignItems: "center",
+              }}
+            >
+              Password successfully updated
+            </DialogTitle>
+
+            <DialogActions>
+              <Button
+              onClick={handleOnDone}
+                className="resetDialog"
+                sx={{
+                  border: "solid",
+                  border: 1,
+                  borderColor: "grey",
+                }}
+              >
+                Back to sign in
+              </Button>
+            </DialogActions>
+          </Dialog>
+          
           <Box
             sx={{
               marginTop: 8,
@@ -96,13 +153,13 @@ export default function ForgotPasswordConfirm(props) {
               Reset Password
             </Typography>
 
-            {error && <span className="error">{error}</span>}
+            {errors && <span className="error">{errors}</span>}
 
             <Box component="form" noValidate sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <TextField
-                  onChange={handleOnInputChange}
+                    onChange={handleOnInputChange}
                     required
                     fullWidth
                     name="password"
@@ -125,7 +182,12 @@ export default function ForgotPasswordConfirm(props) {
                   />
                 </Grid>
               </Grid>
-              <Button onClick={handleOnSubmit} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              <Button
+                onClick={handleOnSubmit}
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+              >
                 Confirm
               </Button>
               <Grid container justifyContent="flex-end">
