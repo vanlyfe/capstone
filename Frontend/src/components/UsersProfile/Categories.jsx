@@ -30,6 +30,10 @@ export default function Categories(props) {
     props.setCategory("al");
   };
 
+  const handleOnFavourites = () => {
+    props.setCategory("fl");
+  };
+
   const handleOnReviews = () => {
     props.setCategory("r");
   };
@@ -64,6 +68,9 @@ export default function Categories(props) {
             </ListItemButton>
             <ListItemButton onClick={handleOnPastListings}>
               <ListItemText>Past Listings</ListItemText>
+            </ListItemButton>
+            <ListItemButton onClick={handleOnFavourites}>
+              <ListItemText>Favorites </ListItemText>
             </ListItemButton>
           </ListItem>
         </List>
