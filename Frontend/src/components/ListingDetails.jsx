@@ -42,12 +42,21 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 // my imports
 import DatePicker from "./DatePicker";
 // used the separate calendars is instead of the datepicker
+// the following represent imported components
 import DateIn from "./DateIn";
-
+import MoreImages from "./MoreImages";
 import DateOut from "./DateOut";
+
+//icons used in the host and includes segments
+
 import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
+import WifiIcon from "@mui/icons-material/Wifi";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+
 import apiClient from "../services/apiClient";
 
 import { useState } from "react";
@@ -58,7 +67,7 @@ export default function ListingDetails({ user }) {
   const navigate = useNavigate();
   const [carDetails, setCarDetails] = useState([]);
   const [hostDetails, setHostDetails] = useState([]);
-  const [isUser, setIsUser] = useState(false)
+  const [isUser, setIsUser] = useState(false);
 
   const [carReviews, setCarReviews] = useState([]);
   const [reviewerDetails, setReviewerDetails] = useState([]);
@@ -72,22 +81,18 @@ export default function ListingDetails({ user }) {
 
   let { id } = useParams();
 
-  
-  
-
   // fetches the car details
   useEffect(() => {
     const makeAPIcalls = async () => {
       const fetchCarDetails = async () => {
         const { data, error } = await apiClient.fetchListingById(id);
-     //   console.log("car details data", data.listing[0]);
+        //   console.log("car details data", data.listing[0]);
         if (data) {
           setCarDetails(data.listing[0]);
-          setIsUser(data.listing[0].user_id === user.id)
+          setIsUser(data.listing[0].user_id === user.id);
           // console.log("This is data", data.listing[0])
           // console.log("car details", carDetails);
         }
-       
       };
 
       //fetch reviews
@@ -184,7 +189,7 @@ export default function ListingDetails({ user }) {
   const roundSubTotal = Math.round(subTotal * 100) / 100;
   const taxes = taxeRate * roundSubTotal;
   const roundTaxes = Math.round(taxes * 100) / 100;
-  const fees = carDetails.fees ? carDetails.fees : 0
+  const fees = carDetails.fees ? carDetails.fees : 0;
   const total = Math.round((roundTaxes + roundSubTotal + fees) * 100) / 100;
 
   //const navigate = useNavigate();
@@ -306,103 +311,113 @@ export default function ListingDetails({ user }) {
         <Grid
           sx={{
             display: "flex",
-            flexDirection: "column",
-            //width: "50%",
-            //bgcolor: "yellow",
+            flexDirection: "row",
           }}
         >
-          <Box sx={{ display: "flex", flexDirection: "row", mt: 5, ml: 20 }}>
-            <Typography
-              sx={{
-                fontFamily: "sans-serif",
-                color: "#1e1e1f",
-                fontWeight: 300,
-                fontSize: 20,
-                ml: 5,
-                mr: 5,
-              }}
-            >
-              {carDetails.location}
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              width: "50%",
+              //bgcolor: "yellow",
+              ml: 1,
+            }}
+          >
+            <Box sx={{ display: "flex", flexDirection: "row", mt: 5 }}>
+              <Typography
+                sx={{
+                  fontFamily: "sans-serif",
+                  color: "#1e1e1f",
+                  fontWeight: 300,
+                  fontSize: 20,
+                  ml: 5,
+                  mr: 5,
+                }}
+              >
+                {carDetails.location}
+              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  ml: 20,
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: "Arial",
+                    color: "#1d3557",
+
+                    fontWeight: 600,
+                    fontSize: 15,
+                  }}
+                >
+                  {carReviews.length} Reviews
+                </Typography>
+                <Rating value={carDetails.rating || 0} readOnly={true} />
+              </Box>
+            </Box>
+
             <Box
+              component="img"
+              // height="400"
+              //width="600"
+              //image={carDetails.image_url}
+              //image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dm9sa3N3YWdlbiUyMHZhbnxlbnwwfHwwfHw%3D&w=1000&q=80"
+              alt="car image"
               sx={{
-                display: "flex",
-                flexDirection: "row",
-                ml: 20,
+                height: 400,
+                width: 600,
+                //maxHeight: { xs: 233, md: 167 },
+                //maxWidth: { xs: 350, md: 250 },
+                mt: 5,
               }}
-            >
+              src={carDetails.image_url}
+            />
+
+            <Box sx={{ display: "flex", flexDirection: "row", mt: 5 }}>
+              <Typography
+                sx={{
+                  //fontFamily: "Chalkduster, fantasy",
+                  //color: "003049",
+                  //fontWeight: 600,
+                  //fontSize: 40,
+
+                  fontWeight: 600,
+                  fontSize: 20,
+                  ml: 5,
+                }}
+              >
+                ${carDetails.price}/Night
+              </Typography>{" "}
               <Typography
                 sx={{
                   fontFamily: "Arial",
-                  color: "#1d3557",
+                  color: "#343a40",
 
                   fontWeight: 600,
                   fontSize: 15,
+                  ml: 10,
                 }}
               >
-                {carReviews.length} Reviews
+                {carDetails.model}
+              </Typography>{" "}
+              <Typography
+                sx={{
+                  fontFamily: "Arial",
+                  color: "#bbd0ff",
+
+                  fontWeight: 600,
+                  fontSize: 15,
+                  ml: 10,
+                }}
+              >
+                Sleeps {carDetails.max_accomodation}
               </Typography>
-              <Rating value={carDetails.rating || 0} readOnly={true}/>
             </Box>
           </Box>
-
-          <Box
-            component="img"
-            // height="400"
-            //width="600"
-            //image={carDetails.image_url}
-            //image="https://images.unsplash.com/photo-1527786356703-4b100091cd2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dm9sa3N3YWdlbiUyMHZhbnxlbnwwfHwwfHw%3D&w=1000&q=80"
-            alt="car image"
-            sx={{
-              height: 400,
-              width: 600,
-              //maxHeight: { xs: 233, md: 167 },
-              //maxWidth: { xs: 350, md: 250 },
-              mt: 5,
-              ml: 20,
-            }}
-            src={carDetails.image_url}
-          />
-
-          <Box sx={{ display: "flex", flexDirection: "row", mt: 5, ml: 20 }}>
-            <Typography
-              sx={{
-                //fontFamily: "Chalkduster, fantasy",
-                //color: "003049",
-                //fontWeight: 600,
-                //fontSize: 40,
-
-                fontWeight: 600,
-                fontSize: 20,
-                ml: 5,
-              }}
-            >
-              ${carDetails.price}/Night
-            </Typography>{" "}
-            <Typography
-              sx={{
-                fontFamily: "Arial",
-                color: "#343a40",
-
-                fontWeight: 600,
-                fontSize: 15,
-                ml: 10,
-              }}
-            >
-              {carDetails.model}
-            </Typography>{" "}
-            <Typography
-              sx={{
-                fontFamily: "Arial",
-                color: "#bbd0ff",
-
-                fontWeight: 600,
-                fontSize: 15,
-                ml: 10,
-              }}
-            >
-              Sleeps {carDetails.max_accomodation}
-            </Typography>
+          <Box sx={{ width: "50%", mr: 1 }}>
+            <MoreImages />
           </Box>
         </Grid>
         <Grid
@@ -493,152 +508,208 @@ export default function ListingDetails({ user }) {
                     {hostDetails.email}
                   </Typography>
                 </Box>
-                <Button variant="contained" sx={{mt:3, ml:3}} onClick={() => {
-                  navigate("/user/" + hostDetails.id)
-                }}>View host</Button>
+                <Button
+                  variant="contained"
+                  sx={{ mt: 3, ml: 3 }}
+                  onClick={() => {
+                    navigate("/user/" + hostDetails.id);
+                  }}
+                >
+                  View host
+                </Button>
+              </Box>
+            </Box>
+            <Box  sx={{ mt: 10, }}>
+              <Box>
+                <Typography
+                  sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
+                >
+                  Includes:
+                </Typography>
+                <Box
+                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                >
+                  <WifiIcon />
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
+                  >
+                    Free Wifi
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                >
+                  <CameraAltIcon />
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
+                  >
+                    Backup Camera
+                  </Typography>
+                </Box>
+
+                <Box
+                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                >
+                  <AirlineSeatIndividualSuiteIcon />
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
+                  >
+                    Set of linen
+                  </Typography>
+                </Box>
+                <Box
+                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                >
+                  <CalendarTodayIcon/>
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
+                  >
+                    Free Cancellation for 24 hours
+                  </Typography>
+                </Box>
               </Box>
             </Box>
           </Grid>
 
-{ !isUser ?
-          <Paper
-            elevation={3}
-            sx={{
-              mr: 3,
-              display: "flex",
-              flexDirection: " column",
-              width: "50%",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {/* //  <Paper elevation ={3}> */}
-            <Typography
+          {!isUser ? (
+            <Paper
+              elevation={3}
               sx={{
-                fontSize: 25,
-                mt: 2,
-                ml: 3,
-                //color: "white",
-                align: "center",
-                padding: "2em",
-              }}
-            >
-              Reserve This Listing
-            </Typography>
-
-            <Box
-              sx={{
+                mr: 3,
                 display: "flex",
                 flexDirection: " column",
-
-                alignItems: "left",
-                justifyContent: "left",
+                width: "40%",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
+              {/* //  <Paper elevation ={3}> */}
               <Typography
                 sx={{
-                  fontSize: 15,
-                  mt: 3,
-
-                  mb: 3,
-                  color: "red",
+                  fontSize: 25,
+                  mt: 2,
+                  ml: 3,
+                  //color: "white",
                   align: "center",
+                  padding: "2em",
                 }}
               >
-                {errors.guests && (
-                  <span className="error">{errors.guests}</span>
-                )}
+                Reserve This Listing
               </Typography>
-              <Box sx={{ display: "flex", flexDirection: "row" }}>
-                <TextField
-                  //type="number"
-                  sx={{ width: "100%" }}
-                  name="numGuests"
-                  label="Number of guests"
-                  //variant="filled"
-                  onChange={handleOnInputChange}
-                  InputProps={{ inputProps: { min: 0, max: 10 } }}
-                
-                  type="number"
-                  // InputLabelProps={{
-                  //   shrink: true,
-                  // }}
-                  //inputProps={{ type: "number" }}
-                />
-              </Box>
 
-              <Box sx={{ mb: 5 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: " column",
+
+                  alignItems: "left",
+                  justifyContent: "left",
+                }}
+              >
                 <Typography
                   sx={{
                     fontSize: 15,
-                    mt: 1,
-                    ml: 3,
+                    mt: 3,
+
                     mb: 3,
                     color: "red",
                     align: "center",
                   }}
                 >
-                  {errors.endDate && (
-                    <span className="error">{errors.endDate}</span>
+                  {errors.guests && (
+                    <span className="error">{errors.guests}</span>
                   )}
                 </Typography>
                 <Box sx={{ display: "flex", flexDirection: "row" }}>
-                  <Box sx={{ mt: 1 }}>
-                    <Typography sx={{ mt: 1, ml: 1, mb: 1 }}>
-                      Check In:
-                    </Typography>
+                  <TextField
+                    //type="number"
+                    sx={{ width: "100%" }}
+                    name="numGuests"
+                    label="Number of guests"
+                    //variant="filled"
+                    onChange={handleOnInputChange}
+                    InputProps={{ inputProps: { min: 0, max: 10 } }}
+                    type="number"
+                    // InputLabelProps={{
+                    //   shrink: true,
+                    // }}
+                    //inputProps={{ type: "number" }}
+                  />
+                </Box>
 
-                    <DateIn
-                      dateInValue={dateInValue}
-                      setDateInValue={setDateInValue}
-                      errors={errors}
-                      setErrors={setErrors}
-                    />
-                  </Box>
+                <Box sx={{ mb: 5 }}>
+                  <Typography
+                    sx={{
+                      fontSize: 15,
+                      mt: 1,
+                      ml: 3,
+                      mb: 3,
+                      color: "red",
+                      align: "center",
+                    }}
+                  >
+                    {errors.endDate && (
+                      <span className="error">{errors.endDate}</span>
+                    )}
+                  </Typography>
+                  <Box sx={{ display: "flex", flexDirection: "row" }}>
+                    <Box sx={{ mt: 1 }}>
+                      <Typography sx={{ mt: 1, ml: 1, mb: 1 }}>
+                        Check In:
+                      </Typography>
 
-                  <Box sx={{ mt: 1, ml: 3 }}>
-                    <Typography sx={{ mt: 1, ml: 1, mb: 1 }}>
-                      Check Out:
-                    </Typography>
-                    <DateOut
-                      dateOutValue={dateOutValue}
-                      setDateOutValue={setDateOutValue}
-                      errors={errors}
-                      setErrors={setErrors}
-                    />
+                      <DateIn
+                        dateInValue={dateInValue}
+                        setDateInValue={setDateInValue}
+                        errors={errors}
+                        setErrors={setErrors}
+                      />
+                    </Box>
+
+                    <Box sx={{ mt: 1, ml: 3 }}>
+                      <Typography sx={{ mt: 1, ml: 1, mb: 1 }}>
+                        Check Out:
+                      </Typography>
+                      <DateOut
+                        dateOutValue={dateOutValue}
+                        setDateOutValue={setDateOutValue}
+                        errors={errors}
+                        setErrors={setErrors}
+                      />
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
 
-              {errors.form && (
+                {errors.form && (
                   <span className="listingError">{errors.form}</span>
                 )}
 
-              <Button
-                variant="contained"
-                size="medium"
-                sx={{ mt: 1, ml: 2, mr: 2 }}
-                //component={Link}
-                //to={user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
-                color="inherit"
-                onClick={handleOnSubmit}
-                disabled={!numGuests || !dateInValue || !dateOutValue}
-              >
-                Submit Request
-              </Button>
+                <Button
+                  variant="contained"
+                  size="medium"
+                  sx={{ mt: 1, ml: 2, mr: 2 }}
+                  //component={Link}
+                  //to={user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
+                  color="inherit"
+                  onClick={handleOnSubmit}
+                  disabled={!numGuests || !dateInValue || !dateOutValue}
+                >
+                  Submit Request
+                </Button>
 
-              <Button
-                component={Link}
-                to="/listings"
-                color="inherit"
-                sx={{ mt: 10 }}
-              >
-                Back to Listings
-              </Button>
-            </Box>
-            {/* //</Paper> */}
-          </Paper> : null}
-
+                <Button
+                  component={Link}
+                  to="/listings"
+                  color="inherit"
+                  sx={{ mt: 10 }}
+                >
+                  Back to Listings
+                </Button>
+              </Box>
+              {/* //</Paper> */}
+            </Paper>
+          ) : null}
         </Grid>
       </Grid>
       <Grid
@@ -687,8 +758,7 @@ export default function ListingDetails({ user }) {
                     width: "80%",
                     mt: 3,
                     ml: 3,
-                    bgcolor: "white"
-                
+                    bgcolor: "white",
                   }}
                 >
                   <Rating
