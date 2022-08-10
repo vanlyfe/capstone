@@ -123,12 +123,12 @@ class Listing {
 
   static async postListing(listings, user, images) {
     const requiredFields = [
-      "price",
-      "location",
-      "max_accomodation",
-      "model",
-      "make",
-      "year",
+      'price',
+      'location',
+      'max_accomodation',
+      'model',
+      'make',
+      'year',
     ];
 
     requiredFields.forEach((field) => {
@@ -138,20 +138,20 @@ class Listing {
     });
 
     if (listings.location.length < 1) {
-      throw new BadRequestError("No location provided");
+      throw new BadRequestError('No location provided');
     }
 
     if (listings.model.length < 1) {
-      throw new BadRequestError("No car model provided");
+      throw new BadRequestError('No car model provided');
     }
 
     if (listings.make.length < 1) {
-      throw new BadRequestError("No car make provided");
+      throw new BadRequestError('No car make provided');
     }
 
     if (listings.max_accomodation < 1) {
       throw new BadRequestError(
-        "Maximum vehicle accomodation cannot be less than 1"
+        'Maximum vehicle accomodation cannot be less than 1'
       );
     }
 
@@ -220,20 +220,18 @@ class Listing {
   //
 
   static async editListing({ listingUpdate, listingId }) {
-    
-
     if (listingUpdate?.location?.length < 1) {
       throw new BadRequestError('Invalid location');
     }
 
     if (listingUpdate.max_accomodation < 1) {
       throw new BadRequestError(
-        "Vehicle should be able to accomodate at least one person"
+        'Vehicle should be able to accomodate at least one person'
       );
     }
 
     if (listingUpdate.model?.length < 1) {
-      throw new BadRequestError("Invalid vehicle model");
+      throw new BadRequestError('Invalid vehicle model');
     }
 
     let queryString = '';
@@ -279,9 +277,7 @@ class Listing {
     } else if (!second) {
       return first;
     } else {
-      let intersection = first.filter((a) =>
-        second.some((b) => a.id === b.id)
-      );
+      let intersection = first.filter((a) => second.some((b) => a.id === b.id));
       return intersection;
     }
   }
@@ -293,7 +289,7 @@ class Listing {
     for (let i = 0; i < imagesLength; i++) {
       const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
-        Key: `${id}-${i}`,
+        Key: `${id}-${i}`
       };
       const url = s3.getSignedUrl('getObject', params);
       urls.push(url);
@@ -305,29 +301,27 @@ class Listing {
   static async postPhotostoS3(photos, id) {
     for (let i = 0; i < photos.length; i++) {
       const photo = Buffer.from(photos[i].data, 'base64');
-      const respon = await s3
+      await s3
         .upload({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
           Key: `${id}-${i}`,
           Body: photo,
+          Tagging: `public=yes`,
         })
         .promise();
-
-      console.log(respon);
     }
   }
 
-
   static async filterListings(search) {
     if (
-      search.minPrice === "" &&
-      search.maxPrice === "" &&
-      search.minRating === "" &&
-      search.model === "" &&
-      search.location === "" &&
-      search.year === ""
+      search.minPrice === '' &&
+      search.maxPrice === '' &&
+      search.minRating === '' &&
+      search.model === '' &&
+      search.location === '' &&
+      search.year === ''
     ) {
-      throw new BadRequestError("Must have at least one filter variable");
+      throw new BadRequestError('Must have at least one filter variable');
     }
 
     const minPrice = search.minPrice;
@@ -343,23 +337,22 @@ class Listing {
         : null;
 
     var minRating =
-      search.minRating === ""
+      search.minRating === ''
         ? null
         : await this.filterRating(search.minRating);
     var location =
-      search.location === ""
+      search.location === ''
         ? null
         : await this.filterLocation(search.location);
 
-    var year = search.year === "" ? null : await this.filterYear(search.year);
+    var year = search.year === '' ? null : await this.filterYear(search.year);
     var model =
-      search.model === "" ? null : await this.filterMake(search.model);
-    
+      search.model === '' ? null : await this.filterMake(search.model);
 
     var res = this.intersection(price, minRating);
     res = this.intersection(res, location);
     res = this.intersection(res, model);
-    res = this.intersection(res, year)
+    res = this.intersection(res, year);
 
     return res;
   }
