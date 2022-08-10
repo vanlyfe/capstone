@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import {
   Box,
   Grid,
@@ -25,32 +25,29 @@ export default function UserInfo(props) {
   const [image, setImage] = React.useState();
   const [Error, setError] = React.useState();
   const [email, setEmail] = React.useState();
-  const [profileImage, setProfileImage] = React.useState()
-  const [isDelete, setIsDelete] = React.useState(false)
+  const [profileImage, setProfileImage] = React.useState();
+  const [isDelete, setIsDelete] = React.useState(false);
 
-
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleOnEditProfile = () => {
     props.setEditProfile("profile");
   };
 
-
   const handleOnClickDelete = () => {
-    setIsDelete(true)
+    setIsDelete(true);
   };
 
   const handleOnDelete = async () => {
-    await apiClient.deleteUser(props.user.id)
-    apiClient.logoutUser()
-    props.setUser(null)
+    await apiClient.deleteUser(props.user.id);
+    apiClient.logoutUser();
+    props.setUser(null);
     navigate("/");
-  }
+  };
 
-  const handleOnCancel = () =>{
-    setIsDelete(false)
-  }
+  const handleOnCancel = () => {
+    setIsDelete(false);
+  };
 
   useEffect(() => {
     const getUser = async () => {
@@ -65,7 +62,7 @@ export default function UserInfo(props) {
         setFirstName(response.data.user.firstname);
         setRating(response.data.user.rating);
         setEmail(response.data.user.email);
-        setProfileImage(response.data.user.image_url)
+        setProfileImage(response.data.user.image_url);
 
         // setImage(response.data.user[0].user[0].image_url);
       } else {
@@ -76,10 +73,7 @@ export default function UserInfo(props) {
     getUser();
   });
 
-  
-
   return (
-    
     <AppBar
       position="relative"
       sx={{
@@ -91,14 +85,14 @@ export default function UserInfo(props) {
     >
       <Dialog
         open={isDelete}
-       // onClose={handleClose}
+        // onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
           {"Do you want to continue?"}
         </DialogTitle>
-        
+
         <DialogActions>
           <Button onClick={handleOnDelete}>Delete account</Button>
           <Button onClick={handleOnCancel} autoFocus>
@@ -125,7 +119,11 @@ export default function UserInfo(props) {
             spacing={1}
           >
             <Grid>
-              <Avatar src={profileImage}  alt="profile picture" sx={{ width: 200, height: 200 }} />
+              <Avatar
+                src={profileImage}
+                alt="profile picture"
+                sx={{ width: 200, height: 200 }}
+              />
             </Grid>
             <Grid>
               <Box>
@@ -143,26 +141,38 @@ export default function UserInfo(props) {
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{display: "flex", justifyContent:"flex-end",  width: "100%" }}>
-          {props.user ? (
-            <Button
-              variant="contained"
-              onClick={handleOnEditProfile}
-              sx={{ alignContent: "baseline", mb: 4, }}
-            >
-              EDIT PROFILE
-            </Button>
-          ) : null}
-          {props.user ? (
-            <Button
-              variant="contained"
-              onClick={handleOnClickDelete}
-              sx={{ alignContent: "baseline", mb: 4, ml: 5 }}
-            >
-              DELETE PROFILE
-            </Button>
-          ) : null}
-          <Typography>{bio}</Typography>
+        <Box
+          sx={{
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            width: "100%",
+          }}
+        >
+          <Box
+            sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
+          >
+            {props.user ? (
+              <Button
+                variant="contained"
+                onClick={handleOnEditProfile}
+                sx={{ alignContent: "baseline", mb: 4 }}
+              >
+                EDIT PROFILE
+              </Button>
+            ) : null}
+            {props.user ? (
+              <Button
+                variant="contained"
+                onClick={handleOnClickDelete}
+                sx={{ alignContent: "baseline", mb: 4, ml: 5 }}
+              >
+                DELETE PROFILE
+              </Button>
+            ) : null}
+          </Box>
+          <Typography sx={{ fontSize:"20px", fontWeight:"bold"}}>
+            {bio}
+          </Typography>
         </Box>
       </Toolbar>
     </AppBar>

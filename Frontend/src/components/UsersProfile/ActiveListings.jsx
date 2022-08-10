@@ -75,8 +75,8 @@ export default function ActiveListings() {
                 <TableCell align="center">Location</TableCell>
                 <TableCell align="center">Post Date</TableCell>
 
-                <TableCell align="right">Number of Guests</TableCell>
-                <TableCell align="right">Price</TableCell>
+                <TableCell align="center">Number of Guests</TableCell>
+                <TableCell align="center">Price</TableCell>
 
                 <TableCell align="center">Ratings</TableCell>
               </TableRow>
@@ -98,13 +98,13 @@ export default function ActiveListings() {
                       {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
                       <TableCell align="center">{row.location}</TableCell>
-                      <TableCell align="right">{row.createdat}</TableCell>
+                      <TableCell align="center">{row.createdat.slice(0,10)}</TableCell>
 
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {" "}
                         <Group /> {row.max_accomodation}{" "}
                       </TableCell>
-                      <TableCell align="right">${row.price}</TableCell>
+                      <TableCell align="center">${row.price}</TableCell>
                       <TableCell align="center">
                         <Rating value={row.rating} />
                       </TableCell>

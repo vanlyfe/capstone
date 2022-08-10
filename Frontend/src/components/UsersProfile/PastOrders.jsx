@@ -128,6 +128,9 @@ export default function PastOrders() {
   //     </Typography>
   //   );
   // }
+  const handleOnClick = () => {
+    navigate("/listing/" + listings[0].id);
+  };
 
   return (
     <Grid
@@ -165,11 +168,11 @@ export default function PastOrders() {
               <TableRow>
                 <TableCell>Post Date</TableCell>
 
-                <TableCell align="right">Check in </TableCell>
-                <TableCell align="right"> Check out</TableCell>
+                <TableCell align="center">Check in </TableCell>
+                <TableCell align="center"> Check out</TableCell>
 
-                <TableCell align="right">Number of Guests</TableCell>
-                <TableCell align="right">Price</TableCell>
+                <TableCell align="center">Number of Guests</TableCell>
+                <TableCell align="center">Price</TableCell>
 
                 <TableCell align="center">Ratings</TableCell>
               </TableRow>
@@ -183,18 +186,18 @@ export default function PastOrders() {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      // onClick={handleOnClick}
+                       onClick={handleOnClick}
                     >
                       <TableCell component="th" scope="row">
-                        {row.createdat}
+                        {row.createdat.slice(0,10)}
                       </TableCell>
-                      <TableCell align="right">l{row.startdate}</TableCell>
-                      <TableCell align="right">{row.enddate}</TableCell>
+                      <TableCell align="center">{row.startdate.slice(0,10)}</TableCell>
+                      <TableCell align="center">{row.enddate.slice(0,10)}</TableCell>
 
-                      <TableCell align="right">
+                      <TableCell align="center">
                         <Group /> {row.guests}
                       </TableCell>
-                      <TableCell align="right">${row.total}</TableCell>
+                      <TableCell align="center">${row.total}</TableCell>
                       <TableCell align="center">
                         <Box
                           align="right"
@@ -267,12 +270,18 @@ export default function PastOrders() {
                                   CANCEL
                                 </Button>
                               </Grid>
+                              
                             </Box>
                           </Modal>
                         </Box>
+
+                        
                       </TableCell>
+                      
                     </TableRow>
+                    
                   </TableBody>
+                  
                 ))
               : " No orders yet"}
           </Table>
