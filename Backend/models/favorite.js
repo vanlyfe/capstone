@@ -5,7 +5,7 @@ class Favorite {
   static async getUserFavorites(userId) {
     const result = await db.query(
       `
-            SELECT make, model, year, l.createdAt, max_accomodation, price, acc.rating
+            SELECT make, model, year, l.createdAt, max_accomodation, price, acc.rating, location, f.id, f.listing_id
             FROM listings AS l
             JOIN favorites AS f ON l.id = f.listing_id
             LEFT JOIN (

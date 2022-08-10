@@ -316,6 +316,35 @@ class ApiClient {
     })
   }
 
+  //FAVORITES requests
+
+  //GET requests
+
+  async getFavorites(userId){
+    return this.request({
+      endpoint : `favorite/` + userId,
+      method : `GET`
+    })
+  }
+
+  //POST requests
+
+  async postFavorite(listingId){
+    return this.request({
+      endpoint : `favorite/` + listingId,
+      method : `POST`
+    })
+  }
+
+  //DELETE requests
+
+  async deleteFavorite(id){
+    return this.request({
+      endpoint : `favorite/` + id,
+      method : `DELETE`
+    })
+  }
+
 }
 
 export default new ApiClient("http://localhost:3001");

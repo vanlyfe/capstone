@@ -149,7 +149,7 @@ export default function UserInfo(props) {
             width: "100%",
           }}
         >
-          {Number(props.user.id) === Number(id) ? (
+          {props.user?.id && Number(props.user.id) === Number(id) && (
             <Box
               sx={{
                 display: "flex",
@@ -173,7 +173,7 @@ export default function UserInfo(props) {
                 DELETE PROFILE
               </Button>
             </Box>
-          ) : null}
+          )}
           <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
             {bio}
           </Typography>
