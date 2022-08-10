@@ -97,10 +97,10 @@ export default function ActiveOrders() {
                       }}
                     >
                       <TableCell component="th" scope="row">
-                        {row.createdat.slice(0,10)}
+                      {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
                       </TableCell>
-                      <TableCell align="center">{row.startdate.slice(0,10)}</TableCell>
-                      <TableCell align="center">{row.enddate.slice(0,10)}</TableCell>
+                      <TableCell align="center">{new Date(row.startdate).getFullYear() + "-" + new Date(row.startdate).getMonth() + "-" + new Date(row.startdate).getDate()}</TableCell>
+                      <TableCell align="center">{new Date(row.enddate).getFullYear() + "-" + new Date(row.enddate).getMonth() + "-" + new Date(row.enddate).getDate()}</TableCell>
 
                       <TableCell align="center">
                         {" "}

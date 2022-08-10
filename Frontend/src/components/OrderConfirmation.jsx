@@ -244,14 +244,6 @@ export default function OrderConfirmation() {
                   <TableCell align="right">{order.guests}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Check in</TableCell>
-                  <TableCell align="right">{order.startdate.slice(0,10)}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Check out</TableCell>
-                  <TableCell align="right">{order.enddate.slice(0,10)}</TableCell>
-                </TableRow>
-                <TableRow>
                   <TableCell>No of Nights</TableCell>
                   <TableCell align="right">{days}</TableCell>
                 </TableRow>

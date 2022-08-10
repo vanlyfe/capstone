@@ -162,7 +162,7 @@ export default function ActiveListings() {
                           borderTop: "none",
                         }}
                       >
-                        {row.createdat.slice(0, 10)}
+                        {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
                       </TableCell>
 
                       <TableCell
