@@ -321,6 +321,39 @@ class ApiClient {
       data: reviewUpdate,
     });
   }
+
+  //INDEX request
+
+  //POST requests
+
+  async requestreset(credentials){
+    return await this.request({
+      endpoint : `index/requestreset`,
+      method: `POST`,
+      data : credentials,
+    })
+
+  }
+
+  //PUT requests
+
+  async updatepassword(update){
+    return await this.request({
+      endpoint : `index/updatepassword`,
+      method : `PUT`,
+      data : update,
+    })
+  }
+
+
+  async validate(token){
+    return this.request({
+      endpoint : `index/validate`,
+      method : `POST`,
+      data : token
+    })
+  }
+
 }
 
 export default new ApiClient("http://localhost:3001");

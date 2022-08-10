@@ -2,6 +2,9 @@ const bcrypt = require("bcrypt");
 const db = require("../db");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 const { BadRequestError, UnauthorizedError } = require("../utils/errors");
+const Token = require("../utils/tokens");
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class User {
   static makePublicUser(user) {
@@ -224,17 +227,17 @@ class User {
       throw new BadRequestError("Please input valid password");
     }
 
-    if (userUpdate.firstName?.length < 1) {
-      throw new BadRequestError("Please input valid first name");
-    }
+    // if (userUpdate.firstName?.length < 1) {
+    //   throw new BadRequestError("Please input valid first name");
+    // }
 
-    if (userUpdate.lastName?.length < 1) {
-      throw new BadRequestError("Please input valid last name");
-    }
+    // if (userUpdate.lastName?.length < 1) {
+    //   throw new BadRequestError("Please input valid last name");
+    // }
 
-    if (userUpdate.username?.length < 1) {
-      throw new BadRequestError("Please input valid username");
-    }
+    // if (userUpdate.username?.length < 1) {
+    //   throw new BadRequestError("Please input valid username");
+    // }
 
     if (userUpdate.username) {
       const existingUsername = await User.checkUsername(userUpdate.username);
@@ -244,10 +247,19 @@ class User {
         );
       }
     }
+
+    if (userUpdate.birthdate) {
+      this.authenticateBirthdate(userUpdate.birthdate);
+    }
+
     var results = {};
     var hashedPassword;
 
     for (var [key, value] of Object.entries(userUpdate)) {
+      if (value === "") {
+        continue;
+      }
+
       if (key === "password") {
         hashedPassword = await bcrypt.hash(value, BCRYPT_WORK_FACTOR);
       }
@@ -305,6 +317,60 @@ class User {
       throw new BadRequestError("You must be over 18 to register");
     }
   }
+
+  static async requestPasswordReset(email) {
+    const user = await this.fetchUserByEmail(email);
+   
+    if(!user){
+      throw new BadRequestError("The email does not exist")
+    }
+
+    var resetToken = Token.createResetToken(user);
+    console.log(resetToken)
+    var link = `${process.env.CLIENT_URL}passwordconfirm?token=${resetToken}`;
+   
+    return link;
+  }
+
+  static async updatePassword({confirm, password, id}) {
+
+    if(password.length < 1){
+      throw new BadRequestError("Invalid password")
+    }
+
+    if(password !== confirm){
+      throw new BadRequestError("Passwords do not match")
+
+    }
+
+    
+  
+
+    var hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+    const result = await db.query(
+      `UPDATE users
+              SET password = $1,
+              updatedAt = NOW()
+                   WHERE id = $2
+                   RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, image_url, updatedAt;`,
+                   [hashedPassword,id]
+    );
+
+    const res = result.rows[0]
+    return res
+  }
+
+  static sendmail(email, link){
+    const msg = {
+      to: email,
+      from: 'vanlyfe.com@gmail.com',
+      subject: 'PASSWORD RESET',
+      text: `Text`,
+      html: `Kindly click <a href=${link}>this link</a> to reset your password. The link expires in 5 minutes.`,
+    };
+    sgMail.send(msg);
+  }
 }
 
 module.exports = User;
+ 

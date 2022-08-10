@@ -16,6 +16,9 @@ import { Navbar } from "./Navbar";
 import User from "./User";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import ForgotPasswordConfirm from "./ForgotPassword/forgotPasswordConfirm";
+import ForgotPasswordEmail from "./ForgotPassword/ForgotPasswordEmail";
+import ResetError from "./ResetError";
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -73,6 +76,9 @@ export default function App() {
           <Route path="/listing/:id/book" element={<BookListing />} />
           <Route path="/listing/:id" element={<ListingDetails />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
+          <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
+          <Route path="/passwordconfirm" element={<ForgotPasswordConfirm />} />
+          <Route path="/reseterror" element={<ResetError />} />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

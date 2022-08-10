@@ -39,8 +39,8 @@ export default function Listings() {
   const [rating, setRating] = React.useState(0);
   const [errors, setErrors] = React.useState({});
   const [value, setValue] = React.useState(null);
-  const [modelVal, setModelVal] = React.useState("");
-  const [locationVal, setLocationVal] = React.useState("");
+  const [isLoading, setIsLoading]  = React.useState(true)
+  
 
   const [form, setForm] = React.useState({
     minRating: "",
@@ -55,13 +55,9 @@ export default function Listings() {
   const models = variables.makes;
 
   const handleOnInputChange = (event) => {
-    if (event.target.name === "model") {
-      setModelVal(event.target.value);
-    }
+    
 
-    if (event.target.name === "location") {
-      setLocationVal(event.target.value);
-    }
+   
 
     if (event.target.name === "minPrice") {
       if (form.maxPrice !== "") {
@@ -126,8 +122,13 @@ export default function Listings() {
         setError("No listings found");
       }
     };
-
+   
     getListings();
+    setTimeout(function () {
+      setIsLoading(false);
+      
+    }, 2000);
+   
   }, []);
 
   const handleOnReset = async (e) => {
@@ -148,8 +149,7 @@ export default function Listings() {
 
     setErrors((e) => ({ ...e, form: null }));
     setRating(0);
-    setModelVal("");
-    setLocationVal("");
+    
     const { data, error } = await apiClient.filterListings(form);
 
     if (error) {
@@ -435,7 +435,7 @@ export default function Listings() {
               {`Browse Active Listings`}
             </Typography>
           </Grid>
-          {listings.length > 0 ? (
+          {listings.length > 0 || isLoading ? (
             listings.map((listing, i) => (
               <Grid key={i} item xs={4} justifyContent="center">
                 <Card sx={{ width: "100%" }}>
