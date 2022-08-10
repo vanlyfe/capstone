@@ -47,7 +47,7 @@ export default function ActiveListings(props) {
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserListings(id);
-    
+
       if (resData?.data?.listings) {
         setListings(resData.data.listings);
       } else {
@@ -60,7 +60,7 @@ export default function ActiveListings(props) {
 
   //console.log(Number(props.user.id))
   //console.log(id)
-  
+
   return (
     <Grid
       sx={{
@@ -165,7 +165,11 @@ export default function ActiveListings(props) {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
+                        {new Date(row.createdat).getFullYear() +
+                          "-" +
+                          new Date(row.createdat).getMonth() +
+                          "-" +
+                          new Date(row.createdat).getDate()}
                       </TableCell>
 
                       <TableCell
@@ -194,22 +198,36 @@ export default function ActiveListings(props) {
                           borderTop: "none",
                         }}
                       >
-                        <Rating value={row.rating} readOnly={true}/>
+                        <Rating value={row.rating} readOnly={true} />
                       </TableCell>
                     </TableRow>
-             { Number(props.user.id) === Number(id) ?
-                    <Button
-                      sx={{ color: "#6E85B7" }}
-                      onClick={() => {
-                        setDeleting(true);
-                        setListingId(row.id);
-                      }}
-                    >
-                      {" "}
-                      DELETE
-                    </Button>   : null }
+                    {Number(props.user.id) === Number(id) ? (
+                      <Grid>
+                        <Button
+                          sx={{ color: "#6E85B7" }}
+                          onClick={() => {
+                            
+                            
+                            navigate("/listing/" + row.id  + "/edit")
 
-
+                          }}
+                        >
+                          
+                          EDIT
+                        </Button>
+                        <Button
+                          sx={{ color: "#6E85B7" }}
+                          onClick={() => {
+                            setDeleting(true);
+                            setListingId(row.id);
+                          }}
+                        >
+                          {" "}
+                          DELETE
+                        </Button>
+                        
+                      </Grid>
+                    ) : null}
                   </TableBody>
                 ))
               : "No listings yet"}
