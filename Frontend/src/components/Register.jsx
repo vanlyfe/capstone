@@ -169,7 +169,7 @@ export default function Register(props) {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign up
+              Register
             </Typography>
             {errors.form && <span className="error">{errors.form}</span>}
             <Box component="form" noValidate sx={{ mt: 3 }}>

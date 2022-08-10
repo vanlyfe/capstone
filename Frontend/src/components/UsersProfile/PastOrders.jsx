@@ -25,20 +25,35 @@ export default function PastOrders() {
   const [open, setOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   let { id } = useParams();
+  const [value, setValue] = React.useState(null);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [reviews, setReviews] = useState([]);
   const [review, setReview] = useState();
   const [reviewText, setReviewText] = useState("");
+  const [ratingInput, setRatingInput] = useState(0);
   const [listings, setListings] = useState([]);
   const navigate = useNavigate();
+
+  const [form, setForm] = useState({
+    firstname: null,
+    id: null,
+    image_url: null,
+    lastname: null,
+    listing_id: null,
+    rating: 0,
+    review: "",
+  });
+
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserPastOrders(id);
       const res = await apiClient.fetchUserListings(id);
-      console.log("res past orders: ", resData.data);
+
       if (resData?.data?.orders) {
         setOrders(resData.data.orders);
+        setReview(resData.data.orders);
       } else {
         setError("No orders yet");
       }
@@ -52,9 +67,9 @@ export default function PastOrders() {
     getData();
   }, []);
 
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
+  // const handleOnClick = () => {
+  //   navigate("/listing/" + listings[0].id);
+  // };
 
   const style = {
     position: "absolute",
@@ -69,27 +84,40 @@ export default function PastOrders() {
     p: 4,
   };
 
-  const [form, setForm] = useState({
-    reviewToPost: "",
-  });
-
   // const isDisabled = reviewText.length === 0 || reviewText.length > 140;
 
-  function handleOnReviewTextChange(evt) {
-    setReviewText(evt.target.value);
+  function handleOnInputChange(event) {
+    if (event.target.name === "ratingInput") {
+      setRatingInput(event.target.value);
+    }
+
+    if (event.target.name === "reviewText") {
+      setReviewText(event.target.value);
+    }
+
+    setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   }
 
-  function handleOnSubmit() {
-    let newReview = {
+  const handleOnSubmit = async () => {
+    const data = await apiClient.postReview(1, {
+      firstname: "Edilawit",
+      id: 4,
+      image_url: null,
+      lastname: "Tsehay",
+      listing_id: 1,
+      rating: ratingInput,
       review: reviewText,
-      reviewerId: props.user.id,
-      hostId: listingId,
-    };
-    setReviews(reviews.concat(newReview));
+    });
 
-    // setReviewText("");
+    //  setReviews({...reviews, newReview.data.reviews });
+
+    console.log("new post: ", data);
+    // if (data?.review) {
+    //   setReview((r) => ({ ...r, review }));
+    // }
+
     setOpen(false);
-  }
+  };
 
   // export function ReviewCharacterCount({ textLength }) {
   //   return (
@@ -101,14 +129,6 @@ export default function PastOrders() {
   //   );
   // }
 
-  async function ReviewSubmitButton() {
-    // const postedReview = await apiClient.postReview(props.user.id, review);
-    // ({
-    //   reviewToPost: form.review,
-    // });
-    // setForm((f) => ({ ...f, reviewText }));
-  }
-
   return (
     <Grid
       sx={{
@@ -116,7 +136,6 @@ export default function PastOrders() {
         bgcolor: "##8cbfed",
         height: "70%",
         width: "100%",
-        mt: 1,
       }}
     >
       <Box>
@@ -164,7 +183,7 @@ export default function PastOrders() {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      onClick={handleOnClick}
+                      // onClick={handleOnClick}
                     >
                       <TableCell component="th" scope="row">
                         {row.createdat}
@@ -173,77 +192,90 @@ export default function PastOrders() {
                       <TableCell align="right">{row.enddate}</TableCell>
 
                       <TableCell align="right">
-                        {" "}
-                        <Group /> {row.guests}{" "}
+                        <Group /> {row.guests}
                       </TableCell>
                       <TableCell align="right">${row.total}</TableCell>
                       <TableCell align="center">
-                        <Rating value={row.rating} />
+                        <Box
+                          align="right"
+                          sx={{
+                            textDecoration: "none",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Rating value={row.rating} />
+
+                          <Link
+                            sx={{
+                              textDecoration: "none",
+                              cursor: "pointer",
+
+                              color: "#6E85B7",
+                            }}
+                            onClick={handleOpen}
+                          >
+                            add reviews
+                          </Link>
+                          <Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                          >
+                            <Box sx={style}>
+                              <Typography
+                                id="modal-modal-title"
+                                variant="h6"
+                                component="h2"
+                                sx={{ textalign: "center" }}
+                              >
+                                Rate and review
+                              </Typography>
+                              <Typography>
+                                Share your experience to help others
+                              </Typography>
+
+                              <Rating
+                                value={ratingInput}
+                                name="ratingInput"
+                                onChange={handleOnInputChange}
+                                type="number"
+                              />
+                              <TextareaAutosize
+                                aria-label="minimum height"
+                                minRows={3}
+                                placeholder="Describe your experience"
+                                style={{ width: 500, height: 100 }}
+                                onChange={handleOnInputChange}
+                                value={reviewText}
+                                name="reviewText"
+                              />
+
+                              <Typography>
+                                Your review will be posted publicly on the web.
+                              </Typography>
+
+                              <Grid sx={{ mt: 2, ml: 40 }}>
+                                <Button onClick={handleOnSubmit}> Post</Button>
+                                <Button
+                                  onClick={handleClose}
+                                  sx={{ ml: 4 }}
+                                  color="error"
+                                >
+                                  CANCEL
+                                </Button>
+                              </Grid>
+                            </Box>
+                          </Modal>
+                        </Box>
                       </TableCell>
                     </TableRow>
                   </TableBody>
                 ))
               : " No orders yet"}
           </Table>
-
-          {/* <Box
-                align="right"
-                sx={{
-                  textDecoration: "none",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              > */}
-          <Link
-            sx={{
-              textDecoration: "none",
-              cursor: "pointer",
-
-              color: "#6E85B7",
-            }}
-            onClick={handleOpen}
-          >
-            add reviews
-          </Link>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                sx={{ textalign: "center" }}
-              >
-                Rate and review
-              </Typography>
-              <Typography>Share your experience to help others</Typography>
-
-              <Rating />
-              <TextareaAutosize
-                aria-label="minimum height"
-                minRows={3}
-                placeholder="Describe your experience"
-                style={{ width: 500, height: 100 }}
-                // onChange={handleOnReviewTextChange}
-                value={reviewText}
-              />
-
-              <Typography>
-                Your review will be posted publicly on the web.
-              </Typography>
-
-              <Grid sx={{ mt: 2, ml: 40 }}>
-                <Button onClick={handleClose} sx={{ ml: 4, color: "#669bbc" }}>
-                  CANCEL
-                </Button>
-              </Grid>
-            </Box>
-          </Modal>
         </TableContainer>
       </Box>
     </Grid>

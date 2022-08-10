@@ -143,12 +143,12 @@ export default function UserInfo(props) {
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ flexWrap: "wrap", width: "50% " }}>
+        <Box sx={{display: "flex", justifyContent:"flex-end",  width: "100%" }}>
           {props.user ? (
             <Button
               variant="contained"
               onClick={handleOnEditProfile}
-              sx={{ alignContent: "baseline", mb: 4, ml: 55 }}
+              sx={{ alignContent: "baseline", mb: 4, }}
             >
               EDIT PROFILE
             </Button>
@@ -157,7 +157,7 @@ export default function UserInfo(props) {
             <Button
               variant="contained"
               onClick={handleOnClickDelete}
-              sx={{ alignContent: "baseline", mb: 4, ml: 55 }}
+              sx={{ alignContent: "baseline", mb: 4, ml: 5 }}
             >
               DELETE PROFILE
             </Button>
