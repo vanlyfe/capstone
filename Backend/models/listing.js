@@ -225,9 +225,9 @@ class Listing {
 
   static async editListing({ listingUpdate, listingId }) {
     let queryString = "";
-    
+
     let listingUpdateEntries = Object.entries(listingUpdate);
-    var params = 1
+    var params = 1;
     for (let i = 0; i < listingUpdateEntries.length; i++) {
       if (listingUpdateEntries[i][1] === "") {
         continue;
@@ -246,14 +246,11 @@ class Listing {
         listingUpdateEntries[i][1] <= 0 &&
         listingUpdateEntries[i][0] === "price"
       ) {
-        throw new BadRequestError(
-          "Invalid price"
-        );
+        throw new BadRequestError("Invalid price");
       }
 
-
       queryString += `${listingUpdateEntries[i][0]} = $${params}, `;
-      params++
+      params++;
     }
 
     const query = `UPDATE listings
@@ -262,16 +259,14 @@ class Listing {
         WHERE id = ${listingId}
         RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
 
-    
-    var entry = []
+    var entry = [];
     listingUpdateEntries.map((item) => {
-   //   console.log(entry[1])
-      if(item[1] !== ""){
-        entry.push(item[1])
-      }  
-    })
+      //   console.log(entry[1])
+      if (item[1] !== "") {
+        entry.push(item[1]);
+      }
+    });
 
-    
     const result = await db.query(query, entry);
 
     const results = result.rows[0];
@@ -323,15 +318,14 @@ class Listing {
   static async postPhotostoS3(photos, id) {
     for (let i = 0; i < photos.length; i++) {
       const photo = Buffer.from(photos[i].data, "base64");
-      const respon = await s3
+      await s3
         .upload({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
           Key: `${id}-${i}`,
           Body: photo,
+          Tagging: `public=yes`,
         })
         .promise();
-
-      console.log(respon);
     }
   }
 
