@@ -15,6 +15,8 @@ export default function User({ user, setUser }) {
   const [editProfile, setEditProfile] = useState(null);
   
 
+  console.log(user)
+
  
   return (
     <Box>
@@ -52,7 +54,7 @@ export default function User({ user, setUser }) {
               category={category}
               setCategory={setCategory}
               user={user}
-              
+              setUser={setUser}
             />
 
             {category === "ao" ? (
@@ -66,7 +68,7 @@ export default function User({ user, setUser }) {
             ) : category === "r" ? (
               <Reviews user={user} setUser={setUser} />
             ) : (
-              <ActiveListings />
+              <ActiveListings user={user} setUser={setUser}/>
             )}
           </Grid>
         </Box>

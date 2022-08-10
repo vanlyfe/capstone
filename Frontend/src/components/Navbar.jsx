@@ -71,7 +71,7 @@ export const Navbar = (props) => {
   ];
 
   const drawer = () => {
-    console.log('props.user: ', props.user);
+   
     const items = props.user ? loggedInMobileItems : loggedOutMobileItems;
     // const items = loggedOutMobileItems;
     return (

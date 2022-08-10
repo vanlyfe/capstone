@@ -10,7 +10,7 @@ export default function DateIn(props) {
     props.setDateInValue(e);
   };
 
-  console.log(props.dateInValue);
+  
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>

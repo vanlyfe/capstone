@@ -20,7 +20,7 @@ import {
 import { Person, Group } from "@mui/icons-material";
 import apiClient from "../../services/apiClient";
 
-export default function ActiveListings() {
+export default function ActiveListings(props) {
   const [error, setError] = useState();
   const [deleting, setDeleting] = useState(false);
   const [listings, setListings] = useState([]);
@@ -58,6 +58,9 @@ export default function ActiveListings() {
     getData();
   }, []);
 
+  //console.log(Number(props.user.id))
+  //console.log(id)
+  
   return (
     <Grid
       sx={{
@@ -194,6 +197,7 @@ export default function ActiveListings() {
                         <Rating value={row.rating} readOnly={true}/>
                       </TableCell>
                     </TableRow>
+             { Number(props.user.id) === Number(id) ?
                     <Button
                       sx={{ color: "#6E85B7" }}
                       onClick={() => {
@@ -203,7 +207,9 @@ export default function ActiveListings() {
                     >
                       {" "}
                       DELETE
-                    </Button>
+                    </Button>   : null }
+
+
                   </TableBody>
                 ))
               : "No listings yet"}
