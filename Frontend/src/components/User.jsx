@@ -13,13 +13,9 @@ import { useParams } from "react-router-dom";
 export default function User({ user, setUser }) {
   const [category, setCategory] = useState(null);
   const [editProfile, setEditProfile] = useState(null);
-  const [isUser, setIsUser] = useState(false);
+  
 
-  const { id } = useParams();
-
-  // if (id != user.id) {
-  //   setIsUser(false);
-  // }
+ 
   return (
     <Box>
       {editProfile === "profile" ? (
@@ -41,8 +37,7 @@ export default function User({ user, setUser }) {
             setEditProfile={setEditProfile}
             user={user}
             setUser={setUser}
-            isUser={isUser}
-            setIsUser={setIsUser}
+           
           />
           <Grid
             sx={{
@@ -56,8 +51,8 @@ export default function User({ user, setUser }) {
             <Categories
               category={category}
               setCategory={setCategory}
-              isUser={isUser}
-              setIsUser={setIsUser}
+              user={user}
+              
             />
 
             {category === "ao" ? (
