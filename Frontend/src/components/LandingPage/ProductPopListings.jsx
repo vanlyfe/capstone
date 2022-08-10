@@ -48,7 +48,6 @@ function ProductHowItWorks() {
     getListings();
   }, []);
 
-  console.log(listings);
 
   return (
     <Box

@@ -44,6 +44,13 @@ class Order {
       }
     });
 
+    const start = new Date(orders.startDate);
+    const end = new Date(orders.endDate);
+
+    if (start >= end) {
+      throw new BadRequestError("Start date cannot be after or on the same day as end date");
+    }
+
     if (orders.taxes === 0) {
       throw new BadRequestError("Taxes cannot be zero");
     }
@@ -56,12 +63,7 @@ class Order {
       throw new BadRequestError("Cannot have less than one guest");
     }
 
-    const start = new Date(orders.startDate);
-    const end = new Date(orders.endDate);
-
-    if (start > end) {
-      throw new BadRequestError("Start date cannot be after end date");
-    }
+    
 
     const result = await db.query(
       `

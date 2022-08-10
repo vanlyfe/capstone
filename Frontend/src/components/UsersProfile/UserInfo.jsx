@@ -149,7 +149,7 @@ export default function UserInfo(props) {
             width: "100%",
           }}
         >
-          {id ? (
+          {Number(props.user.id) === Number(id) ? (
             <Box
               sx={{
                 display: "flex",

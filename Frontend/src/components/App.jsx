@@ -31,7 +31,7 @@ export default function App() {
   useEffect(() => {
     const fetchUser = async () => {
       const { data, error } = await apiClient.fetchUserFromToken();
-      console.log("user info: ", data);
+     
       if (data) {
         setUser(data.user);
       }
@@ -50,6 +50,9 @@ export default function App() {
       setIsLoading(false);
     }
   }, []);
+
+
+  console.log(user)
 
   return (
     <Box>

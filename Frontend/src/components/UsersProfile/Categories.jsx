@@ -68,7 +68,7 @@ export default function Categories(props) {
           </ListItem>
         </List>
         <Divider />
-        {id ? (
+        {Number(props.user.id) === Number(id) ? (
           <List>
             <Typography>Renter</Typography>
 

@@ -20,7 +20,7 @@ import {
 import { Person, Group } from "@mui/icons-material";
 import apiClient from "../../services/apiClient";
 
-export default function ActiveListings() {
+export default function ActiveListings(props) {
   const [error, setError] = useState();
   const [deleting, setDeleting] = useState(false);
   const [listings, setListings] = useState([]);
@@ -47,7 +47,7 @@ export default function ActiveListings() {
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserListings(id);
-    
+
       if (resData?.data?.listings) {
         setListings(resData.data.listings);
       } else {
@@ -57,6 +57,9 @@ export default function ActiveListings() {
 
     getData();
   }, []);
+
+  //console.log(Number(props.user.id))
+  //console.log(id)
 
   return (
     <Grid
@@ -162,7 +165,11 @@ export default function ActiveListings() {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
+                        {new Date(row.createdat).getFullYear() +
+                          "-" +
+                          new Date(row.createdat).getMonth() +
+                          "-" +
+                          new Date(row.createdat).getDate()}
                       </TableCell>
 
                       <TableCell
@@ -191,19 +198,36 @@ export default function ActiveListings() {
                           borderTop: "none",
                         }}
                       >
-                        <Rating value={row.rating} readOnly={true}/>
+                        <Rating value={row.rating} readOnly={true} />
                       </TableCell>
                     </TableRow>
-                    <Button
-                      sx={{ color: "#6E85B7" }}
-                      onClick={() => {
-                        setDeleting(true);
-                        setListingId(row.id);
-                      }}
-                    >
-                      {" "}
-                      DELETE
-                    </Button>
+                    {Number(props.user.id) === Number(id) ? (
+                      <Grid>
+                        <Button
+                          sx={{ color: "#6E85B7" }}
+                          onClick={() => {
+                            
+                            
+                            navigate("/listing/" + row.id  + "/edit")
+
+                          }}
+                        >
+                          
+                          EDIT
+                        </Button>
+                        <Button
+                          sx={{ color: "#6E85B7" }}
+                          onClick={() => {
+                            setDeleting(true);
+                            setListingId(row.id);
+                          }}
+                        >
+                          {" "}
+                          DELETE
+                        </Button>
+                        
+                      </Grid>
+                    ) : null}
                   </TableBody>
                 ))
               : "No listings yet"}
