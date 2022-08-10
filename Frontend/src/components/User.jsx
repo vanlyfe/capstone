@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 //import { Box, Grid } from "@mui/material";
-import UserInfo from "./UsersProfile/UserInfo";
-import Categories from "./UsersProfile/Categories";
-import ActiveListings from "./UsersProfile/ActiveListings";
-import ActiveOrders from "./UsersProfile/ActiveOrders";
-import PastListings from "./UsersProfile/PastListings";
-import PastOrders from "./UsersProfile/PastOrders";
-import Reviews from "./UsersProfile/Reviews";
-import EditUser from "./UsersProfile/EditUser";
-import { Box, Grid } from "@mui/material";
-import { useParams } from "react-router-dom";
+import UserInfo from './UsersProfile/UserInfo';
+import Categories from './UsersProfile/Categories';
+import ActiveListings from './UsersProfile/ActiveListings';
+import ActiveOrders from './UsersProfile/ActiveOrders';
+import PastListings from './UsersProfile/PastListings';
+import PastOrders from './UsersProfile/PastOrders';
+import Reviews from './UsersProfile/Reviews';
+import EditUser from './UsersProfile/EditUser';
+import { Box, Grid } from '@mui/material';
+import { useParams } from 'react-router-dom';
 export default function User({ user, setUser }) {
   const [category, setCategory] = useState(null);
   const [editProfile, setEditProfile] = useState(null);
- 
+
   return (
     <Box>
-      {editProfile === "profile" ? (
+      {editProfile === 'profile' ? (
         <EditUser
           user={user}
           setUser={setUser}
@@ -25,27 +25,21 @@ export default function User({ user, setUser }) {
       ) : (
         <Box
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}>
           <UserInfo
             editProfile={editProfile}
             setEditProfile={setEditProfile}
             user={user}
             setUser={setUser}
-           
           />
-          <Grid
+          <Box
             sx={{
-              height: "70%",
-              width: "100%",
-              mr: 67,
-              display: "flex",
-              flexDirection: "row",
-            }}
-          >
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+            }}>
             <Categories
               category={category}
               setCategory={setCategory}
@@ -53,20 +47,20 @@ export default function User({ user, setUser }) {
               setUser={setUser}
             />
 
-            {category === "ao" ? (
+            {category === 'ao' ? (
               <ActiveOrders user={user} setUser={setUser} />
-            ) : category === "pl" ? (
+            ) : category === 'pl' ? (
               <PastListings user={user} setUser={setUser} />
-            ) : category === "al" ? (
+            ) : category === 'al' ? (
               <ActiveListings user={user} setUser={setUser} />
-            ) : category === "po" ? (
+            ) : category === 'po' ? (
               <PastOrders user={user} setUser={setUser} />
-            ) : category === "r" ? (
+            ) : category === 'r' ? (
               <Reviews user={user} setUser={setUser} />
             ) : (
-              <ActiveListings user={user} setUser={setUser}/>
+              <ActiveListings user={user} setUser={setUser} />
             )}
-          </Grid>
+          </Box>
         </Box>
       )}
     </Box>
