@@ -35,6 +35,7 @@ router.post(
       const { user } = res.locals;
       const { listingId } = req.params;
       const reviews = req.body;
+      
       const review = await Review.postReview({ listingId, reviews, user });
       return res.status(200).json({ review: review });
     } catch (error) {

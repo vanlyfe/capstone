@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 import {
   Box,
   Grid,
@@ -19,14 +22,32 @@ import apiClient from "../../services/apiClient";
 
 export default function ActiveListings() {
   const [error, setError] = useState();
+  const [deleting, setDeleting] = useState(false);
   const [listings, setListings] = useState([]);
+  const [listingId, setListingId] = useState(null);
   let { id } = useParams();
   const navigate = useNavigate();
+
+  const handleOnDelete = async () => {
+    await apiClient.deleteListing(listingId);
+    const resData = await apiClient.fetchUserListings(id);
+    if (resData?.data?.listings) {
+      setListings(resData.data.listings);
+    } else {
+      setError("No Listings yet");
+    }
+    setDeleting(false);
+  };
+
+  const handleOnCancel = () => {
+    setDeleting(false);
+    setListingId(null);
+  };
 
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserListings(id);
-      console.log("res active listing id: ", resData.data.listings[0].id);
+    
       if (resData?.data?.listings) {
         setListings(resData.data.listings);
       } else {
@@ -36,9 +57,6 @@ export default function ActiveListings() {
 
     getData();
   }, []);
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
 
   return (
     <Grid
@@ -50,6 +68,23 @@ export default function ActiveListings() {
         mt: 1,
       }}
     >
+      <Dialog
+        open={deleting}
+        // onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Do you want to continue?"}
+        </DialogTitle>
+
+        <DialogActions>
+          <Button onClick={handleOnDelete}>Delete listing</Button>
+          <Button onClick={handleOnCancel} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2 }}>
           Active Listings
@@ -81,37 +116,97 @@ export default function ActiveListings() {
                 <TableCell align="center">Ratings</TableCell>
               </TableRow>
             </TableHead>
-            <TableBody>
-              {listings.length > 0
-                ? listings.map((row) => (
+            {listings.length > 0
+              ? listings.map((row) => (
+                  <TableBody
+                    sx={{
+                      borderBottom: "rgba(224, 224, 224, 1) 1px solid",
+                      borderTop: "none",
+                    }}
+                  >
                     <TableRow
                       key={row.id}
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      onClick={handleOnClick}
+                      onClick={() => {
+                        navigate("/listing/" + row.id);
+                      }}
                     >
-                      <TableCell component="th" scope="row">
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
                         {row.model}
                       </TableCell>
                       {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
-                      <TableCell align="center">{row.location}</TableCell>
-                      <TableCell align="center">{row.createdat.slice(0,10)}</TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        {row.location}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        {row.createdat.slice(0, 10)}
+                      </TableCell>
 
-                      <TableCell align="center">
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
                         {" "}
                         <Group /> {row.max_accomodation}{" "}
                       </TableCell>
-                      <TableCell align="center">${row.price}</TableCell>
-                      <TableCell align="center">
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        ${row.price}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
                         <Rating value={row.rating} />
                       </TableCell>
                     </TableRow>
-                  ))
-                : "No listings yet"}
-            </TableBody>
+                    <Button
+                      sx={{ color: "#6E85B7" }}
+                      onClick={() => {
+                        setDeleting(true);
+                        setListingId(row.id);
+                      }}
+                    >
+                      {" "}
+                      DELETE
+                    </Button>
+                  </TableBody>
+                ))
+              : "No listings yet"}
           </Table>
         </TableContainer>
       </Box>

@@ -36,9 +36,7 @@ export default function PastListings() {
     getData();
   }, []);
 
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
+  
 
   return (
     <Grid
@@ -90,7 +88,9 @@ export default function PastListings() {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      onClick={handleOnClick}
+                      onClick={() => {
+                        navigate("/listing/" + row.id)
+                      }}
                     >
                       <TableCell component="th" scope="row">
                         {row.model}

@@ -283,45 +283,7 @@ class ApiClient {
     });
   }
 
-  //REVIEWS requests
-
-  // GET requests
-
-  async getReviews(listingId) {
-    return await this.request({
-      endpoint: `review/` + listingId,
-      method: `GET`,
-    });
-  }
-
-  // POST requests
-
-  async postReview(listingId, review) {
-    return await this.request({
-      endpoint: `review/` + listingId,
-      method: `GET`,
-      data: review,
-    });
-  }
-
-  // DELETE requests
-
-  async deleteReview(reviewId) {
-    return await this.request({
-      endpoint: `review/` + reviewId,
-      method: `DELETE`,
-    });
-  }
-  // PUT requests
-
-  async updateReview(reviewId, reviewUpdate) {
-    return await this.request({
-      endpoint: `review/` + reviewId,
-      method: `PUT`,
-      data: reviewUpdate,
-    });
-  }
-
+  
   //INDEX request
 
   //POST requests
