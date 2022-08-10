@@ -9,6 +9,7 @@ import Listings from "./Listings";
 import Register from "./Register";
 import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
+import OrderConfirmation from "./OrderConfirmation";
 import EditListing from "./EditListing";
 import BookListing from "./BookListing";
 import NotFound from "./NotFound";
@@ -67,11 +68,15 @@ export default function App() {
           />
           <Route path="/listings" element={<Listings />} />
           <Route
+            path="/orderconfirmation/:id/:order_id"
+            element={<OrderConfirmation />}
+          />
+          <Route
             path="/createlisting"
             element={<CreateListing user={user} isLoading={isLoading} />}
           />
           <Route path="/listing/:id/book" element={<BookListing />} />
-          <Route path="/listing/:id" element={<ListingDetails />} />
+          <Route path="/listing/:id" element={<ListingDetails user={user} />} />
           <Route path="/listing/:id/edit" element={<EditListing />} />
 
           <Route path="/*" element={<NotFound />} />
