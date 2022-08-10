@@ -1,6 +1,6 @@
-const db = require('../db');
-const { BadRequestError } = require('../utils/errors');
-const { s3 } = require('../config');
+const db = require("../db");
+const { BadRequestError } = require("../utils/errors");
+const { s3 } = require("../config");
 
 class Listing {
   static async getListings() {
@@ -141,6 +141,10 @@ class Listing {
       throw new BadRequestError("No location provided");
     }
 
+    if (listings.price <= 0) {
+      throw new BadRequestError("Kindly provide a valid price");
+    }
+
     if (listings.model.length < 1) {
       throw new BadRequestError("No car model provided");
     }
@@ -159,7 +163,7 @@ class Listing {
 
     if (imagesArray.length === 0 || imagesArray.length > 5) {
       throw new BadRequestError(
-        'You must upload at least one image and no more than five images.'
+        "You must upload at least one image and no more than five images."
       );
     }
 
@@ -220,43 +224,55 @@ class Listing {
   //
 
   static async editListing({ listingUpdate, listingId }) {
+    let queryString = "";
     
-
-    if (listingUpdate?.location?.length < 1) {
-      throw new BadRequestError('Invalid location');
-    }
-
-    if (listingUpdate.max_accomodation < 1) {
-      throw new BadRequestError(
-        "Vehicle should be able to accomodate at least one person"
-      );
-    }
-
-    if (listingUpdate.model?.length < 1) {
-      throw new BadRequestError("Invalid vehicle model");
-    }
-
-    let queryString = '';
     let listingUpdateEntries = Object.entries(listingUpdate);
+    var params = 1
     for (let i = 0; i < listingUpdateEntries.length; i++) {
-      if(listingUpdateEntries[i][0] === ""){
+      if (listingUpdateEntries[i][1] === "") {
         continue;
       }
 
-      queryString += `${listingUpdateEntries[i][0]} = $${i + 1}, `;
+      if (
+        listingUpdateEntries[i][1] < 1 &&
+        listingUpdateEntries[i][0] === "max_accomodation"
+      ) {
+        throw new BadRequestError(
+          "Vehicle should be able to accomodate at least one person"
+        );
+      }
+
+      if (
+        listingUpdateEntries[i][1] <= 0 &&
+        listingUpdateEntries[i][0] === "price"
+      ) {
+        throw new BadRequestError(
+          "Invalid price"
+        );
+      }
+
+
+      queryString += `${listingUpdateEntries[i][0]} = $${params}, `;
+      params++
     }
 
     const query = `UPDATE listings
         SET ${queryString}
         updatedAt = NOW()
-        WHERE id = $${listingUpdateEntries.length + 1}
+        WHERE id = ${listingId}
         RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
 
-    console.log(query);
-    const result = await db.query(query, [
-      ...listingUpdateEntries.map((entry) => entry[1]),
-      listingId,
-    ]);
+    
+    var entry = []
+    listingUpdateEntries.map((item) => {
+   //   console.log(entry[1])
+      if(item[1] !== ""){
+        entry.push(item[1])
+      }  
+    })
+
+    
+    const result = await db.query(query, entry);
 
     const results = result.rows[0];
 
@@ -283,9 +299,7 @@ class Listing {
     } else if (!second) {
       return first;
     } else {
-      let intersection = first.filter((a) =>
-        second.some((b) => a.id === b.id)
-      );
+      let intersection = first.filter((a) => second.some((b) => a.id === b.id));
       return intersection;
     }
   }
@@ -299,7 +313,7 @@ class Listing {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: `${id}-${i}`,
       };
-      const url = s3.getSignedUrl('getObject', params);
+      const url = s3.getSignedUrl("getObject", params);
       urls.push(url);
     }
 
@@ -308,7 +322,7 @@ class Listing {
 
   static async postPhotostoS3(photos, id) {
     for (let i = 0; i < photos.length; i++) {
-      const photo = Buffer.from(photos[i].data, 'base64');
+      const photo = Buffer.from(photos[i].data, "base64");
       const respon = await s3
         .upload({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -320,7 +334,6 @@ class Listing {
       console.log(respon);
     }
   }
-
 
   static async filterListings(search) {
     if (
@@ -358,12 +371,11 @@ class Listing {
     var year = search.year === "" ? null : await this.filterYear(search.year);
     var model =
       search.model === "" ? null : await this.filterMake(search.model);
-    
 
     var res = this.intersection(price, minRating);
     res = this.intersection(res, location);
     res = this.intersection(res, model);
-    res = this.intersection(res, year)
+    res = this.intersection(res, year);
 
     return res;
   }
