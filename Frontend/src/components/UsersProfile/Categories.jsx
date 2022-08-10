@@ -68,18 +68,20 @@ export default function Categories(props) {
           </ListItem>
         </List>
         <Divider />
-        <List>
-          <Typography>Renter</Typography>
+        {id ? (
+          <List>
+            <Typography>Renter</Typography>
 
-          <ListItem sx={{ display: "flex", flexDirection: "column" }}>
-            <ListItemButton onClick={handleOnActiveOrders}>
-              <ListItemText> Active Orders</ListItemText>
-            </ListItemButton>
-            <ListItemButton onClick={handleOnPastOrders}>
-              <ListItemText> Past Orders</ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </List>
+            <ListItem sx={{ display: "flex", flexDirection: "column" }}>
+              <ListItemButton onClick={handleOnActiveOrders}>
+                <ListItemText> Active Orders</ListItemText>
+              </ListItemButton>
+              <ListItemButton onClick={handleOnPastOrders}>
+                <ListItemText> Past Orders</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          </List>
+        ) : null}
         <Divider />
 
         <List>
