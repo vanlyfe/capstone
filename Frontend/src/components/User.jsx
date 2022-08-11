@@ -11,7 +11,7 @@ import EditUser from './UsersProfile/EditUser';
 import { Box, Grid } from '@mui/material';
 import { useParams } from 'react-router-dom';
 export default function User({ user, setUser }) {
-  const [category, setCategory] = useState(null);
+  const [category, setCategory] = useState('al');
   const [editProfile, setEditProfile] = useState(null);
 
   return (
@@ -38,6 +38,8 @@ export default function User({ user, setUser }) {
           <Box
             sx={{
               display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
               flexDirection: { xs: 'column', md: 'row' },
             }}>
             <Categories

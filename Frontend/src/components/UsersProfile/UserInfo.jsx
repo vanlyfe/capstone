@@ -53,10 +53,6 @@ export default function UserInfo(props) {
     const getUser = async () => {
       const response = await apiClient.fetchUserFromId(id);
 
-      // console.log("user id:", props.user.id);
-      // console.log("user info: ", response.data.user);
-      // console.log("firstname: ", response.data.user.firstname);
-
       if (response?.data?.user) {
         setBio(response.data.user.bio);
         setLastName(response.data.user.lastname);
@@ -64,8 +60,6 @@ export default function UserInfo(props) {
         setRating(response.data.user.rating);
         setEmail(response.data.user.email);
         setProfileImage(response.data.user.image_url);
-
-        // setImage(response.data.user[0].user[0].image_url);
       } else {
         setError("No account found");
       }
@@ -86,7 +80,6 @@ export default function UserInfo(props) {
     >
       <Dialog
         open={isDelete}
-        // onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

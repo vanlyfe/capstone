@@ -44,7 +44,7 @@ export default function PastListings() {
         mt: 1,
         bgcolor: "##8cbfed",
         height: "70%",
-        width: "100%",
+        width: { xs: '100%', md: '70%' },
         mt: 1,
       }}
     >
@@ -62,11 +62,11 @@ export default function PastListings() {
       </Box>
 
       <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Vehicle Model</TableCell>
+                <TableCell align="center">Vehicle Model</TableCell>
 
                 {/* <TableCell align="right">Check in </TableCell>
                 <TableCell align="right"> Check out</TableCell> */}
@@ -92,7 +92,7 @@ export default function PastListings() {
                         navigate("/listing/" + row.id)
                       }}
                     >
-                      <TableCell component="th" scope="row">
+                      <TableCell component="th" scope="row" align="center">
                         {row.model}
                       </TableCell>
                       {/* <TableCell align="right">l{row.getStartDate}</TableCell>
@@ -101,8 +101,15 @@ export default function PastListings() {
                       <TableCell align="center">{new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}</TableCell>
 
                       <TableCell align="center">
-                        {" "}
-                        <Group /> {row.max_accomodation}{" "}
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Group />
+                        &nbsp;{row.max_accomodation}
+                      </Box>
                       </TableCell>
                       <TableCell align="center">${row.price}</TableCell>
                       <TableCell align="center">
@@ -110,7 +117,11 @@ export default function PastListings() {
                       </TableCell>
                     </TableRow>
                   ))
-                : "No listings yet"}
+                : <TableBody>
+                <TableRow>
+                  <TableCell colSpan={12}>No Past Listings</TableCell>
+                </TableRow>
+              </TableBody>}
             </TableBody>
           </Table>
         </TableContainer>
