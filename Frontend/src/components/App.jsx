@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import apiClient from "../services/apiClient";
 import LandingPage from "./LandingPage";
 import Login from "./Login";
@@ -16,7 +15,7 @@ import { Navbar } from "./Navbar";
 import User from "./User";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-
+import Terms from "./Terms";
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
@@ -65,6 +64,7 @@ export default function App() {
             path="/register"
             element={<Register user={user} setUser={setUser} />}
           />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/listings" element={<Listings />} />
           <Route
             path="/createlisting"
