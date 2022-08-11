@@ -13,7 +13,7 @@ CREATE TABLE users(
     gender         TEXT,
     bio            TEXT,
     rating         FLOAT,
-    phone          INTEGER
+    phone          FLOAT
 
 );
 
