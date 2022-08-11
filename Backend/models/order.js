@@ -44,8 +44,13 @@ class Order {
       }
     });
 
+    const curr = new Date()
     const start = new Date(orders.startDate);
     const end = new Date(orders.endDate);
+
+    if(start < curr){
+      throw new BadRequestError("Start date cannot be before today")
+    }
 
     if (start >= end) {
       throw new BadRequestError(
@@ -129,6 +134,57 @@ class Order {
 
     const res = result.rows;
     return res;
+  }
+
+  static async editOrder({ orderUpdate, orderId }) {
+    let queryString = "";
+
+    let listingUpdateEntries = Object.entries(listingUpdate);
+    var params = 1;
+    for (let i = 0; i < listingUpdateEntries.length; i++) {
+      if (listingUpdateEntries[i][1] === "") {
+        continue;
+      }
+
+      if (
+        listingUpdateEntries[i][1] < 1 &&
+        listingUpdateEntries[i][0] === "max_accomodation"
+      ) {
+        throw new BadRequestError(
+          "Vehicle should be able to accomodate at least one person"
+        );
+      }
+
+      if (
+        listingUpdateEntries[i][1] <= 0 &&
+        listingUpdateEntries[i][0] === "price"
+      ) {
+        throw new BadRequestError("Invalid price");
+      }
+
+      queryString += `${listingUpdateEntries[i][0]} = $${params}, `;
+      params++;
+    }
+
+    const query = `UPDATE listings
+        SET ${queryString}
+        updatedAt = NOW()
+        WHERE id = ${listingId}
+        RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
+
+    var entry = [];
+    listingUpdateEntries.map((item) => {
+      //   console.log(entry[1])
+      if (item[1] !== "") {
+        entry.push(item[1]);
+      }
+    });
+
+    const result = await db.query(query, entry);
+
+    const results = result.rows[0];
+
+    return results;
   }
 }
 
