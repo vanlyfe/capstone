@@ -1,10 +1,6 @@
-const db = require("../db")
+const db = require("../db");
 
 const createOrders = async (userIds, listingIds) => {
-
-
- 
-
   await db.query(
     `
     INSERT INTO orders(user_id, taxes, total, guests, listing_id, startDate, endDate)
@@ -36,16 +32,14 @@ const createOrders = async (userIds, listingIds) => {
       '11/10/2000'
     );
     `
-  )
+  );
 
- 
+  const results = await db.query(`SELECT id FROM orders ORDER BY id ASC`);
 
-  const results = await db.query(`SELECT id FROM orders ORDER BY id ASC`)
-
-  const ids = results.rows.map((row) => row.id)
-  return ids
-}
+  const ids = results.rows.map((row) => row.id);
+  return ids;
+};
 
 module.exports = {
   createOrders,
-}
+};

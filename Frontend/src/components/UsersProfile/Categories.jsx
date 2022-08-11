@@ -30,6 +30,10 @@ export default function Categories(props) {
     props.setCategory("al");
   };
 
+  const handleOnFavourites = () => {
+    props.setCategory("fl");
+  };
+
   const handleOnReviews = () => {
     props.setCategory("r");
   };
@@ -65,10 +69,15 @@ export default function Categories(props) {
             <ListItemButton onClick={handleOnPastListings}>
               <ListItemText>Past Listings</ListItemText>
             </ListItemButton>
+            {props.user?.id && Number(props.user.id) === Number(id) && (
+              <ListItemButton onClick={handleOnFavourites}>
+                <ListItemText>Favorites </ListItemText>
+              </ListItemButton>
+            )}
           </ListItem>
         </List>
         <Divider />
-        {Number(props.user.id) === Number(id) ? (
+        {props.user?.id && Number(props.user.id) === Number(id) && (
           <List>
             <Typography>Renter</Typography>
 
@@ -81,7 +90,7 @@ export default function Categories(props) {
               </ListItemButton>
             </ListItem>
           </List>
-        ) : null}
+        )}
         <Divider />
 
         <List>

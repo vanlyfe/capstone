@@ -3,7 +3,7 @@ const db = require("../db");
 const { BCRYPT_WORK_FACTOR } = require("../config");
 const { BadRequestError, UnauthorizedError } = require("../utils/errors");
 const Token = require("../utils/tokens");
-const sgMail = require('@sendgrid/mail');
+const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class User {
@@ -320,31 +320,26 @@ class User {
 
   static async requestPasswordReset(email) {
     const user = await this.fetchUserByEmail(email);
-   
-    if(!user){
-      throw new BadRequestError("The email does not exist")
+
+    if (!user) {
+      throw new BadRequestError("The email does not exist");
     }
 
     var resetToken = Token.createResetToken(user);
-    console.log(resetToken)
+    console.log(resetToken);
     var link = `${process.env.CLIENT_URL}passwordconfirm?token=${resetToken}`;
-   
+
     return link;
   }
 
-  static async updatePassword({confirm, password, id}) {
-
-    if(password.length < 1){
-      throw new BadRequestError("Invalid password")
+  static async updatePassword({ confirm, password, id }) {
+    if (password.length < 1) {
+      throw new BadRequestError("Invalid password");
     }
 
-    if(password !== confirm){
-      throw new BadRequestError("Passwords do not match")
-
+    if (password !== confirm) {
+      throw new BadRequestError("Passwords do not match");
     }
-
-    
-  
 
     var hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
     const result = await db.query(
@@ -353,18 +348,18 @@ class User {
               updatedAt = NOW()
                    WHERE id = $2
                    RETURNING id,firstName,lastName,email,username,location, birthdate, gender, createdAt, image_url, updatedAt;`,
-                   [hashedPassword,id]
+      [hashedPassword, id]
     );
 
-    const res = result.rows[0]
-    return res
+    const res = result.rows[0];
+    return res;
   }
 
-  static sendmail(email, link){
+  static sendmail(email, link) {
     const msg = {
       to: email,
-      from: 'vanlyfe.com@gmail.com',
-      subject: 'PASSWORD RESET',
+      from: "vanlyfe.com@gmail.com",
+      subject: "PASSWORD RESET",
       text: `Text`,
       html: `Kindly click <a href=${link}>this link</a> to reset your password. The link expires in 5 minutes.`,
     };
@@ -373,4 +368,3 @@ class User {
 }
 
 module.exports = User;
- 
