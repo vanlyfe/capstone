@@ -105,7 +105,7 @@ export default function UserInfo(props) {
           <Grid container item md={6}>
             <Grid
               item
-              md={3}
+              md={4}
               xs={12}
               sx={{
                 display: 'flex',
