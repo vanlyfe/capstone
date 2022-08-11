@@ -36,9 +36,7 @@ export default function PastListings() {
     getData();
   }, []);
 
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
+  
 
   return (
     <Grid
@@ -75,8 +73,8 @@ export default function PastListings() {
                 <TableCell align="center">Location</TableCell>
                 <TableCell align="center">Post Date</TableCell>
 
-                <TableCell align="right">Number of Guests</TableCell>
-                <TableCell align="right">Price</TableCell>
+                <TableCell align="center">Number of Guests</TableCell>
+                <TableCell align="center">Price</TableCell>
 
                 <TableCell align="center">Ratings</TableCell>
               </TableRow>
@@ -90,7 +88,9 @@ export default function PastListings() {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      onClick={handleOnClick}
+                      onClick={() => {
+                        navigate("/listing/" + row.id)
+                      }}
                     >
                       <TableCell component="th" scope="row">
                         {row.model}
@@ -98,15 +98,15 @@ export default function PastListings() {
                       {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
                       <TableCell align="center">{row.location}</TableCell>
-                      <TableCell align="right">{row.createdat}</TableCell>
+                      <TableCell align="center">{new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}</TableCell>
 
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {" "}
                         <Group /> {row.max_accomodation}{" "}
                       </TableCell>
-                      <TableCell align="right">${row.price}</TableCell>
+                      <TableCell align="center">${row.price}</TableCell>
                       <TableCell align="center">
-                        <Rating value={row.rating} />
+                        <Rating value={row.rating} readOnly={true}/>
                       </TableCell>
                     </TableRow>
                   ))

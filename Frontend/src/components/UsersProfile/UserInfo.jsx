@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 import {
   Box,
   Grid,
@@ -10,6 +13,7 @@ import {
   Button,
 } from "@mui/material";
 import apiClient from "../../services/apiClient";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function UserInfo(props) {
   const [firstName, setFirstName] = React.useState();
@@ -19,16 +23,39 @@ export default function UserInfo(props) {
   const [image, setImage] = React.useState();
   const [Error, setError] = React.useState();
   const [email, setEmail] = React.useState();
+  const [profileImage, setProfileImage] = React.useState();
+  const [isDelete, setIsDelete] = React.useState(false);
+
+  const navigate = useNavigate();
+
   const handleOnEditProfile = () => {
     props.setEditProfile("profile");
   };
 
+  const handleOnClickDelete = () => {
+    setIsDelete(true);
+  };
+
+  const handleOnDelete = async () => {
+    await apiClient.deleteUser(props.user.id);
+    apiClient.logoutUser();
+    props.setUser(null);
+    navigate("/");
+  };
+
+  const handleOnCancel = () => {
+    setIsDelete(false);
+  };
+
+  const { id } = useParams();
+
   useEffect(() => {
     const getUser = async () => {
-      const response = await apiClient.fetchUserFromId(props.user.id);
-      console.log("user id:", props.user.id);
-      console.log("user info: ", response.data.user);
-      console.log("firstname: ", response.data.user.firstname);
+      const response = await apiClient.fetchUserFromId(id);
+
+      // console.log("user id:", props.user.id);
+      // console.log("user info: ", response.data.user);
+      // console.log("firstname: ", response.data.user.firstname);
 
       if (response?.data?.user) {
         setBio(response.data.user.bio);
@@ -36,6 +63,7 @@ export default function UserInfo(props) {
         setFirstName(response.data.user.firstname);
         setRating(response.data.user.rating);
         setEmail(response.data.user.email);
+        setProfileImage(response.data.user.image_url);
 
         // setImage(response.data.user[0].user[0].image_url);
       } else {
@@ -56,6 +84,23 @@ export default function UserInfo(props) {
         p: 3,
       }}
     >
+      <Dialog
+        open={isDelete}
+        // onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Do you want to continue?"}
+        </DialogTitle>
+
+        <DialogActions>
+          <Button onClick={handleOnDelete}>Delete account</Button>
+          <Button onClick={handleOnCancel} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Box
           noWrap
@@ -75,7 +120,11 @@ export default function UserInfo(props) {
             spacing={1}
           >
             <Grid>
-              <Avatar alt="profile picture" sx={{ width: 200, height: 200 }} />
+              <Avatar
+                src={profileImage}
+                alt="profile picture"
+                sx={{ width: 200, height: 200 }}
+              />
             </Grid>
             <Grid>
               <Box>
@@ -93,17 +142,41 @@ export default function UserInfo(props) {
             </Grid>
           </Grid>
         </Box>
-        <Box sx={{ flexWrap: "wrap", width: "50% " }}>
-          {props.user ? (
-            <Button
-              variant="contained"
-              onClick={handleOnEditProfile}
-              sx={{ alignContent: "baseline", mb: 4, ml: 55 }}
+        <Box
+          sx={{
+            flexDirection: "column",
+            justifyContent: "flex-end",
+            width: "100%",
+          }}
+        >
+          {props.user?.id && Number(props.user.id) === Number(id) && (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%",
+              }}
             >
-              EDIT PROFILE
-            </Button>
-          ) : null}
-          <Typography>{bio}</Typography>
+              <Button
+                variant="contained"
+                onClick={handleOnEditProfile}
+                sx={{ alignContent: "baseline", mb: 4 }}
+              >
+                EDIT PROFILE
+              </Button>
+
+              <Button
+                variant="contained"
+                onClick={handleOnClickDelete}
+                sx={{ alignContent: "baseline", mb: 4, ml: 5 }}
+              >
+                DELETE PROFILE
+              </Button>
+            </Box>
+          )}
+          <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
+            {bio}
+          </Typography>
         </Box>
       </Toolbar>
     </AppBar>

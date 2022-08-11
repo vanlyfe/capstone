@@ -25,20 +25,44 @@ export default function PastOrders() {
   const [open, setOpen] = useState(false);
   const [orders, setOrders] = useState([]);
   let { id } = useParams();
+  const [value, setValue] = React.useState(null);
+  const [popupError, setPopupError] = React.useState(null);
+  const [listingId, setListingId] = React.useState(null);
+
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
   const [reviews, setReviews] = useState([]);
   const [review, setReview] = useState();
-  const [reviewText, setReviewText] = useState("");
+  const [reviewText, setReviewText] = useState(null);
+  const [ratingInput, setRatingInput] = useState(null);
   const [listings, setListings] = useState([]);
   const navigate = useNavigate();
+
+  const handleClose = () => {
+    setOpen(false);
+    setListingId(null);
+    setPopupError(null);
+    setRatingInput(null), setReviewText(null);
+  };
+
+  const [form, setForm] = useState({
+    firstname: null,
+    id: null,
+    image_url: null,
+    lastname: null,
+    listing_id: null,
+    rating: 0,
+    review: "",
+  });
+
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserPastOrders(id);
       const res = await apiClient.fetchUserListings(id);
-      console.log("res past orders: ", resData.data);
+
       if (resData?.data?.orders) {
         setOrders(resData.data.orders);
+        setReview(resData.data.orders);
       } else {
         setError("No orders yet");
       }
@@ -52,9 +76,9 @@ export default function PastOrders() {
     getData();
   }, []);
 
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
+  // const handleOnClick = () => {
+  //   navigate("/listing/" + listings[0].id);
+  // };
 
   const style = {
     position: "absolute",
@@ -69,27 +93,48 @@ export default function PastOrders() {
     p: 4,
   };
 
-  const [form, setForm] = useState({
-    reviewToPost: "",
-  });
+  function handleOnInputChange(event) {
+    if (event.target.name === "ratingInput") {
+      setRatingInput(event.target.value);
+    }
 
-  // const isDisabled = reviewText.length === 0 || reviewText.length > 140;
+    if (event.target.name === "reviewText") {
+      setReviewText(event.target.value);
+    }
 
-  function handleOnReviewTextChange(evt) {
-    setReviewText(evt.target.value);
+    setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   }
 
-  function handleOnSubmit() {
-    let newReview = {
-      review: reviewText,
-      reviewerId: props.user.id,
-      hostId: listingId,
-    };
-    setReviews(reviews.concat(newReview));
+  const handleOnSubmit = async () => {
+    setPopupError(null);
+    console.log(ratingInput);
+    if (!ratingInput) {
+      setPopupError("Must provide rating");
+    } else {
+      if (reviewText && reviewText.length > 0) {
+        const reviewData = await apiClient.postReview(listingId, {
+          review: reviewText,
+        });
 
-    // setReviewText("");
-    setOpen(false);
-  }
+        if (reviewData.error) {
+          setPopupError(reviewData.error);
+        }
+      }
+
+      const ratingData = await apiClient.postRating(listingId, {
+        rating: ratingInput,
+      });
+
+      if (ratingData.error) {
+        setPopupError(ratingData.error);
+      }
+
+      if (!ratingData.error) {
+        setOpen(false);
+      }
+     
+    }
+  };
 
   // export function ReviewCharacterCount({ textLength }) {
   //   return (
@@ -101,13 +146,7 @@ export default function PastOrders() {
   //   );
   // }
 
-  async function ReviewSubmitButton() {
-    // const postedReview = await apiClient.postReview(props.user.id, review);
-    // ({
-    //   reviewToPost: form.review,
-    // });
-    // setForm((f) => ({ ...f, reviewText }));
-  }
+  
 
   return (
     <Grid
@@ -116,7 +155,6 @@ export default function PastOrders() {
         bgcolor: "##8cbfed",
         height: "70%",
         width: "100%",
-        mt: 1,
       }}
     >
       <Box>
@@ -146,104 +184,159 @@ export default function PastOrders() {
               <TableRow>
                 <TableCell>Post Date</TableCell>
 
-                <TableCell align="right">Check in </TableCell>
-                <TableCell align="right"> Check out</TableCell>
+                <TableCell align="center">Check in </TableCell>
+                <TableCell align="center"> Check out</TableCell>
 
-                <TableCell align="right">Number of Guests</TableCell>
-                <TableCell align="right">Price</TableCell>
+                <TableCell align="center">Number of Guests</TableCell>
+                <TableCell align="center">Price</TableCell>
 
                 <TableCell align="center">Ratings</TableCell>
               </TableRow>
             </TableHead>
             {orders.length > 0
               ? orders.map((row) => (
-                  <TableBody>
-                    <TableRow
-                      key={row.id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                      hover={true}
-                      onClick={handleOnClick}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.createdat}
+                  <TableBody
+                    sx={{
+                      borderBottom: "rgba(224, 224, 224, 1) 1px solid",
+                      borderTop: "none",
+                    }}
+                  >
+                    <TableRow key={row.id} hover={true} onClick={() => {
+                     
+                      navigate("/orderconfirmation/" + row.listing_id + "/" + row.id)
+                    }}>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
                       </TableCell>
-                      <TableCell align="right">l{row.startdate}</TableCell>
-                      <TableCell align="right">{row.enddate}</TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        {new Date(row.startdate).getFullYear() + "-" + new Date(row.startdate).getMonth() + "-" + new Date(row.startdate).getDate()}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        {new Date(row.enddate).getFullYear() + "-" + new Date(row.enddate).getMonth() + "-" + new Date(row.enddate).getDate()}
+                      </TableCell>
 
-                      <TableCell align="right">
-                        {" "}
-                        <Group /> {row.guests}{" "}
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        <Group /> {row.guests}
                       </TableCell>
-                      <TableCell align="right">${row.total}</TableCell>
-                      <TableCell align="center">
-                        <Rating value={row.rating} />
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        ${row.total}
+                      </TableCell>
+                      <TableCell
+                        align="center"
+                        sx={{
+                          borderBottom: "none",
+                          borderTop: "none",
+                        }}
+                      >
+                        <Box
+                          align="right"
+                          sx={{
+                            textDecoration: "none",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Rating value={row.rating} />
+                        </Box>
                       </TableCell>
                     </TableRow>
+                    <Link
+                      sx={{
+                        textDecoration: "none",
+                        cursor: "pointer",
+                        ml: 2,
+
+                        color: "#6E85B7",
+                      }}
+                      onClick={() => {
+                        setOpen(true);
+                        setListingId(row.listing_id);
+                      }}
+                    >
+                      add reviews
+                    </Link>
                   </TableBody>
                 ))
               : " No orders yet"}
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                  sx={{ textalign: "center" }}
+                >
+                  Rate and review
+                </Typography>
+                {popupError && <span className="popupError">{popupError}</span>}
+                <Typography>Share your experience to help others</Typography>
+
+                <Rating
+                  name="ratingInput"
+                  onChange={handleOnInputChange}
+                  type="number"
+                />
+                <TextareaAutosize
+                  aria-label="minimum height"
+                  minRows={3}
+                  placeholder="Describe your experience"
+                  style={{ width: 500, height: 100 }}
+                  onChange={handleOnInputChange}
+                  name="reviewText"
+                />
+
+                <Grid>
+                  <Typography>
+                    Your review will be posted publicly on the web.
+                  </Typography>
+
+                  <Grid sx={{ ml: 40 }}>
+                    <Button onClick={handleOnSubmit}> Post</Button>
+                    <Button onClick={handleClose} sx={{ ml: 4 }} color="error">
+                      CANCEL
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Modal>
           </Table>
-
-          {/* <Box
-                align="right"
-                sx={{
-                  textDecoration: "none",
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                }}
-              > */}
-          <Link
-            sx={{
-              textDecoration: "none",
-              cursor: "pointer",
-
-              color: "#6E85B7",
-            }}
-            onClick={handleOpen}
-          >
-            add reviews
-          </Link>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box sx={style}>
-              <Typography
-                id="modal-modal-title"
-                variant="h6"
-                component="h2"
-                sx={{ textalign: "center" }}
-              >
-                Rate and review
-              </Typography>
-              <Typography>Share your experience to help others</Typography>
-
-              <Rating />
-              <TextareaAutosize
-                aria-label="minimum height"
-                minRows={3}
-                placeholder="Describe your experience"
-                style={{ width: 500, height: 100 }}
-                // onChange={handleOnReviewTextChange}
-                value={reviewText}
-              />
-
-              <Typography>
-                Your review will be posted publicly on the web.
-              </Typography>
-
-              <Grid sx={{ mt: 2, ml: 40 }}>
-                <Button onClick={handleClose} sx={{ ml: 4, color: "#669bbc" }}>
-                  CANCEL
-                </Button>
-              </Grid>
-            </Box>
-          </Modal>
         </TableContainer>
       </Box>
     </Grid>

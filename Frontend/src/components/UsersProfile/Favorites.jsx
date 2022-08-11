@@ -20,19 +20,20 @@ import {
 import { Person, Group } from "@mui/icons-material";
 import apiClient from "../../services/apiClient";
 
-export default function ActiveListings(props) {
+export default function Favorites(props) {
   const [error, setError] = useState();
   const [deleting, setDeleting] = useState(false);
   const [listings, setListings] = useState([]);
-  const [listingId, setListingId] = useState(null);
+  const [favId, setFavId] = useState(null);
   let { id } = useParams();
   const navigate = useNavigate();
 
   const handleOnDelete = async () => {
-    await apiClient.deleteListing(listingId);
-    const resData = await apiClient.fetchUserListings(id);
-    if (resData?.data?.listings) {
-      setListings(resData.data.listings);
+    console.log(favId)
+    await apiClient.deleteFavorite(favId);
+    const resData = await apiClient.getFavorites(id);
+    if (resData?.data?.favorites) {
+      setListings(resData.data.favorites);
     } else {
       setError("No Listings yet");
     }
@@ -41,15 +42,16 @@ export default function ActiveListings(props) {
 
   const handleOnCancel = () => {
     setDeleting(false);
-    setListingId(null);
+    setFavId(null);
   };
 
   useEffect(() => {
     const getData = async () => {
-      const resData = await apiClient.fetchUserListings(id);
+      const resData = await apiClient.getFavorites(id);
+      console.log(resData.data.favorites)
 
-      if (resData?.data?.listings) {
-        setListings(resData.data.listings);
+      if (resData?.data?.favorites) {
+        setListings(resData.data.favorites);
       } else {
         setError("No Listings yet");
       }
@@ -58,8 +60,7 @@ export default function ActiveListings(props) {
     getData();
   }, []);
 
-  //console.log(Number(props.user.id))
-  //console.log(id)
+  
 
   return (
     <Grid
@@ -82,7 +83,7 @@ export default function ActiveListings(props) {
         </DialogTitle>
 
         <DialogActions>
-          <Button onClick={handleOnDelete}>Delete listing</Button>
+          <Button onClick={handleOnDelete}>Remove from favorites</Button>
           <Button onClick={handleOnCancel} autoFocus>
             Cancel
           </Button>
@@ -108,8 +109,7 @@ export default function ActiveListings(props) {
               <TableRow>
                 <TableCell>Vehicle Model</TableCell>
 
-                {/* <TableCell align="right">Check in </TableCell>
-                <TableCell align="right"> Check out</TableCell> */}
+              
                 <TableCell align="center">Location</TableCell>
                 <TableCell align="center">Post Date</TableCell>
 
@@ -134,7 +134,7 @@ export default function ActiveListings(props) {
                       }}
                       hover={true}
                       onClick={() => {
-                        navigate("/listing/" + row.id);
+                        navigate("/listing/" + row.listing_id);
                       }}
                     >
                       <TableCell
@@ -203,34 +203,23 @@ export default function ActiveListings(props) {
                     </TableRow>
                     {Number(props.user.id) === Number(id) ? (
                       <Grid>
-                        <Button
-                          sx={{ color: "#6E85B7" }}
-                          onClick={() => {
-                            
-                            
-                            navigate("/listing/" + row.id  + "/edit")
-
-                          }}
-                        >
-                          
-                          EDIT
-                        </Button>
+                        
                         <Button
                           sx={{ color: "#6E85B7" }}
                           onClick={() => {
                             setDeleting(true);
-                            setListingId(row.id);
+                            console.log(row)
+                            setFavId(row.id);
                           }}
                         >
                           {" "}
-                          DELETE
+                          REMOVE
                         </Button>
-                        
                       </Grid>
                     ) : null}
                   </TableBody>
                 ))
-              : "No listings yet"}
+              : "No favorites yet"}
           </Table>
         </TableContainer>
       </Box>

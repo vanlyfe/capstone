@@ -6,16 +6,25 @@ import ActiveListings from "./UsersProfile/ActiveListings";
 import ActiveOrders from "./UsersProfile/ActiveOrders";
 import PastListings from "./UsersProfile/PastListings";
 import PastOrders from "./UsersProfile/PastOrders";
+import Favorites from "./UsersProfile/Favorites";
 import Reviews from "./UsersProfile/Reviews";
 import EditUser from "./UsersProfile/EditUser";
 import { Box, Grid } from "@mui/material";
+import { useParams } from "react-router-dom";
 export default function User({ user, setUser }) {
   const [category, setCategory] = useState(null);
   const [editProfile, setEditProfile] = useState(null);
+
+  console.log(user);
+
   return (
     <Box>
       {editProfile === "profile" ? (
-        <EditUser user={user} setUser={setUser} />
+        <EditUser
+          user={user}
+          setUser={setUser}
+          setEditProfile={setEditProfile}
+        />
       ) : (
         <Box
           sx={{
@@ -39,7 +48,12 @@ export default function User({ user, setUser }) {
               flexDirection: "row",
             }}
           >
-            <Categories category={category} setCategory={setCategory} />
+            <Categories
+              category={category}
+              setCategory={setCategory}
+              user={user}
+              setUser={setUser}
+            />
 
             {category === "ao" ? (
               <ActiveOrders user={user} setUser={setUser} />
@@ -51,8 +65,10 @@ export default function User({ user, setUser }) {
               <PastOrders user={user} setUser={setUser} />
             ) : category === "r" ? (
               <Reviews user={user} setUser={setUser} />
+            ) : category === "fl" ? (
+              <Favorites user={user} setUser={setUser} />
             ) : (
-              <ActiveListings />
+              <ActiveListings user={user} setUser={setUser} />
             )}
           </Grid>
         </Box>

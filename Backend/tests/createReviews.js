@@ -1,8 +1,6 @@
-const db = require("../db")
+const db = require("../db");
 
 const createReviews = async (userIds, listingIds) => {
- 
-
   await db.query(
     `
     INSERT INTO reviews(review, listing_id, user_id)
@@ -42,16 +40,14 @@ const createReviews = async (userIds, listingIds) => {
     
     );
     `
-  )
+  );
 
- 
+  const results = await db.query(`SELECT id FROM reviews ORDER BY id ASC`);
 
-  const results = await db.query(`SELECT id FROM reviews ORDER BY id ASC`)
-
-  const ids = results.rows.map((row) => row.id)
-  return ids
-}
+  const ids = results.rows.map((row) => row.id);
+  return ids;
+};
 
 module.exports = {
   createReviews,
-}
+};

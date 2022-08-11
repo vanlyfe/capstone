@@ -56,7 +56,7 @@ const userOwnsListing = async (req, res, next) => {
   try {
     const { user } = res.locals;
     const { listingId } = req.params;
-    
+
     var listing = await db.query(
       `
                 SELECT user_id
@@ -67,17 +67,12 @@ const userOwnsListing = async (req, res, next) => {
     );
 
     listing = listing.rows[0];
-   
 
     if (!listing) {
       throw new BadRequestError("Listing does not exist");
     }
 
     const userId = listing.user_id;
-
-    console.log("The listing is", listing)
-    console.log("The listing user id is", userId)
-    console.log("The user id", user.id)
 
     if (user.id != userId) {
       throw new ForbiddenError(
@@ -132,9 +127,8 @@ const userIsNotListingOwner = async (req, res, next) => {
     );
 
     listing = listing.rows[0];
-   console.log("I am the listing", listing)
+
     const { user } = res.locals;
-    console.log("I am the user",user)
 
     if (listing.user_id == user.id) {
       if (req.baseUrl === "/review") {

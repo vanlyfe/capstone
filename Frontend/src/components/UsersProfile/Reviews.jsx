@@ -77,7 +77,7 @@ export default function Reviews(props) {
               <Grid
                 sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
               >
-                <Avatar alt="profile picture" />
+                <Avatar src={rev.image_url} alt="profile picture" />
                 <Box
                   sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
                 >

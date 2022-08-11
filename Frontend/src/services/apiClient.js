@@ -283,44 +283,68 @@ class ApiClient {
     });
   }
 
-  //REVIEWS requests
+  
+  //INDEX request
 
-  // GET requests
+  //POST requests
 
-  async getReviews(listingId) {
+  async requestreset(credentials){
     return await this.request({
-      endpoint: `review/` + listingId,
-      method: `GET`,
-    });
+      endpoint : `index/requestreset`,
+      method: `POST`,
+      data : credentials,
+    })
+
   }
 
-  // POST requests
+  //PUT requests
 
-  async postReview(listingId, review) {
+  async updatepassword(update){
     return await this.request({
-      endpoint: `review/` + listingId,
-      method: `GET`,
-      data: review,
-    });
+      endpoint : `index/updatepassword`,
+      method : `PUT`,
+      data : update,
+    })
   }
 
-  // DELETE requests
 
-  async deleteReview(reviewId) {
-    return await this.request({
-      endpoint: `review/` + reviewId,
-      method: `DELETE`,
-    });
+  async validate(token){
+    return this.request({
+      endpoint : `index/validate`,
+      method : `POST`,
+      data : token
+    })
   }
-  // PUT requests
 
-  async updateReview(reviewId, reviewUpdate) {
-    return await this.request({
-      endpoint: `review/` + reviewId,
-      method: `PUT`,
-      data: reviewUpdate,
-    });
+  //FAVORITES requests
+
+  //GET requests
+
+  async getFavorites(userId){
+    return this.request({
+      endpoint : `favorite/` + userId,
+      method : `GET`
+    })
   }
+
+  //POST requests
+
+  async postFavorite(listingId){
+    return this.request({
+      endpoint : `favorite/` + listingId,
+      method : `POST`
+    })
+  }
+
+  //DELETE requests
+
+  async deleteFavorite(id){
+    return this.request({
+      endpoint : `favorite/` + id,
+      method : `DELETE`
+    })
+  }
+
 }
 
 export default new ApiClient("http://localhost:3001");

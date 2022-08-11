@@ -44,9 +44,7 @@ export default function ActiveOrders() {
     getData();
   }, []);
 
-  const handleOnClick = () => {
-    navigate("/listing/" + listings[0].id);
-  };
+  
   return (
     <Grid
       sx={{
@@ -78,11 +76,11 @@ export default function ActiveOrders() {
               <TableRow>
                 <TableCell>Post Date</TableCell>
 
-                <TableCell align="right">Check in </TableCell>
-                <TableCell align="right"> Check out</TableCell>
+                <TableCell align="center">Check in </TableCell>
+                <TableCell align="center"> Check out</TableCell>
 
-                <TableCell align="right">Number of Guests</TableCell>
-                <TableCell align="right">Price</TableCell>
+                <TableCell align="center">Number of Guests</TableCell>
+                <TableCell align="center">Price</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -94,19 +92,21 @@ export default function ActiveOrders() {
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
                       hover={true}
-                      onClick={handleOnClick}
+                      onClick={() => {
+                        navigate("/orderconfirmation/" + row.listing_id + "/" + row.id)
+                      }}
                     >
                       <TableCell component="th" scope="row">
-                        {row.createdat}
+                      {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
                       </TableCell>
-                      <TableCell align="right">{row.startdate}</TableCell>
-                      <TableCell align="right">{row.enddate}</TableCell>
+                      <TableCell align="center">{new Date(row.startdate).getFullYear() + "-" + new Date(row.startdate).getMonth() + "-" + new Date(row.startdate).getDate()}</TableCell>
+                      <TableCell align="center">{new Date(row.enddate).getFullYear() + "-" + new Date(row.enddate).getMonth() + "-" + new Date(row.enddate).getDate()}</TableCell>
 
-                      <TableCell align="right">
+                      <TableCell align="center">
                         {" "}
                         <Group /> {row.guests}{" "}
                       </TableCell>
-                      <TableCell align="right">${row.total}</TableCell>
+                      <TableCell align="center">${row.total}</TableCell>
                     </TableRow>
                   ))
                 : "No orders yet"}
