@@ -295,6 +295,11 @@ export default function ListingDetails({ user }) {
     navigate(`/orderconfirmation/${id}/${order_id}`);
   };
 
+
+
+
+  
+
   return (
     <Box>
       <Grid
