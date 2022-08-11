@@ -74,6 +74,7 @@ export default function ListingDetails({ user }) {
   const [dateInValue, setDateInValue] = useState(null);
   const [dateOutValue, setDateOutValue] = useState(null);
   const [numGuests, setNumGuests] = useState(null);
+  const [guestError, setGuestError] = useState(null)
 
   // using this as an alternative to test the submit button
 
@@ -206,7 +207,13 @@ export default function ListingDetails({ user }) {
   const handleOnInputChange = (e) => {
     if (e.target.name === "numGuests") {
       //console.log("text input value", e.target.value);
+      if(e.target.value > carDetails.max_accomodation){
+        setGuestError("Number of guests excede allowed number")
+      } else{
+        setGuestError(null)
       setNumGuests(e.target.value);
+      }
+
       // if (
       //   (e.target.value != "" && isNaN(e.target.value)) ||
       //   e.target.value == "e" ||
@@ -617,8 +624,8 @@ export default function ListingDetails({ user }) {
                     align: "center",
                   }}
                 >
-                  {errors.guests && (
-                    <span className="error">{errors.guests}</span>
+                  {guestError && (
+                    <span className="error">{guestError}</span>
                   )}
                 </Typography>
                 <Box sx={{ display: "flex", flexDirection: "row" }}>
@@ -693,7 +700,7 @@ export default function ListingDetails({ user }) {
                   //to={user ? `/orderconfirmation/${id}/${order_id}` : "/login"}
                   color="inherit"
                   onClick={handleOnSubmit}
-                  disabled={!numGuests || !dateInValue || !dateOutValue}
+                  disabled={!numGuests || !dateInValue || !dateOutValue || guestError}
                 >
                   Submit Request
                 </Button>
