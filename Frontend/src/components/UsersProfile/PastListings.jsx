@@ -36,15 +36,13 @@ export default function PastListings() {
     getData();
   }, []);
 
-  
-
   return (
     <Grid
       sx={{
         mt: 1,
         bgcolor: "##8cbfed",
         height: "70%",
-        width: "100%",
+        width: { xs: "100%", md: "70%" },
         mt: 1,
       }}
     >
@@ -62,11 +60,11 @@ export default function PastListings() {
       </Box>
 
       <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Vehicle Model</TableCell>
+                <TableCell align="center">Vehicle Model</TableCell>
 
                 {/* <TableCell align="right">Check in </TableCell>
                 <TableCell align="right"> Check out</TableCell> */}
@@ -80,37 +78,55 @@ export default function PastListings() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {listings.length > 0
-                ? listings.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                      hover={true}
-                      onClick={() => {
-                        navigate("/listing/" + row.id)
-                      }}
-                    >
-                      <TableCell component="th" scope="row">
-                        {row.model}
-                      </TableCell>
-                      {/* <TableCell align="right">l{row.getStartDate}</TableCell>
+              {listings.length > 0 ? (
+                listings.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                    hover={true}
+                    onClick={() => {
+                      navigate("/listing/" + row.id);
+                    }}
+                  >
+                    <TableCell component="th" scope="row" align="center">
+                      {row.model}
+                    </TableCell>
+                    {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
-                      <TableCell align="center">{row.location}</TableCell>
-                      <TableCell align="center">{new Date(row.createdat).getFullYear() + "-" + (new Date(row.createdat).getMonth() + 1)+ "-" + new Date(row.createdat).getDate()}</TableCell>
+                    <TableCell align="center">{row.location}</TableCell>
+                    <TableCell align="center">
+                      {new Date(row.createdat).getFullYear() +
+                        "-" +
+                        (new Date(row.createdat).getMonth() + 1) +
+                        "-" +
+                        new Date(row.createdat).getDate()}
+                    </TableCell>
 
-                      <TableCell align="center">
-                        {" "}
-                        <Group /> {row.max_accomodation}{" "}
-                      </TableCell>
-                      <TableCell align="center">${row.price}</TableCell>
-                      <TableCell align="center">
-                        <Rating value={row.rating} readOnly={true}/>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                : "No listings yet"}
+                    <TableCell align="center">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Group />
+                        &nbsp;{row.max_accomodation}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="center">${row.price}</TableCell>
+                    <TableCell align="center">
+                      <Rating value={row.rating} readOnly={true} />
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={12}>No Past Listings</TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

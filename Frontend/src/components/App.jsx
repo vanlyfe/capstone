@@ -1,7 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
 import apiClient from "../services/apiClient";
 import LandingPage from "./LandingPage";
 import Login from "./Login";
@@ -21,7 +20,7 @@ import { useState, useEffect } from "react";
 import ForgotPasswordConfirm from "./ForgotPassword/forgotPasswordConfirm";
 import ForgotPasswordEmail from "./ForgotPassword/ForgotPasswordEmail";
 import ResetError from "./ResetError";
-
+import Terms from "./Terms";
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
@@ -70,6 +69,7 @@ export default function App() {
             path="/register"
             element={<Register user={user} setUser={setUser} />}
           />
+          <Route path="/terms" element={<Terms />} />
           <Route path="/listings" element={<Listings user={user} setUser={setUser}/>} />
           <Route
             path="/orderconfirmation/:id/:order_id"

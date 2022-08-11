@@ -67,7 +67,7 @@ export default function ActiveListings(props) {
         mt: 1,
         bgcolor: "##8cbfed",
         height: "70%",
-        width: "100%",
+        width: { xs: "100%", md: "70%" },
         mt: 1,
       }}
     >
@@ -102,11 +102,11 @@ export default function ActiveListings(props) {
       </Box>
 
       <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Vehicle Model</TableCell>
+                <TableCell align="center">Vehicle Model</TableCell>
 
                 {/* <TableCell align="right">Check in </TableCell>
                 <TableCell align="right"> Check out</TableCell> */}
@@ -119,118 +119,138 @@ export default function ActiveListings(props) {
                 <TableCell align="center">Ratings</TableCell>
               </TableRow>
             </TableHead>
-            {listings.length > 0
-              ? listings.map((row) => (
-                  <TableBody
+            {listings.length > 0 ? (
+              listings.map((row, i) => (
+                <TableBody
+                  key={i}
+                  sx={{
+                    borderBottom: "rgba(224, 224, 224, 1) 1px solid",
+                    borderTop: "none",
+                  }}
+                >
+                  <TableRow
+                    key={row.id}
                     sx={{
-                      borderBottom: "rgba(224, 224, 224, 1) 1px solid",
-                      borderTop: "none",
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                    hover={true}
+                    onClick={() => {
+                      navigate("/listing/" + row.id);
                     }}
                   >
-                    <TableRow
-                      key={row.id}
+                    <TableCell
+                      component="th"
+                      align="center"
+                      scope="row"
                       sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                      hover={true}
-                      onClick={() => {
-                        navigate("/listing/" + row.id);
+                        borderBottom: "none",
+                        borderTop: "none",
                       }}
                     >
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {row.model}
-                      </TableCell>
-                      {/* <TableCell align="right">l{row.getStartDate}</TableCell>
+                      {row.model}
+                    </TableCell>
+                    {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {row.location}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {new Date(row.createdat).getFullYear() +
-                          "-" +
-                          (new Date(row.createdat).getMonth() + 1) +
-                          "-" +
-                          new Date(row.createdat).getDate()}
-                      </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {row.location}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {new Date(row.createdat).getFullYear() +
+                        "-" +
+                        (new Date(row.createdat).getMonth() + 1) +
+                        "-" +
+                        new Date(row.createdat).getDate()}
+                    </TableCell>
 
-                      <TableCell
-                        align="center"
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      <Box
                         sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
-                        {" "}
-                        <Group /> {row.max_accomodation}{" "}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        ${row.price}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        <Rating value={row.rating} readOnly={true} />
+                        <Group />
+                        &nbsp;{row.max_accomodation}
+                      </Box>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      ${row.price}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      <Rating value={row.rating} readOnly={true} />
+                    </TableCell>
+                  </TableRow>
+                  {Number(props.user.id) === Number(id) ? (
+                    <TableRow>
+                      <TableCell colSpan={12}>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <Button
+                            sx={{ color: "#6E85B7" }}
+                            onClick={() => {
+                              navigate("/listing/" + row.id + "/edit");
+                            }}
+                          >
+                            EDIT
+                          </Button>
+                          <Button
+                            sx={{ color: "#6E85B7" }}
+                            onClick={() => {
+                              setDeleting(true);
+                              setListingId(row.id);
+                            }}
+                          >
+                            DELETE
+                          </Button>
+                        </Box>
                       </TableCell>
                     </TableRow>
-                    {Number(props.user.id) === Number(id) ? (
-                      <Grid>
-                        <Button
-                          sx={{ color: "#6E85B7" }}
-                          onClick={() => {
-                            
-                            
-                            navigate("/listing/" + row.id  + "/edit")
-
-                          }}
-                        >
-                          
-                          EDIT
-                        </Button>
-                        <Button
-                          sx={{ color: "#6E85B7" }}
-                          onClick={() => {
-                            setDeleting(true);
-                            setListingId(row.id);
-                          }}
-                        >
-                          {" "}
-                          DELETE
-                        </Button>
-                        
-                      </Grid>
-                    ) : null}
-                  </TableBody>
-                ))
-              : "No listings yet"}
+                  ) : null}
+                </TableBody>
+              ))
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={12}>No Listings yet</TableCell>
+                </TableRow>
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
       </Box>
