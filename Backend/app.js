@@ -10,6 +10,7 @@ const orderRoutes = require("./routes/orders")
 const ratingRoutes = require("./routes/ratings")
 const reviewRoutes = require("./routes/reviews")
 const indexRoutes = require("./routes/index")
+const favoritesRoutes = require("./routes/favorites")
 
 
 const config = require("./config");
@@ -34,7 +35,7 @@ app.use("/rating", ratingRoutes)
 app.use("/review", reviewRoutes)
 app.use("/order", orderRoutes)
 app.use("/index", indexRoutes)
-
+app.use("/favorite", favoritesRoutes)
 
 app.get("/", function (req, res) {
   return res.status(200).json({
