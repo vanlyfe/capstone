@@ -7,10 +7,10 @@ const router = express.Router();
 router.get("/:userId", async (req, res, next) => {
   try {
     const { userId } = req.params;
-   
+
     const favorites = await Favorite.getUserFavorites(userId);
 
-    return res.status(200).json({favorites : favorites});
+    return res.status(200).json({ favorites: favorites });
   } catch (error) {
     next(error);
   }
@@ -28,7 +28,7 @@ router.post(
 
       const favorite = await Favorite.postFavorite(userId, listingId);
 
-      return res.status(200).json({favorite : favorite});
+      return res.status(200).json({ favorite: favorite });
     } catch (error) {
       next(error);
     }

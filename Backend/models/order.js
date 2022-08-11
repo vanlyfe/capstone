@@ -48,7 +48,9 @@ class Order {
     const end = new Date(orders.endDate);
 
     if (start >= end) {
-      throw new BadRequestError("Start date cannot be after or on the same day as end date");
+      throw new BadRequestError(
+        "Start date cannot be after or on the same day as end date"
+      );
     }
 
     if (orders.taxes === 0) {
@@ -62,8 +64,6 @@ class Order {
     if (orders.guests < 1) {
       throw new BadRequestError("Cannot have less than one guest");
     }
-
-    
 
     const result = await db.query(
       `
