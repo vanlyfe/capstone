@@ -136,55 +136,69 @@ class Order {
     return res;
   }
 
-  static async editOrder({ orderUpdate, orderId }) {
-    let queryString = "";
+  static async editOrder( orderUpdate, orderId ) {
+    var listing = await db.query(
+      `
+      SELECT o.startDate, o.endDate, l.price, l.fees, l.max_accomodation, o.id
+      FROM orders AS o
+      JOIN listings AS l ON o.listing_id = l.id
+      WHERE o.id = $1
+      
+      `,[orderId]
 
-    let listingUpdateEntries = Object.entries(listingUpdate);
-    var params = 1;
-    for (let i = 0; i < listingUpdateEntries.length; i++) {
-      if (listingUpdateEntries[i][1] === "") {
-        continue;
-      }
+    )
 
-      if (
-        listingUpdateEntries[i][1] < 1 &&
-        listingUpdateEntries[i][0] === "max_accomodation"
-      ) {
-        throw new BadRequestError(
-          "Vehicle should be able to accomodate at least one person"
-        );
-      }
+    listing = listing.rows[0]
 
-      if (
-        listingUpdateEntries[i][1] <= 0 &&
-        listingUpdateEntries[i][0] === "price"
-      ) {
-        throw new BadRequestError("Invalid price");
-      }
 
-      queryString += `${listingUpdateEntries[i][0]} = $${params}, `;
-      params++;
-    }
+    // let queryString = "";
 
-    const query = `UPDATE listings
-        SET ${queryString}
-        updatedAt = NOW()
-        WHERE id = ${listingId}
-        RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
+    // let listingUpdateEntries = Object.entries(listingUpdate);
+    // var params = 1;
+    // for (let i = 0; i < listingUpdateEntries.length; i++) {
+    //   if (listingUpdateEntries[i][1] === "") {
+    //     continue;
+    //   }
 
-    var entry = [];
-    listingUpdateEntries.map((item) => {
-      //   console.log(entry[1])
-      if (item[1] !== "") {
-        entry.push(item[1]);
-      }
-    });
+    //   if (
+    //     listingUpdateEntries[i][1] < 1 &&
+    //     listingUpdateEntries[i][0] === "max_accomodation"
+    //   ) {
+    //     throw new BadRequestError(
+    //       "Vehicle should be able to accomodate at least one person"
+    //     );
+    //   }
 
-    const result = await db.query(query, entry);
+    //   if (
+    //     listingUpdateEntries[i][1] <= 0 &&
+    //     listingUpdateEntries[i][0] === "price"
+    //   ) {
+    //     throw new BadRequestError("Invalid price");
+    //   }
 
-    const results = result.rows[0];
+    //   queryString += `${listingUpdateEntries[i][0]} = $${params}, `;
+    //   params++;
+    // }
 
-    return results;
+    // const query = `UPDATE listings
+    //     SET ${queryString}
+    //     updatedAt = NOW()
+    //     WHERE id = ${listingId}
+    //     RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
+
+    // var entry = [];
+    // listingUpdateEntries.map((item) => {
+    //   //   console.log(entry[1])
+    //   if (item[1] !== "") {
+    //     entry.push(item[1]);
+    //   }
+    // });
+
+    // const result = await db.query(query, entry);
+
+    // const results = result.rows[0];
+
+    return listing;
   }
 }
 

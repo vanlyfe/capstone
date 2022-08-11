@@ -213,7 +213,7 @@ export default function PastOrders() {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
+                        {new Date(row.createdat).getFullYear() + "-" + (new Date(row.createdat).getMonth() + 1) + "-" + new Date(row.createdat).getDate()}
                       </TableCell>
                       <TableCell
                         align="center"
@@ -222,7 +222,7 @@ export default function PastOrders() {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.startdate).getFullYear() + "-" + new Date(row.startdate).getMonth() + "-" + new Date(row.startdate).getDate()}
+                        {new Date(row.startdate).getFullYear() + "-" + (new Date(row.startdate).getMonth() + 1) + "-" + new Date(row.startdate).getDate()}
                       </TableCell>
                       <TableCell
                         align="center"
@@ -231,7 +231,7 @@ export default function PastOrders() {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.enddate).getFullYear() + "-" + new Date(row.enddate).getMonth() + "-" + new Date(row.enddate).getDate()}
+                        {new Date(row.enddate).getFullYear() + "-" + (new Date(row.enddate).getMonth() + 1) + "-" + new Date(row.enddate).getDate()}
                       </TableCell>
 
                       <TableCell

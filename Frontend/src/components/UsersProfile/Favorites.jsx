@@ -167,7 +167,7 @@ export default function Favorites(props) {
                       >
                         {new Date(row.createdat).getFullYear() +
                           "-" +
-                          new Date(row.createdat).getMonth() +
+                          (new Date(row.createdat).getMonth() + 1) +
                           "-" +
                           new Date(row.createdat).getDate()}
                       </TableCell>

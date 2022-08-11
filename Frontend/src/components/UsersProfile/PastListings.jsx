@@ -98,7 +98,7 @@ export default function PastListings() {
                       {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
                       <TableCell align="center">{row.location}</TableCell>
-                      <TableCell align="center">{new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}</TableCell>
+                      <TableCell align="center">{new Date(row.createdat).getFullYear() + "-" + (new Date(row.createdat).getMonth() + 1)+ "-" + new Date(row.createdat).getDate()}</TableCell>
 
                       <TableCell align="center">
                         {" "}
