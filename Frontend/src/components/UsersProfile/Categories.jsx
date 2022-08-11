@@ -101,7 +101,7 @@ export default function Categories(props) {
             display: { xs: 'none', md: 'block' },
           }}
           variant="permanent">
-          <Box sx={{ height: 370 }} />
+          <Box sx={{ height: 300 }} />
 
           <List sx={{ width: drawerWidth }}>
             <ListItem>
