@@ -20,23 +20,22 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { useEffect } from "react";
 
 export default function EditOrder(props) {
-    const { id } = useParams();
+  const { id } = useParams();
   const [success, setSuccess] = React.useState(false);
   const [orderDetails, setOrderDetails] = React.useState(null);
 
   const [errors, setErrors] = React.useState({});
   const [form, setForm] = React.useState({
-    fees: "",
-    taxes: "",
-    total: "",
     guests: "",
     endDate: new Date(),
     startDate: new Date(),
-    
   });
 
+  function isValidDate(d) {
+    return d instanceof Date && !isNaN(d);
+  }
+
   const navigate = useNavigate();
- 
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -58,18 +57,25 @@ export default function EditOrder(props) {
   };
 
   const handleOnSubmit = async () => {
-    // setErrors((e) => ({ ...e, form: null }));
-    // const { data, error } = await apiClient.updateListing(form, id);
-    // if (error) {
-    //   setErrors((e) => ({ ...e, form: error }));
-    // }
-    // if (data?.listing) {
-    //   setSuccess(true);
-    //   setTimeout(function () {
-    //     setSuccess(false);
-    //     navigate("/user/" + props.user.id);
-    //   }, 2000);
-    // }
+    setErrors((e) => ({ ...e, form: null }));
+    const { data, error } = await apiClient.updateOrder(form, id);
+    if (error) {
+      setErrors((e) => ({ ...e, form: error }));
+    }
+
+    console.log(data.order[0]);
+    if (data?.order) {
+      setSuccess(true);
+      setTimeout(function () {
+        setSuccess(false);
+        navigate(
+          "/orderconfirmation/" +
+            data.order[0].listing_id +
+            "/" +
+            data.order[0].id
+        );
+      }, 2000);
+    }
   };
 
   const handleOnInputChange = (event) => {
@@ -77,8 +83,9 @@ export default function EditOrder(props) {
   };
 
   console.log("Form is", form);
+  console.log("end date", form.endDate);
+  console.log(isValidDate(form.endDate));
 
-  
   return (
     <Grid
       container
@@ -86,22 +93,13 @@ export default function EditOrder(props) {
       direction="column"
       alignItems="center"
       justifyContent="center"
-
-      // style={{ backgroundColor : "black" }}
-      //   sx={{
-      //     display: "flex",
-      //     flexDirection: "row",
-      //     justifyContent : "flex-end"
-
-      //   }}
     >
-      {errors.form && <span className="editUserError">{errors.form}</span>}
       <SnackbarContent
         message="Edited successfully!"
         sx={{
-          //      ml: "50px",
-
-          mb: "50px",
+          ml: "50px",
+          mt: "10px",
+          mb: "20px",
           display: success ? "null" : "none",
           width: "60px",
           fontSize: 20,
@@ -111,13 +109,15 @@ export default function EditOrder(props) {
       <Box
         sx={{
           mt: 2,
-          mb: 5,
+          mb: 3,
           fontSize: 30,
           fontWeight: 400,
         }}
       >
         Edit Order{" "}
       </Box>
+      {errors.form && <span className="editOrderError">{errors.form}</span>}
+      {errors.date && <span className="editOrderError">{errors.date}</span>}
       <Box sx={{ display: "flex", flexDirection: "row", mb: 3 }}>
         <Box sx={{ mt: 1 }}>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -126,6 +126,15 @@ export default function EditOrder(props) {
               name="startDate"
               value={form.startDate}
               onChange={(value, keyboardInputValue) => {
+                if (!isValidDate(value)) {
+                  if (value) {
+                    setErrors((e) => ({ ...e, date: "Invalid date" }));
+                  } else {
+                    setErrors((e) => ({ ...e, date: null }));
+                  }
+                } else {
+                  setErrors((e) => ({ ...e, date: null }));
+                }
                 setForm((f) => ({ ...f, startDate: value }));
               }}
               renderInput={(params) => <TextField {...params} />}
@@ -139,6 +148,15 @@ export default function EditOrder(props) {
               name="endDate"
               value={form.endDate}
               onChange={(value, keyboardInputValue) => {
+                if (!isValidDate(value)) {
+                  if (value) {
+                    setErrors((e) => ({ ...e, date: "Invalid date" }));
+                  } else {
+                    setErrors((e) => ({ ...e, date: null }));
+                  }
+                } else {
+                  setErrors((e) => ({ ...e, date: null }));
+                }
                 setForm((f) => ({ ...f, endDate: value }));
               }}
               renderInput={(params) => <TextField {...params} />}
@@ -146,7 +164,6 @@ export default function EditOrder(props) {
           </LocalizationProvider>
         </Box>
       </Box>
-     
       <TextField
         id="filled-multiline-flexible"
         label="Guests"
@@ -164,7 +181,8 @@ export default function EditOrder(props) {
           disabled={
             form.startDate === "" ||
             (!form.startDate && form.endDate === "") ||
-            (!form.endDate && form.guests === "") 
+            (!form.endDate && form.guests === "") ||
+            errors.date
           }
           sx={{ mr: 2 }}
         >

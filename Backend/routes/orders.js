@@ -93,6 +93,13 @@ router.put(
   security.requireAuthenticatedUser,
   async (req, res, next) => {
     try {
+      const {orderId} = req.params
+      const orderUpdate = req.body
+      const order = await Order.editOrder(orderUpdate, orderId)
+
+      return res.status(200).json({order : order})
+
+
 
     } catch (error) {
       next(error);

@@ -192,6 +192,16 @@ class ApiClient {
     });
   }
 
+  //PUT requests
+
+  async updateOrder(orderUpdate, orderId){
+    return await this.request({
+      endpoint : `order/` + orderId,
+      method : `PUT`, 
+      data : orderUpdate
+    })
+  }
+
   //RATINGS requests
 
   // GET requests

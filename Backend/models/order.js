@@ -44,12 +44,12 @@ class Order {
       }
     });
 
-    const curr = new Date()
+    const curr = new Date();
     const start = new Date(orders.startDate);
     const end = new Date(orders.endDate);
 
-    if(start < curr){
-      throw new BadRequestError("Start date cannot be before today")
+    if (start < curr) {
+      throw new BadRequestError("Start date cannot be before today");
     }
 
     if (start >= end) {
@@ -136,7 +136,7 @@ class Order {
     return res;
   }
 
-  static async editOrder( orderUpdate, orderId ) {
+  static async editOrder(orderUpdate, orderId) {
     var listing = await db.query(
       `
       SELECT o.startDate, o.endDate, l.price, l.fees, l.max_accomodation, o.id
@@ -144,61 +144,161 @@ class Order {
       JOIN listings AS l ON o.listing_id = l.id
       WHERE o.id = $1
       
-      `,[orderId]
+      `,
+      [orderId]
+    );
 
-    )
+    listing = listing.rows[0];
 
-    listing = listing.rows[0]
+    let queryString = "";
 
+    let orderUpdateEntries = Object.entries(orderUpdate);
 
-    // let queryString = "";
+    var params = 1;
 
-    // let listingUpdateEntries = Object.entries(listingUpdate);
-    // var params = 1;
-    // for (let i = 0; i < listingUpdateEntries.length; i++) {
-    //   if (listingUpdateEntries[i][1] === "") {
-    //     continue;
-    //   }
+    var curr = new Date();
+    for (let i = 0; i < orderUpdateEntries.length; i++) {
+      if (orderUpdateEntries[i][1] === "" || !orderUpdateEntries[i][1]) {
+        continue;
+      }
 
-    //   if (
-    //     listingUpdateEntries[i][1] < 1 &&
-    //     listingUpdateEntries[i][0] === "max_accomodation"
-    //   ) {
-    //     throw new BadRequestError(
-    //       "Vehicle should be able to accomodate at least one person"
-    //     );
-    //   }
+      if (orderUpdateEntries[i][0] === "endDate") {
+        var end = new Date(orderUpdate.endDate);
+        if (end <= curr) {
+          throw new BadRequestError("Invalid checkout date");
+        }
 
-    //   if (
-    //     listingUpdateEntries[i][1] <= 0 &&
-    //     listingUpdateEntries[i][0] === "price"
-    //   ) {
-    //     throw new BadRequestError("Invalid price");
-    //   }
+        var start = orderUpdate.startDate
+          ? new Date(orderUpdate.startDate)
+          : new Date(listing.startdate);
 
-    //   queryString += `${listingUpdateEntries[i][0]} = $${params}, `;
-    //   params++;
-    // }
+        if (end <= start) {
+          throw new BadRequestError(
+            "Checkout date cannot be before or on the same day as check in date"
+          );
+        }
+      }
 
-    // const query = `UPDATE listings
-    //     SET ${queryString}
-    //     updatedAt = NOW()
-    //     WHERE id = ${listingId}
-    //     RETURNING id,user_id,price, location, max_accomodation, model, description,image_url, image_url2, image_url3, image_url4, image_url5, fees, createdAt, updatedAt;`;
+      if (orderUpdateEntries[i][0] === "startDate") {
+        var start = new Date(orderUpdate.startDate);
+        if (start <= curr) {
+          throw new BadRequestError("Invalid check in date");
+        }
 
-    // var entry = [];
-    // listingUpdateEntries.map((item) => {
-    //   //   console.log(entry[1])
-    //   if (item[1] !== "") {
-    //     entry.push(item[1]);
-    //   }
-    // });
+        var end = orderUpdate.endDate
+          ? new Date(orderUpdate.endDate)
+          : new Date(listing.enddate);
 
-    // const result = await db.query(query, entry);
+        if (end <= start) {
+          throw new BadRequestError(
+            "Check in date cannot be after or on the same day as checkout date"
+          );
+        }
+      }
 
-    // const results = result.rows[0];
+      if (orderUpdateEntries[i][0] === "taxes") {
+        var taxes = orderUpdate.taxes;
 
-    return listing;
+        if (taxes <= 0) {
+          throw new BadRequestError("Invalid tax amount");
+        }
+      }
+
+      if (orderUpdateEntries[i][0] === "total") {
+        var total = orderUpdate.total;
+
+        if (total <= 0) {
+          throw new BadRequestError("Invalid total amount");
+        }
+      }
+
+      if (orderUpdateEntries[i][0] === "guests") {
+        var guests = orderUpdate.guests;
+
+        if (guests > listing.max_accomodation) {
+          throw new BadRequestError("Number of guests exceeds maximum allowed");
+        }
+
+        if (guests < 1) {
+          throw new BadRequestError("Must have at least one guest");
+        }
+      }
+
+      queryString += `${orderUpdateEntries[i][0]} = $${params}, `;
+      params++;
+    }
+
+    const taxrate = 0.15;
+
+    var starter = orderUpdate.startDate
+      ? orderUpdate.startDate
+      : listing.startdate;
+
+    var ender = orderUpdate.endDate ? orderUpdate.endDate : listing.enddate;
+
+    const days = this.getNumberOfDays(starter, ender);
+
+    const fees = listing.fees
+    var subtotal = days * listing.price;
+    subtotal = Math.round(subtotal * 100) / 100;
+
+    var tax = subtotal * taxrate;
+    tax = Math.round(tax * 100) / 100;
+
+    var total = subtotal + tax + fees;
+    total = Math.round(total * 100) / 100;
+
+    
+    
+
+    queryString += `taxes = $${params }, fees = $${params + 1}, total = $${params + 2},`;
+
+    
+
+    const query = ` UPDATE orders
+                    SET ${queryString}
+                    updatedAt = NOW()
+                    WHERE id = ${orderId}
+                    RETURNING id, user_id, total, startDate, endDate, fees, taxes, guests, updatedAt, createdAt, listing_id;
+    
+    `;
+
+    console.log(query)
+   
+
+    var entry = [];
+
+    orderUpdateEntries.map((item) => {
+      if (item[1] !== "" && item[1]) {
+        entry.push(item[1]);
+      }
+    });
+
+    entry.push(tax)
+    entry.push(fees)
+    entry.push(total)
+    
+
+    const result = await db.query(query, entry);
+    const res = result.rows;
+
+    return res;
+  }
+
+  static getNumberOfDays(start, end) {
+    const date1 = new Date(start);
+    const date2 = new Date(end);
+
+    // One day in milliseconds
+    const oneDay = 1000 * 60 * 60 * 24;
+
+    // Calculating the time difference between two dates
+    const diffInTime = date2.getTime() - date1.getTime();
+
+    // Calculating the no. of days between two dates
+    const diffInDays = Math.round(diffInTime / oneDay);
+
+    return diffInDays;
   }
 }
 
