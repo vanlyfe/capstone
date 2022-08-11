@@ -59,8 +59,10 @@ export default function User({ user, setUser }) {
               <PastOrders user={user} setUser={setUser} />
             ) : category === 'r' ? (
               <Reviews user={user} setUser={setUser} />
+            ) : category === "fl" ? (
+              <Favorites user={user} setUser={setUser} />
             ) : (
-              <ActiveListings user={user} setUser={setUser} />
+              <ActiveListings user={user} setUser={setUser}  />
             )}
           </Box>
         </Box>

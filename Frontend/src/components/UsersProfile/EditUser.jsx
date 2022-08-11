@@ -125,24 +125,26 @@ export default function EditUser(props) {
 
         <Box>
           <Box sx={{ ml: 2, mb: 7 }}>
-            <TextField
-              id="filled-multiline-flexible"
-              label="First Name"
-              name="firstName"
-              maxRows={4}
-              onChange={handleOnInputChange}
-              variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
-            />
-            <TextField
-              id="filled-multiline-flexible"
-              label="Last Name"
-              name="lastName"
-              maxRows={4}
-              onChange={handleOnInputChange}
-              variant="filled"
-              sx={{ width: 240, mr: 3, mb: 5 }}
-            />{" "}
+            <Grid>
+              <TextField
+                id="filled-multiline-flexible"
+                label="First Name"
+                name="firstName"
+                maxRows={4}
+                onChange={handleOnInputChange}
+                variant="filled"
+                sx={{ width: 240, mr: 3, mb: 5 }}
+              />
+              <TextField
+                id="filled-multiline-flexible"
+                label="Last Name"
+                name="lastName"
+                maxRows={4}
+                onChange={handleOnInputChange}
+                variant="filled"
+                sx={{ width: 240, mr: 3, mb: 5 }}
+              />{" "}
+            </Grid>
             <TextField
               id="filled-multiline-flexible"
               label="Email"
@@ -233,16 +235,18 @@ export default function EditUser(props) {
                 sx={{ width: 240, mb: 5 }}
               />{" "}
             </Grid>
-            <TextField
-              id="filled-multiline-flexible"
-              label="City"
-              name="location"
-              onChange={handleOnInputChange}
-              maxRows={4}
-              //     onChange={handleChange}
-              variant="filled"
-              sx={{ width: 500, mr: 3 }}
-            />{" "}
+            <Grid>
+              <TextField
+                id="filled-multiline-flexible"
+                label="City"
+                name="location"
+                onChange={handleOnInputChange}
+                maxRows={4}
+                //     onChange={handleChange}
+                variant="filled"
+                sx={{ width: 500, mr: 3 }}
+              />{" "}
+            </Grid>
             <TextField
               id="filled-multiline-static"
               label="Describe Yourself"

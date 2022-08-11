@@ -161,7 +161,7 @@ export default function OrderConfirmation() {
             successfully!
           </Typography>
         </Box>
-        <Box sx={{ justifyContent: "right" }}>
+        {/* <Box sx={{ justifyContent: "right" }}>
           <Button
             variant="contained"
             size="medium"
@@ -171,7 +171,7 @@ export default function OrderConfirmation() {
           >
             Edit Request
           </Button>
-        </Box>
+        </Box> */}
         <Box>
           <List
             sx={{ width: "100%", bgcolor: "#e1e9f0" }}

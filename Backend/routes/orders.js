@@ -4,8 +4,6 @@ const security = require("../middleware/security");
 const permissions = require("../middleware/permissions");
 const router = express.Router();
 
-
-
 router.get(
   "/user/:userId",
   security.requireAuthenticatedUser,
@@ -26,7 +24,7 @@ router.get(
   "/user/past/:userId",
   security.requireAuthenticatedUser,
   permissions.userOwnsProfile,
-  
+
   async (req, res, next) => {
     try {
       const { userId } = req.params;
@@ -43,7 +41,7 @@ router.get(
   "/user/active/:userId",
   security.requireAuthenticatedUser,
   permissions.userOwnsProfile,
-  
+
   async (req, res, next) => {
     try {
       const { userId } = req.params;
