@@ -33,8 +33,6 @@ const vernonListing = {
 /************************************** POST /listings/ */
 describe("POST listing", () => {
   test("Authed user can create new listing", async () => {
-   
-
     const res = await request(app)
       .post(`/listing`)
       .set("authorization", `Bearer ${testTokens.ammarToken}`)
@@ -44,7 +42,7 @@ describe("POST listing", () => {
         max_accomodation: 3,
         price: 200,
         make: "latest",
-        year : 2020,
+        year: 2020,
         image_url:
           "https://images.unsplash.com/photo-1539437829697-1b4ed5aebd19?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1534&q=80",
       });
@@ -59,10 +57,10 @@ describe("POST listing", () => {
       user_id: expect.any(Number),
       max_accomodation: 3,
       location: "Canada",
-      description :null,
-      make :"latest",
-      year : 2020,
-       price: 200,
+      description: null,
+      make: "latest",
+      year: 2020,
+      price: 200,
     });
   });
 
@@ -121,7 +119,7 @@ describe("GET /listing", () => {
     expect(listings.length).toEqual(13);
 
     const listingVernon = listings.find((l) => l.model === "Savana Cargo Van");
-  
+
     const {
       user_id,
       price,
@@ -194,7 +192,7 @@ describe("GET listing/user/:userId", () => {
       fees,
       description,
       make,
-      year
+      year,
     } = listingVernon;
     expect({
       user_id,
@@ -218,10 +216,8 @@ describe("GET listing/user/:userId", () => {
 
     var { listings } = res.body;
 
-
     const listingVernon = listings.find((l) => l.model === "Savana Cargo Van");
 
-   
     const {
       user_id,
       price,
@@ -232,7 +228,7 @@ describe("GET listing/user/:userId", () => {
       fees,
       description,
       make,
-      year
+      year,
     } = listingVernon;
     expect({
       user_id,
@@ -244,7 +240,7 @@ describe("GET listing/user/:userId", () => {
       fees,
       description,
       make,
-      year
+      year,
     }).toEqual(vernonListing);
   });
 });
@@ -272,7 +268,7 @@ describe("GET /listing/:listingId", () => {
       fees,
       description,
       make,
-      year
+      year,
     } = listing;
     expect({
       user_id,
@@ -307,7 +303,6 @@ describe("GET /listing/:listingId", () => {
       description,
       make,
       year,
-
     } = listing;
     expect({
       user_id,

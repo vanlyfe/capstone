@@ -35,7 +35,7 @@ router.post(
       const { user } = res.locals;
       const { listingId } = req.params;
       const reviews = req.body;
-      
+
       const review = await Review.postReview({ listingId, reviews, user });
       return res.status(200).json({ review: review });
     } catch (error) {
@@ -51,13 +51,12 @@ router.put(
   async (req, res, next) => {
     try {
       const { reviewId } = req.params;
-      console.log("This is body", req.body)
+      console.log("This is body", req.body);
 
       const review = await Review.editReview({
         reviewUpdate: req.body,
         reviewId,
-      }
-      );
+      });
 
       return res.status(200).json({ review: review });
     } catch (error) {

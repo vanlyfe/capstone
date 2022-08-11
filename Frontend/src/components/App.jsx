@@ -11,7 +11,7 @@ import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
 import OrderConfirmation from "./OrderConfirmation";
 import EditListing from "./EditListing";
-import BookListing from "./BookListing";
+
 import NotFound from "./NotFound";
 import { Navbar } from "./Navbar";
 import User from "./User";
@@ -81,7 +81,7 @@ export default function App() {
             path="/createlisting"
             element={<CreateListing user={user} isLoading={isLoading} />}
           />
-          <Route path="/listing/:id/book" element={<BookListing />} />
+        
           <Route path="/listing/:id" element={<ListingDetails user={user} />} />
           <Route path="/listing/:id/edit" element={<EditListing user={user} setUser={setUser}/>} />
           <Route path="/passwordemail" element={<ForgotPasswordEmail />} />
