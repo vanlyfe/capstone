@@ -55,6 +55,7 @@ export default function Categories(props) {
   };
   return (
     <>
+      {/* Mobile Menu */}
       <Box
         sx={{
           display: { xs: 'flex', md: 'none' },
@@ -90,6 +91,8 @@ export default function Categories(props) {
           </MenuList>
         </Fade>
       </Box>
+
+      {/* Desktop Menu */}
       <Box sx={{ zIndex: 1 }}>
         <Drawer
           sx={{
@@ -100,52 +103,48 @@ export default function Categories(props) {
           variant="permanent">
           <Box sx={{ height: 370 }} />
 
-          {/* <Box sx={{height: 500}}/> */}
           <List sx={{ width: drawerWidth }}>
-            <ListItem
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                background: '#fafafa',
-              }}>
-              <ListSubheader
-                component="div"
-                id="nested-list-subheader"
-                sx={{ fontSize: 22, background: '#fcfcfc' }}>
+            <ListItem>
+              <ListSubheader component="div" id="nested-list-subheader">
                 Host
               </ListSubheader>
             </ListItem>
 
-            <ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
-              <ListItemButton onClick={handleOnActiveListings}>
-                <ListItemText>Active Listings</ListItemText>
-              </ListItemButton>
+            <ListItem
+              sx={{ background: props.category == 'pl' ? '#f5faff' : '#fff' }}>
               <ListItemButton onClick={handleOnPastListings}>
                 <ListItemText>Past Listings</ListItemText>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem
+              sx={{ background: props.category == 'al' ? '#f5faff' : '#fff' }}>
+              <ListItemButton onClick={handleOnActiveListings}>
+                <ListItemText>Active Listings</ListItemText>
               </ListItemButton>
             </ListItem>
           </List>
           <Divider />
           {props.user?.id && Number(props.user.id) === Number(id) && (
-            <List>
-              <ListItem
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  background: '#fafafa',
-                }}>
-                <ListSubheader
-                  component="div"
-                  id="nested-list-subheader"
-                  sx={{ fontSize: 22, background: '#fcfcfc' }}>
+            <List sx={{ pt: 0 }}>
+              <ListItem>
+                <ListSubheader component="div" id="nested-list-subheader">
                   Renter
                 </ListSubheader>
               </ListItem>
 
-              <ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
+              <ListItem
+                sx={{
+                  background: props.category == 'ao' ? '#f5faff' : '#fff',
+                }}>
                 <ListItemButton onClick={handleOnActiveOrders}>
                   <ListItemText>Active Orders</ListItemText>
                 </ListItemButton>
+              </ListItem>
+              <ListItem
+                sx={{
+                  background: props.category == 'po' ? '#f5faff' : '#fff',
+                }}>
                 <ListItemButton onClick={handleOnPastOrders}>
                   <ListItemText>Past Orders</ListItemText>
                 </ListItemButton>
@@ -155,7 +154,8 @@ export default function Categories(props) {
           <Divider />
 
           <List>
-            <ListItem sx={{ display: 'flex', flexDirection: 'column' }}>
+            <ListItem
+              sx={{ background: props.category == 'r' ? '#f5faff' : '#fff' }}>
               <ListItemButton onClick={handleOnReviews}>
                 <ListItemText>Reviews</ListItemText>
               </ListItemButton>
@@ -164,7 +164,5 @@ export default function Categories(props) {
         </Drawer>
       </Box>
     </>
-
-    // </Box>
   );
 }

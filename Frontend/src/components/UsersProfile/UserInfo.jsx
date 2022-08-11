@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
+import React, { useState, useEffect } from 'react';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
 import {
   Box,
   Grid,
@@ -11,9 +11,9 @@ import {
   Avatar,
   Rating,
   Button,
-} from "@mui/material";
-import apiClient from "../../services/apiClient";
-import { useNavigate, useParams } from "react-router-dom";
+} from '@mui/material';
+import apiClient from '../../services/apiClient';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function UserInfo(props) {
   const [firstName, setFirstName] = React.useState();
@@ -29,7 +29,7 @@ export default function UserInfo(props) {
   const navigate = useNavigate();
 
   const handleOnEditProfile = () => {
-    props.setEditProfile("profile");
+    props.setEditProfile('profile');
   };
 
   const handleOnClickDelete = () => {
@@ -40,7 +40,7 @@ export default function UserInfo(props) {
     await apiClient.deleteUser(props.user.id);
     apiClient.logoutUser();
     props.setUser(null);
-    navigate("/");
+    navigate('/');
   };
 
   const handleOnCancel = () => {
@@ -61,7 +61,7 @@ export default function UserInfo(props) {
         setEmail(response.data.user.email);
         setProfileImage(response.data.user.image_url);
       } else {
-        setError("No account found");
+        setError('No account found');
       }
     };
 
@@ -72,19 +72,17 @@ export default function UserInfo(props) {
     <AppBar
       position="relative"
       sx={{
-        zIndex: (theme) => theme.zIndex.drawer -1,
-        bgcolor: "#e1e9f0",
-        color: "black",
+        zIndex: (theme) => theme.zIndex.drawer - 1,
+        bgcolor: '#e1e9f0',
+        color: 'black',
         p: 3,
-      }}
-    >
+      }}>
       <Dialog
         open={isDelete}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
+        aria-describedby="alert-dialog-description">
         <DialogTitle id="alert-dialog-title">
-          {"Do you want to continue?"}
+          {'Do you want to continue?'}
         </DialogTitle>
 
         <DialogActions>
@@ -94,83 +92,96 @@ export default function UserInfo(props) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Box
-          noWrap
-          component="div"
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Grid
           sx={{
-            flexWrap: "wrap",
-            width: "50% ",
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
           }}
-        >
-          <Grid
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "flex-start",
-            }}
-            direction="column"
-            spacing={1}
-          >
-            <Grid>
+          direction="column"
+          spacing={2}
+          container>
+          <Grid container item md={6}>
+            <Grid
+              item
+              md={3}
+              xs={12}
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
               <Avatar
                 src={profileImage}
                 alt="profile picture"
-                sx={{ width: 200, height: 200 }}
+                sx={{ width: 150, height: 150 }}
               />
             </Grid>
-            <Grid>
-              <Box>
-                <Typography sx={{ fontSize: 25, mt: 10, ml: 3 }}>
+            <Grid item md={3} xs={12}>
+              <Box
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Typography sx={{ fontSize: 25 }}>
                   {firstName} {lastName}
                 </Typography>
-                <Typography sx={{ ml: 3 }}>{email}</Typography>
-                <Rating
-                  name="user-rating"
-                  sx={{ mt: 1, ml: 3 }}
-                  value={rating}
-                  readOnly
-                />
+                <Typography>{email}</Typography>
+                <Rating name="user-rating" value={rating} readOnly />
               </Box>
             </Grid>
-          </Grid>
-        </Box>
-        <Box
-          sx={{
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            width: "100%",
-          }}
-        >
-          {props.user?.id && Number(props.user.id) === Number(id) && (
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                width: "100%",
-              }}
-            >
-              <Button
-                variant="contained"
-                onClick={handleOnEditProfile}
-                sx={{ alignContent: "baseline", mb: 4 }}
-              >
-                EDIT PROFILE
-              </Button>
 
-              <Button
-                variant="contained"
-                onClick={handleOnClickDelete}
-                sx={{ alignContent: "baseline", mb: 4, ml: 5 }}
-              >
-                DELETE PROFILE
-              </Button>
-            </Box>
+            {bio && (
+              <Grid item md={8} xs={12} textAlign="center" >
+                <Box
+                  backgroundColor={{xs: `secondary.light`, md: `secondary.main`}}
+                  sx={{
+                    height: '100%',
+                    width: '100%',
+                    borderRadius: '5px',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    alignItems: 'center',
+                    mt: 1,
+                  }}>
+                  <Typography
+                    sx={{ fontSize: '20px', fontStyle: 'italic', my: 2 }}>
+                    "{bio}"
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
+          </Grid>
+
+          {props.user?.id && Number(props.user.id) === Number(id) && (
+            <Grid item md={6}>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  // alignItems: 'flex-start',
+                }}>
+                <Button
+                  variant="contained"
+                  onClick={handleOnEditProfile}
+                  sx={{ alignContent: 'baseline', m: 1 }}>
+                  EDIT PROFILE
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleOnClickDelete}
+                  sx={{ alignContent: 'baseline', m: 1 }}>
+                  DELETE PROFILE
+                </Button>
+              </Box>
+            </Grid>
           )}
-          <Typography sx={{ fontSize: "20px", fontWeight: "bold" }}>
-            {bio}
-          </Typography>
-        </Box>
+        </Grid>
       </Toolbar>
     </AppBar>
   );

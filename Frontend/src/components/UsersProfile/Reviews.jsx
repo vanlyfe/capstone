@@ -23,9 +23,7 @@ export default function Reviews(props) {
     const getReviews = async () => {
       const response = await apiClient.getReviewsForUser(id);
 
-      console.log("reviews: ", response.data.reviews);
-
-      if (response?.data?.reviews[0].review) {
+      if (response?.data?.reviews[0]?.review) {
         setReviews(response.data.reviews);
       } else {
         setError("No reviews yet");
@@ -35,7 +33,7 @@ export default function Reviews(props) {
     getReviews();
   }, []);
   return (
-    <Grid
+    <Box
       sx={{
         mt: 1,
         height: "70%",
@@ -44,7 +42,7 @@ export default function Reviews(props) {
       }}
     >
       <Box>
-        <Button variant="text" sx={{ mt: 2, mb: 2, ml: 2 }}>
+        <Button variant="text" sx={{ mt: 2, mb: 2, ml: 2 }} >
           Reviews
         </Button>
         <Button
@@ -56,8 +54,9 @@ export default function Reviews(props) {
         </Button>
       </Box>
       {reviews
-        ? reviews.map((rev) => (
+        ? reviews.map((rev, i) => (
             <Paper
+            key={i}
               elevation={3}
               sx={{
                 height: 200,
@@ -97,6 +96,6 @@ export default function Reviews(props) {
             </Paper>
           ))
         : error}
-    </Grid>
+    </Box>
   );
 }

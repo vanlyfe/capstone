@@ -188,8 +188,9 @@ export default function PastOrders() {
               </TableRow>
             </TableHead>
             {orders.length > 0 ? (
-              orders.map((row) => (
+              orders.map((row, i) => (
                 <TableBody
+                  key={i}
                   sx={{
                     borderBottom: 'rgba(224, 224, 224, 1) 1px solid',
                     borderTop: 'none',
@@ -283,20 +284,25 @@ export default function PastOrders() {
                       </Box>
                     </TableCell>
                   </TableRow>
-                  <Link
-                    sx={{
-                      textDecoration: 'none',
-                      cursor: 'pointer',
-                      ml: 2,
+                  <TableRow>
+                    <TableCell align='center'>
+                      <Button>
+                        <Link
+                          sx={{
+                            textDecoration: 'none',
+                            cursor: 'pointer',
 
-                      color: '#6E85B7',
-                    }}
-                    onClick={() => {
-                      setOpen(true);
-                      setListingId(row.listing_id);
-                    }}>
-                    Add Review
-                  </Link>
+                            color: '#6E85B7',
+                          }}
+                          onClick={() => {
+                            setOpen(true);
+                            setListingId(row.listing_id);
+                          }}>
+                          Add Review
+                        </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               ))
             ) : (

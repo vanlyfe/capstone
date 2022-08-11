@@ -131,11 +131,9 @@ export default function ActiveOrders() {
                   </TableRow>
                 ))
               ) : (
-                <TableBody>
-                  <TableRow>
-                    <TableCell colSpan={12}>No Active Orders</TableCell>
-                  </TableRow>
-                </TableBody>
+                <TableRow>
+                  <TableCell colSpan={12}>No Active Orders</TableCell>
+                </TableRow>
               )}
             </TableBody>
           </Table>

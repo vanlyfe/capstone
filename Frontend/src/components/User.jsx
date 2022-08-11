@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 //import { Box, Grid } from "@mui/material";
 import UserInfo from './UsersProfile/UserInfo';
 import Categories from './UsersProfile/Categories';
@@ -8,8 +8,8 @@ import PastListings from './UsersProfile/PastListings';
 import PastOrders from './UsersProfile/PastOrders';
 import Reviews from './UsersProfile/Reviews';
 import EditUser from './UsersProfile/EditUser';
-import { Box, Grid } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { Box } from '@mui/material';
+
 export default function User({ user, setUser }) {
   const [category, setCategory] = useState('al');
   const [editProfile, setEditProfile] = useState(null);
