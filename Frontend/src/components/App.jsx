@@ -70,7 +70,7 @@ export default function App() {
             path="/register"
             element={<Register user={user} setUser={setUser} />}
           />
-          <Route path="/listings" element={<Listings />} />
+          <Route path="/listings" element={<Listings user={user} setUser={setUser}/>} />
           <Route
             path="/orderconfirmation/:id/:order_id"
             element={<OrderConfirmation />}
