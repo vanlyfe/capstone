@@ -48,7 +48,6 @@ function ProductHowItWorks() {
     getListings();
   }, []);
 
-
   return (
     <Box
       component="section"
@@ -75,42 +74,135 @@ function ProductHowItWorks() {
             opacity: 0.7,
           }}
         />
-        <Typography variant="h4" marked="center" component="h2" sx={{ mb: 14 }}>
+        <Typography variant="h4" marked="center" component="h2" sx={{ mb: 5 }}>
           Popular Listings
         </Typography>
-        <Grid justifyContent="center" className="bestListings" container spacing={10} mb={10}>
-          {listings[0]
-            ? listings.map((listing, i) => (
-                <Grid item xs={12} md={3}>
-                  <Box sx={item}>
-                    <Box
-                      className="bestImage"
-                      component="img"
-                      src={listing.image_url}
-                      alt="vehicle listing"
-                      sx={image}
-                    />
-                    <Typography
-                      variant="h6"
-                      align="center"
-                      className="modelLimit"
-                    >
-                      {listing.make + " " + listing.model + " " + listing.year}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      align="center"
-                      className="lineLimit"
-                    >
-                      {listing.description}
-                    </Typography>
-                    <Rating readOnly={true} value={listing.rating} />
-                  </Box>
-                </Grid>
-              ))
-            : null}
-        </Grid>
-
+        {listings[0] ? (
+          <div className="bestListings">
+            <Grid container spacing={5} mb={10}>
+              <Grid item xs={12} md={3}>
+                <Box sx={item}>
+                  <Box
+                    className="bestImage"
+                    component="img"
+                    src={listings[0].image_url}
+                    alt="vehicle listing"
+                    sx={image}
+                  />
+                  <Typography
+                    variant="h6"
+                    align="center"
+                    className="modelLimit"
+                  >
+                    {listings[0].make +
+                      " " +
+                      listings[0].model +
+                      " " +
+                      listings[0].year}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    align="center"
+                    className="lineLimit"
+                  >
+                    {listings[0].description}
+                  </Typography>
+                  <Rating readOnly={true} value={listings[0].rating} />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Box sx={item}>
+                  <Box
+                    className="bestImage"
+                    component="img"
+                    src={listings[1].image_url}
+                    alt="vehicle listing"
+                    sx={image}
+                  />
+                  <Typography
+                    variant="h6"
+                    align="center"
+                    className="modelLimit"
+                  >
+                    {listings[1].make +
+                      " " +
+                      listings[1].model +
+                      " " +
+                      listings[1].year}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    align="center"
+                    className="lineLimit"
+                  >
+                    {listings[1].description}
+                  </Typography>
+                  <Rating readOnly={true} value={listings[1].rating} />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Box sx={item}>
+                  <Box
+                    className="bestImage"
+                    component="img"
+                    src={listings[2].image_url}
+                    alt="vehicle listing"
+                    sx={image}
+                  />
+                  <Typography
+                    variant="h6"
+                    align="center"
+                    className="modelLimit"
+                  >
+                    {listings[2].make +
+                      " " +
+                      listings[2].model +
+                      " " +
+                      listings[2].year}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    align="center"
+                    className="lineLimit"
+                  >
+                    {listings[2].description}
+                  </Typography>
+                  <Rating readOnly={true} value={listings[2].rating} />
+                </Box>
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <Box sx={item}>
+                  <Box
+                    className="bestImage"
+                    component="img"
+                    src={listings[3].image_url}
+                    alt="vehicle listing"
+                    sx={image}
+                  />
+                  <Typography
+                    variant="h6"
+                    align="center"
+                    className="modelLimit"
+                  >
+                    {listings[3].make +
+                      " " +
+                      listings[3].model +
+                      " " +
+                      listings[3].year}
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    align="center"
+                    className="lineLimit"
+                  >
+                    {listings[3].description}
+                  </Typography>
+                  <Rating readOnly={true} value={listings[3].rating} />
+                </Box>
+              </Grid>
+            </Grid>
+          </div>
+        ) : null}
         {/* <Button
           color="secondary"
           size="large"
