@@ -81,6 +81,7 @@ router.post(
 
       const orders = req.body;
       const order = await Order.postOrder({ listingId, orders, user });
+      Order.sendmail(user.id);
       return res.status(200).json({ order: order });
     } catch (err) {
       next(err);
@@ -93,20 +94,15 @@ router.put(
   security.requireAuthenticatedUser,
   async (req, res, next) => {
     try {
-      const {orderId} = req.params
-      const orderUpdate = req.body
-      const order = await Order.editOrder(orderUpdate, orderId)
+      const { orderId } = req.params;
+      const orderUpdate = req.body;
+      const order = await Order.editOrder(orderUpdate, orderId);
 
-      return res.status(200).json({order : order})
-
-
-
+      return res.status(200).json({ order: order });
     } catch (error) {
       next(error);
     }
   }
 );
-
-
 
 module.exports = router;
