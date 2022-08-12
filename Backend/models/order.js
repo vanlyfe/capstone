@@ -262,8 +262,6 @@ class Order {
     
     `;
 
-    console.log(query);
-
     var entry = [];
 
     orderUpdateEntries.map((item) => {
@@ -299,15 +297,17 @@ class Order {
   }
 
   static async sendmail(id) {
-
-    var email = await db.query(`
+    var email = await db.query(
+      `
         SELECT email
         FROM users
         WHERE id = $1
     
-    `, [id])
+    `,
+      [id]
+    );
 
-    email = email.rows[0].email
+    email = email.rows[0].email;
 
     var link = `${process.env.CLIENT_URL}login`;
 
@@ -322,8 +322,6 @@ class Order {
       Thank you for choosing vanlyfe!`,
     };
     sgMail.send(msg);
-
-    
   }
 }
 
