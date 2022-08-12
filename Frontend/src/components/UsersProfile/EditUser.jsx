@@ -57,7 +57,6 @@ export default function EditUser(props) {
   };
 
   const handleOnInputChange = (event) => {
-    //   setValue(event.target.value);
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
@@ -70,12 +69,9 @@ export default function EditUser(props) {
         justifyContent: "space-evenly",
       }}
     >
-      {/* <Grid> */}
       <Link href={props.user ? "/user/" + props.user.id : "/login"}>
         <ArrowBackIcon className="arrowBack" sx={{ fontSize: 60 }} />
       </Link>
-
-      {/* </Grid> */}
 
       <Grid
         sx={{
@@ -102,7 +98,7 @@ export default function EditUser(props) {
             sx={{ width: 200, height: 200, mt: 3, mb: 1 }}
           />{" "}
         </Box>
-        {/* <Typography sx={{ ml: 3 }}>Upload Photo</Typography> */}
+
         <Button variant="text" href="/user/:id/activeListing" sx={{ ml: 4 }}>
           Upload Photo
         </Button>
@@ -151,7 +147,6 @@ export default function EditUser(props) {
               name="email"
               onChange={handleOnInputChange}
               maxRows={4}
-              //     onChange={handleChange}
               variant="filled"
               sx={{ width: 500, mr: 3, mb: 5 }}
             />{" "}
@@ -167,7 +162,6 @@ export default function EditUser(props) {
                 name="username"
                 onChange={handleOnInputChange}
                 maxRows={4}
-                //     onChange={handleChange}
                 variant="filled"
                 sx={{ width: 240, mr: 2.5, ml: 4 }}
               />{" "}
@@ -202,35 +196,13 @@ export default function EditUser(props) {
                 variant="filled"
                 sx={{ width: 240, mr: 2.5, ml: 4 }}
               />
-              {/* <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                 disableFuture
-                label="Date of Birth"
-                openTo="year"
-                views={["year", "month", "day"]}
-                 value={value}
-                sx={{ width: 240, mr: 3, mb: 5 }}
-              />
-            </LocalizationProvider> */}
-              {/* onChange={(newValue) => {
-                setValue(newValue);
-              }}
-               renderInput={(params) => <TextField {...params} />}
-            /> */}
-              {/* <MuiPhoneNumber
-              variant="filled"
-              defaultCountry={"us"}
-               onChange={handleOnChange}  
-              sx={{ width: 500, mr: 3, mb: 5 }}
-            /> */}
               <TextField
                 id="filled-multiline-flexible"
                 label="Phone Number"
                 name="phone"
                 maxRows={4}
-                onChange={handleOnInputChange}
                 type="number"
-                //     onChange={handleChange}
+                onChange={handleOnInputChange}
                 variant="filled"
                 sx={{ width: 240, mb: 5 }}
               />{" "}
@@ -242,7 +214,6 @@ export default function EditUser(props) {
                 name="location"
                 onChange={handleOnInputChange}
                 maxRows={4}
-                //     onChange={handleChange}
                 variant="filled"
                 sx={{ width: 500, mr: 3 }}
               />{" "}
@@ -289,7 +260,6 @@ export default function EditUser(props) {
           </Box>
         </Box>
       </Grid>
-      {/* <Grid sx={{ width: "50%", ml: 60, mt: 8 }}></Grid> */}
     </Grid>
   );
 }

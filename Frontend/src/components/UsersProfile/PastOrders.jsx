@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Box,
   Grid,
@@ -16,9 +16,9 @@ import {
   TextareaAutosize,
   Rating,
   Button,
-} from '@mui/material';
-import { Person, Group } from '@mui/icons-material';
-import apiClient from '../../services/apiClient';
+} from "@mui/material";
+import { Person, Group } from "@mui/icons-material";
+import apiClient from "../../services/apiClient";
 
 export default function PastOrders() {
   const [error, setError] = useState();
@@ -52,7 +52,7 @@ export default function PastOrders() {
     lastname: null,
     listing_id: null,
     rating: 0,
-    review: '',
+    review: "",
   });
 
   useEffect(() => {
@@ -64,12 +64,12 @@ export default function PastOrders() {
         setOrders(resData.data.orders);
         setReview(resData.data.orders);
       } else {
-        setError('No orders yet');
+        setError("No orders yet");
       }
       if (res?.data?.listings) {
         setListings(res.data.listings);
       } else {
-        setError('No Listings yet');
+        setError("No Listings yet");
       }
     };
 
@@ -81,24 +81,24 @@ export default function PastOrders() {
   // };
 
   const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     width: 600,
     height: 300,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
+    bgcolor: "background.paper",
+    border: "2px solid #000",
     boxShadow: 24,
     p: 4,
   };
 
   function handleOnInputChange(event) {
-    if (event.target.name === 'ratingInput') {
+    if (event.target.name === "ratingInput") {
       setRatingInput(event.target.value);
     }
 
-    if (event.target.name === 'reviewText') {
+    if (event.target.name === "reviewText") {
       setReviewText(event.target.value);
     }
 
@@ -109,7 +109,7 @@ export default function PastOrders() {
     setPopupError(null);
     console.log(ratingInput);
     if (!ratingInput) {
-      setPopupError('Must provide rating');
+      setPopupError("Must provide rating");
     } else {
       if (reviewText && reviewText.length > 0) {
         const reviewData = await apiClient.postReview(listingId, {
@@ -149,10 +149,11 @@ export default function PastOrders() {
     <Grid
       sx={{
         mt: 1,
-        bgcolor: '##8cbfed',
-        height: '70%',
-        width: { xs: '100%', md: '70%' },
-      }}>
+        bgcolor: "##8cbfed",
+        height: "70%",
+        width: { xs: "100%", md: "70%" },
+      }}
+    >
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2 }}>
           Past Orders
@@ -160,7 +161,8 @@ export default function PastOrders() {
         <Button
           variant="contained"
           href="/listings"
-          sx={{ mt: 2, mb: 2, ml: 2 }}>
+          sx={{ mt: 2, mb: 2, ml: 2 }}
+        >
           Browse Listing
         </Button>
       </Box>
@@ -168,10 +170,11 @@ export default function PastOrders() {
       <Box
         sx={{
           height: 400,
-          width: '100%',
+          width: "100%",
           mt: 1,
           ml: 1,
-        }}>
+        }}
+      >
         <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
@@ -192,68 +195,75 @@ export default function PastOrders() {
                 <TableBody
                   key={i}
                   sx={{
-                    borderBottom: 'rgba(224, 224, 224, 1) 1px solid',
-                    borderTop: 'none',
-                  }}>
+                    borderBottom: "rgba(224, 224, 224, 1) 1px solid",
+                    borderTop: "none",
+                  }}
+                >
                   <TableRow
                     key={row.id}
                     hover={true}
                     onClick={() => {
                       navigate(
-                        '/orderconfirmation/' + row.listing_id + '/' + row.id
+                        "/orderconfirmation/" + row.listing_id + "/" + row.id
                       );
-                    }}>
+                    }}
+                  >
                     <TableCell
                       align="center"
                       component="th"
                       scope="row"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       {new Date(row.createdat).getFullYear() +
-                        '-' +
-                        new Date(row.createdat).getMonth() +
-                        '-' +
+                        "-" +
+                        (new Date(row.createdat).getMonth() + 1) +
+                        "-" +
                         new Date(row.createdat).getDate()}
                     </TableCell>
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       {new Date(row.startdate).getFullYear() +
-                        '-' +
-                        new Date(row.startdate).getMonth() +
-                        '-' +
+                        "-" +
+                        (new Date(row.startdate).getMonth() + 1) +
+                        "-" +
                         new Date(row.startdate).getDate()}
                     </TableCell>
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       {new Date(row.enddate).getFullYear() +
-                        '-' +
-                        new Date(row.enddate).getMonth() +
-                        '-' +
+                        "-" +
+                        (new Date(row.enddate).getMonth() + 1) +
+                        "-" +
                         new Date(row.enddate).getDate()}
                     </TableCell>
 
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       <Box
                         sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
                         <Group />
                         &nbsp;{row.guests}
                       </Box>
@@ -261,43 +271,47 @@ export default function PastOrders() {
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       ${row.total}
                     </TableCell>
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       <Box
                         align="right"
                         sx={{
-                          textDecoration: 'none',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                        }}>
-                        <Rating value={row.rating} />
+                          textDecoration: "none",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Rating value={row.rating} readOnly={true}/>
                       </Box>
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell align='center'>
+                    <TableCell align="center">
                       <Button>
                         <Link
                           sx={{
-                            textDecoration: 'none',
-                            cursor: 'pointer',
+                            textDecoration: "none",
+                            cursor: "pointer",
 
-                            color: '#6E85B7',
+                            color: "#6E85B7",
                           }}
                           onClick={() => {
                             setOpen(true);
                             setListingId(row.listing_id);
-                          }}>
+                          }}
+                        >
                           Add Review
                         </Link>
                       </Button>
@@ -316,13 +330,15 @@ export default function PastOrders() {
               open={open}
               onClose={handleClose}
               aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description">
+              aria-describedby="modal-modal-description"
+            >
               <Box sx={style}>
                 <Typography
                   id="modal-modal-title"
                   variant="h6"
                   component="h2"
-                  sx={{ textalign: 'center' }}>
+                  sx={{ textalign: "center" }}
+                >
                   Rate and review
                 </Typography>
                 {popupError && <span className="popupError">{popupError}</span>}

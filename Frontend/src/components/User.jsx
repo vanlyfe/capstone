@@ -8,6 +8,7 @@ import PastListings from './UsersProfile/PastListings';
 import PastOrders from './UsersProfile/PastOrders';
 import Reviews from './UsersProfile/Reviews';
 import EditUser from './UsersProfile/EditUser';
+import Favorites from "./UsersProfile/Favorites"
 import { Box } from '@mui/material';
 
 export default function User({ user, setUser }) {

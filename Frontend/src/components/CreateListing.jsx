@@ -29,12 +29,12 @@ export default function CreateListing({ user, isLoading }) {
 
   const [page, setPage] = useState(0);
   const [form, setForm] = useState({
-    price: '20',
-    location: 'Boston',
-    maxAccomodation: '2',
-    make: 'Toyota',
-    model: 'Camry',
-    year: '2022',
+    price: '',
+    location: '',
+    maxAccomodation: '',
+    make: '',
+    model: '',
+    year: '',
     description: '',
     images: [], //element: { url: '', file: null }
   });
