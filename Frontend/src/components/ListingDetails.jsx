@@ -224,8 +224,8 @@ export default function ListingDetails({ user }) {
 
         <Grid container>
           {/* left info section / image gallery */}
-          <Grid container item xs={6} mt={5} spacing={2}>
-            <Grid item md={6}>
+          <Grid container item md={6} xs={12} mt={5} spacing={2}>
+            <Grid item xs={12} md={6}>
               <Typography
                 align="center"
                 sx={{
@@ -238,7 +238,7 @@ export default function ListingDetails({ user }) {
               </Typography>
             </Grid>
 
-            <Grid item md={6}>
+            <Grid item xs={12} md={6}>
               <Box
                 sx={{
                   display: 'flex',
@@ -272,44 +272,43 @@ export default function ListingDetails({ user }) {
                   alt="car image"
                   sx={{
                     width: '100%',
-                    mt: 5,
+                    mt: 2,
                   }}
                   src={carDetails.image_url}
                 />
               </Box>
             </Grid>
             <Grid item container md={12}>
-              <Grid item md={4}>
+              <Grid item md={4} xs={4}>
                 <Typography
                   sx={{
                     fontWeight: 600,
-                    fontSize: 20,
-                    ml: 5,
+                    fontSize: 15,
+                    textAlign: 'center',
                   }}>
                   ${carDetails.price}/Night
                 </Typography>
               </Grid>
-              <Grid item md={4}>
+              <Grid item md={4} xs={4}>
                 <Typography
                   sx={{
                     fontFamily: 'Arial',
                     color: '#343a40',
                     fontWeight: 600,
                     fontSize: 15,
-                    ml: 10,
+                    textAlign: 'center',
                   }}>
                   {carDetails.make} {carDetails.model}
                 </Typography>
               </Grid>
-              <Grid item md={4}>
+              <Grid item md={4} xs={4}>
                 <Typography
                   sx={{
                     fontFamily: 'Arial',
                     color: '#bbd0ff',
-
                     fontWeight: 600,
                     fontSize: 15,
-                    ml: 10,
+                    textAlign: 'center',
                   }}>
                   Sleeps {carDetails.max_accomodation}
                 </Typography>
@@ -442,11 +441,8 @@ export default function ListingDetails({ user }) {
                 {errors.form && (
                   <span className="listingError">{errors.form}</span>
                 )}
-                <Tooltip title={
-                      isUser
-                        ? 'You cannot book your own listing'
-                        : ''
-                    }>
+                <Tooltip
+                  title={isUser ? 'You cannot book your own listing' : ''}>
                   <Box width="100%">
                     <Button
                       fullWidth
@@ -473,7 +469,7 @@ export default function ListingDetails({ user }) {
             columnSpacing={10}
             md={6}
             justifyContent="center">
-            <Grid container item xs={6} spacing={1} mt={1}>
+            <Grid container item md={6} xs={12} spacing={1} mt={1}>
               <Grid container item xs={12}>
                 <Grid item xs={6}>
                   <Avatar alt="Host icon" src={hostDetails.image_url} />
@@ -540,7 +536,7 @@ export default function ListingDetails({ user }) {
               </Grid>
             </Grid>
 
-            <Grid item xs={6}>
+            <Grid item  md={6} xs={12}>
               <Box>
                 <Typography sx={{ fontWeight: 600, fontSize: 20, mt: 1 }}>
                   Includes:
@@ -586,6 +582,7 @@ export default function ListingDetails({ user }) {
           <Grid
             item
             md={12}
+            xs={12}
             sx={{
               display: 'flex',
               justifyContent: 'center',
@@ -595,7 +592,7 @@ export default function ListingDetails({ user }) {
                 fontSize: 25,
                 my: 3,
                 ml: 3,
-                //color: "white",
+                textAlign: 'center',
               }}>
               Reviews
             </Typography>
@@ -611,7 +608,7 @@ export default function ListingDetails({ user }) {
             columns={{ xs: 4, sm: 8, md: 12 }}>
             {carReviews?.length > 0 &&
               carReviews.map((review, id) => (
-                <Grid item xs={2} sm={4} md={4} key={id}>
+                <Grid item xs={12} sm={4} md={4} key={id}>
                   <Paper
                     elevation={3}
                     sx={{
@@ -634,8 +631,6 @@ export default function ListingDetails({ user }) {
                       <Avatar
                         alt="Remy Sharp"
                         src={review.image_url}
-                        //src="/static/images/avatar/1.jpg"
-                        // sx={{ width: 200, height: 200 }}
                       />
                       <Typography
                         sx={{ fontWeight: 600, fontSize: 20, mt: 1, mx: 2 }}>
