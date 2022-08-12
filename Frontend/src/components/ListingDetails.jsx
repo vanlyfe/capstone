@@ -55,7 +55,7 @@ import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 import apiClient from "../services/apiClient";
 
@@ -205,60 +205,11 @@ export default function ListingDetails({ user }) {
 
   const handleOnInputChange = (e) => {
     if (e.target.name === "numGuests") {
-      //console.log("text input value", e.target.value);
       setNumGuests(e.target.value);
-      // if (
-      //   (e.target.value != "" && isNaN(e.target.value)) ||
-      //   e.target.value == "e" ||
-      //   e.target.value == "-"
-      // ) {
-      //   console.log("is NAN", isNaN(e.target.value));
-      //   setErrors((e) => ({
-      //     ...e,
-      //     guests: "Please enter a number.",
-      //   }));
-      // }
-      // if ((e.target.value != "" && e.target.value > 5) || e.target.value < 1) {
-      //   setErrors((e) => ({
-      //     ...e,
-      //     guests: "Please enter a value between 1 and 5.",
-      //   }));
-      // } else {
-      //   setErrors((e) => ({ ...e, guests: null }));
-      //   setNumGuests(e.target.value);
-      // }
     }
 
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
-
-  // function validateGuests(value) {
-  //   if (value == "") {
-  //     setErrors((e) => ({
-  //       ...e,
-  //       guests: "*Required",
-  //     }));
-  //   }  else {
-  //     setErrors((e) => ({ ...e, guests: null }));
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   validateGuests(numGuests);
-  // }, [numGuests]);
-
-  // function validateDates(begin, end) {
-  //   if (getNumberOfDays(begin, end) < 0) {
-  //     setErrors((e) => ({
-  //       ...e,
-  //       endDate: "The End Date Must be after the Start Date",
-  //     }));
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   validateDates(dateInValue, dateOutValue);
-  // }, [dateInValue, dateOutValue]);
 
   const handleOnSubmit = async (evt) => {
     console.log(evt);
@@ -295,10 +246,16 @@ export default function ListingDetails({ user }) {
     navigate(`/orderconfirmation/${id}/${order_id}`);
   };
 
+  // implementing the load more reviews
 
+  console.log("this is the review array", carReviews);
 
+  const reviewsPerColumn = 3;
+  const [next, setNext] = useState(reviewsPerColumn);
 
-  
+  const handleMoreReviews = () => {
+    setNext(next + reviewsPerColumn);
+  };
 
   return (
     <Box>
@@ -524,7 +481,7 @@ export default function ListingDetails({ user }) {
                 </Button>
               </Box>
             </Box>
-            <Box  sx={{ mt: 10, }}>
+            <Box sx={{ mt: 10 }}>
               <Box>
                 <Typography
                   sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
@@ -566,7 +523,7 @@ export default function ListingDetails({ user }) {
                 <Box
                   sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
                 >
-                  <CalendarTodayIcon/>
+                  <CalendarTodayIcon />
                   <Typography
                     sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
                   >
@@ -753,52 +710,139 @@ export default function ListingDetails({ user }) {
 
         {/*map all the reviews related to the selected listing*/}
 
-        {carReviews?.length > 0
-          ? carReviews.map((review, idx) => {
-              return (
-                <Paper
-                  elevation={3}
+        {/* <Box>
+          {carReviews?.length > 0
+            ? carReviews.map((review, idx) => {
+                return (
+                  <Paper
+                    elevation={3}
+                    sx={{
+                      height: 200,
+                      width: "80%",
+                      mt: 3,
+                      ml: 3,
+                      bgcolor: "white",
+                    }}
+                  >
+                    <Rating
+                      name="user-rating"
+                      sx={{ mt: 2, ml: 2 }}
+                      value={review.rating}
+                      readOnly
+                    />
+                    <Grid
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        mt: 1,
+                        ml: 2,
+                      }}
+                    >
+                      <Avatar
+                        alt="Remy Sharp"
+                        src={review.image_url}
+                        //src="/static/images/avatar/1.jpg"
+                        // sx={{ width: 200, height: 200 }}
+                      />
+                      <Typography
+                        sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
+                      >
+                        {review.firstname + " " + review.lastname}
+                      </Typography>
+                    </Grid>
+                    <Typography sx={{ mt: 2, ml: 2 }}>
+                      {review.review}
+                    </Typography>
+                    <Divider />
+                    <Grid sx={{ display: "flex", flexDirection: "row" }}>
+                      <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+                      <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+                        Helpful
+                      </Typography>
+                    </Grid>
+                  </Paper>
+                );
+              })
+            : ""}
+        </Box> */}
+
+        <Box>
+          {carReviews?.slice(0, next)?.map((review, idx) => {
+            return (
+              <Paper
+                elevation={3}
+                sx={{
+                  height: 200,
+                  width: "80%",
+                  mt: 3,
+                  ml: 3,
+                  bgcolor: "white",
+                }}
+              >
+                <Rating
+                  name="user-rating"
+                  sx={{ mt: 2, ml: 2 }}
+                  value={review.rating}
+                  readOnly
+                />
+                <Grid
                   sx={{
-                    height: 200,
-                    width: "80%",
-                    mt: 3,
-                    ml: 3,
-                    bgcolor: "white",
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 2,
                   }}
                 >
-                  <Rating
-                    name="user-rating"
-                    sx={{ mt: 2, ml: 2 }}
-                    value={review.rating}
-                    readOnly
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={review.image_url}
+                    //src="/static/images/avatar/1.jpg"
+                    // sx={{ width: 200, height: 200 }}
                   />
-                  <Grid
-                    sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
                   >
-                    <Avatar
-                      alt="Remy Sharp"
-                      src={review.image_url}
-                      //src="/static/images/avatar/1.jpg"
-                      // sx={{ width: 200, height: 200 }}
-                    />
-                    <Typography
-                      sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
-                    >
-                      {review.firstname + " " + review.lastname}
-                    </Typography>
-                  </Grid>
-                  <Typography sx={{ mt: 2, ml: 2 }}>{review.review}</Typography>
-                  <Divider />
-                  <Grid sx={{ display: "flex", flexDirection: "row" }}>
-                    <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-                    <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-                      Helpful
-                    </Typography>
-                  </Grid>
-                </Paper>
-              );
-            })
-          : ""}
+                    {review.firstname + " " + review.lastname}
+                  </Typography>
+                </Grid>
+                <Typography sx={{ mt: 2, ml: 2 }}>{review.review}</Typography>
+                <Divider />
+                <Grid sx={{ display: "flex", flexDirection: "row" }}>
+                  <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+                  <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+                    Helpful
+                  </Typography>
+                </Grid>
+              </Paper>
+            );
+          })}
+
+          {next < carReviews?.length && (
+            <Button className="mt-4" onClick={handleMoreReviews}>
+              Load more
+            </Button>
+          )}
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: " column",
+            alignContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Button
+            sx={{
+              fontSize: 25,
+              mt: 3,
+              ml: 3,
+              //color: "white",
+            }}
+          >
+            Load More
+          </Button>
+        </Box>
       </Grid>
     </Box>
   );
