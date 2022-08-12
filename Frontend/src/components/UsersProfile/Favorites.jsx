@@ -22,28 +22,13 @@ import apiClient from "../../services/apiClient";
 
 export default function Favorites(props) {
   const [error, setError] = useState();
-  const [deleting, setDeleting] = useState(false);
+  
   const [listings, setListings] = useState([]);
-  const [favId, setFavId] = useState(null);
+ 
   let { id } = useParams();
   const navigate = useNavigate();
 
-  const handleOnDelete = async () => {
-    console.log(favId)
-    await apiClient.deleteFavorite(favId);
-    const resData = await apiClient.getFavorites(id);
-    if (resData?.data?.favorites) {
-      setListings(resData.data.favorites);
-    } else {
-      setError("No Listings yet");
-    }
-    setDeleting(false);
-  };
-
-  const handleOnCancel = () => {
-    setDeleting(false);
-    setFavId(null);
-  };
+  
 
   useEffect(() => {
     const getData = async () => {
@@ -68,27 +53,11 @@ export default function Favorites(props) {
         mt: 1,
         bgcolor: "##8cbfed",
         height: "70%",
-        width: "100%",
+        width: { xs: "100%", md: "70%" },
         mt: 1,
       }}
     >
-      <Dialog
-        open={deleting}
-        // onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"Do you want to continue?"}
-        </DialogTitle>
-
-        <DialogActions>
-          <Button onClick={handleOnDelete}>Remove from favorites</Button>
-          <Button onClick={handleOnCancel} autoFocus>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+      
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2 }}>
           Active Listings
@@ -103,7 +72,7 @@ export default function Favorites(props) {
       </Box>
 
       <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -145,7 +114,7 @@ export default function Favorites(props) {
                           borderTop: "none",
                         }}
                       >
-                        {row.model}
+                        {row.make}
                       </TableCell>
                       {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
@@ -201,22 +170,7 @@ export default function Favorites(props) {
                         <Rating value={row.rating} readOnly={true} />
                       </TableCell>
                     </TableRow>
-                    {Number(props.user.id) === Number(id) ? (
-                      <Grid>
-                        
-                        <Button
-                          sx={{ color: "#6E85B7" }}
-                          onClick={() => {
-                            setDeleting(true);
-                            console.log(row)
-                            setFavId(row.id);
-                          }}
-                        >
-                          {" "}
-                          REMOVE
-                        </Button>
-                      </Grid>
-                    ) : null}
+                   
                   </TableBody>
                 ))
               : "No favorites yet"}

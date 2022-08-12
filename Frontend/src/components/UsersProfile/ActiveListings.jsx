@@ -147,7 +147,7 @@ export default function ActiveListings(props) {
                         borderTop: "none",
                       }}
                     >
-                      {row.model}
+                      {row.make}
                     </TableCell>
                     {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}

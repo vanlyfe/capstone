@@ -91,7 +91,7 @@ export default function PastListings() {
                     }}
                   >
                     <TableCell component="th" scope="row" align="center">
-                      {row.model}
+                      {row.make}
                     </TableCell>
                     {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}

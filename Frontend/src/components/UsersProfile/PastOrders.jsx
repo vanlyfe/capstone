@@ -293,7 +293,7 @@ export default function PastOrders() {
                           alignItems: "center",
                         }}
                       >
-                        <Rating value={row.rating} />
+                        <Rating value={row.rating} readOnly={true}/>
                       </Box>
                     </TableCell>
                   </TableRow>
