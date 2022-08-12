@@ -508,12 +508,7 @@ export default function Listings(props) {
                       }}
                     >
                       <Box>
-                        <Link
-                          style={{ textDecoration: "none" }}
-                          to={`/listing/${listing.id}/book`}
-                        >
-                          <Button size="small">Book Now</Button>
-                        </Link>
+                        
                         <Link
                           style={{ textDecoration: "none" }}
                           to={`/listing/${listing.id}`}
