@@ -360,7 +360,12 @@ export default function ListingDetails({ user }) {
                   )}
                 </Typography>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                  <Tooltip title="You cannot book your own listing">
+                  <Tooltip
+                    title={
+                      isUser
+                        ? 'You cannot book your own listing'
+                        : 'Enter the number of guests'
+                    }>
                     <TextField
                       disabled={isUser}
                       sx={{ width: '100%' }}
@@ -392,7 +397,12 @@ export default function ListingDetails({ user }) {
                       <Typography sx={{ mt: 1, ml: 1, mb: 1 }}>
                         Check In:
                       </Typography>
-                      <Tooltip title="You cannot book your own listing">
+                      <Tooltip
+                        title={
+                          isUser
+                            ? 'You cannot book your own listing'
+                            : 'Enter the check in date'
+                        }>
                         <Box>
                           <DateIn
                             disabled={isUser}
@@ -409,7 +419,12 @@ export default function ListingDetails({ user }) {
                       <Typography sx={{ mt: 1, ml: 1, mb: 1 }}>
                         Check Out:
                       </Typography>
-                      <Tooltip title="You cannot book your own listing">
+                      <Tooltip
+                        title={
+                          isUser
+                            ? 'You cannot book your own listing'
+                            : 'Enter the check out date'
+                        }>
                         <Box>
                           <DateOut
                             disabled={isUser}
@@ -427,7 +442,11 @@ export default function ListingDetails({ user }) {
                 {errors.form && (
                   <span className="listingError">{errors.form}</span>
                 )}
-                <Tooltip title="You cannot book your own listing">
+                <Tooltip title={
+                      isUser
+                        ? 'You cannot book your own listing'
+                        : ''
+                    }>
                   <Box width="100%">
                     <Button
                       fullWidth
