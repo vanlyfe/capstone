@@ -10,6 +10,7 @@ import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
 import OrderConfirmation from "./OrderConfirmation";
 import EditListing from "./EditListing";
+import EditOrder from "./EditOrder";
 
 import NotFound from "./NotFound";
 import { Navbar } from "./Navbar";
@@ -69,7 +70,7 @@ export default function App() {
             element={<Register user={user} setUser={setUser} />}
           />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/listings" element={<Listings />} />
+          <Route path="/listings" element={<Listings user={user} setUser={setUser}/>} />
           <Route
             path="/orderconfirmation/:id/:order_id"
             element={<OrderConfirmation />}
@@ -79,6 +80,10 @@ export default function App() {
             element={<CreateListing user={user} isLoading={isLoading} />}
           />
 
+          <Route
+            path="/order/:id/edit"
+            element={<EditOrder user={user} setUser={setUser} />}
+          />
           <Route path="/listing/:id" element={<ListingDetails user={user} />} />
           <Route
             path="/listing/:id/edit"

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Grid,
@@ -17,8 +17,8 @@ import {
   MenuItem,
   MenuList,
   Fade,
-} from '@mui/material';
-import { useParams } from 'react-router-dom';
+} from "@mui/material";
+import { useParams } from "react-router-dom";
 
 const drawerWidth = 250;
 
@@ -35,50 +35,57 @@ export default function Categories(props) {
   let { id } = useParams();
 
   const handleOnPastOrders = () => {
-    props.setCategory('po');
+    props.setCategory("po");
   };
 
   const handleOnPastListings = () => {
-    props.setCategory('pl');
+    props.setCategory("pl");
   };
 
   const handleOnActiveOrders = () => {
-    props.setCategory('ao');
+    props.setCategory("ao");
   };
 
   const handleOnActiveListings = () => {
-    props.setCategory('al');
+    props.setCategory("al");
+  };
+
+  const handleOnFavorites = () => {
+    props.setCategory("fl");
   };
 
   const handleOnReviews = () => {
-    props.setCategory('r');
+    props.setCategory("r");
   };
   return (
     <>
       {/* Mobile Menu */}
       <Box
         sx={{
-          display: { xs: 'flex', md: 'none' },
-          flexDirection: 'column',
-          justifyContent: 'center',
+          display: { xs: "flex", md: "none" },
+          flexDirection: "column",
+          justifyContent: "center",
           py: 3,
           // background: '#fafafa',
-        }}>
+        }}
+      >
         <Button
           id="categories"
           onClick={handleClick}
           variant="contained"
-          color="secondary">
+          color="secondary"
+        >
           Categories
         </Button>
         <Fade in={open} unmountOnExit>
           <MenuList
-            sx={{ width: '90%' }}
+            sx={{ width: "90%" }}
             id="categories-menu"
             open={open}
             MenuListProps={{
-              'aria-labelledby': 'categories',
-            }}>
+              "aria-labelledby": "categories",
+            }}
+          >
             <MenuItem onClick={handleOnActiveListings}>
               Active Listings
             </MenuItem>
@@ -98,9 +105,10 @@ export default function Categories(props) {
           sx={{
             width: drawerWidth,
             zIndex: 1,
-            display: { xs: 'none', md: 'block' },
+            display: { xs: "none", md: "block" },
           }}
-          variant="permanent">
+          variant="permanent"
+        >
           <Box sx={{ height: 300 }} />
 
           <List sx={{ width: drawerWidth }}>
@@ -111,18 +119,30 @@ export default function Categories(props) {
             </ListItem>
 
             <ListItem
-              sx={{ background: props.category == 'pl' ? '#f5faff' : '#fff' }}>
+              sx={{ background: props.category == "pl" ? "#f5faff" : "#fff" }}
+            >
               <ListItemButton onClick={handleOnPastListings}>
                 <ListItemText>Past Listings</ListItemText>
               </ListItemButton>
             </ListItem>
 
             <ListItem
-              sx={{ background: props.category == 'al' ? '#f5faff' : '#fff' }}>
+              sx={{ background: props.category == "al" ? "#f5faff" : "#fff" }}
+            >
               <ListItemButton onClick={handleOnActiveListings}>
                 <ListItemText>Active Listings</ListItemText>
               </ListItemButton>
             </ListItem>
+
+            {props.user?.id && Number(props.user.id) === Number(id) && (
+              <ListItem
+                sx={{ background: props.category == "fl" ? "#f5faff" : "#fff" }}
+              >
+                <ListItemButton onClick={handleOnFavorites}>
+                  <ListItemText>Favorites</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            )}
           </List>
           <Divider />
           {props.user?.id && Number(props.user.id) === Number(id) && (
@@ -135,16 +155,18 @@ export default function Categories(props) {
 
               <ListItem
                 sx={{
-                  background: props.category == 'ao' ? '#f5faff' : '#fff',
-                }}>
+                  background: props.category == "ao" ? "#f5faff" : "#fff",
+                }}
+              >
                 <ListItemButton onClick={handleOnActiveOrders}>
                   <ListItemText>Active Orders</ListItemText>
                 </ListItemButton>
               </ListItem>
               <ListItem
                 sx={{
-                  background: props.category == 'po' ? '#f5faff' : '#fff',
-                }}>
+                  background: props.category == "po" ? "#f5faff" : "#fff",
+                }}
+              >
                 <ListItemButton onClick={handleOnPastOrders}>
                   <ListItemText>Past Orders</ListItemText>
                 </ListItemButton>
@@ -155,7 +177,8 @@ export default function Categories(props) {
 
           <List>
             <ListItem
-              sx={{ background: props.category == 'r' ? '#f5faff' : '#fff' }}>
+              sx={{ background: props.category == "r" ? "#f5faff" : "#fff" }}
+            >
               <ListItemButton onClick={handleOnReviews}>
                 <ListItemText>Reviews</ListItemText>
               </ListItemButton>

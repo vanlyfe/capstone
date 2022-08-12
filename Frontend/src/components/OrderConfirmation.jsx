@@ -161,17 +161,17 @@ export default function OrderConfirmation() {
             successfully!
           </Typography>
         </Box>
-        {/* <Box sx={{ justifyContent: "right" }}>
+        <Box sx={{ justifyContent: "right" }}>
           <Button
             variant="contained"
             size="medium"
             component={Link}
-            to={`/listing/${id}`}
+            to={`/order/${order_id}/edit`}
             sx={{ mt: 2, ml: 2, mr: 2 }}
           >
-            Edit Request
+            Edit Order
           </Button>
-        </Box> */}
+        </Box>
         <Box>
           <List
             sx={{ width: "100%", bgcolor: "#e1e9f0" }}

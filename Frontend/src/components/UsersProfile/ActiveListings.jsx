@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
 import {
   Box,
   Grid,
@@ -16,9 +16,9 @@ import {
   Link,
   Rating,
   Button,
-} from '@mui/material';
-import { Person, Group } from '@mui/icons-material';
-import apiClient from '../../services/apiClient';
+} from "@mui/material";
+import { Person, Group } from "@mui/icons-material";
+import apiClient from "../../services/apiClient";
 
 export default function ActiveListings(props) {
   const [error, setError] = useState();
@@ -34,7 +34,7 @@ export default function ActiveListings(props) {
     if (resData?.data?.listings) {
       setListings(resData.data.listings);
     } else {
-      setError('No Listings yet');
+      setError("No Listings yet");
     }
     setDeleting(false);
   };
@@ -51,7 +51,7 @@ export default function ActiveListings(props) {
       if (resData?.data?.listings) {
         setListings(resData.data.listings);
       } else {
-        setError('No Listings yet');
+        setError("No Listings yet");
       }
     };
 
@@ -65,18 +65,20 @@ export default function ActiveListings(props) {
     <Grid
       sx={{
         mt: 1,
-        bgcolor: '##8cbfed',
-        height: '70%',
-        width: { xs: '100%', md: '70%' },
+        bgcolor: "##8cbfed",
+        height: "70%",
+        width: { xs: "100%", md: "70%" },
         mt: 1,
-      }}>
+      }}
+    >
       <Dialog
         open={deleting}
         // onClose={handleClose}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description">
+        aria-describedby="alert-dialog-description"
+      >
         <DialogTitle id="alert-dialog-title">
-          {'Do you want to continue?'}
+          {"Do you want to continue?"}
         </DialogTitle>
 
         <DialogActions>
@@ -93,12 +95,13 @@ export default function ActiveListings(props) {
         <Button
           variant="contained"
           href="/createlisting"
-          sx={{ mt: 2, mb: 2, ml: 2 }}>
+          sx={{ mt: 2, mb: 2, ml: 2 }}
+        >
           Make Listing
         </Button>
       </Box>
 
-      <Box sx={{ height: 400, width: '100%', mt: 1, ml: 1 }}>
+      <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
         <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
@@ -119,65 +122,72 @@ export default function ActiveListings(props) {
             {listings.length > 0 ? (
               listings.map((row, i) => (
                 <TableBody
-                key={i}
+                  key={i}
                   sx={{
-                    borderBottom: 'rgba(224, 224, 224, 1) 1px solid',
-                    borderTop: 'none',
-                  }}>
+                    borderBottom: "rgba(224, 224, 224, 1) 1px solid",
+                    borderTop: "none",
+                  }}
+                >
                   <TableRow
                     key={row.id}
                     sx={{
-                      '&:last-child td, &:last-child th': { border: 0 },
+                      "&:last-child td, &:last-child th": { border: 0 },
                     }}
                     hover={true}
                     onClick={() => {
-                      navigate('/listing/' + row.id);
-                    }}>
+                      navigate("/listing/" + row.id);
+                    }}
+                  >
                     <TableCell
                       component="th"
                       align="center"
                       scope="row"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
-                      {row.model}
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {row.make}
                     </TableCell>
                     {/* <TableCell align="right">l{row.getStartDate}</TableCell>
                       <TableCell align="right">{row.getEndDate}</TableCell> */}
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       {row.location}
                     </TableCell>
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       {new Date(row.createdat).getFullYear() +
-                        '-' +
-                        new Date(row.createdat).getMonth() +
-                        '-' +
+                        "-" +
+                        (new Date(row.createdat).getMonth() + 1) +
+                        "-" +
                         new Date(row.createdat).getDate()}
                     </TableCell>
 
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       <Box
                         sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                        }}>
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
                         <Group />
                         &nbsp;{row.max_accomodation}
                       </Box>
@@ -185,17 +195,19 @@ export default function ActiveListings(props) {
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       ${row.price}
                     </TableCell>
                     <TableCell
                       align="center"
                       sx={{
-                        borderBottom: 'none',
-                        borderTop: 'none',
-                      }}>
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
                       <Rating value={row.rating} readOnly={true} />
                     </TableCell>
                   </TableRow>
@@ -204,23 +216,26 @@ export default function ActiveListings(props) {
                       <TableCell colSpan={12}>
                         <Box
                           sx={{
-                            width: '100%',
-                            display: 'flex',
-                            justifyContent: 'flex-end',
-                          }}>
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                        >
                           <Button
-                            sx={{ color: '#6E85B7' }}
+                            sx={{ color: "#6E85B7" }}
                             onClick={() => {
-                              navigate('/listing/' + row.id + '/edit');
-                            }}>
+                              navigate("/listing/" + row.id + "/edit");
+                            }}
+                          >
                             EDIT
                           </Button>
                           <Button
-                            sx={{ color: '#6E85B7' }}
+                            sx={{ color: "#6E85B7" }}
                             onClick={() => {
                               setDeleting(true);
                               setListingId(row.id);
-                            }}>
+                            }}
+                          >
                             DELETE
                           </Button>
                         </Box>
