@@ -326,7 +326,7 @@ export default function Listings(props) {
   );
 
   return (
-    <Container maxWidth="100%" sx={{ mt: 0, my: 0 }}>
+    <Container maxWidth="100%" sx={{ mt: 0, my: 1 }}>
       <Box container spacing={2} display="flex">
         {/* Desktop Filter List */}
         <Paper
