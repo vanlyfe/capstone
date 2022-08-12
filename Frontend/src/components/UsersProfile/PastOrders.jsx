@@ -132,7 +132,6 @@ export default function PastOrders() {
       if (!ratingData.error) {
         setOpen(false);
       }
-     
     }
   };
 
@@ -146,15 +145,13 @@ export default function PastOrders() {
   //   );
   // }
 
-  
-
   return (
     <Grid
       sx={{
         mt: 1,
         bgcolor: "##8cbfed",
         height: "70%",
-        width: "100%",
+        width: { xs: "100%", md: "70%" },
       }}
     >
       <Box>
@@ -178,11 +175,11 @@ export default function PastOrders() {
           ml: 1,
         }}
       >
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Post Date</TableCell>
+                <TableCell align="center">Post Date</TableCell>
 
                 <TableCell align="center">Check in </TableCell>
                 <TableCell align="center"> Check out</TableCell>
@@ -190,106 +187,145 @@ export default function PastOrders() {
                 <TableCell align="center">Number of Guests</TableCell>
                 <TableCell align="center">Price</TableCell>
 
-                <TableCell align="center">Ratings</TableCell>
+                <TableCell align="center">Rating</TableCell>
               </TableRow>
             </TableHead>
-            {orders.length > 0
-              ? orders.map((row) => (
-                  <TableBody
-                    sx={{
-                      borderBottom: "rgba(224, 224, 224, 1) 1px solid",
-                      borderTop: "none",
+            {orders.length > 0 ? (
+              orders.map((row, i) => (
+                <TableBody
+                  key={i}
+                  sx={{
+                    borderBottom: "rgba(224, 224, 224, 1) 1px solid",
+                    borderTop: "none",
+                  }}
+                >
+                  <TableRow
+                    key={row.id}
+                    hover={true}
+                    onClick={() => {
+                      navigate(
+                        "/orderconfirmation/" + row.listing_id + "/" + row.id
+                      );
                     }}
                   >
-                    <TableRow key={row.id} hover={true} onClick={() => {
-                     
-                      navigate("/orderconfirmation/" + row.listing_id + "/" + row.id)
-                    }}>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {new Date(row.startdate).getFullYear() + "-" + new Date(row.startdate).getMonth() + "-" + new Date(row.startdate).getDate()}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {new Date(row.enddate).getFullYear() + "-" + new Date(row.enddate).getMonth() + "-" + new Date(row.enddate).getDate()}
-                      </TableCell>
-
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        <Group /> {row.guests}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        ${row.total}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        <Box
-                          align="right"
-                          sx={{
-                            textDecoration: "none",
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Rating value={row.rating} />
-                        </Box>
-                      </TableCell>
-                    </TableRow>
-                    <Link
+                    <TableCell
+                      align="center"
+                      component="th"
+                      scope="row"
                       sx={{
-                        textDecoration: "none",
-                        cursor: "pointer",
-                        ml: 2,
-
-                        color: "#6E85B7",
-                      }}
-                      onClick={() => {
-                        setOpen(true);
-                        setListingId(row.listing_id);
+                        borderBottom: "none",
+                        borderTop: "none",
                       }}
                     >
-                      add reviews
-                    </Link>
-                  </TableBody>
-                ))
-              : " No orders yet"}
+                      {new Date(row.createdat).getFullYear() +
+                        "-" +
+                        (new Date(row.createdat).getMonth() + 1) +
+                        "-" +
+                        new Date(row.createdat).getDate()}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {new Date(row.startdate).getFullYear() +
+                        "-" +
+                        (new Date(row.startdate).getMonth() + 1) +
+                        "-" +
+                        new Date(row.startdate).getDate()}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {new Date(row.enddate).getFullYear() +
+                        "-" +
+                        (new Date(row.enddate).getMonth() + 1) +
+                        "-" +
+                        new Date(row.enddate).getDate()}
+                    </TableCell>
+
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Group />
+                        &nbsp;{row.guests}
+                      </Box>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      ${row.total}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      <Box
+                        align="right"
+                        sx={{
+                          textDecoration: "none",
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Rating value={row.rating} readOnly={true}/>
+                      </Box>
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell align="center">
+                      <Button>
+                        <Link
+                          sx={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+
+                            color: "#6E85B7",
+                          }}
+                          onClick={() => {
+                            setOpen(true);
+                            setListingId(row.listing_id);
+                          }}
+                        >
+                          Add Review
+                        </Link>
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={12}>No Past Orders</TableCell>
+                </TableRow>
+              </TableBody>
+            )}
             <Modal
               open={open}
               onClose={handleClose}

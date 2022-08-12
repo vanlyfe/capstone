@@ -6,6 +6,9 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
+import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
+import Favorite from "@mui/icons-material/Favorite";
+import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import variables from "../assets/variables.js";
 import {
@@ -29,18 +32,19 @@ import {
 import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrowDown";
 import PersonIcon from "@mui/icons-material/Person";
+import { useNavigate } from "react-router-dom";
 
 import apiClient from "../services/apiClient";
 
-export default function Listings() {
+export default function Listings(props) {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
   const [listings, setListings] = React.useState([]);
   const [error, setError] = React.useState(null);
   const [rating, setRating] = React.useState(0);
   const [errors, setErrors] = React.useState({});
   const [value, setValue] = React.useState(null);
-  const [isLoading, setIsLoading]  = React.useState(true)
-  
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [favorites, setFavorites] = React.useState([]);
 
   const [form, setForm] = React.useState({
     minRating: "",
@@ -51,14 +55,11 @@ export default function Listings() {
     maxPrice: "",
   });
 
+  const navigate = useNavigate();
   const locations = variables.locations;
   const models = variables.makes;
 
   const handleOnInputChange = (event) => {
-    
-
-   
-
     if (event.target.name === "minPrice") {
       if (form.maxPrice !== "") {
         if (Number(event.target.value) > Number(form.maxPrice)) {
@@ -115,20 +116,26 @@ export default function Listings() {
   useEffect(() => {
     const getListings = async () => {
       const response = await apiClient.fetchListings();
-      console.log("response:", response.data);
+
       if (response?.data?.listings) {
         setListings(response.data.listings);
       } else {
         setError("No listings found");
       }
     };
-   
+
+    const getFavorites = async () => {
+      const { data, error } = await apiClient.getFavoritesIds(props.user.id);
+      if (data?.favorites) {
+        setFavorites(data.favorites);
+      }
+    };
+
+    getFavorites();
     getListings();
     setTimeout(function () {
       setIsLoading(false);
-      
     }, 2000);
-   
   }, []);
 
   const handleOnReset = async (e) => {
@@ -149,7 +156,7 @@ export default function Listings() {
 
     setErrors((e) => ({ ...e, form: null }));
     setRating(0);
-    
+
     const { data, error } = await apiClient.filterListings(form);
 
     if (error) {
@@ -319,7 +326,7 @@ export default function Listings() {
   );
 
   return (
-    <Container maxWidth="100%" sx={{ mt: 0, my: 0 }}>
+    <Container maxWidth="100%" sx={{ mt: 0, my: 1 }}>
       <Box container spacing={2} display="flex">
         {/* Desktop Filter List */}
         <Paper
@@ -491,23 +498,64 @@ export default function Listings() {
                     </Box>
                   </CardContent>
                   <CardActions>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      to={`/listing/${listing.id}/book`}
+                    <Box
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
                     >
-                      <Button size="small">Book Now</Button>
-                    </Link>
-                    <Link
-                      style={{ textDecoration: "none" }}
-                      to={`/listing/${listing.id}`}
-                    >
-                      <Button size="small">Learn More</Button>
-                    </Link>
-                    <Rating
-                      readOnly={true}
-                      className="listRating"
-                      value={listing.rating}
-                    />
+                      <Box>
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          to={`/listing/${listing.id}/book`}
+                        >
+                          <Button size="small">Book Now</Button>
+                        </Link>
+                        <Link
+                          style={{ textDecoration: "none" }}
+                          to={`/listing/${listing.id}`}
+                        >
+                          <Button size="small">Learn More</Button>
+                        </Link>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Rating
+                          readOnly={true}
+                          className="listRating"
+                          value={listing.rating}
+                          sx={{ mr: 3 }}
+                        />
+                        <Checkbox
+                          icon={<FavoriteBorder />}
+                          checkedIcon={<Favorite />}
+                          checked={favorites.includes(listing.id)}
+                          onClick={async () => {
+                            if (!props.user) {
+                              navigate("/login");
+                            }
+                            if (!favorites.includes(listing.id)) {
+                              await apiClient.postFavorite(listing.id);
+                              const { data, error } = await apiClient.getFavoritesIds(props.user.id);
+                              setFavorites(data.favorites)
+                            } else {
+                              await apiClient.deleteFavorite(listing.id);
+                              const { data, error } = await apiClient.getFavoritesIds(props.user.id);
+                              setFavorites(data.favorites)
+                            }
+                          }}
+                          sx={{ color: "grey" }}
+                        />
+                      </Box>
+                    </Box>
                   </CardActions>
                 </Card>
               </Grid>

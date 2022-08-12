@@ -13,7 +13,7 @@ CREATE TABLE users(
     gender         TEXT,
     bio            TEXT,
     rating         FLOAT,
-    phone          INTEGER
+    phone          FLOAT
 
 );
 
@@ -88,4 +88,5 @@ CREATE TABLE favorites(
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
     user_id             INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  
 );

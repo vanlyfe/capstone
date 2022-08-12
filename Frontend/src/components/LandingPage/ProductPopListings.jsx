@@ -48,7 +48,6 @@ function ProductHowItWorks() {
     getListings();
   }, []);
 
-
   return (
     <Box
       component="section"
@@ -75,9 +74,10 @@ function ProductHowItWorks() {
             opacity: 0.7,
           }}
         />
-        <Typography variant="h4" marked="center" component="h2" sx={{ mb: 14 }}>
+        <Typography variant="h4" marked="center" component="h2" sx={{ mb: 5 }}>
           Popular Listings
         </Typography>
+
         <Grid justifyContent="center" className="bestListings" container spacing={10} mb={10}>
           {listings[0]
             ? listings.map((listing, i) => (
@@ -110,16 +110,7 @@ function ProductHowItWorks() {
               ))
             : null}
         </Grid>
-
-        {/* <Button
-          color="secondary"
-          size="large"
-          variant="contained"
-          component="a"
-          href="/premium-themes/onepirate/sign-up/"
-          sx={{ mt: 8 }}>
-          Get started
-        </Button> */}
+        
         <Link to="/listings" style={{ textDecoration: "none" }}>
           <Button
             color="secondary"

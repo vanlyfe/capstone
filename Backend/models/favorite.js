@@ -5,7 +5,8 @@ class Favorite {
   static async getUserFavorites(userId) {
     const result = await db.query(
       `
-            SELECT make, model, year, l.createdAt, max_accomodation, price, acc.rating, location, f.id, f.listing_id
+        SELECT make, model, year, l.createdAt, max_accomodation, price, acc.rating, location, f.id, f.listing_id
+        
             FROM listings AS l
             JOIN favorites AS f ON l.id = f.listing_id
             LEFT JOIN (
@@ -19,9 +20,48 @@ class Favorite {
       [userId]
     );
 
-    const res = result.rows;
+    var res = result.rows;
+    var ans = []
+
+    for(let i = 0; i < res.length; i++){
+      var curr = res[i]
+      ans.push(curr.listing_id)
+    }
+
+    
 
     return res;
+  }
+
+  static async getFavoritesIds(userId){
+    const result = await db.query(
+      `
+            SELECT f.listing_id
+            FROM listings AS l
+            JOIN favorites AS f ON l.id = f.listing_id
+            LEFT JOIN (
+                SELECT AVG(rating) AS rating, listing_id
+                FROM listings
+                LEFT JOIN ratings ON ratings.listing_id = listings.id
+                GROUP BY listing_id
+           ) AS acc ON acc.listing_id = f.listing_id
+            WHERE f.user_id = $1;
+            `,
+      [userId]
+    );
+
+    var res = result.rows;
+    var ans = []
+
+    for(let i = 0; i < res.length; i++){
+      var curr = res[i]
+      ans.push(curr.listing_id)
+    }
+
+    
+
+    return ans;
+
   }
 
   static async postFavorite(userId, listingId) {
@@ -39,15 +79,15 @@ class Favorite {
     return res;
   }
 
-  static async deleteFavorite(id) {
+  static async deleteFavorite(userId, listingId) {
     await db.query(
       `
             DELETE FROM favorites
-            WHERE id = $1;
+            WHERE user_id = $1 AND listing_id = $2;
            
             
             `,
-      [id]
+      [userId, listingId]
     );
   }
 }
