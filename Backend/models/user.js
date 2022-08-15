@@ -155,7 +155,6 @@ class User {
     );
 
     var user = result.rows[0];
-    console.log(user);
     user = User.makePublicUser(user);
 
     // const rate = await this.getUserRating(user.id)
@@ -326,7 +325,6 @@ class User {
     }
 
     var resetToken = Token.createResetToken(user);
-    console.log(resetToken);
     var link = `${process.env.CLIENT_URL}passwordconfirm?token=${resetToken}`;
 
     return link;

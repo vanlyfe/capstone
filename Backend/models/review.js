@@ -21,7 +21,6 @@ class Review {
     //   [listingId]
     // );
 
-
     const result = await db.query(
       `
             SELECT u.id , r.listing_id, u.firstName, u.lastName, review, u.image_url, ra.rating, r.createdAt
@@ -32,9 +31,6 @@ class Review {
             `,
       [listingId]
     );
-
-
-   
 
     const res = result.rows;
 
@@ -54,23 +50,17 @@ class Review {
     //       JOIN users AS u ON r.user_id = u.id
     //     ) AS rater on rater.id = r.user_id
     //     JOIN (
-    //       SELECT AVG(rating) AS rating, acc.user_id   
+    //       SELECT AVG(rating) AS rating, acc.user_id
     //       FROM (
     //         SELECT rating, l.user_id
     //         FROM listings AS l
     //         JOIN ratings AS r ON r.listing_id = l.id
     //       ) AS acc
     //       GROUP BY acc.user_id
-          
-         
-          
-         
-    //     ) AS rates ON rates.user_id = r.user_id  
+
+    //     ) AS rates ON rates.user_id = r.user_id
     //     WHERE u.id = $1
-        
-        
-        
-        
+
     //     `,
     //   [userId]
     // );
