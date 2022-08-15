@@ -12,7 +12,7 @@ import Favorites from "./UsersProfile/Favorites";
 import { Box } from "@mui/material";
 
 export default function User({ user, setUser }) {
-  const [category, setCategory] = useState("al");
+  const [category, setCategory] = useState("activeListings");
   const [editProfile, setEditProfile] = useState(null);
 
   return (

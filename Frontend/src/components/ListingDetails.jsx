@@ -44,7 +44,7 @@ export default function ListingDetails({ user }) {
   const [isUser, setIsUser] = useState(false);
 
   const [carReviews, setCarReviews] = useState([]);
-  const [reviewerDetails, setReviewerDetails] = useState([]);
+  
   const [dateInValue, setDateInValue] = useState(null);
   const [dateOutValue, setDateOutValue] = useState(null);
   const [numGuests, setNumGuests] = useState(null);
@@ -54,6 +54,9 @@ export default function ListingDetails({ user }) {
 
   let { id } = useParams();
 
+  
+
+
   // fetches the car details
   useEffect(() => {
     const fetchCarDetails = async () => {
@@ -61,9 +64,7 @@ export default function ListingDetails({ user }) {
 
       if (data) {
         setCarDetails(data.listing[0]);
-        console.log(data.listing[0]);
-        console.log(user);
-        setIsUser(data.listing[0].user_id === user.id);
+
       }
     };
 
@@ -76,39 +77,37 @@ export default function ListingDetails({ user }) {
         setCarReviews(data.reviews);
       }
     };
-
     //Fetches the reviews
-
     fetchCarDetails();
     fetchCarReviews();
+  
   }, []);
 
   useEffect(() => {
     const fetchHostDetails = async () => {
+    
+    
       const user_id = carDetails.user_id;
 
+      if(user_id){
       const { data, error } = await apiClient.fetchUserFromId(user_id);
-
+  
       if (data) {
         setHostDetails(data.user);
+
+      } 
+
       }
+      
     };
 
     fetchHostDetails();
+    if(user){
+    setIsUser(carDetails.user_id === user.id)
+    }
   }, [carDetails]);
 
-  useEffect(() => {
-    const fetchReviewerDetails = async () => {
-      const reviewer_id = carReviews[0].user_id;
-      const { data, error } = await apiClient.fetchUserFromId(reviewer_id);
-      if (data) {
-        setReviewerDetails(data.user);
-        //setPrice(data.listing.price)
-      }
-    };
-
-    fetchReviewerDetails();
-  }, [carReviews]);
+  
 
   //CREATE THE FOLLOWING DETAILS TO BE POSTED TO ORDER  ["taxes", "total", "guests", "startDate", "endDate"];
 
@@ -200,7 +199,7 @@ export default function ListingDetails({ user }) {
     setNext(next + reviewsPerColumn);
   };
 
-  console.log(createdAt);
+
 
   return (
     <Box>
@@ -526,7 +525,7 @@ export default function ListingDetails({ user }) {
                       fontSize: 15,
                     }}
                   >
-                    25 Reviews
+                    {carReviews.length} reviews
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>

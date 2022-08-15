@@ -211,7 +211,7 @@ export default function ActiveListings(props) {
                       <Rating value={row.rating} readOnly={true} />
                     </TableCell>
                   </TableRow>
-                  {Number(props.user.id) === Number(id) ? (
+                  {Number(props.user?.id) === Number(id) ? (
                     <TableRow>
                       <TableCell colSpan={12}>
                         <Box
