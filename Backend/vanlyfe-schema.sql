@@ -76,6 +76,8 @@ CREATE TABLE reviews(
     FOREIGN KEY (listing_id) REFERENCES listings(id) ON DELETE CASCADE,
     user_id             INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    rating_id           INTEGER NOT NULL,
+    FOREIGN KEY (rating_id) REFERENCES ratings(id) ON DELETE CASCADE,
     createdAt           TIMESTAMP NOT NULL DEFAULT NOW(),
     updatedAt           TIMESTAMP NOT NULL DEFAULT NOW()
 

@@ -663,7 +663,7 @@ export default function ListingDetails({ user }) {
                   <Rating
                     name="user-rating"
                     sx={{ mt: 2, ml: 2 }}
-                    value={review.rating}
+                    value={review?.rating ? review.rating : 0}
                     readOnly
                   />
                   <Grid

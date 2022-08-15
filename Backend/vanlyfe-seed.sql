@@ -281,8 +281,8 @@ VALUES(
 ),
 (
   3.8,
-  2,
-  1
+  11,
+  3
 ),
 (
   2.9,
@@ -355,52 +355,46 @@ VALUES(
   4
 );
 
-INSERT INTO reviews(review, listing_id, user_id)
+INSERT INTO reviews(review, listing_id, user_id, rating_id)
 VALUES(
   'Great car, clean and safe. Loved it',
   1,
-  1
+  2,
+  4
 ),
 (
   'Bit worse than last time but still worth it',
   1,
-  1
-
-),
-(
-  'Too overpriced in my opinion',
-  1,
-  1
-
-),
-(
-  'Its a decent place to stay for a night',
-  1,
-  4
+  3,
+  7
 
 ),
 (
   'Very dirty, terrible noisy neighbourhood, please DO NOT rent this van',
   2,
-  2
+  2,
+  5
 
 ),
 (
   'Noisy neighbourhood with constant fireworks and very insecure',
   2,
-  3
+  3,
+  8
 
 ),
 (
   'Would 1000% recommend this van and host if looking for a place in the area',
   7,
-  1
+  4,
+  16
 
 ),
 (
   'I would suggest you look into other options first before opting for this',
   11,
-  3
+  3,
+  2
 );
 
 INSERT INTO favorites(listing_id, user_id)
