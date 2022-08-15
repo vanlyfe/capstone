@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
 import {
   Box,
   Paper,
@@ -10,13 +10,11 @@ import {
   Avatar,
   Rating,
   Button,
-} from '@mui/material';
-import { ThumbUp } from '@mui/icons-material';
-import apiClient from '../../services/apiClient';
+} from "@mui/material";
+import { ThumbUp } from "@mui/icons-material";
+import apiClient from "../../services/apiClient";
 
 export default function Reviews(props) {
-  const navigate = useNavigate();
-
   let { id } = useParams();
   const [error, setError] = React.useState();
   const [reviews, setReviews] = React.useState([]);
@@ -28,7 +26,7 @@ export default function Reviews(props) {
       if (response?.data?.reviews[0]?.review) {
         setReviews(response.data.reviews);
       } else {
-        setError('No reviews yet');
+        setError("No reviews yet");
       }
     };
 
@@ -38,10 +36,11 @@ export default function Reviews(props) {
     <Box
       sx={{
         mt: 1,
-        height: '70%',
-        width: '100%',
+        height: "70%",
+        width: "100%",
         mt: 1,
-      }}>
+      }}
+    >
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2, ml: 2 }}>
           Reviews
@@ -49,11 +48,16 @@ export default function Reviews(props) {
         <Button
           variant="contained"
           href="/listings"
-          sx={{ mt: 2, mb: 2, ml: 2 }}>
+          sx={{ mt: 2, mb: 2, ml: 2 }}
+        >
           Browse Listing
         </Button>
+
+        <Typography variant="h6" sx={{ mt: 2, mb: 2, ml: 5 }}>
+          {error}
+        </Typography>
       </Box>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+      <Box sx={{ display: "flex", flexWrap: "wrap" }}>
         {reviews
           ? reviews.map((rev, i) => (
               <Paper
@@ -64,8 +68,9 @@ export default function Reviews(props) {
                   width: 800,
                   mt: 3,
                   ml: 3,
-                  bgcolor: 'white',
-                }}>
+                  bgcolor: "white",
+                }}
+              >
                 <Rating
                   name="user-rating"
                   sx={{ mt: 2, ml: 2 }}
@@ -73,34 +78,35 @@ export default function Reviews(props) {
                   readOnly
                 />
 
-              <Grid
-                sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
-              >
-                <Avatar src={rev.image_url} alt="profile picture" />
-                <Box
+                <Grid
                   sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
                 >
-                  <Typography
-                    sx={{ fontWeight: 600, fontSize: 20, cursor: "pointer" }}
-                    onClick={() => {
-                      navigate("/user/" + rev.reveiwer_id);
+                  <Avatar src={rev.image_url} alt="profile picture" />
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      mt: 1,
+                      ml: 2,
                     }}
                   >
-                    {rev.firstname} {rev.lastname}
+                    <Typography sx={{ fontWeight: 600, fontSize: 20 }}>
+                      {rev.firstname} {rev.lastname}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Typography sx={{ mt: 2, ml: 3 }}>{rev.review}</Typography>
+                <Divider />
+                <Grid sx={{ display: "flex", flexDirection: "row" }}>
+                  <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
+                  <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
+                    Helpful
                   </Typography>
-                </Box>
-              </Grid>
-              <Typography sx={{ mt: 2, ml: 3 }}>{rev.review}</Typography>
-              <Divider />
-              <Grid sx={{ display: "flex", flexDirection: "row" }}>
-                <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
-                <Typography sx={{ fontWeight: 550, mt: 2, ml: 2 }}>
-                  Helpful
-                </Typography>
-              </Grid>
-            </Paper>
-          ))
-        : error}
-    </Grid>
+                </Grid>
+              </Paper>
+            ))
+          : error}
+      </Box>
+    </Box>
   );
 }
