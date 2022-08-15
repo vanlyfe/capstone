@@ -61,6 +61,8 @@ export default function ListingDetails({ user }) {
 
       if (data) {
         setCarDetails(data.listing[0]);
+        console.log(data.listing[0]);
+        console.log(user);
         setIsUser(data.listing[0].user_id === user.id);
       }
     };
@@ -72,8 +74,6 @@ export default function ListingDetails({ user }) {
 
       if (data) {
         setCarReviews(data.reviews);
-
-        console.log("car review", carReviews);
       }
     };
 
@@ -193,14 +193,14 @@ export default function ListingDetails({ user }) {
 
   // implementing the load more reviews
 
-  console.log("this is the review array", carReviews);
-
   const reviewsPerColumn = 3;
   const [next, setNext] = useState(reviewsPerColumn);
 
   const handleMoreReviews = () => {
     setNext(next + reviewsPerColumn);
   };
+
+  console.log(createdAt);
 
   return (
     <Box>
@@ -228,7 +228,9 @@ export default function ListingDetails({ user }) {
           <Typography variant="h5" color="textPrimary" gutterBottom>
             You listed this vehicle
             {createdAt
-              ? ` on ${createdAt.getDay()}/${createdAt.getMonth()}/${createdAt.getFullYear()}`
+              ? ` on ${createdAt.getDate()}/${
+                  createdAt.getMonth() + 1
+                }/${createdAt.getFullYear()}`
               : ""}
           </Typography>
         </Box>
