@@ -107,20 +107,10 @@ export default function PastOrders() {
 
   const handleOnSubmit = async () => {
     setPopupError(null);
-    console.log(ratingInput);
+ 
     if (!ratingInput) {
       setPopupError("Must provide rating");
     } else {
-      if (reviewText && reviewText.length > 0) {
-        const reviewData = await apiClient.postReview(listingId, {
-          review: reviewText,
-        });
-
-        if (reviewData.error) {
-          setPopupError(reviewData.error);
-        }
-      }
-
       const ratingData = await apiClient.postRating(listingId, {
         rating: ratingInput,
       });
@@ -128,6 +118,21 @@ export default function PastOrders() {
       if (ratingData.error) {
         setPopupError(ratingData.error);
       }
+
+    
+
+      if (reviewText && reviewText.length > 0) {
+        const reviewData = await apiClient.postReview(listingId, {
+          review: reviewText,
+          rating_id: ratingData.data.rating[0].id,
+        });
+
+        if (reviewData.error) {
+          setPopupError(reviewData.error);
+        }
+      }
+
+   //   console.log(ratingData.error)
 
       if (!ratingData.error) {
         setOpen(false);
@@ -293,7 +298,7 @@ export default function PastOrders() {
                           alignItems: "center",
                         }}
                       >
-                        <Rating value={row.rating} readOnly={true}/>
+                        <Rating value={row.rating} readOnly={true} />
                       </Box>
                     </TableCell>
                   </TableRow>

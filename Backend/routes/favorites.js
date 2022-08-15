@@ -52,10 +52,10 @@ router.delete(
   security.requireAuthenticatedUser,
   async (req, res, next) => {
     try {
-      const {listingId} = req.params
-      const {user} = res.locals
-      const userId = user.id
-     
+      const { listingId } = req.params;
+      const { user } = res.locals;
+      const userId = user.id;
+
       await Favorite.deleteFavorite(userId, listingId);
       return res.status(200).json();
     } catch (error) {

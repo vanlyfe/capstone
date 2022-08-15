@@ -29,7 +29,6 @@ router.get(
     try {
       const { userId } = req.params;
       const orders = await Order.getUserPastOrders(userId);
-
       return res.status(200).json({ orders: orders });
     } catch (error) {
       next(error);

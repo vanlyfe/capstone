@@ -56,7 +56,7 @@ export default function App() {
       <BrowserRouter>
         <Navbar user={user} setUser={setUser} />
         <Routes>
-          <Route path="/" element={user ? <Listings /> : <LandingPage />} />
+          <Route path="/" element={user ? <Listings user={user} setUser={setUser}/> : <LandingPage />} />
           <Route
             path="/user/:id"
             element={<User user={user} setUser={setUser} />}

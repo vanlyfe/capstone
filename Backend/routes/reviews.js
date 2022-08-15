@@ -51,8 +51,6 @@ router.put(
   async (req, res, next) => {
     try {
       const { reviewId } = req.params;
-      console.log("This is body", req.body);
-
       const review = await Review.editReview({
         reviewUpdate: req.body,
         reviewId,

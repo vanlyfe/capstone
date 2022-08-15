@@ -21,19 +21,17 @@ class Favorite {
     );
 
     var res = result.rows;
-    var ans = []
+    var ans = [];
 
-    for(let i = 0; i < res.length; i++){
-      var curr = res[i]
-      ans.push(curr.listing_id)
+    for (let i = 0; i < res.length; i++) {
+      var curr = res[i];
+      ans.push(curr.listing_id);
     }
-
-    
 
     return res;
   }
 
-  static async getFavoritesIds(userId){
+  static async getFavoritesIds(userId) {
     const result = await db.query(
       `
             SELECT f.listing_id
@@ -51,17 +49,14 @@ class Favorite {
     );
 
     var res = result.rows;
-    var ans = []
+    var ans = [];
 
-    for(let i = 0; i < res.length; i++){
-      var curr = res[i]
-      ans.push(curr.listing_id)
+    for (let i = 0; i < res.length; i++) {
+      var curr = res[i];
+      ans.push(curr.listing_id);
     }
 
-    
-
     return ans;
-
   }
 
   static async postFavorite(userId, listingId) {

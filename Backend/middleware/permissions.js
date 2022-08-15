@@ -1,5 +1,4 @@
 const { BadRequestError, ForbiddenError } = require("../utils/errors");
-const User = require("../models/user");
 const db = require("../db");
 
 const userOwnsProfile = async (req, res, next) => {
