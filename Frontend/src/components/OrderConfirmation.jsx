@@ -65,50 +65,40 @@ export default function OrderConfirmation() {
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
-      console.log("order id", order_id);
       const res = await apiClient.fetchOrder(order_id);
-      console.log("order data", res);
+
       if (res.data.order) {
-        console.log("setting order", res.data.order);
         setOrder(res.data.order[0]);
-        //setPrice(data.listing.price)
       }
     };
 
     fetchOrderDetails();
-
-    console.log("order", order);
   }, []);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       const user_id = order.user_id;
+      console.log(user_id);
 
-      const { data, error } = await apiClient.fetchUserFromId(user_id);
-      console.log(" host iddata ", data);
+      if (user_id) {
+        const { data, error } = await apiClient.fetchUserFromId(user_id);
 
-      if (data) {
-        setUserDetails(data.user);
-
-        //console.log("host details", hostDetails);
+        if (data) {
+          setUserDetails(data.user);
+        }
       }
     };
 
     fetchUserDetails();
   }, [order]);
 
-  console.log(" user detailsa ", userDetails);
-
-  //console.log("set order", order.order[0].user_id);
-
   useEffect(() => {
     const fetchCarDetails = async () => {
       const { data, error } = await apiClient.fetchListingById(id);
-      console.log("car details data", data.listing[0]);
+
       if (data) {
         setCarDetails(data.listing[0]);
         //setPrice(data.listing.price)
-        console.log("car details", carDetails);
       }
     };
     fetchCarDetails();
@@ -133,8 +123,6 @@ export default function OrderConfirmation() {
   }
 
   const days = getNumberOfDays(order.startdate, order.enddate);
-
-  console.log("new date", new Date(order.startdate).getDate());
 
   return (
     <Box
