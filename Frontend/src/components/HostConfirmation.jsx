@@ -1,53 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import {
-  AppBar,
-  Toolbar,
   Typography,
-  Stack,
-  Button,
-  Box,
-  Grid,
-  Card,
-  CardHeader,
-  CardMedia,
-  CardActions,
-  Collapse,
-  IconButton,
-  CardContent,
   Avatar,
-  Rating,
-  Divider,
   List,
   ListItem,
-  ListItemButton,
   ListItemText,
-  Drawer,
-  TextField,
+  Link,
+  Box,
+  Button,
+  Grid,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
-import { CheckBoxOutlineBlankSharp, ThumbUp } from "@mui/icons-material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-
-//services
-import apiClient from "../services/apiClient";
-// my imports
-
-//import DatePicker from "./DatePicker";
-//import DateRange from "./DateIn";
-import DateIn from "./DateIn";
-import DateOut from "./DateOut";
-import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-
-// table imports
-
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -55,30 +18,34 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useParams } from "react-router-dom";
+import apiClient from "../services/apiClient";
 import ListSubheader from "@mui/material/ListSubheader";
+import OrderConfirmation from "./OrderConfirmation";
 
-export default function OrderConfirmation() {
+export default function HostConfirmation(props) {
   const [order, setOrder] = useState([]);
   const [userDetails, setUserDetails] = useState([]);
   const [carDetails, setCarDetails] = useState([]);
+
   let { id, order_id } = useParams();
 
-  useEffect(() => {
-    const fetchOrderDetails = async () => {
-      console.log("order id", order_id);
-      const res = await apiClient.fetchOrder(order_id);
-      console.log("order data", res);
-      if (res.data.order) {
-        console.log("setting order", res.data.order);
-        setOrder(res.data.order[0]);
-        //setPrice(data.listing.price)
-      }
-    };
+  // useEffect(() => {
+  //   console.log("order id", order_id);
+  //   const fetchOrderDetails = async () => {
+  //     const res = await apiClient.fetchOrder(order_id);
+  //     console.log("order data", res);
+  //     if (res.data.order) {
+  //       console.log("setting order", res.data.order);
+  //       setOrder(res.data.order[0]);
+  //       //setPrice(data.listing.price)
+  //     }
+  //   };
 
-    fetchOrderDetails();
+  //   fetchOrderDetails();
 
-    console.log("order", order);
-  }, []);
+  //   console.log("order", order);
+  // }, []);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
@@ -136,72 +103,75 @@ export default function OrderConfirmation() {
 
   console.log("new date", new Date(order.startdate).getDate());
 
-  return (
-    <Box
-      sx={{
-        height: 900,
+  const handleOnConfirm = () => {};
+  const handleOnAccept = () => {};
 
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Grid sx={{ width: "60%", height: "100%" }}>
-        <Box>
+  return (
+    <Box>
+      <Box
+        sx={{
+          height: "100%",
+          width: "100%",
+          padding: 1,
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "end",
+        }}
+      >
+        {/* <Link >
+          <ArrowBackIcon
+            className="arrowBack"
+            sx={{ fontSize: 40, width: 100, height: 40, mr: 100 }}
+          />
+        </Link> */}
+        <Button
+          // variant="contained"
+          color="success"
+          sx={{ width: 100, height: 40 }}
+          // onChange={handleOnAccept}
+        >
+          Accept
+        </Button>
+        <Button
+          //variant="contained"
+          color="error"
+          sx={{ width: 100, height: 40, ml: 2 }}
+          // onChange={handleOnDecline}
+        >
+          Decline
+        </Button>
+        <Button></Button>
+      </Box>
+      <Grid>
+        <Box sx={{ width: "90%", ml: 5 }}>
           <Typography
             sx={{
-              color: "#1e1e1f",
-              fontWeight: 300,
-              fontSize: 20,
+              width: "100%",
+              bgcolor: "secondary.light",
+
+              padding: 3,
+              fontWeight: 600,
+              fontSize: 25,
             }}
           >
-            Thank you {userDetails.firstname}, your request has been sent
-            successfully!
+            order # {userDetails.firstname}
           </Typography>
         </Box>
-        <Box sx={{ justifyContent: "right" }}>
-          <Button
-            variant="contained"
-            size="medium"
-            component={Link}
-            to={`/order/${order_id}/edit`}
-            sx={{ mt: 2, ml: 2, mr: 2 }}
-          >
-            Edit Order
-          </Button>
-        </Box>
-        <Box>
-          <List
-            sx={{ width: "100%", bgcolor: "#e1e9f0" }}
-            aria-labelledby="nested-list-subheader"
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                Renter Details
-              </ListSubheader>
-            }
-          >
+
+        <Box sx={{ width: "90%", ml: 5 }}>
+          <List>
             <ListItem>
               <ListItemText
-                primary={
-                  "NAME:" +
-                  " " +
-                  userDetails.firstname +
-                  " " +
-                  userDetails.lastname
-                }
+                primary={userDetails.firstname + " " + userDetails.lastname}
               />
             </ListItem>
-            {/* <ListItem>
-              <ListItemText primary="PHONE NUMBER: 7737549759" />
-            </ListItem> */}
             <ListItem>
-              <ListItemText primary={"EMAIL:" + " " + userDetails.email} />
+              <ListItemText primary={".. " + userDetails.email} />
             </ListItem>
+
             <ListItem>
               <ListItemText
                 primary={
-                  "DATES: " +
                   new Date(order.startdate).getMonth() +
                   "/" +
                   new Date(order.startdate).getDate() +
@@ -216,24 +186,26 @@ export default function OrderConfirmation() {
                 }
               />
             </ListItem>
+            <ListItem>
+              <ListItemText primary={"Order sent " + userDetails.email} />
+              {/* order sent */}
+            </ListItem>
           </List>
         </Box>
         <Box>
-          <TableContainer component={Paper}>
+          <TableContainer
+            component={Paper}
+            sx={{ mb: 15, width: "90%", ml: 5 }}
+          >
             <Table sx={{ minWidth: 300 }} aria-label="spanning table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center" colSpan={2}>
-                    Order Details
-                  </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Description</TableCell>
-                  <TableCell align="right">Quantity</TableCell>
+                  <TableCell>{order.model}</TableCell>
+                  <TableCell align="right">${order.total}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
-                <TableRow>
+                {/* <TableRow>
                   <TableCell>Price/Night</TableCell>
                   <TableCell align="right">${carDetails.price}</TableCell>
                 </TableRow>
@@ -247,7 +219,6 @@ export default function OrderConfirmation() {
                 </TableRow>
 
                 <TableRow>
-                  {/* <TableCell rowSpan={3} /> */}
                   <TableCell>Subtotal</TableCell>
                   <TableCell align="right">
                     $
@@ -259,8 +230,8 @@ export default function OrderConfirmation() {
                   <TableCell align="right">
                     ${Math.round((order.taxes + fees) * 100) / 100}
                   </TableCell>
-                </TableRow>
-                <TableRow>
+                </TableRow> */}
+                <TableRow sx={{ height: 100 }}>
                   <TableCell>Total</TableCell>
                   <TableCell align="right">${order.total}</TableCell>
                 </TableRow>
@@ -268,20 +239,7 @@ export default function OrderConfirmation() {
             </Table>
           </TableContainer>
         </Box>
-        <Box>
-          <Button
-            variant="contained"
-            size="medium"
-            component={Link}
-            to="/listings"
-            sx={{ mt: 2, ml: 2, mr: 2 }}
-          >
-            Continue Lyfeing
-          </Button>
-        </Box>
       </Grid>
     </Box>
   );
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
