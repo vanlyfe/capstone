@@ -2,8 +2,6 @@ const db = require("../db");
 const { BadRequestError } = require("../utils/errors");
 const sgMail = require("@sendgrid/mail");
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-const sgMail = require("@sendgrid/mail");
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class Order {
   static async getOrdersByUserId(userId) {
@@ -296,34 +294,6 @@ class Order {
     const diffInDays = Math.round(diffInTime / oneDay);
 
     return diffInDays;
-  }
-
-  static async sendmail(id) {
-    var email = await db.query(
-      `
-        SELECT email
-        FROM users
-        WHERE id = $1
-    
-    `,
-      [id]
-    );
-
-    email = email.rows[0].email;
-
-    var link = `${process.env.CLIENT_URL}login`;
-
-    const msg = {
-      to: email,
-      from: "vanlyfe.com@gmail.com",
-      subject: "BOOKING CONFIRMATION",
-      text: `Text`,
-      html: `Your order request has been received and the host has been notified. 
-      You will receive a response within 24hrs when the host confirms the booking. 
-      Kindly <a href=${link}>login</a> to make any updates to your order.
-      Thank you for choosing vanlyfe!`,
-    };
-    sgMail.send(msg);
   }
 
   static async sendmail(id) {

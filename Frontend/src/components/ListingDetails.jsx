@@ -48,7 +48,6 @@ export default function ListingDetails({ user }) {
   const [dateInValue, setDateInValue] = useState(null);
   const [dateOutValue, setDateOutValue] = useState(null);
   const [numGuests, setNumGuests] = useState(null);
-  const [userDetails, setUserDetails] = useState([]);
 
   // using this as an alternative to test the submit button
   const [order_id, setOrderId] = useState(null);
@@ -92,7 +91,6 @@ export default function ListingDetails({ user }) {
 
       if (data) {
         setHostDetails(data.user);
-        setUserDetails(user);
       }
     };
 

@@ -137,7 +137,7 @@ export default function Categories(props) {
               <ListItem
                 sx={{ background: props.category == "fl" ? "#f5faff" : "#fff" }}
               >
-                <ListItemButton onClick={handleOnFavorites}>
+                <ListItemButton onClick={handleOnFavourites}>
                   <ListItemText>Favorites</ListItemText>
                 </ListItemButton>
               </ListItem>
