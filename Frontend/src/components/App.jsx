@@ -84,7 +84,7 @@ export default function App() {
             path="/order/:id/edit"
             element={<EditOrder user={user} setUser={setUser} />}
           />
-          <Route path="/listing/:id" element={<ListingDetails user={user} />} />
+          <Route path="/listing/:id" element={<ListingDetails user={user} setUser={setUser}/>} />
           <Route
             path="/listing/:id/edit"
             element={<EditListing user={user} setUser={setUser} />}
