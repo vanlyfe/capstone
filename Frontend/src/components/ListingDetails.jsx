@@ -525,7 +525,7 @@ export default function ListingDetails({ user }) {
                       fontSize: 15,
                     }}
                   >
-                    25 Reviews
+                    {carReviews.length} reviews
                   </Typography>
                 </Grid>
                 <Grid item xs={6}>

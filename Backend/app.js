@@ -12,7 +12,7 @@ const reviewRoutes = require("./routes/reviews");
 const indexRoutes = require("./routes/index");
 const favoritesRoutes = require("./routes/favorites");
 
-const config = require("./config");
+
 const security = require("./middleware/security");
 
 const { NotFoundError } = require("./utils/errors");
