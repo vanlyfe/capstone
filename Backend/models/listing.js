@@ -213,7 +213,7 @@ class Listing {
       listingId: id,
     });
 
-    cron.schedule('* */1 * * *', () => {
+    cron.schedule('*/60 * * * *', () => {
       this.refreshS3Urls(imagesArray, id);
     });
 
