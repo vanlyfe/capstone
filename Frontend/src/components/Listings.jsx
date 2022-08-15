@@ -42,7 +42,6 @@ export default function Listings(props) {
   const [error, setError] = React.useState(null);
   const [rating, setRating] = React.useState(0);
   const [errors, setErrors] = React.useState({});
-  const [value, setValue] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(true);
   const [favorites, setFavorites] = React.useState([]);
 
@@ -96,22 +95,7 @@ export default function Listings(props) {
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
-  const resetForm = () => {
-    setValue("");
 
-    setTimeout(function () {
-      setValue(null);
-    }, 500);
-
-    setForm({
-      minRating: "",
-      location: form.location,
-      model: form.model,
-      year: "",
-      minPrice: "",
-      maxPrice: "",
-    });
-  };
 
   useEffect(() => {
     const getListings = async () => {
@@ -125,9 +109,11 @@ export default function Listings(props) {
     };
 
     const getFavorites = async () => {
-      const { data, error } = await apiClient.getFavoritesIds(props.user.id);
-      if (data?.favorites) {
-        setFavorites(data.favorites);
+      if (props.user) {
+        const { data, error } = await apiClient.getFavoritesIds(props.user.id);
+        if (data?.favorites) {
+          setFavorites(data.favorites);
+        }
       }
     };
 
@@ -166,7 +152,7 @@ export default function Listings(props) {
     if (data?.listings) {
       setListings(data.listings);
     }
-    resetForm();
+   
   };
 
   const filterItems = (
@@ -185,7 +171,7 @@ export default function Listings(props) {
       </Typography>
       <Rating
         name="minRating"
-        value={rating}
+       
         precision={0.5}
         onChange={(event, newValue) => {
           setRating(newValue);
@@ -234,7 +220,7 @@ export default function Listings(props) {
         onChange={handleOnInputChange}
         label="Year"
         type="number"
-        value={value}
+      
       />
 
       <Typography variant="p" align="center" mt={2}>
@@ -255,7 +241,7 @@ export default function Listings(props) {
             type="number"
             name="minPrice"
             onChange={handleOnInputChange}
-            value={value}
+          
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Amount"
           />
@@ -266,7 +252,7 @@ export default function Listings(props) {
           <OutlinedInput
             id="outlined-adornment-amount"
             type="number"
-            value={value}
+         
             onChange={handleOnInputChange}
             name="maxPrice"
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -508,7 +494,6 @@ export default function Listings(props) {
                       }}
                     >
                       <Box>
-                        
                         <Link
                           style={{ textDecoration: "none" }}
                           to={`/listing/${listing.id}`}
@@ -539,12 +524,14 @@ export default function Listings(props) {
                             }
                             if (!favorites.includes(listing.id)) {
                               await apiClient.postFavorite(listing.id);
-                              const { data, error } = await apiClient.getFavoritesIds(props.user.id);
-                              setFavorites(data.favorites)
+                              const { data, error } =
+                                await apiClient.getFavoritesIds(props.user.id);
+                              setFavorites(data.favorites);
                             } else {
                               await apiClient.deleteFavorite(listing.id);
-                              const { data, error } = await apiClient.getFavoritesIds(props.user.id);
-                              setFavorites(data.favorites)
+                              const { data, error } =
+                                await apiClient.getFavoritesIds(props.user.id);
+                              setFavorites(data.favorites);
                             }
                           }}
                           sx={{ color: "grey" }}
