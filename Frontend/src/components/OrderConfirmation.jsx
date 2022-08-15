@@ -202,13 +202,13 @@ export default function OrderConfirmation() {
               <ListItemText
                 primary={
                   "DATES: " +
-                  new Date(order.startdate).getMonth() +
+                  (new Date(order.startdate).getMonth() + 1) +
                   "/" +
                   new Date(order.startdate).getDate() +
                   "/" +
                   new Date(order.startdate).getFullYear() +
                   "-" +
-                  new Date(order.enddate).getMonth() +
+                  (new Date(order.enddate).getMonth() + 1) +
                   "/" +
                   new Date(order.enddate).getDate() +
                   "/" +
