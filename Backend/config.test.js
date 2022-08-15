@@ -17,11 +17,11 @@ describe("Config derived from process.env", () => {
     delete process.env.DATABASE_URL;
 
     expect(config.getDatabaseUri()).toEqual(
-      "postgresql://postgres:postgres@localhost:5432/vanlyfe"
+      "postgresql://postgres:postgres@vanlyfe.herokuapp.com:5432/vanlyfe"
     );
     process.env.NODE_ENV = "test";
     expect(config.getDatabaseUri()).toEqual(
-      "postgresql://postgres:postgres@localhost:5432/vanlyfe_test"
+      "postgresql://postgres:postgres@vanlyfe.herokuapp.com:5432/vanlyfe_test"
     );
   });
 });
