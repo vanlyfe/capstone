@@ -21,6 +21,7 @@ import ForgotPasswordConfirm from "./ForgotPassword/forgotPasswordConfirm";
 import ForgotPasswordEmail from "./ForgotPassword/ForgotPasswordEmail";
 import ResetError from "./ResetError";
 import Terms from "./Terms";
+
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
@@ -56,7 +57,16 @@ export default function App() {
       <BrowserRouter>
         <Navbar user={user} setUser={setUser} />
         <Routes>
-          <Route path="/" element={user ? <Listings user={user} setUser={setUser}/> : <LandingPage />} />
+          <Route
+            path="/"
+            element={
+              user ? (
+                <Listings user={user} setUser={setUser} />
+              ) : (
+                <LandingPage />
+              )
+            }
+          />
           <Route
             path="/user/:id"
             element={<User user={user} setUser={setUser} />}
@@ -70,7 +80,10 @@ export default function App() {
             element={<Register user={user} setUser={setUser} />}
           />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/listings" element={<Listings user={user} setUser={setUser}/>} />
+          <Route
+            path="/listings"
+            element={<Listings user={user} setUser={setUser} />}
+          />
           <Route
             path="/orderconfirmation/:id/:order_id"
             element={<OrderConfirmation />}

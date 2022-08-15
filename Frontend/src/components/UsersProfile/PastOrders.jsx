@@ -107,7 +107,7 @@ export default function PastOrders() {
 
   const handleOnSubmit = async () => {
     setPopupError(null);
- 
+
     if (!ratingInput) {
       setPopupError("Must provide rating");
     } else {
@@ -118,8 +118,6 @@ export default function PastOrders() {
       if (ratingData.error) {
         setPopupError(ratingData.error);
       }
-
-    
 
       if (reviewText && reviewText.length > 0) {
         const reviewData = await apiClient.postReview(listingId, {
@@ -132,7 +130,7 @@ export default function PastOrders() {
         }
       }
 
-   //   console.log(ratingData.error)
+      //   console.log(ratingData.error)
 
       if (!ratingData.error) {
         setOpen(false);

@@ -37,7 +37,6 @@ import apiClient from "../services/apiClient";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
 
-
 export default function ListingDetails({ user }) {
   const navigate = useNavigate();
   const [carDetails, setCarDetails] = useState([]);
@@ -65,8 +64,7 @@ export default function ListingDetails({ user }) {
 
       if (data) {
         setCarDetails(data.listing[0]);
-     
-       
+
       }
     };
 
@@ -77,8 +75,6 @@ export default function ListingDetails({ user }) {
 
       if (data) {
         setCarReviews(data.reviews);
-
-      
       }
     };
     //Fetches the reviews
@@ -196,7 +192,6 @@ export default function ListingDetails({ user }) {
 
   // implementing the load more reviews
 
- 
   const reviewsPerColumn = 3;
   const [next, setNext] = useState(reviewsPerColumn);
 
@@ -205,8 +200,6 @@ export default function ListingDetails({ user }) {
   };
 
 
- 
-  
 
   return (
     <Box>
@@ -234,7 +227,9 @@ export default function ListingDetails({ user }) {
           <Typography variant="h5" color="textPrimary" gutterBottom>
             You listed this vehicle
             {createdAt
-              ? ` on ${createdAt.getDate()}/${createdAt.getMonth() + 1}/${createdAt.getFullYear()}`
+              ? ` on ${createdAt.getDate()}/${
+                  createdAt.getMonth() + 1
+                }/${createdAt.getFullYear()}`
               : ""}
           </Typography>
         </Box>

@@ -323,6 +323,35 @@ class Order {
     };
     sgMail.send(msg);
   }
+
+  static async sendmailToHost(listing_id) {
+    var email = await db.query(
+      `
+        SELECT email
+        FROM orders AS o JOIN listings AS l on o.listing_id = l.id JOIN users AS u on l.user_id = u.id
+        WHERE listing_id = $1
+    
+    `,
+      [listing_id]
+    );
+
+    email = email.rows[0].email;
+
+    var link = `${process.env.CLIENT_URL}login`;
+
+    const msg = {
+      to: email,
+      from: "vanlyfe.com@gmail.com",
+      subject: "NEW ORDER",
+      text: `Text`,
+      html: `
+      New order request has been received. 
+      Please note that this order expires within 24 hours.
+      Kindly <a href=${link}>login</a> to accept the order.
+      Thank you for choosing vanlyfe!`,
+    };
+    sgMail.send(msg);
+  }
 }
 
 module.exports = Order;
