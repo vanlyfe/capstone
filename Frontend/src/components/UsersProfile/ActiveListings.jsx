@@ -25,7 +25,6 @@ export default function ActiveListings(props) {
   const [deleting, setDeleting] = useState(false);
   const [listings, setListings] = useState([]);
   const [listingId, setListingId] = useState(null);
-
   let { id } = useParams();
   const navigate = useNavigate();
 
@@ -48,7 +47,6 @@ export default function ActiveListings(props) {
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserListings(id);
-      console.log("active orders data:", resData);
 
       if (resData?.data?.listings) {
         setListings(resData.data.listings);
@@ -176,69 +174,83 @@ export default function ActiveListings(props) {
                         new Date(row.createdat).getDate()}
                     </TableCell>
 
-                      <TableCell
-                        align="center"
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      <Box
                         sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
                         }}
                       >
-                        {" "}
-                        <Group /> {row.max_accomodation}{" "}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        ${row.price}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        <Rating value={row.rating} readOnly={true} />
+                        <Group />
+                        &nbsp;{row.max_accomodation}
+                      </Box>
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      ${row.price}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      <Rating value={row.rating} readOnly={true} />
+                    </TableCell>
+                  </TableRow>
+                  {Number(props.user.id) === Number(id) ? (
+                    <TableRow>
+                      <TableCell colSpan={12}>
+                        <Box
+                          sx={{
+                            width: "100%",
+                            display: "flex",
+                            justifyContent: "flex-end",
+                          }}
+                        >
+                          <Button
+                            sx={{ color: "#6E85B7" }}
+                            onClick={() => {
+                              navigate("/listing/" + row.id + "/edit");
+                            }}
+                          >
+                            EDIT
+                          </Button>
+                          <Button
+                            sx={{ color: "#6E85B7" }}
+                            onClick={() => {
+                              setDeleting(true);
+                              setListingId(row.id);
+                            }}
+                          >
+                            DELETE
+                          </Button>
+                        </Box>
                       </TableCell>
                     </TableRow>
-                    {Number(props.user.id) === Number(id) ? (
-                      <Grid>
-                        <Link
-                          sx={{
-                            color: "#6E85B7",
-                            textDecoration: "none",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            navigate("/listing/" + row.id + "/edit");
-                          }}
-                        >
-                          Edit
-                        </Link>
-                        <Link
-                          sx={{
-                            color: "#6E85B7",
-                            textDecoration: "none",
-                            ml: 2,
-                            cursor: "pointer",
-                          }}
-                          onClick={() => {
-                            setDeleting(true);
-                            setListingId(row.id);
-                          }}
-                        >
-                          {" "}
-                          Delete
-                        </Link>
-                      </Grid>
-                    ) : null}
-                  </TableBody>
-                ))
-              : "No listings yet"}
+                  ) : null}
+                </TableBody>
+              ))
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={12}>No Listings yet</TableCell>
+                </TableRow>
+              </TableBody>
+            )}
           </Table>
         </TableContainer>
       </Box>
