@@ -1,6 +1,7 @@
-const db = require("../db");
-const { BadRequestError } = require("../utils/errors");
-const { s3 } = require("../config");
+const db = require('../db');
+const { BadRequestError } = require('../utils/errors');
+const { s3 } = require('../config');
+const cron = require('node-cron');
 
 class Listing {
   static async getListings() {
@@ -123,12 +124,12 @@ class Listing {
 
   static async postListing(listings, user, images) {
     const requiredFields = [
-      "price",
-      "location",
-      "max_accomodation",
-      "model",
-      "make",
-      "year",
+      'price',
+      'location',
+      'max_accomodation',
+      'model',
+      'make',
+      'year',
     ];
 
     requiredFields.forEach((field) => {
@@ -138,24 +139,24 @@ class Listing {
     });
 
     if (listings.location.length < 1) {
-      throw new BadRequestError("No location provided");
+      throw new BadRequestError('No location provided');
     }
 
     if (listings.price <= 0) {
-      throw new BadRequestError("Kindly provide a valid price");
+      throw new BadRequestError('Kindly provide a valid price');
     }
 
     if (listings.model.length < 1) {
-      throw new BadRequestError("No car model provided");
+      throw new BadRequestError('No car model provided');
     }
 
     if (listings.make.length < 1) {
-      throw new BadRequestError("No car make provided");
+      throw new BadRequestError('No car make provided');
     }
 
     if (listings.max_accomodation < 1) {
       throw new BadRequestError(
-        "Maximum vehicle accomodation cannot be less than 1"
+        'Maximum vehicle accomodation cannot be less than 1'
       );
     }
 
@@ -163,7 +164,7 @@ class Listing {
 
     if (imagesArray.length === 0 || imagesArray.length > 5) {
       throw new BadRequestError(
-        "You must upload at least one image and no more than five images."
+        'You must upload at least one image and no more than five images.'
       );
     }
 
@@ -212,7 +213,27 @@ class Listing {
       listingId: id,
     });
 
+    cron.schedule('* */1 * * *', () => {
+      this.refreshS3Urls(imagesArray, id);
+    });
+
     return res;
+  }
+
+  static async refreshS3Urls(imagesArray, listingId) {
+    const urls = this.getS3Urls(imagesArray.length, listingId);
+
+    let toUpdateImages = { image_url: urls[0] };
+
+    imagesArray.slice(1).forEach((_, i) => {
+      toUpdateImages[`image_url${i + 2}`] = urls[i + 1];
+    });
+    await this.editListing({
+      listingUpdate: toUpdateImages,
+      listingId: listingId,
+    });
+
+    console.log(`refreshed images for listing ${listingId} on ${new Date()}`);
   }
 
   // {
@@ -220,31 +241,30 @@ class Listing {
   //  listingId: id,
   // }
   //
-
   static async editListing({ listingUpdate, listingId }) {
-    let queryString = "";
+    let queryString = '';
 
     let listingUpdateEntries = Object.entries(listingUpdate);
     var params = 1;
     for (let i = 0; i < listingUpdateEntries.length; i++) {
-      if (listingUpdateEntries[i][1] === "") {
+      if (listingUpdateEntries[i][1] === '') {
         continue;
       }
 
       if (
         listingUpdateEntries[i][1] < 1 &&
-        listingUpdateEntries[i][0] === "max_accomodation"
+        listingUpdateEntries[i][0] === 'max_accomodation'
       ) {
         throw new BadRequestError(
-          "Vehicle should be able to accomodate at least one person"
+          'Vehicle should be able to accomodate at least one person'
         );
       }
 
       if (
         listingUpdateEntries[i][1] <= 0 &&
-        listingUpdateEntries[i][0] === "price"
+        listingUpdateEntries[i][0] === 'price'
       ) {
-        throw new BadRequestError("Invalid price");
+        throw new BadRequestError('Invalid price');
       }
 
       queryString += `${listingUpdateEntries[i][0]} = $${params}, `;
@@ -259,7 +279,7 @@ class Listing {
 
     var entry = [];
     listingUpdateEntries.map((item) => {
-      if (item[1] !== "") {
+      if (item[1] !== '') {
         entry.push(item[1]);
       }
     });
@@ -304,9 +324,9 @@ class Listing {
       const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: `${id}-${i}`,
-        Expires: 99999999999999,
+        Expires: 604800,
       };
-      const url = s3.getSignedUrl("getObject", params);
+      const url = s3.getSignedUrl('getObject', params);
       urls.push(url);
     }
 
@@ -315,7 +335,7 @@ class Listing {
 
   static async postPhotostoS3(photos, id) {
     for (let i = 0; i < photos.length; i++) {
-      const photo = Buffer.from(photos[i].data, "base64");
+      const photo = Buffer.from(photos[i].data, 'base64');
       await s3
         .upload({
           Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -329,14 +349,14 @@ class Listing {
 
   static async filterListings(search) {
     if (
-      search.minPrice === "" &&
-      search.maxPrice === "" &&
-      search.minRating === "" &&
-      search.model === "" &&
-      search.location === "" &&
-      search.year === ""
+      search.minPrice === '' &&
+      search.maxPrice === '' &&
+      search.minRating === '' &&
+      search.model === '' &&
+      search.location === '' &&
+      search.year === ''
     ) {
-      throw new BadRequestError("Must have at least one filter variable");
+      throw new BadRequestError('Must have at least one filter variable');
     }
 
     const minPrice = search.minPrice;
@@ -352,17 +372,17 @@ class Listing {
         : null;
 
     var minRating =
-      search.minRating === ""
+      search.minRating === ''
         ? null
         : await this.filterRating(search.minRating);
     var location =
-      search.location === ""
+      search.location === ''
         ? null
         : await this.filterLocation(search.location);
 
-    var year = search.year === "" ? null : await this.filterYear(search.year);
+    var year = search.year === '' ? null : await this.filterYear(search.year);
     var model =
-      search.model === "" ? null : await this.filterMake(search.model);
+      search.model === '' ? null : await this.filterMake(search.model);
 
     var res = this.intersection(price, minRating);
     res = this.intersection(res, location);
