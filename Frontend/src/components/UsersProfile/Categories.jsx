@@ -15,27 +15,26 @@ export default function Categories(props) {
   let { id } = useParams();
 
   const handleOnPastOrders = () => {
-    props.setCategory("po");
+    props.setCategory("pastOrders");
   };
-
   const handleOnPastListings = () => {
-    props.setCategory("pl");
+    props.setCategory("pastListings");
   };
 
   const handleOnActiveOrders = () => {
-    props.setCategory("ao");
+    props.setCategory("activeOrders");
   };
 
   const handleOnActiveListings = () => {
-    props.setCategory("al");
+    props.setCategory("activeListings");
   };
 
   const handleOnFavourites = () => {
-    props.setCategory("fl");
+    props.setCategory("favorites");
   };
 
   const handleOnReviews = () => {
-    props.setCategory("r");
+    props.setCategory("reviews");
   };
   return (
     <Grid

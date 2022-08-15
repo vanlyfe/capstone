@@ -10,7 +10,6 @@ import CreateListing from "./CreateListing";
 import ListingDetails from "./ListingDetails";
 import OrderConfirmation from "./OrderConfirmation";
 import EditListing from "./EditListing";
-
 import NotFound from "./NotFound";
 import { Navbar } from "./Navbar";
 import User from "./User";
@@ -20,6 +19,7 @@ import ForgotPasswordConfirm from "./ForgotPassword/forgotPasswordConfirm";
 import ForgotPasswordEmail from "./ForgotPassword/ForgotPasswordEmail";
 import ResetError from "./ResetError";
 import Terms from "./Terms";
+
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);

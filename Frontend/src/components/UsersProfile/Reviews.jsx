@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Paper,
@@ -15,6 +15,8 @@ import { ThumbUp } from "@mui/icons-material";
 import apiClient from "../../services/apiClient";
 
 export default function Reviews(props) {
+  const navigate = useNavigate();
+
   let { id } = useParams();
   const [error, setError] = React.useState();
   const [reviews, setReviews] = React.useState([]);
@@ -81,7 +83,12 @@ export default function Reviews(props) {
                 <Box
                   sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
                 >
-                  <Typography sx={{ fontWeight: 600, fontSize: 20 }}>
+                  <Typography
+                    sx={{ fontWeight: 600, fontSize: 20, cursor: "pointer" }}
+                    onClick={() => {
+                      navigate("/user/" + rev.reveiwer_id);
+                    }}
+                  >
                     {rev.firstname} {rev.lastname}
                   </Typography>
                 </Box>

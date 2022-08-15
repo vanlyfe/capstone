@@ -81,6 +81,8 @@ router.post(
 
       const orders = req.body;
       const order = await Order.postOrder({ listingId, orders, user });
+      Order.sendmail(user.id);
+      Order.sendmailToHost(listingId);
       return res.status(200).json({ order: order });
     } catch (err) {
       next(err);

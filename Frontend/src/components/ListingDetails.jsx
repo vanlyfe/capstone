@@ -1,46 +1,22 @@
 import React, { useEffect } from "react";
+import { BrowserRouter as Router, Link, useNavigate } from "react-router-dom";
 import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Navigate,
-  useNavigate,
-} from "react-router-dom";
-import {
-  AppBar,
-  Toolbar,
   Paper,
   Typography,
-  Stack,
   Button,
   Box,
   Grid,
-  Card,
-  CardHeader,
-  CardMedia,
-  CardActions,
-  Collapse,
-  IconButton,
-  CardContent,
   Avatar,
   Rating,
   Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Drawer,
   TextField,
+  Container,
+  Tooltip,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
-import { ThumbUp } from "@mui/icons-material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+
+import { ArrowBack, ConstructionOutlined, ThumbUp } from "@mui/icons-material";
 // my imports
-import DatePicker from "./DatePicker";
+
 // used the separate calendars is instead of the datepicker
 // the following represent imported components
 import DateIn from "./DateIn";
@@ -49,19 +25,17 @@ import DateOut from "./DateOut";
 
 //icons used in the host and includes segments
 
-import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
 import WifiIcon from "@mui/icons-material/Wifi";
 import CameraAltIcon from "@mui/icons-material/CameraAlt";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
 import MailOutlineIcon from "@mui/icons-material/MailOutline";
 import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 import apiClient from "../services/apiClient";
 
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import Login from "./Login";
 
 export default function ListingDetails({ user }) {
   const navigate = useNavigate();
@@ -74,10 +48,10 @@ export default function ListingDetails({ user }) {
   const [dateInValue, setDateInValue] = useState(null);
   const [dateOutValue, setDateOutValue] = useState(null);
   const [numGuests, setNumGuests] = useState(null);
+  const [userDetails, setUserDetails] = useState([]);
 
   // using this as an alternative to test the submit button
-
-  const [order_id, setOrderId] = useState(null);
+  const [order_id, setOrder_id] = useState(null);
 
   let { id } = useParams();
 
@@ -86,12 +60,11 @@ export default function ListingDetails({ user }) {
     const makeAPIcalls = async () => {
       const fetchCarDetails = async () => {
         const { data, error } = await apiClient.fetchListingById(id);
-        //   console.log("car details data", data.listing[0]);
+        //console.log("car details data", data.listing[0]);
         if (data) {
           setCarDetails(data.listing[0]);
           setIsUser(data.listing[0].user_id === user.id);
-          // console.log("This is data", data.listing[0])
-          // console.log("car details", carDetails);
+          console.log("car details", carDetails);
         }
       };
 
@@ -103,9 +76,7 @@ export default function ListingDetails({ user }) {
 
         if (data) {
           setCarReviews(data.reviews);
-          // console.log("review", carReviews);
-
-          console.log("car review", carReviews);
+          // console.log("car review", carReviews);
         }
       };
 
@@ -124,31 +95,26 @@ export default function ListingDetails({ user }) {
       const user_id = carDetails.user_id;
 
       const { data, error } = await apiClient.fetchUserFromId(user_id);
-      console.log(" host iddata ", data);
+      // console.log("set host id : ", host_id);
 
       if (data) {
         setHostDetails(data.user);
-
-        //console.log("host details", hostDetails);
+        setUserDetails(user);
       }
     };
 
     fetchHostDetails();
   }, [carDetails]);
 
-  console.log(" user details ", hostDetails);
-
   useEffect(() => {
     const fetchReviewerDetails = async () => {
       const reviewer_id = carReviews[0].user_id;
-      console.log("reviewer_id", reviewer_id);
+
       const { data, error } = await apiClient.fetchUserFromId(reviewer_id);
-      console.log("data reviewer_id", data);
+
       if (data) {
         setReviewerDetails(data.user);
         //setPrice(data.listing.price)
-
-        console.log("reviewer details ", reviewerDetails);
       }
     };
 
@@ -205,64 +171,13 @@ export default function ListingDetails({ user }) {
 
   const handleOnInputChange = (e) => {
     if (e.target.name === "numGuests") {
-      //console.log("text input value", e.target.value);
       setNumGuests(e.target.value);
-      // if (
-      //   (e.target.value != "" && isNaN(e.target.value)) ||
-      //   e.target.value == "e" ||
-      //   e.target.value == "-"
-      // ) {
-      //   console.log("is NAN", isNaN(e.target.value));
-      //   setErrors((e) => ({
-      //     ...e,
-      //     guests: "Please enter a number.",
-      //   }));
-      // }
-      // if ((e.target.value != "" && e.target.value > 5) || e.target.value < 1) {
-      //   setErrors((e) => ({
-      //     ...e,
-      //     guests: "Please enter a value between 1 and 5.",
-      //   }));
-      // } else {
-      //   setErrors((e) => ({ ...e, guests: null }));
-      //   setNumGuests(e.target.value);
-      // }
     }
 
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  // function validateGuests(value) {
-  //   if (value == "") {
-  //     setErrors((e) => ({
-  //       ...e,
-  //       guests: "*Required",
-  //     }));
-  //   }  else {
-  //     setErrors((e) => ({ ...e, guests: null }));
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   validateGuests(numGuests);
-  // }, [numGuests]);
-
-  // function validateDates(begin, end) {
-  //   if (getNumberOfDays(begin, end) < 0) {
-  //     setErrors((e) => ({
-  //       ...e,
-  //       endDate: "The End Date Must be after the Start Date",
-  //     }));
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   validateDates(dateInValue, dateOutValue);
-  // }, [dateInValue, dateOutValue]);
-
   const handleOnSubmit = async (evt) => {
-    console.log(evt);
-
     setErrors((e) => ({ ...e, form: null }));
 
     if (!user) {
@@ -284,15 +199,16 @@ export default function ListingDetails({ user }) {
       setErrors((e) => ({ ...e, form: error }));
     }
 
-    console.log("posted data", data);
-    console.log("posted data id", data.order[0].id);
-
-    const order_id = data.order[0].id;
-
-    ///setOrderId(order_id);
-
-    //navigate(user ? `/orderconfirmation/${id}/${order_id}` : "/login");
+    //const order_id = data.order[0].id;
+    setOrder_id(data.order[0].id);
     navigate(`/orderconfirmation/${id}/${order_id}`);
+  };
+
+  // console.log("host id", hostDetails.id);
+  //console.log("User id", userDetails.id);
+
+  const handleOnClick = () => {
+    navigate(`/confirm/${id}/${order_id}`);
   };
 
   return (
@@ -451,16 +367,33 @@ export default function ListingDetails({ user }) {
 
               <Box>
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 2,
+                  }}
                 >
                   <Avatar
                     alt="Remy Sharp"
                     //src="/static/images/avatar/1.jpg"
                     src={hostDetails.image_url}
-                    // sx={{ width: 200, height: 200 }}
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      navigate("/user/" + hostDetails.id);
+                    }}
                   />
                   <Typography
-                    sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
+                    sx={{
+                      fontWeight: 600,
+                      fontSize: 20,
+                      mt: 1,
+                      ml: 2,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      navigate("/user/" + hostDetails.id);
+                    }}
                   >
                     {hostDetails.firstname + " " + hostDetails.lastname}
                   </Typography>
@@ -487,7 +420,12 @@ export default function ListingDetails({ user }) {
                   <Rating name="read-only" value={3} readOnly />
                 </Box>
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 5,
+                  }}
                 >
                   <LocalPhoneIcon />
                   <Typography
@@ -499,7 +437,12 @@ export default function ListingDetails({ user }) {
                   </Typography>
                 </Box>
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 5,
+                  }}
                 >
                   <MailOutlineIcon />
                   <Typography
@@ -519,7 +462,7 @@ export default function ListingDetails({ user }) {
                 </Button>
               </Box>
             </Box>
-            <Box  sx={{ mt: 10, }}>
+            <Box sx={{ mt: 10 }}>
               <Box>
                 <Typography
                   sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
@@ -527,7 +470,12 @@ export default function ListingDetails({ user }) {
                   Includes:
                 </Typography>
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 5,
+                  }}
                 >
                   <WifiIcon />
                   <Typography
@@ -538,7 +486,12 @@ export default function ListingDetails({ user }) {
                 </Box>
 
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 5,
+                  }}
                 >
                   <CameraAltIcon />
                   <Typography
@@ -549,7 +502,12 @@ export default function ListingDetails({ user }) {
                 </Box>
 
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 5,
+                  }}
                 >
                   <AirlineSeatIndividualSuiteIcon />
                   <Typography
@@ -559,9 +517,14 @@ export default function ListingDetails({ user }) {
                   </Typography>
                 </Box>
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 5 }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    mt: 1,
+                    ml: 5,
+                  }}
                 >
-                  <CalendarTodayIcon/>
+                  <CalendarTodayIcon />
                   <Typography
                     sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 5 }}
                   >
@@ -768,7 +731,12 @@ export default function ListingDetails({ user }) {
                     readOnly
                   />
                   <Grid
-                    sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      mt: 1,
+                      ml: 2,
+                    }}
                   >
                     <Avatar
                       alt="Remy Sharp"
@@ -777,7 +745,16 @@ export default function ListingDetails({ user }) {
                       // sx={{ width: 200, height: 200 }}
                     />
                     <Typography
-                      sx={{ fontWeight: 600, fontSize: 20, mt: 1, ml: 2 }}
+                      sx={{
+                        fontWeight: 600,
+                        fontSize: 20,
+                        mt: 1,
+                        ml: 2,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        navigate("/user/" + review.id);
+                      }}
                     >
                       {review.firstname + " " + review.lastname}
                     </Typography>
@@ -794,7 +771,7 @@ export default function ListingDetails({ user }) {
               );
             })
           : ""}
-      </Grid>
+      </Grid>{" "}
     </Box>
   );
 }

@@ -25,6 +25,7 @@ export default function ActiveListings(props) {
   const [deleting, setDeleting] = useState(false);
   const [listings, setListings] = useState([]);
   const [listingId, setListingId] = useState(null);
+
   let { id } = useParams();
   const navigate = useNavigate();
 
@@ -47,6 +48,7 @@ export default function ActiveListings(props) {
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserListings(id);
+      console.log("active orders data:", resData);
 
       if (resData?.data?.listings) {
         setListings(resData.data.listings);
@@ -203,29 +205,33 @@ export default function ActiveListings(props) {
                     </TableRow>
                     {Number(props.user.id) === Number(id) ? (
                       <Grid>
-                        <Button
-                          sx={{ color: "#6E85B7" }}
+                        <Link
+                          sx={{
+                            color: "#6E85B7",
+                            textDecoration: "none",
+                            cursor: "pointer",
+                          }}
                           onClick={() => {
-                            
-                            
-                            navigate("/listing/" + row.id  + "/edit")
-
+                            navigate("/listing/" + row.id + "/edit");
                           }}
                         >
-                          
-                          EDIT
-                        </Button>
-                        <Button
-                          sx={{ color: "#6E85B7" }}
+                          Edit
+                        </Link>
+                        <Link
+                          sx={{
+                            color: "#6E85B7",
+                            textDecoration: "none",
+                            ml: 2,
+                            cursor: "pointer",
+                          }}
                           onClick={() => {
                             setDeleting(true);
                             setListingId(row.id);
                           }}
                         >
                           {" "}
-                          DELETE
-                        </Button>
-                        
+                          Delete
+                        </Link>
                       </Grid>
                     ) : null}
                   </TableBody>

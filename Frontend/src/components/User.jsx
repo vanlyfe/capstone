@@ -55,17 +55,17 @@ export default function User({ user, setUser }) {
               setUser={setUser}
             />
 
-            {category === "ao" ? (
+            {category === "activeOrders" ? (
               <ActiveOrders user={user} setUser={setUser} />
-            ) : category === "pl" ? (
+            ) : category === "pastListings" ? (
               <PastListings user={user} setUser={setUser} />
-            ) : category === "al" ? (
+            ) : category === "activeListings" ? (
               <ActiveListings user={user} setUser={setUser} />
-            ) : category === "po" ? (
+            ) : category === "pastOrders" ? (
               <PastOrders user={user} setUser={setUser} />
-            ) : category === "r" ? (
+            ) : category === "reviews" ? (
               <Reviews user={user} setUser={setUser} />
-            ) : category === "fl" ? (
+            ) : category === "favorites" ? (
               <Favorites user={user} setUser={setUser} />
             ) : (
               <ActiveListings user={user} setUser={setUser} />

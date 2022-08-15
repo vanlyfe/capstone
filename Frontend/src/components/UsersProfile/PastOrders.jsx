@@ -132,7 +132,6 @@ export default function PastOrders() {
       if (!ratingData.error) {
         setOpen(false);
       }
-     
     }
   };
 
@@ -145,8 +144,6 @@ export default function PastOrders() {
   //     </Typography>
   //   );
   // }
-
-  
 
   return (
     <Grid
@@ -201,10 +198,15 @@ export default function PastOrders() {
                       borderTop: "none",
                     }}
                   >
-                    <TableRow key={row.id} hover={true} onClick={() => {
-                     
-                      navigate("/orderconfirmation/" + row.listing_id + "/" + row.id)
-                    }}>
+                    <TableRow
+                      key={row.id}
+                      hover={true}
+                      onClick={() => {
+                        navigate(
+                          "/orderconfirmation/" + row.listing_id + "/" + row.id
+                        );
+                      }}
+                    >
                       <TableCell
                         component="th"
                         scope="row"
@@ -213,7 +215,11 @@ export default function PastOrders() {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
+                        {new Date(row.createdat).getFullYear() +
+                          "-" +
+                          new Date(row.createdat).getMonth() +
+                          "-" +
+                          new Date(row.createdat).getDate()}
                       </TableCell>
                       <TableCell
                         align="center"
@@ -222,7 +228,11 @@ export default function PastOrders() {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.startdate).getFullYear() + "-" + new Date(row.startdate).getMonth() + "-" + new Date(row.startdate).getDate()}
+                        {new Date(row.startdate).getFullYear() +
+                          "-" +
+                          new Date(row.startdate).getMonth() +
+                          "-" +
+                          new Date(row.startdate).getDate()}
                       </TableCell>
                       <TableCell
                         align="center"
@@ -231,7 +241,11 @@ export default function PastOrders() {
                           borderTop: "none",
                         }}
                       >
-                        {new Date(row.enddate).getFullYear() + "-" + new Date(row.enddate).getMonth() + "-" + new Date(row.enddate).getDate()}
+                        {new Date(row.enddate).getFullYear() +
+                          "-" +
+                          new Date(row.enddate).getMonth() +
+                          "-" +
+                          new Date(row.enddate).getDate()}
                       </TableCell>
 
                       <TableCell
