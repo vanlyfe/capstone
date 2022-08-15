@@ -44,14 +44,13 @@ export default function ActiveOrders() {
     getData();
   }, []);
 
-  
   return (
     <Grid
       sx={{
         mt: 1,
         bgcolor: "##8cbfed",
         height: "70%",
-        width: "100%",
+        width: { xs: "100%", md: "70%" },
         mt: 1,
         id: 3,
       }}
@@ -70,11 +69,11 @@ export default function ActiveOrders() {
       </Box>
 
       <Box sx={{ height: 400, width: "100%", mt: 1, ml: 1 }}>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation={5}>
           <Table sx={{ minWidth: 140 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>Post Date</TableCell>
+                <TableCell align="center">Post Date</TableCell>
 
                 <TableCell align="center">Check in </TableCell>
                 <TableCell align="center"> Check out</TableCell>
@@ -84,32 +83,62 @@ export default function ActiveOrders() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orders.length > 0
-                ? orders.map((row) => (
-                    <TableRow
-                      key={row.id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                      hover={true}
-                      onClick={() => {
-                        navigate("/orderconfirmation/" + row.listing_id + "/" + row.id)
-                      }}
-                    >
-                      <TableCell component="th" scope="row">
-                      {new Date(row.createdat).getFullYear() + "-" + new Date(row.createdat).getMonth() + "-" + new Date(row.createdat).getDate()}
-                      </TableCell>
-                      <TableCell align="center">{new Date(row.startdate).getFullYear() + "-" + new Date(row.startdate).getMonth() + "-" + new Date(row.startdate).getDate()}</TableCell>
-                      <TableCell align="center">{new Date(row.enddate).getFullYear() + "-" + new Date(row.enddate).getMonth() + "-" + new Date(row.enddate).getDate()}</TableCell>
+              {orders.length > 0 ? (
+                orders.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    sx={{
+                      "&:last-child td, &:last-child th": { border: 0 },
+                    }}
+                    hover={true}
+                    onClick={() => {
+                      navigate(
+                        "/orderconfirmation/" + row.listing_id + "/" + row.id
+                      );
+                    }}
+                  >
+                    <TableCell component="th" scope="row" align="center">
+                      {new Date(row.createdat).getFullYear() +
+                        "-" +
+                        (new Date(row.createdat).getMonth() + 1) +
+                        "-" +
+                        new Date(row.createdat).getDate()}
+                    </TableCell>
+                    <TableCell align="center">
+                      {new Date(row.startdate).getFullYear() +
+                        "-" +
+                        (new Date(row.startdate).getMonth() + 1) +
+                        "-" +
+                        new Date(row.startdate).getDate()}
+                    </TableCell>
+                    <TableCell align="center">
+                      {new Date(row.enddate).getFullYear() +
+                        "-" +
+                        (new Date(row.enddate).getMonth() + 1) +
+                        "-" +
+                        new Date(row.enddate).getDate()}
+                    </TableCell>
 
-                      <TableCell align="center">
-                        {" "}
-                        <Group /> {row.guests}{" "}
-                      </TableCell>
-                      <TableCell align="center">${row.total}</TableCell>
-                    </TableRow>
-                  ))
-                : "No orders yet"}
+                    <TableCell align="center">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Group />
+                        &nbsp;{row.guests}
+                      </Box>
+                    </TableCell>
+                    <TableCell align="center">${row.total}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={12}>No Active Orders</TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>

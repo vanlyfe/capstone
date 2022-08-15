@@ -167,8 +167,6 @@ class Listing {
       );
     }
 
-    // console.log(imagesArray);
-
     const result = await db.query(
       `
           INSERT INTO listings(
@@ -261,7 +259,6 @@ class Listing {
 
     var entry = [];
     listingUpdateEntries.map((item) => {
-      //   console.log(entry[1])
       if (item[1] !== "") {
         entry.push(item[1]);
       }
@@ -307,6 +304,7 @@ class Listing {
       const params = {
         Bucket: process.env.AWS_S3_BUCKET_NAME,
         Key: `${id}-${i}`,
+        Expires: 99999999999999,
       };
       const url = s3.getSignedUrl("getObject", params);
       urls.push(url);

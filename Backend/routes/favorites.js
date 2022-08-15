@@ -16,6 +16,18 @@ router.get("/:userId", async (req, res, next) => {
   }
 });
 
+router.get("/:userId/ids", async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const favorites = await Favorite.getFavoritesIds(userId);
+
+    return res.status(200).json({ favorites: favorites });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post(
   "/:listingId",
   security.requireAuthenticatedUser,
@@ -36,12 +48,15 @@ router.post(
 );
 
 router.delete(
-  "/:id",
+  "/:listingId",
   security.requireAuthenticatedUser,
   async (req, res, next) => {
     try {
-      const { id } = req.params;
-      await Favorite.deleteFavorite(id);
+      const { listingId } = req.params;
+      const { user } = res.locals;
+      const userId = user.id;
+
+      await Favorite.deleteFavorite(userId, listingId);
       return res.status(200).json();
     } catch (error) {
       next(error);

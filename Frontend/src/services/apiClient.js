@@ -192,6 +192,16 @@ class ApiClient {
     });
   }
 
+  //PUT requests
+
+  async updateOrder(orderUpdate, orderId){
+    return await this.request({
+      endpoint : `order/` + orderId,
+      method : `PUT`, 
+      data : orderUpdate
+    })
+  }
+
   //RATINGS requests
 
   // GET requests
@@ -327,6 +337,13 @@ class ApiClient {
     })
   }
 
+  async getFavoritesIds(userId){
+    return this.request({
+      endpoint : `favorite/` + userId + "/ids",
+      method : `GET`
+    })
+  }
+
   //POST requests
 
   async postFavorite(listingId){
@@ -338,9 +355,9 @@ class ApiClient {
 
   //DELETE requests
 
-  async deleteFavorite(id){
+  async deleteFavorite(listingId){
     return this.request({
-      endpoint : `favorite/` + id,
+      endpoint : `favorite/` + listingId,
       method : `DELETE`
     })
   }

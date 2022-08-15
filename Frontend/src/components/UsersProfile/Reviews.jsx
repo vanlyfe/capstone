@@ -10,9 +10,9 @@ import {
   Avatar,
   Rating,
   Button,
-} from "@mui/material";
-import { ThumbUp } from "@mui/icons-material";
-import apiClient from "../../services/apiClient";
+} from '@mui/material';
+import { ThumbUp } from '@mui/icons-material';
+import apiClient from '../../services/apiClient';
 
 export default function Reviews(props) {
   const navigate = useNavigate();
@@ -25,26 +25,23 @@ export default function Reviews(props) {
     const getReviews = async () => {
       const response = await apiClient.getReviewsForUser(id);
 
-      console.log("reviews: ", response.data.reviews);
-
-      if (response?.data?.reviews[0].review) {
+      if (response?.data?.reviews[0]?.review) {
         setReviews(response.data.reviews);
       } else {
-        setError("No reviews yet");
+        setError('No reviews yet');
       }
     };
 
     getReviews();
   }, []);
   return (
-    <Grid
+    <Box
       sx={{
         mt: 1,
-        height: "70%",
-        width: "100%",
+        height: '70%',
+        width: '100%',
         mt: 1,
-      }}
-    >
+      }}>
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2, ml: 2 }}>
           Reviews
@@ -52,29 +49,29 @@ export default function Reviews(props) {
         <Button
           variant="contained"
           href="/listings"
-          sx={{ mt: 2, mb: 2, ml: 2 }}
-        >
+          sx={{ mt: 2, mb: 2, ml: 2 }}>
           Browse Listing
         </Button>
       </Box>
-      {reviews
-        ? reviews.map((rev) => (
-            <Paper
-              elevation={3}
-              sx={{
-                height: 200,
-                width: 800,
-                mt: 3,
-                ml: 3,
-                bgcolor: "white",
-              }}
-            >
-              <Rating
-                name="user-rating"
-                sx={{ mt: 2, ml: 2 }}
-                value={rev.rating}
-                readOnly
-              />
+      <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+        {reviews
+          ? reviews.map((rev, i) => (
+              <Paper
+                key={i}
+                elevation={3}
+                sx={{
+                  height: 200,
+                  width: 800,
+                  mt: 3,
+                  ml: 3,
+                  bgcolor: 'white',
+                }}>
+                <Rating
+                  name="user-rating"
+                  sx={{ mt: 2, ml: 2 }}
+                  value={rev.rating}
+                  readOnly
+                />
 
               <Grid
                 sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}

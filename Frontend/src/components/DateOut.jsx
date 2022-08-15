@@ -4,7 +4,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
-export default function DateOut(props) {
+export default function DateOut({disabled = false, ...props}) {
   const [value, setValue] = React.useState(null);
   const handleOnInputChange = (e, date) => {
     props.setDateOutValue(e);
@@ -15,6 +15,7 @@ export default function DateOut(props) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <DatePicker
+        disabled={disabled}
         label="date out"
         value={value}
         onSelect={handleOnInputChange}

@@ -101,8 +101,8 @@ export const Navbar = (props) => {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box display="flex">
-      <AppBar position="static">
+    <Box display="flex" sx={{zIndex: 2}}>
+      <AppBar position="static" sx={{zIndex: 2}}>
         <Toolbar>
           {/* Desktop logo */}
           <IconButton

@@ -8,10 +8,30 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Drawer,
+  AppBar,
+  ListSubheader,
+  ButtonGroup,
+  Button,
+  Menu,
+  MenuItem,
+  MenuList,
+  Fade,
 } from "@mui/material";
 import { useParams } from "react-router-dom";
 
+const drawerWidth = 250;
+
 export default function Categories(props) {
+  const [open, setOpen] = useState(false);
+
+  const handleClick = (event) => {
+    setOpen(!open);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   let { id } = useParams();
 
   const handleOnPastOrders = () => {
@@ -37,71 +57,134 @@ export default function Categories(props) {
     props.setCategory("reviews");
   };
   return (
-    <Grid
-      sx={{
-        mt: 1,
-        bgcolor: "#e1e9f0",
-        width: "25%",
-        mt: 1,
-        mr: 1,
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <>
+      {/* Mobile Menu */}
       <Box
         sx={{
-          height: 400,
-          width: "80%",
-          mr: 1,
-          ml: 3,
-          display: "flex",
+          display: { xs: "flex", md: "none" },
           flexDirection: "column",
+          justifyContent: "center",
+          py: 3,
+          // background: '#fafafa',
         }}
       >
-        <List>
-          <Typography>Host</Typography>
+        <Button
+          id="categories"
+          onClick={handleClick}
+          variant="contained"
+          color="secondary"
+        >
+          Categories
+        </Button>
+        <Fade in={open} unmountOnExit>
+          <MenuList
+            sx={{ width: "90%" }}
+            id="categories-menu"
+            open={open}
+            MenuListProps={{
+              "aria-labelledby": "categories",
+            }}
+          >
+            <MenuItem onClick={handleOnActiveListings}>
+              Active Listings
+            </MenuItem>
+            <MenuItem onClick={handleOnPastListings}>Past Listings</MenuItem>
+            <Divider />
+            <MenuItem onClick={handleOnActiveOrders}>Active Orders</MenuItem>
+            <MenuItem onClick={handleOnPastOrders}>Past Orders</MenuItem>
+            <Divider />
+            <MenuItem onClick={handleOnReviews}>Reviews</MenuItem>
+          </MenuList>
+        </Fade>
+      </Box>
 
-          <ListItem sx={{ display: "flex", flexDirection: "column" }}>
-            <ListItemButton onClick={handleOnActiveListings}>
-              <ListItemText> Active Listings</ListItemText>
-            </ListItemButton>
-            <ListItemButton onClick={handleOnPastListings}>
-              <ListItemText>Past Listings</ListItemText>
-            </ListItemButton>
+      {/* Desktop Menu */}
+      <Box sx={{ zIndex: 1 }}>
+        <Drawer
+          sx={{
+            width: drawerWidth,
+            zIndex: 1,
+            display: { xs: "none", md: "block" },
+          }}
+          variant="permanent"
+        >
+          <Box sx={{ height: 300 }} />
+
+          <List sx={{ width: drawerWidth }}>
+            <ListItem>
+              <ListSubheader component="div" id="nested-list-subheader">
+                Host
+              </ListSubheader>
+            </ListItem>
+
+            <ListItem
+              sx={{ background: props.category == "pl" ? "#f5faff" : "#fff" }}
+            >
+              <ListItemButton onClick={handleOnPastListings}>
+                <ListItemText>Past Listings</ListItemText>
+              </ListItemButton>
+            </ListItem>
+
+            <ListItem
+              sx={{ background: props.category == "al" ? "#f5faff" : "#fff" }}
+            >
+              <ListItemButton onClick={handleOnActiveListings}>
+                <ListItemText>Active Listings</ListItemText>
+              </ListItemButton>
+            </ListItem>
+
             {props.user?.id && Number(props.user.id) === Number(id) && (
-              <ListItemButton onClick={handleOnFavourites}>
-                <ListItemText>Favorites </ListItemText>
-              </ListItemButton>
+              <ListItem
+                sx={{ background: props.category == "fl" ? "#f5faff" : "#fff" }}
+              >
+                <ListItemButton onClick={handleOnFavorites}>
+                  <ListItemText>Favorites</ListItemText>
+                </ListItemButton>
+              </ListItem>
             )}
-          </ListItem>
-        </List>
-        <Divider />
-        {props.user?.id && Number(props.user.id) === Number(id) && (
-          <List>
-            <Typography>Renter</Typography>
+          </List>
+          <Divider />
+          {props.user?.id && Number(props.user.id) === Number(id) && (
+            <List sx={{ pt: 0 }}>
+              <ListItem>
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Renter
+                </ListSubheader>
+              </ListItem>
 
-            <ListItem sx={{ display: "flex", flexDirection: "column" }}>
-              <ListItemButton onClick={handleOnActiveOrders}>
-                <ListItemText> Active Orders</ListItemText>
-              </ListItemButton>
-              <ListItemButton onClick={handleOnPastOrders}>
-                <ListItemText> Past Orders</ListItemText>
+              <ListItem
+                sx={{
+                  background: props.category == "ao" ? "#f5faff" : "#fff",
+                }}
+              >
+                <ListItemButton onClick={handleOnActiveOrders}>
+                  <ListItemText>Active Orders</ListItemText>
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                sx={{
+                  background: props.category == "po" ? "#f5faff" : "#fff",
+                }}
+              >
+                <ListItemButton onClick={handleOnPastOrders}>
+                  <ListItemText>Past Orders</ListItemText>
+                </ListItemButton>
+              </ListItem>
+            </List>
+          )}
+          <Divider />
+
+          <List>
+            <ListItem
+              sx={{ background: props.category == "r" ? "#f5faff" : "#fff" }}
+            >
+              <ListItemButton onClick={handleOnReviews}>
+                <ListItemText>Reviews</ListItemText>
               </ListItemButton>
             </ListItem>
           </List>
-        )}
-        <Divider />
-
-        <List>
-          <ListItem>
-            <ListItemButton onClick={handleOnReviews}>
-              <ListItemText sx={{ display: "flex", flexDirection: "column" }}>
-                Reviews
-              </ListItemText>
-            </ListItemButton>
-          </ListItem>
-        </List>
+        </Drawer>
       </Box>
-    </Grid>
+    </>
   );
 }
