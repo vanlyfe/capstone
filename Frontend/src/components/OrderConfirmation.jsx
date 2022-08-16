@@ -2,37 +2,19 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import {
-  AppBar,
-  Toolbar,
+
   Typography,
-  Stack,
+
   Button,
   Box,
   Grid,
-  Card,
-  CardHeader,
-  CardMedia,
-  CardActions,
-  Collapse,
-  IconButton,
-  CardContent,
-  Avatar,
-  Rating,
-  Divider,
+
   List,
   ListItem,
-  ListItemButton,
+
   ListItemText,
-  Drawer,
-  TextField,
+
 } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { red } from '@mui/material/colors';
-import { CheckBoxOutlineBlankSharp, ThumbUp } from '@mui/icons-material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 //services
 import apiClient from '../services/apiClient';
@@ -40,11 +22,6 @@ import apiClient from '../services/apiClient';
 
 //import DatePicker from "./DatePicker";
 //import DateRange from "./DateIn";
-import DateIn from './DateIn';
-import DateOut from './DateOut';
-import BookmarkSharpIcon from '@mui/icons-material/BookmarkSharp';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 // table imports
 
@@ -62,6 +39,9 @@ export default function OrderConfirmation({ user }) {
   const [userDetails, setUserDetails] = useState([]);
   const [carDetails, setCarDetails] = useState([]);
   let { id, order_id } = useParams();
+
+  const startDate = order.startdate;
+  const endDate = order.enddate;
 
   useEffect(() => {
     const fetchCarDetails = async () => {
@@ -106,7 +86,7 @@ export default function OrderConfirmation({ user }) {
     fetchOrderDetails();
   }, [user]);
 
-  const fees = carDetails.fees ? carDetails.fees : 0;
+  const fees = carDetails?.fees ? carDetails.fees : 0;
 
   function getNumberOfDays(start, end) {
     const date1 = new Date(start);
@@ -121,10 +101,10 @@ export default function OrderConfirmation({ user }) {
     // Calculating the no. of days between two dates
     const diffInDays = Math.round(diffInTime / oneDay);
 
-    return diffInDays;
+    return Number(diffInDays);
   }
 
-  const days = getNumberOfDays(order.startdate, order.enddate);
+  const days = order && order.startdate && order.enddate &&  getNumberOfDays(order.startdate, order.enddate);
 
   return (
     <Box
@@ -186,20 +166,24 @@ export default function OrderConfirmation({ user }) {
             </ListItem>
             <ListItem>
               <ListItemText
-                primary={
-                  'DATES: ' +
-                  (new Date(order.startdate).getMonth() + 1) +
-                  '/' +
-                  new Date(order.startdate).getDate() +
-                  '/' +
-                  new Date(order.startdate).getFullYear() +
-                  '-' +
-                  (new Date(order.enddate).getMonth() + 1) +
-                  '/' +
-                  new Date(order.enddate).getDate() +
-                  '/' +
-                  new Date(order.startdate).getFullYear()
-                }
+                primary={`DATES: ${
+                  startDate &&
+                  endDate &&
+                  `${
+                    new Date(order.startdate).getMonth() +
+                    1 +
+                    '/' +
+                    new Date(order.startdate).getDate() +
+                    '/' +
+                    new Date(order.startdate).getFullYear() +
+                    '-' +
+                    (new Date(order.enddate).getMonth() + 1) +
+                    '/' +
+                    new Date(order.enddate).getDate() +
+                    '/' +
+                    new Date(order.startdate).getFullYear()
+                  }`
+                }`}
               />
             </ListItem>
           </List>
@@ -220,7 +204,7 @@ export default function OrderConfirmation({ user }) {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell>Price/Night</TableCell>
+                  <TableCell>{`Price/Night`}</TableCell>
                   <TableCell align="right">${carDetails.price}</TableCell>
                 </TableRow>
                 <TableRow>
@@ -233,17 +217,28 @@ export default function OrderConfirmation({ user }) {
                 </TableRow>
 
                 <TableRow>
-                  {/* <TableCell rowSpan={3} /> */}
                   <TableCell>Subtotal</TableCell>
                   <TableCell align="right">
                     $
-                    {Math.round((order.total - order.taxes - fees) * 100) / 100}
+                    {order &&
+                      Number(fees) &&
+                      Number(order.total) &&
+                      Number(order.taxes) &&
+                      fees &&
+                      order?.total &&
+                      order.taxes &&
+                      Math.round((order.total - order.taxes - fees) * 100) /
+                        100}
                   </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Tax and fees</TableCell>
                   <TableCell align="right">
-                    ${Math.round((order.taxes + fees) * 100) / 100}
+                    $
+                    {order &&
+                      Number(order.taxes) &&
+                      Number(fees) &&
+                      Math.round((order.taxes + fees) * 100) / 100}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -268,5 +263,3 @@ export default function OrderConfirmation({ user }) {
     </Box>
   );
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
