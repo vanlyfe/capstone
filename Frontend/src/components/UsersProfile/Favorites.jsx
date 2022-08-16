@@ -161,9 +161,11 @@ export default function Favorites(props) {
                 </TableBody>
               ))
             ) : (
-              <TableRow>
-                <TableCell colSpan={12}>No favorites yet</TableCell>
-              </TableRow>
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={12}>No favorites yet</TableCell>
+                </TableRow>
+              </TableBody>
             )}
           </Table>
         </TableContainer>
