@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { BrowserRouter as Router, Link, useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Link, useNavigate } from 'react-router-dom';
 import {
   Paper,
   Typography,
@@ -12,30 +12,30 @@ import {
   TextField,
   Container,
   Tooltip,
-} from "@mui/material";
+} from '@mui/material';
 
-import { ArrowBack, ConstructionOutlined, ThumbUp } from "@mui/icons-material";
+import { ArrowBack, ConstructionOutlined, ThumbUp } from '@mui/icons-material';
 // my imports
 
 // used the separate calendars is instead of the datepicker
 // the following represent imported components
-import DateIn from "./DateIn";
-import MoreImages from "./MoreImages";
-import DateOut from "./DateOut";
+import DateIn from './DateIn';
+import MoreImages from './MoreImages';
+import DateOut from './DateOut';
 
 //icons used in the host and includes segments
 
-import WifiIcon from "@mui/icons-material/Wifi";
-import CameraAltIcon from "@mui/icons-material/CameraAlt";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
-import AirlineSeatIndividualSuiteIcon from "@mui/icons-material/AirlineSeatIndividualSuite";
-import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
+import WifiIcon from '@mui/icons-material/Wifi';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import AirlineSeatIndividualSuiteIcon from '@mui/icons-material/AirlineSeatIndividualSuite';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 
-import apiClient from "../services/apiClient";
+import apiClient from '../services/apiClient';
 
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 export default function ListingDetails({ user }) {
   const navigate = useNavigate();
@@ -145,12 +145,12 @@ export default function ListingDetails({ user }) {
   });
 
   const handleOnInputChange = (e) => {
-    if (e.target.name === "numGuests") {
+    if (e.target.name === 'numGuests') {
       setNumGuests(e.target.value);
       if (e.target.value > carDetails.max_accomodation) {
         setErrors((e) => ({
           ...e,
-          guests: "Number of guest higher than allowed",
+          guests: 'Number of guest higher than allowed',
         }));
       } else {
         setErrors((e) => ({ ...e, guests: null }));
@@ -164,7 +164,7 @@ export default function ListingDetails({ user }) {
     setErrors((e) => ({ ...e, form: null }));
 
     if (!user) {
-      navigate("/login");
+      navigate('/login');
     }
 
     const { data, error } = await apiClient.postOrder(
@@ -195,8 +195,6 @@ export default function ListingDetails({ user }) {
     setNext(next + reviewsPerColumn);
   };
 
-
-
   return (
     <Box>
       <Button
@@ -204,29 +202,27 @@ export default function ListingDetails({ user }) {
           navigate(-1);
         }}
         variant="contained"
-        sx={{ position: "absolute", top: 110, left: 15 }}
-      >
+        sx={{ position: 'absolute', top: 110, left: 15 }}>
         <ArrowBack />
       </Button>
       <Container maxWidth="xl">
         <Box
           backgroundColor="secondary.main"
           sx={{
-            height: "100%",
-            display: isUser ? "flex" : "none",
-            alignItems: "center",
-            width: "100%",
+            height: '100%',
+            display: isUser ? 'flex' : 'none',
+            alignItems: 'center',
+            width: '100%',
             height: 150,
             pl: 4,
-          }}
-        >
+          }}>
           <Typography variant="h5" color="textPrimary" gutterBottom>
             You listed this vehicle
             {createdAt
               ? ` on ${createdAt.getDate()}/${
                   createdAt.getMonth() + 1
                 }/${createdAt.getFullYear()}`
-              : ""}
+              : ''}
           </Typography>
         </Box>
 
@@ -237,12 +233,11 @@ export default function ListingDetails({ user }) {
               <Typography
                 align="center"
                 sx={{
-                  fontFamily: "sans-serif",
-                  color: "#1e1e1f",
+                  fontFamily: 'sans-serif',
+                  color: '#1e1e1f',
                   fontWeight: 300,
                   fontSize: 20,
-                }}
-              >
+                }}>
                 {carDetails.location}
               </Typography>
             </Grid>
@@ -250,20 +245,18 @@ export default function ListingDetails({ user }) {
             <Grid item xs={12} md={6}>
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  justifyContent: "center",
-                }}
-              >
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
                 <Typography
                   sx={{
-                    fontFamily: "Arial",
-                    color: "#1d3557",
+                    fontFamily: 'Arial',
+                    color: '#1d3557',
                     fontWeight: 600,
                     fontSize: 15,
                     mr: 3,
-                  }}
-                >
+                  }}>
                   {carReviews.length} Reviews
                 </Typography>
                 <Rating value={carDetails.rating || 0} readOnly={true} />
@@ -274,16 +267,15 @@ export default function ListingDetails({ user }) {
               <Box
                 sx={{
                   height: 400,
-                  display: "flex",
-                  alignItems: "center",
-                  overflow: "hidden",
-                }}
-              >
+                  display: 'flex',
+                  alignItems: 'center',
+                  overflow: 'hidden',
+                }}>
                 <Box
                   component="img"
                   alt="car image"
                   sx={{
-                    width: "100%",
+                    width: '100%',
                     mt: 2,
                   }}
                   src={carDetails.image_url}
@@ -296,35 +288,32 @@ export default function ListingDetails({ user }) {
                   sx={{
                     fontWeight: 600,
                     fontSize: 15,
-                    textAlign: "center",
-                  }}
-                >
+                    textAlign: 'center',
+                  }}>
                   ${carDetails.price}/Night
                 </Typography>
               </Grid>
               <Grid item md={4} xs={4}>
                 <Typography
                   sx={{
-                    fontFamily: "Arial",
-                    color: "#343a40",
+                    fontFamily: 'Arial',
+                    color: '#343a40',
                     fontWeight: 600,
                     fontSize: 15,
-                    textAlign: "center",
-                  }}
-                >
+                    textAlign: 'center',
+                  }}>
                   {carDetails.make} {carDetails.model}
                 </Typography>
               </Grid>
               <Grid item md={4} xs={4}>
                 <Typography
                   sx={{
-                    fontFamily: "Arial",
-                    color: "#bbd0ff",
+                    fontFamily: 'Arial',
+                    color: '#bbd0ff',
                     fontWeight: 600,
                     fontSize: 15,
-                    textAlign: "center",
-                  }}
-                >
+                    textAlign: 'center',
+                  }}>
                   Sleeps {carDetails.max_accomodation}
                 </Typography>
               </Grid>
@@ -339,55 +328,50 @@ export default function ListingDetails({ user }) {
           <Grid item md={6}>
             <Box
               sx={{
-                display: "flex",
-                height: "100%",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+                display: 'flex',
+                height: '100%',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
               <Typography
                 sx={{
                   fontSize: 25,
                   mt: 2,
-                  align: "center",
-                }}
-              >
+                  align: 'center',
+                }}>
                 Reserve This Listing
               </Typography>
 
               <Box
                 sx={{
-                  display: "flex",
-                  flexDirection: " column",
+                  display: 'flex',
+                  flexDirection: ' column',
 
-                  alignItems: "left",
-                  justifyContent: "left",
-                }}
-              >
+                  alignItems: 'left',
+                  justifyContent: 'left',
+                }}>
                 <Typography
                   sx={{
                     fontSize: 15,
                     my: 3,
-                    color: "red",
-                    align: "center",
-                  }}
-                >
+                    color: 'red',
+                    align: 'center',
+                  }}>
                   {errors.guests && (
                     <span className="error">{errors.guests}</span>
                   )}
                 </Typography>
-                <Box sx={{ display: "flex", flexDirection: "row" }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                   <Tooltip
                     title={
                       isUser
-                        ? "You cannot book your own listing"
-                        : "Enter the number of guests"
-                    }
-                  >
+                        ? 'You cannot book your own listing'
+                        : 'Enter the number of guests'
+                    }>
                     <TextField
                       disabled={isUser}
-                      sx={{ width: "100%" }}
+                      sx={{ width: '100%' }}
                       name="numGuests"
                       label="Number of guests"
                       onChange={handleOnInputChange}
@@ -404,15 +388,14 @@ export default function ListingDetails({ user }) {
                       mt: 1,
                       ml: 3,
                       mb: 3,
-                      color: "red",
-                      align: "center",
-                    }}
-                  >
+                      color: 'red',
+                      align: 'center',
+                    }}>
                     {errors.endDate && (
                       <span className="error">{errors.endDate}</span>
                     )}
                   </Typography>
-                  <Box sx={{ display: "flex", flexDirection: "row" }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                     <Box sx={{ mt: 1 }}>
                       <Typography sx={{ mt: 1, ml: 1, mb: 1 }}>
                         Check In:
@@ -420,10 +403,9 @@ export default function ListingDetails({ user }) {
                       <Tooltip
                         title={
                           isUser
-                            ? "You cannot book your own listing"
-                            : "Enter the check in date"
-                        }
-                      >
+                            ? 'You cannot book your own listing'
+                            : 'Enter the check in date'
+                        }>
                         <Box>
                           <DateIn
                             disabled={isUser}
@@ -443,10 +425,9 @@ export default function ListingDetails({ user }) {
                       <Tooltip
                         title={
                           isUser
-                            ? "You cannot book your own listing"
-                            : "Enter the check out date"
-                        }
-                      >
+                            ? 'You cannot book your own listing'
+                            : 'Enter the check out date'
+                        }>
                         <Box>
                           <DateOut
                             disabled={isUser}
@@ -465,8 +446,7 @@ export default function ListingDetails({ user }) {
                   <span className="listingError">{errors.form}</span>
                 )}
                 <Tooltip
-                  title={isUser ? "You cannot book your own listing" : ""}
-                >
+                  title={isUser ? 'You cannot book your own listing' : ''}>
                   <Box width="100%">
                     <Button
                       fullWidth
@@ -481,8 +461,7 @@ export default function ListingDetails({ user }) {
                         !dateInValue ||
                         !dateOutValue ||
                         errors.guests
-                      }
-                    >
+                      }>
                       Submit Request
                     </Button>
                   </Box>
@@ -493,12 +472,14 @@ export default function ListingDetails({ user }) {
 
           {/* Host Info */}
           <Grid
+            elevation={2}
+            py={3}
             container
             item
             columnSpacing={10}
             md={6}
-            justifyContent="center"
-          >
+            mt={4}
+            justifyContent="center">
             <Grid container item md={6} xs={12} spacing={1} mt={1}>
               <Grid container item xs={12}>
                 <Grid item xs={6}>
@@ -507,10 +488,9 @@ export default function ListingDetails({ user }) {
                 <Grid item xs={6}>
                   <Button
                     onClick={() => {
-                      navigate("/user/" + hostDetails.id);
-                    }}
-                  >
-                    {hostDetails.firstname + " " + hostDetails.lastname}
+                      navigate('/user/' + hostDetails.id);
+                    }}>
+                    {hostDetails.firstname + ' ' + hostDetails.lastname}
                   </Button>
                 </Grid>
               </Grid>
@@ -519,12 +499,11 @@ export default function ListingDetails({ user }) {
                 <Grid item xs={6}>
                   <Typography
                     sx={{
-                      fontFamily: "Arial",
-                      color: "#1d3557",
+                      fontFamily: 'Arial',
+                      color: '#1d3557',
                       fontWeight: 600,
                       fontSize: 15,
-                    }}
-                  >
+                    }}>
                     {carReviews.length} reviews
                   </Typography>
                 </Grid>
@@ -541,7 +520,7 @@ export default function ListingDetails({ user }) {
                   <Typography sx={{ fontWeight: 600, fontSize: 12, mt: 1 }}>
                     {hostDetails.phone
                       ? hostDetails.phone
-                      : "Phone Number Unavailable"}
+                      : 'Phone Number Unavailable'}
                   </Typography>
                 </Grid>
               </Grid>
@@ -561,9 +540,8 @@ export default function ListingDetails({ user }) {
                   variant="contained"
                   sx={{ mt: 3, ml: 3 }}
                   onClick={() => {
-                    navigate("/user/" + hostDetails.id);
-                  }}
-                >
+                    navigate('/user/' + hostDetails.id);
+                  }}>
                   View host
                 </Button>
               </Grid>
@@ -575,44 +553,36 @@ export default function ListingDetails({ user }) {
                   Includes:
                 </Typography>
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
-                >
+                  sx={{ display: 'flex', flexDirection: 'row', mt: 1, ml: 2 }}>
                   <WifiIcon />
                   <Typography
-                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}
-                  >
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}>
                     Free Wifi
                   </Typography>
                 </Box>
 
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
-                >
+                  sx={{ display: 'flex', flexDirection: 'row', mt: 1, ml: 2 }}>
                   <CameraAltIcon />
                   <Typography
-                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}
-                  >
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}>
                     Backup Camera
                   </Typography>
                 </Box>
 
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
-                >
+                  sx={{ display: 'flex', flexDirection: 'row', mt: 1, ml: 2 }}>
                   <AirlineSeatIndividualSuiteIcon />
                   <Typography
-                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}
-                  >
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}>
                     Set of linen
                   </Typography>
                 </Box>
                 <Box
-                  sx={{ display: "flex", flexDirection: "row", mt: 1, ml: 2 }}
-                >
+                  sx={{ display: 'flex', flexDirection: 'row', mt: 1, ml: 2 }}>
                   <CalendarTodayIcon />
                   <Typography
-                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}
-                  >
+                    sx={{ fontWeight: 600, fontSize: 12, mt: 1, ml: 2 }}>
                     Free Cancellation for 24 hours
                   </Typography>
                 </Box>
@@ -625,19 +595,17 @@ export default function ListingDetails({ user }) {
             md={12}
             xs={12}
             sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
+              display: 'flex',
+              justifyContent: 'center',
+            }}>
             <Typography
               sx={{
                 fontSize: 25,
                 my: 3,
                 ml: 3,
-                textAlign: "center",
-              }}
-            >
-              {carReviews?.length > 0 ? "Reviews" : "No Reviews Yet"}
+                textAlign: 'center',
+              }}>
+              {carReviews?.length > 0 ? 'Reviews' : 'No Reviews Yet'}
             </Typography>
           </Grid>
 
@@ -646,19 +614,17 @@ export default function ListingDetails({ user }) {
           <Grid
             container
             item
-            sx={{ width: "90%" }}
+            sx={{ width: '90%' }}
             spacing={{ xs: 2, md: 3 }}
-            columns={{ xs: 4, sm: 8, md: 12 }}
-          >
+            columns={{ xs: 4, sm: 8, md: 12 }}>
             {carReviews?.slice(0, next)?.map((review, id) => (
               <Grid item xs={12} sm={4} md={4} key={id}>
                 <Paper
                   elevation={3}
                   sx={{
-                    bgcolor: "white",
+                    bgcolor: 'white',
                     m: 2,
-                  }}
-                >
+                  }}>
                   <Rating
                     name="user-rating"
                     sx={{ mt: 2, ml: 2 }}
@@ -667,22 +633,20 @@ export default function ListingDetails({ user }) {
                   />
                   <Grid
                     sx={{
-                      display: "flex",
-                      flexDirection: "row",
+                      display: 'flex',
+                      flexDirection: 'row',
                       mt: 1,
                       ml: 2,
-                    }}
-                  >
+                    }}>
                     <Avatar alt="Remy Sharp" src={review.image_url} />
                     <Typography
-                      sx={{ fontWeight: 600, fontSize: 20, mt: 1, mx: 2 }}
-                    >
-                      {review.firstname + " " + review.lastname}
+                      sx={{ fontWeight: 600, fontSize: 20, mt: 1, mx: 2 }}>
+                      {review.firstname + ' ' + review.lastname}
                     </Typography>
                   </Grid>
                   <Typography sx={{ my: 2, ml: 2 }}>{review.review}</Typography>
                   <Divider />
-                  <Grid sx={{ display: "flex", flexDirection: "row" }}>
+                  <Grid sx={{ display: 'flex', flexDirection: 'row' }}>
                     <ThumbUp sx={{ fontSize: 20, ml: 3, mt: 2 }} />
                     <Typography sx={{ fontWeight: 550, my: 2, ml: 2 }}>
                       Helpful
@@ -697,10 +661,9 @@ export default function ListingDetails({ user }) {
             md={12}
             xs={12}
             sx={{
-              display: "flex",
-              justifyContent: "center",
-            }}
-          >
+              display: 'flex',
+              justifyContent: 'center',
+            }}>
             {next < carReviews?.length && (
               <Button className="mt-4" onClick={handleMoreReviews}>
                 Load more
