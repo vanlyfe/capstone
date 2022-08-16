@@ -95,8 +95,6 @@ export default function Listings(props) {
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
-
-
   useEffect(() => {
     const getListings = async () => {
       const response = await apiClient.fetchListings();
@@ -152,7 +150,6 @@ export default function Listings(props) {
     if (data?.listings) {
       setListings(data.listings);
     }
-   
   };
 
   const filterItems = (
@@ -171,7 +168,6 @@ export default function Listings(props) {
       </Typography>
       <Rating
         name="minRating"
-       
         precision={0.5}
         onChange={(event, newValue) => {
           setRating(newValue);
@@ -220,7 +216,6 @@ export default function Listings(props) {
         onChange={handleOnInputChange}
         label="Year"
         type="number"
-      
       />
 
       <Typography variant="p" align="center" mt={2}>
@@ -241,7 +236,6 @@ export default function Listings(props) {
             type="number"
             name="minPrice"
             onChange={handleOnInputChange}
-          
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             label="Amount"
           />
@@ -252,7 +246,6 @@ export default function Listings(props) {
           <OutlinedInput
             id="outlined-adornment-amount"
             type="number"
-         
             onChange={handleOnInputChange}
             name="maxPrice"
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -521,17 +514,22 @@ export default function Listings(props) {
                           onClick={async () => {
                             if (!props.user) {
                               navigate("/login");
-                            }
-                            if (!favorites.includes(listing.id)) {
-                              await apiClient.postFavorite(listing.id);
-                              const { data, error } =
-                                await apiClient.getFavoritesIds(props.user.id);
-                              setFavorites(data.favorites);
                             } else {
-                              await apiClient.deleteFavorite(listing.id);
-                              const { data, error } =
-                                await apiClient.getFavoritesIds(props.user.id);
-                              setFavorites(data.favorites);
+                              if (!favorites.includes(listing.id)) {
+                                await apiClient.postFavorite(listing.id);
+                                const { data, error } =
+                                  await apiClient.getFavoritesIds(
+                                    props.user.id
+                                  );
+                                setFavorites(data.favorites);
+                              } else {
+                                await apiClient.deleteFavorite(listing.id);
+                                const { data, error } =
+                                  await apiClient.getFavoritesIds(
+                                    props.user.id
+                                  );
+                                setFavorites(data.favorites);
+                              }
                             }
                           }}
                           sx={{ color: "grey" }}

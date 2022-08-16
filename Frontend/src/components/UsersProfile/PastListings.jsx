@@ -25,7 +25,7 @@ export default function PastListings() {
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.fetchUserListings(id);
-      console.log("res: ", resData.data);
+      
       if (resData?.data?.listings) {
         setListings(resData.data.listings);
       } else {

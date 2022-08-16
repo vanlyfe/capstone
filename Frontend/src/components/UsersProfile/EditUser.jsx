@@ -13,9 +13,7 @@ import {
 import apiClient from "../../services/apiClient";
 
 import SnackbarContent from "@mui/material/SnackbarContent";
-import Typography from "../LandingPage/Typography";
-import ActiveListings from "./ActiveListings";
-import { useNavigate } from "react-router-dom";
+
 
 export default function EditUser(props) {
   const [success, setSuccess] = React.useState(false);
@@ -60,7 +58,7 @@ export default function EditUser(props) {
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
-  console.log(form);
+  
   return (
     <Grid
       sx={{
@@ -94,7 +92,6 @@ export default function EditUser(props) {
         <Box>
           <Avatar
             alt="Remy Sharp"
-            src="/static/images/avatar/1.jpg"
             sx={{ width: 200, height: 200, mt: 3, mb: 1 }}
           />{" "}
         </Box>

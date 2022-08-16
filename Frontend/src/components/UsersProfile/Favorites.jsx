@@ -33,7 +33,7 @@ export default function Favorites(props) {
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.getFavorites(id);
-      console.log(resData.data.favorites)
+    
 
       if (resData?.data?.favorites) {
         setListings(resData.data.favorites);

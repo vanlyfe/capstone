@@ -54,7 +54,7 @@ export default function User({ user, setUser }) {
 
             {category === "activeOrders" ? (
               <ActiveOrders user={user} setUser={setUser} />
-            ) : category === "pastListings" ? (
+            ) : category === "activeOrders" ? (
               <PastListings user={user} setUser={setUser} />
             ) : category === "activeListings" ? (
               <ActiveListings user={user} setUser={setUser} />

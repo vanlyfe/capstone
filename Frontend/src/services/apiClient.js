@@ -367,4 +367,3 @@ class ApiClient {
 
 export default new ApiClient("https://vanlyfe.herokuapp.com");
 
-// export default new ApiClient("http://localhost:3001");
