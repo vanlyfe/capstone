@@ -86,7 +86,7 @@ export default function App() {
           />
           <Route
             path="/orderconfirmation/:id/:order_id"
-            element={<OrderConfirmation />}
+            element={<OrderConfirmation user={user}/>}
           />
           <Route
             path="/createlisting"

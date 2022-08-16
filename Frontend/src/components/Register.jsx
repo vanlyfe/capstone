@@ -32,7 +32,7 @@ function Copyright(props) {
       {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Vanlyfe
+        VanLyfe
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
