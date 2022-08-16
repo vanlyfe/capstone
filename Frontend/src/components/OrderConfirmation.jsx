@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -25,60 +25,60 @@ import {
   ListItemText,
   Drawer,
   TextField,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
-import { CheckBoxOutlineBlankSharp, ThumbUp } from "@mui/icons-material";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ShareIcon from "@mui/icons-material/Share";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
+import { CheckBoxOutlineBlankSharp, ThumbUp } from '@mui/icons-material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 //services
-import apiClient from "../services/apiClient";
+import apiClient from '../services/apiClient';
 // my imports
 
 //import DatePicker from "./DatePicker";
 //import DateRange from "./DateIn";
-import DateIn from "./DateIn";
-import DateOut from "./DateOut";
-import BookmarkSharpIcon from "@mui/icons-material/BookmarkSharp";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import MailOutlineIcon from "@mui/icons-material/MailOutline";
+import DateIn from './DateIn';
+import DateOut from './DateOut';
+import BookmarkSharpIcon from '@mui/icons-material/BookmarkSharp';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 // table imports
 
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import ListSubheader from "@mui/material/ListSubheader";
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import ListSubheader from '@mui/material/ListSubheader';
 
-export default function OrderConfirmation() {
+export default function OrderConfirmation({ user }) {
   const [order, setOrder] = useState([]);
   const [userDetails, setUserDetails] = useState([]);
   const [carDetails, setCarDetails] = useState([]);
   let { id, order_id } = useParams();
 
   useEffect(() => {
-    const fetchOrderDetails = async () => {
-      const res = await apiClient.fetchOrder(order_id);
+    const fetchCarDetails = async () => {
+      const { data, error } = await apiClient.fetchListingById(id);
 
-      if (res.data.order) {
-        setOrder(res.data.order[0]);
+      if (data) {
+        setCarDetails(data.listing[0]);
+        //setPrice(data.listing.price)
       }
     };
 
-    fetchOrderDetails();
+    fetchCarDetails();
   }, []);
 
   useEffect(() => {
     const fetchUserDetails = async () => {
       const user_id = order.user_id;
-      console.log(user_id);
 
       if (user_id) {
         const { data, error } = await apiClient.fetchUserFromId(user_id);
@@ -93,16 +93,18 @@ export default function OrderConfirmation() {
   }, [order]);
 
   useEffect(() => {
-    const fetchCarDetails = async () => {
-      const { data, error } = await apiClient.fetchListingById(id);
+    const fetchOrderDetails = async () => {
+      if (order_id && user) {
+        const res = await apiClient.fetchOrder(order_id);
 
-      if (data) {
-        setCarDetails(data.listing[0]);
-        //setPrice(data.listing.price)
+        if (res?.data?.order) {
+          setOrder(res.data.order[0]);
+        }
       }
     };
-    fetchCarDetails();
-  }, []);
+
+    fetchOrderDetails();
+  }, [user]);
 
   const fees = carDetails.fees ? carDetails.fees : 0;
 
@@ -128,54 +130,50 @@ export default function OrderConfirmation() {
     <Box
       sx={{
         height: 900,
-
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Grid sx={{ width: "60%", height: "100%" }}>
+        mt: 6,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Grid sx={{ width: '60%', height: '100%' }}>
         <Box>
           <Typography
             sx={{
-              color: "#1e1e1f",
+              color: '#1e1e1f',
               fontWeight: 300,
               fontSize: 20,
-            }}
-          >
+            }}>
             Thank you {userDetails.firstname}, your request has been sent
             successfully!
           </Typography>
         </Box>
-        <Box sx={{ justifyContent: "right" }}>
+        <Box sx={{ justifyContent: 'right' }}>
           <Button
             variant="contained"
             size="medium"
             component={Link}
             to={`/order/${order_id}/edit`}
-            sx={{ mt: 2, ml: 2, mr: 2 }}
-          >
+            sx={{ mt: 2, ml: 2, mr: 2 }}>
             Edit Order
           </Button>
         </Box>
         <Box>
           <List
-            sx={{ width: "100%", bgcolor: "#e1e9f0" }}
+            sx={{ width: '100%', bgcolor: '#e1e9f0' }}
             aria-labelledby="nested-list-subheader"
             subheader={
               <ListSubheader component="div" id="nested-list-subheader">
                 Renter Details
               </ListSubheader>
-            }
-          >
+            }>
             <ListItem>
               <ListItemText
                 primary={
-                  "NAME:" +
-                  " " +
+                  'NAME:' +
+                  ' ' +
                   userDetails.firstname +
-                  " " +
+                  ' ' +
                   userDetails.lastname
                 }
               />
@@ -184,22 +182,22 @@ export default function OrderConfirmation() {
               <ListItemText primary="PHONE NUMBER: 7737549759" />
             </ListItem> */}
             <ListItem>
-              <ListItemText primary={"EMAIL:" + " " + userDetails.email} />
+              <ListItemText primary={'EMAIL:' + ' ' + userDetails.email} />
             </ListItem>
             <ListItem>
               <ListItemText
                 primary={
-                  "DATES: " +
+                  'DATES: ' +
                   (new Date(order.startdate).getMonth() + 1) +
-                  "/" +
+                  '/' +
                   new Date(order.startdate).getDate() +
-                  "/" +
+                  '/' +
                   new Date(order.startdate).getFullYear() +
-                  "-" +
+                  '-' +
                   (new Date(order.enddate).getMonth() + 1) +
-                  "/" +
+                  '/' +
                   new Date(order.enddate).getDate() +
-                  "/" +
+                  '/' +
                   new Date(order.startdate).getFullYear()
                 }
               />
@@ -262,8 +260,7 @@ export default function OrderConfirmation() {
             size="medium"
             component={Link}
             to="/listings"
-            sx={{ mt: 2, ml: 2, mr: 2 }}
-          >
+            sx={{ mt: 2, ml: 2, mr: 2 }}>
             Continue Lyfeing
           </Button>
         </Box>
