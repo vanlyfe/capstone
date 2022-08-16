@@ -68,7 +68,7 @@ export default function ForgotPasswordEmail() {
       setError(error);
     }
 
-    console.log(data);
+    
 
     if (data) {
       setSuccess(true);

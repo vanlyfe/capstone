@@ -95,9 +95,10 @@ export default function Favorites(props) {
                       borderBottom: "rgba(224, 224, 224, 1) 1px solid",
                       borderTop: "none",
                     }}
+                    key={row.id}
                   >
                     <TableRow
-                      key={row.id}
+                     
                       sx={{
                         "&:last-child td, &:last-child th": { border: 0 },
                       }}
@@ -173,7 +174,11 @@ export default function Favorites(props) {
                    
                   </TableBody>
                 ))
-              : "No favorites yet"}
+              : (
+                <TableRow>
+                  <TableCell colSpan={12}>No favorites yet</TableCell>
+                </TableRow>
+              )}
           </Table>
         </TableContainer>
       </Box>
