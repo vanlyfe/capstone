@@ -46,17 +46,17 @@ VALUES (
   20.99,
   'San Francisco',
   3,
-  'https://cdn.motor1.com/images/mgl/Q12M1/s1/2021-tesla-model-s-plaid.jpg',
-  'Tesla',
-  'Model S',
+  'https://media.ed.edmunds-media.com/ford/transit-passenger-van/2020/oem/2020_ford_transit-passenger-van_passenger-van_350-hd-xlt-high-roof_fq_oem_1_1600.jpg',
+  'Ford',
+  'Transit',
   2020,
-  '5 Month old tesla, clean and in great condition, driving around not allowed',
+  '5 Month old Ford, clean and in great condition, driving around not allowed',
   4.5
 
 ),
 (
   1,
-  40.99,
+  15.99,
   'San Diego',
   1,
   'https://static.tcimg.net/vehicles/primary/122f4b2eb5fe71e0/2022-GMC-Savana_Cargo_Van-silver-full_color-driver_side_front_quarter.png',
@@ -69,7 +69,7 @@ VALUES (
 ),
 (
   1,
-  30.00,
+  25.00,
   'San Mateo',
   2,
   'https://global.toyota/pages/news/images/2019/11/05/1100/20191105_02_01_s.jpg',
@@ -82,7 +82,7 @@ VALUES (
 ),
 (
   2,
-  170.50,
+  39.50,
   'Menlo Park',
   8,
   'https://static.foxbusiness.com/foxbusiness.com/content/uploads/2021/01/RV.jpg',
@@ -95,12 +95,12 @@ VALUES (
 ),
 (
   2,
-  72.05,
+  12.05,
   'Newark',
   3,
-  'https://www.topgear.com/sites/default/files/2022/05/037.jpg',
-  'Peugeot',
-  '207',
+  'https://cdn.jdpower.com/JDPA_2020%20Volvo%20XC90%20R-Design%20T6%20Thunder%20Gray%20Front%20Quarter%20View.jpg',
+  'Volvo',
+  'XC90',
   2022,
   'Recently purchased vehicle in a friendly neighbourhood',
   4.3
@@ -111,35 +111,35 @@ VALUES (
   15.99,
   'Los Angeles',
   3,
-  'https://media.ed.edmunds-media.com/audi/a8/2022/oem/2022_audi_a8_sedan_l_fq_oem_1_1600.jpg',
-  'Audi',
-  'A8',
+  'https://s7d1.scene7.com/is/image/scom/22_FOR_feature_2?$900j$',
+  'Subaru',
+  'Forester',
   2022,
-  'Latest Audi in the market, clean and hospitable',
+  'Latest subaru in the market, clean and hospitable',
   7.8
 
 ),
 (
   3,
-  20.99,
+  35.99,
   'Seattle',
   1,
-  'https://s1.cdn.autoevolution.com/images/models/MERCEDES-BENZ_GLC-2022_main.jpg',
-  'Mercedes-Benz',
-  'GLC',
+  'https://i.insider.com/5ee0eb89988ee36e5b0ff334?width=700',
+  'Mercedes',
+  'Sprinter',
   2022,
   'Sleek benz for a sleek customer',
-  11.55
+  6.55
 
 ),
 (
   3,
-  59.99,
+  29.99,
   'Nairobi',
   3,
-  'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/2022-bmw-alpina-b8-gran-coupe-4-1646929819.jpg?crop=0.670xw:0.670xh;0.162xw,0.162xh&resize=640:*',
+  'https://cdn.motor1.com/images/mgl/Vwx67/s3/porsche-van.webp',
   'BMW',
-  'Alpina B8',
+  'Alfa Romeo',
   2022,
   'If you like sleeping on cosy seats at an affordable price, this is the home for you',
   3
@@ -147,15 +147,15 @@ VALUES (
 ),
 (
   3,
-  99.99,
+  9.99,
   'Santa Cruz',
   5,
-  'https://www.topgear.com/sites/default/files/cars-car/image/2020/07/dsc09285.jpg',
-  'Ferrari',
-  'F8',
+  'https://cdn.motor1.com/images/mgl/1mx49/s1/1986-toyota-new-world-rv-camper-driver-side.jpg',
+  'Toyota',
+  'Camper',
   2020,
   'Clean, affordable ferrari. Meals may be provided',
-  9.99
+  2.0
 
 ),
 (
@@ -163,12 +163,12 @@ VALUES (
   23.00,
   'Oakland',
   3,
-  'https://www.lamborghini.com/sites/it-en/files/DAM/lamborghini/facelift_2019/homepage/families-gallery/2022/04_12/family_chooser_tecnica.jpg',
-  'Lamborghini',
-  'Aventador',
+  'https://hips.hearstapps.com/hmg-prod/images/2022-chrysler-voyager-mmp-1-1633445515.jpg',
+  'Toyota',
+  'Sienna',
   2022,
-  'Clean, affordable Lamborghini',
-  10.00
+  'Clean, affordable toyota',
+  6.00
 
 ),
 (
@@ -176,25 +176,25 @@ VALUES (
   17.80,
   'Poughkeepsie',
   5,
-  'https://www.chevrolet.com/content/dam/chevrolet/na/us/english/portable-nav/small-vehicle-jellies/2022-camaro-2ss-gcf-colorizer.jpg?imwidth=960',
-  'Chevrolet',
-  'Camaro',
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoxhXy8UaPc2vjPr4CeM09DARGsqsQpnUEiA&usqp=CAU',
+  'Nissan ',
+  'Note',
   2022,
-  'If you liked Bumbleebee in transformers, you will love sleeping in this car',
-  16.99
+  'Cozy nissan for anyone',
+  5.99
 
 ),
 (
   4,
-  66.66,
+  42.00,
   'Boston',
   8,
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Chevrolet_Corvette_Z06_-_Flickr_-_Alexandre_Pr%C3%A9vot_%287%29_%28cropped%29.jpg/1200px-Chevrolet_Corvette_Z06_-_Flickr_-_Alexandre_Pr%C3%A9vot_%287%29_%28cropped%29.jpg',
-  'Chevrolet',
-  'Corvette',
+  'https://i.gaw.to/vehicles/photos/40/19/401988-2020-chrysler-pacifica.jpg',
+  'Chrystler',
+  'Pacifica',
   2020,
-  '10 year old covette, clean and still in great condition',
-  12
+  '10 year old chrystler, clean and still in great condition',
+  10.00
 
 );
 
