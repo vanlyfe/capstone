@@ -27,7 +27,6 @@ export default function ActiveOrders() {
     const getData = async () => {
       const resData = await apiClient.fetchUserActiveOrders(id);
       const res = await apiClient.fetchUserListings(id);
-      
 
       if (resData?.data?.orders) {
         setOrders(resData.data.orders);

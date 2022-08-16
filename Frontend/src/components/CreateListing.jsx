@@ -144,7 +144,7 @@ export default function CreateListing({ user, isLoading }) {
         description: form.description,
         images
       });
-      console.log(data);
+      
     } catch (e) {
       console.log(e);
     }

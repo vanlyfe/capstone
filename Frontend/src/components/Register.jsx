@@ -118,7 +118,6 @@ export default function Register(props) {
 
   const handleOnSubmit = async () => {
     setIsLoading(true);
-    console.log('form', form);
     setErrors((e) => ({ ...e, form: null }));
 
     if (form.passwordConfirm !== form.password) {
