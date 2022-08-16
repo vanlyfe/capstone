@@ -62,18 +62,7 @@ function ProductCTA() {
           xs={12}
           md={6}
           sx={{ display: { md: 'block', xs: 'none' }, position: 'relative' }}>
-          <Box
-            sx={{
-              position: 'absolute',
-              top: -67,
-              left: -67,
-              right: 0,
-              bottom: 0,
-              width: '100%',
-              background:
-                'url(/static/themes/onepirate/productCTAImageDots.png)',
-            }}
-          />
+       
           <Box
             component="img"
             src="https://images.unsplash.com/photo-1543269664-56d93c1b41a6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80"

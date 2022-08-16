@@ -35,7 +35,7 @@ function Copyright(props) {
         to="https://mui.com/"
         style={{ textDecoration: "none" }}
       >
-        vanlyfe
+        VanLyfe
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
