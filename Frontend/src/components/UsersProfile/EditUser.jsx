@@ -1,5 +1,5 @@
-import React from 'react';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import React from "react";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   Box,
   Avatar,
@@ -9,26 +9,26 @@ import {
   TextField,
   Link,
   Container,
-} from '@mui/material';
-import SnackbarContent from '@mui/material/SnackbarContent';
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+} from "@mui/material";
+import SnackbarContent from "@mui/material/SnackbarContent";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-import apiClient from '../../services/apiClient';
+import apiClient from "../../services/apiClient";
 
 export default function EditUser(props) {
   const [success, setSuccess] = React.useState(false);
   const [value, setValue] = React.useState();
   const [form, setForm] = React.useState({
-    firstName: '',
-    lastName: '',
-    username: '',
-    birthdate: '',
-    gender: '',
-    phone: '',
-    location: '',
-    bio: '',
-    email: '',
+    firstName: "",
+    lastName: "",
+    username: "",
+    birthdate: "",
+    gender: "",
+    phone: "",
+    location: "",
+    bio: "",
+    email: "",
   });
   const [errors, setErrors] = React.useState({});
 
@@ -61,24 +61,26 @@ export default function EditUser(props) {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 5 }}>
-      <Link href={props.user ? '/user/' + props.user.id : '/login'}>
-        <ArrowBackIcon sx={{ fontSize: 60, position: 'absolute', left: 10 }} />
+      <Link href={props.user ? "/user/" + props.user.id : "/login"}>
+        <ArrowBackIcon sx={{ fontSize: 60, position: "absolute", left: 10 }} />
       </Link>
 
       <Grid container>
         <Grid item md={3} xs={12}>
           <Box
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <Box
               sx={{
                 fontSize: 30,
                 fontWeight: 400,
-              }}>
+              }}
+            >
               Edit Profile
             </Box>
             <Box>
@@ -99,10 +101,10 @@ export default function EditUser(props) {
             <SnackbarContent
               message="Edited successfully!"
               sx={{
-                ml: '50px',
-                mb: '50px',
-                display: success ? 'null' : 'none',
-                width: '60px',
+                ml: "50px",
+                mb: "50px",
+                display: success ? "null" : "none",
+                width: "60px",
                 fontSize: 20,
                 height: 60,
               }}
@@ -158,9 +160,9 @@ export default function EditUser(props) {
               fullWidth
               disablePortal
               id="filled-multiline-flexible"
-              options={['Male', 'Female', 'Do not specify']}
+              options={["Male", "Female", "Do not specify"]}
               sx={{
-                background: 'rgba(0, 0, 0, 0.06)',
+                background: "rgba(0, 0, 0, 0.06)",
               }}
               renderInput={(params) => (
                 <TextField
@@ -184,7 +186,7 @@ export default function EditUser(props) {
                     {...params}
                     fullWidth
                     sx={{
-                      background: 'rgba(0, 0, 0, 0.06)',
+                      background: "rgba(0, 0, 0, 0.06)",
                     }}
                   />
                 )}
@@ -231,32 +233,35 @@ export default function EditUser(props) {
           <Grid item md={12} xs={12}>
             <Box
               sx={{
-                display: 'flex',
-                flexDirection: 'row',
+                display: "flex",
+                flexDirection: "row",
                 width: "100%",
-                justifyContent: 'space-around',
-              }}>
+                justifyContent: "space-around",
+              }}
+            >
               <Button
                 variant="contained"
                 onClick={handleOnSubmit}
                 disabled={
-                  form.firstName === '' &&
-                  form.lastName === '' &&
-                  form.username === '' &&
-                  form.birthdate === '' &&
-                  form.gender === '' &&
-                  form.location === '' &&
-                  form.phone === '' &&
-                  form.bio === '' &&
-                  form.email === ''
-                }>
+                  form.firstName === "" &&
+                  form.lastName === "" &&
+                  form.username === "" &&
+                  form.birthdate === "" &&
+                  form.gender === "" &&
+                  form.location === "" &&
+                  form.phone === "" &&
+                  form.bio === "" &&
+                  form.email === ""
+                }
+              >
                 Accept Changes
               </Button>
 
               <Button
                 variant="contained"
                 color="error"
-                onClick={handleOnCancel}>
+                onClick={handleOnCancel}
+              >
                 Cancel
               </Button>
             </Box>

@@ -76,10 +76,6 @@ export default function PastOrders() {
     getData();
   }, []);
 
-  // const handleOnClick = () => {
-  //   navigate("/listing/" + listings[0].id);
-  // };
-
   const style = {
     position: "absolute",
     top: "50%",
@@ -130,23 +126,11 @@ export default function PastOrders() {
         }
       }
 
-      //   console.log(ratingData.error)
-
       if (!ratingData.error) {
         setOpen(false);
       }
     }
   };
-
-  // export function ReviewCharacterCount({ textLength }) {
-  //   return (
-  //     <Typography
-  //       className={textLength > 140 ? "Review-length red" : "Review-length"}
-  //     >
-  //       {textLength > 0 ? 140 - textLength : ""}{" "}
-  //     </Typography>
-  //   );
-  // }
 
   return (
     <Grid

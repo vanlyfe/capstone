@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import {
   Box,
-  Grid,
-  Typography,
   List,
   Divider,
   ListItem,
   ListItemButton,
   ListItemText,
   Drawer,
-  AppBar,
   ListSubheader,
-  ButtonGroup,
   Button,
-  Menu,
   MenuItem,
   MenuList,
   Fade,
@@ -28,17 +23,11 @@ export default function Categories(props) {
   const handleClick = (event) => {
     setOpen(!open);
   };
-  const handleClose = () => {
-    setOpen(false);
-  };
 
   let { id } = useParams();
 
   const handleOnPastOrders = () => {
     props.setCategory("pastOrders");
-  };
-  const handleOnPastListings = () => {
-    props.setCategory("pastListings");
   };
 
   const handleOnActiveOrders = () => {
@@ -57,17 +46,14 @@ export default function Categories(props) {
     props.setCategory("reviews");
   };
 
-  
   return (
     <>
-      {/* Mobile Menu */}
       <Box
         sx={{
           display: { xs: "flex", md: "none" },
           flexDirection: "column",
           justifyContent: "center",
           py: 3,
-          // background: '#fafafa',
         }}
       >
         <Button
@@ -90,7 +76,7 @@ export default function Categories(props) {
             <MenuItem onClick={handleOnActiveListings}>
               Active Listings
             </MenuItem>
-            <MenuItem onClick={handleOnPastListings}>Past Listings</MenuItem>
+
             <Divider />
             <MenuItem onClick={handleOnActiveOrders}>Active Orders</MenuItem>
             <MenuItem onClick={handleOnPastOrders}>Past Orders</MenuItem>
@@ -100,7 +86,6 @@ export default function Categories(props) {
         </Fade>
       </Box>
 
-      {/* Desktop Menu */}
       <Box sx={{ zIndex: 1 }}>
         <Drawer
           sx={{
@@ -120,15 +105,10 @@ export default function Categories(props) {
             </ListItem>
 
             <ListItem
-              sx={{ background: props.category == "pastListings" ? "#b6cade" : "#fff" }}
-            >
-              <ListItemButton onClick={handleOnPastListings}>
-                <ListItemText>Past Listings</ListItemText>
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem
-              sx={{ background: props.category == "activeListings" ? "#b6cade" : "#fff" }}
+              sx={{
+                background:
+                  props.category == "activeListings" ? "#b6cade" : "#fff",
+              }}
             >
               <ListItemButton onClick={handleOnActiveListings}>
                 <ListItemText>Active Listings</ListItemText>
@@ -137,7 +117,10 @@ export default function Categories(props) {
 
             {props.user?.id && Number(props.user.id) === Number(id) && (
               <ListItem
-                sx={{ background: props.category == "favorites" ? "#b6cade" : "#fff" }}
+                sx={{
+                  background:
+                    props.category == "favorites" ? "#b6cade" : "#fff",
+                }}
               >
                 <ListItemButton onClick={handleOnFavourites}>
                   <ListItemText>Favorites</ListItemText>
@@ -156,7 +139,8 @@ export default function Categories(props) {
 
               <ListItem
                 sx={{
-                  background: props.category == "activeOrders" ? "#b6cade" : "#fff",
+                  background:
+                    props.category == "activeOrders" ? "#b6cade" : "#fff",
                 }}
               >
                 <ListItemButton onClick={handleOnActiveOrders}>
@@ -165,7 +149,8 @@ export default function Categories(props) {
               </ListItem>
               <ListItem
                 sx={{
-                  background: props.category == "pastOrders" ? "#b6cade" : "#fff",
+                  background:
+                    props.category == "pastOrders" ? "#b6cade" : "#fff",
                 }}
               >
                 <ListItemButton onClick={handleOnPastOrders}>
@@ -178,7 +163,9 @@ export default function Categories(props) {
 
           <List>
             <ListItem
-              sx={{ background: props.category == "reviews" ? "#b6cade" : "#fff" }}
+              sx={{
+                background: props.category == "reviews" ? "#b6cade" : "#fff",
+              }}
             >
               <ListItemButton onClick={handleOnReviews}>
                 <ListItemText>Reviews</ListItemText>

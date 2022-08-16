@@ -13,7 +13,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Link,
   Rating,
   Button,
 } from "@mui/material";
@@ -58,9 +57,6 @@ export default function ActiveListings(props) {
     getData();
   }, []);
 
-  //console.log(Number(props.user.id))
-  //console.log(id)
-
   return (
     <Grid
       sx={{
@@ -73,7 +69,6 @@ export default function ActiveListings(props) {
     >
       <Dialog
         open={deleting}
-        // onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -107,9 +102,6 @@ export default function ActiveListings(props) {
             <TableHead>
               <TableRow>
                 <TableCell align="center">Vehicle Model</TableCell>
-
-                {/* <TableCell align="right">Check in </TableCell>
-                <TableCell align="right"> Check out</TableCell> */}
                 <TableCell align="center">Location</TableCell>
                 <TableCell align="center">Post Date</TableCell>
 
@@ -149,8 +141,7 @@ export default function ActiveListings(props) {
                     >
                       {row.make}
                     </TableCell>
-                    {/* <TableCell align="right">l{row.getStartDate}</TableCell>
-                      <TableCell align="right">{row.getEndDate}</TableCell> */}
+
                     <TableCell
                       align="center"
                       sx={{

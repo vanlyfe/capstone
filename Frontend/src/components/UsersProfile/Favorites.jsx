@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogTitle from "@mui/material/DialogTitle";
 import {
   Box,
   Grid,
@@ -13,7 +10,6 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Link,
   Rating,
   Button,
 } from "@mui/material";
@@ -22,18 +18,15 @@ import apiClient from "../../services/apiClient";
 
 export default function Favorites(props) {
   const [error, setError] = useState();
-  
+
   const [listings, setListings] = useState([]);
- 
+
   let { id } = useParams();
   const navigate = useNavigate();
-
-  
 
   useEffect(() => {
     const getData = async () => {
       const resData = await apiClient.getFavorites(id);
-    
 
       if (resData?.data?.favorites) {
         setListings(resData.data.favorites);
@@ -45,8 +38,6 @@ export default function Favorites(props) {
     getData();
   }, []);
 
-  
-
   return (
     <Grid
       sx={{
@@ -57,10 +48,9 @@ export default function Favorites(props) {
         mt: 1,
       }}
     >
-      
       <Box>
         <Button variant="text" sx={{ mt: 2, mb: 2 }}>
-          Active Listings
+          Favorites
         </Button>
         <Button
           variant="contained"
@@ -78,7 +68,6 @@ export default function Favorites(props) {
               <TableRow>
                 <TableCell>Vehicle Model</TableCell>
 
-              
                 <TableCell align="center">Location</TableCell>
                 <TableCell align="center">Post Date</TableCell>
 
@@ -88,97 +77,94 @@ export default function Favorites(props) {
                 <TableCell align="center">Ratings</TableCell>
               </TableRow>
             </TableHead>
-            {listings.length > 0
-              ? listings.map((row) => (
-                  <TableBody
+            {listings.length > 0 ? (
+              listings.map((row) => (
+                <TableBody
+                  sx={{
+                    borderBottom: "rgba(224, 224, 224, 1) 1px solid",
+                    borderTop: "none",
+                  }}
+                  key={row.id}
+                >
+                  <TableRow
                     sx={{
-                      borderBottom: "rgba(224, 224, 224, 1) 1px solid",
-                      borderTop: "none",
+                      "&:last-child td, &:last-child th": { border: 0 },
                     }}
-                    key={row.id}
+                    hover={true}
+                    onClick={() => {
+                      navigate("/listing/" + row.listing_id);
+                    }}
                   >
-                    <TableRow
-                     
+                    <TableCell
+                      component="th"
+                      scope="row"
                       sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                      }}
-                      hover={true}
-                      onClick={() => {
-                        navigate("/listing/" + row.listing_id);
+                        borderBottom: "none",
+                        borderTop: "none",
                       }}
                     >
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {row.make}
-                      </TableCell>
-                      {/* <TableCell align="right">l{row.getStartDate}</TableCell>
-                      <TableCell align="right">{row.getEndDate}</TableCell> */}
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {row.location}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {new Date(row.createdat).getFullYear() +
-                          "-" +
-                          (new Date(row.createdat).getMonth() + 1) +
-                          "-" +
-                          new Date(row.createdat).getDate()}
-                      </TableCell>
+                      {row.make}
+                    </TableCell>
 
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        {" "}
-                        <Group /> {row.max_accomodation}{" "}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        ${row.price}
-                      </TableCell>
-                      <TableCell
-                        align="center"
-                        sx={{
-                          borderBottom: "none",
-                          borderTop: "none",
-                        }}
-                      >
-                        <Rating value={row.rating} readOnly={true} />
-                      </TableCell>
-                    </TableRow>
-                   
-                  </TableBody>
-                ))
-              : (
-                <TableRow>
-                  <TableCell colSpan={12}>No favorites yet</TableCell>
-                </TableRow>
-              )}
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {row.location}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {new Date(row.createdat).getFullYear() +
+                        "-" +
+                        (new Date(row.createdat).getMonth() + 1) +
+                        "-" +
+                        new Date(row.createdat).getDate()}
+                    </TableCell>
+
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      {" "}
+                      <Group /> {row.max_accomodation}{" "}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      ${row.price}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      sx={{
+                        borderBottom: "none",
+                        borderTop: "none",
+                      }}
+                    >
+                      <Rating value={row.rating} readOnly={true} />
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={12}>No favorites yet</TableCell>
+              </TableRow>
+            )}
           </Table>
         </TableContainer>
       </Box>

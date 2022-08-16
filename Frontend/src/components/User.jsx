@@ -4,7 +4,6 @@ import UserInfo from './UsersProfile/UserInfo';
 import Categories from './UsersProfile/Categories';
 import ActiveListings from './UsersProfile/ActiveListings';
 import ActiveOrders from './UsersProfile/ActiveOrders';
-import PastListings from './UsersProfile/PastListings';
 import PastOrders from './UsersProfile/PastOrders';
 import Reviews from './UsersProfile/Reviews';
 import EditUser from './UsersProfile/EditUser';
@@ -52,9 +51,7 @@ export default function User({ user, setUser }) {
 
             {category === 'activeOrders' ? (
               <ActiveOrders user={user} setUser={setUser} />
-            ) : category === 'activeOrders' ? (
-              <PastListings user={user} setUser={setUser} />
-            ) : category === 'activeListings' ? (
+            )  : category === 'activeListings' ? (
               <ActiveListings user={user} setUser={setUser} />
             ) : category === 'pastOrders' ? (
               <PastOrders user={user} setUser={setUser} />
