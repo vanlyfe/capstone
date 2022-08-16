@@ -56,6 +56,8 @@ export default function Categories(props) {
   const handleOnReviews = () => {
     props.setCategory("reviews");
   };
+
+  
   return (
     <>
       {/* Mobile Menu */}
@@ -118,7 +120,7 @@ export default function Categories(props) {
             </ListItem>
 
             <ListItem
-              sx={{ background: props.category == "pl" ? "#f5faff" : "#fff" }}
+              sx={{ background: props.category == "pastListings" ? "#b6cade" : "#fff" }}
             >
               <ListItemButton onClick={handleOnPastListings}>
                 <ListItemText>Past Listings</ListItemText>
@@ -126,7 +128,7 @@ export default function Categories(props) {
             </ListItem>
 
             <ListItem
-              sx={{ background: props.category == "al" ? "#f5faff" : "#fff" }}
+              sx={{ background: props.category == "activeListings" ? "#b6cade" : "#fff" }}
             >
               <ListItemButton onClick={handleOnActiveListings}>
                 <ListItemText>Active Listings</ListItemText>
@@ -135,7 +137,7 @@ export default function Categories(props) {
 
             {props.user?.id && Number(props.user.id) === Number(id) && (
               <ListItem
-                sx={{ background: props.category == "fl" ? "#f5faff" : "#fff" }}
+                sx={{ background: props.category == "favorites" ? "#b6cade" : "#fff" }}
               >
                 <ListItemButton onClick={handleOnFavourites}>
                   <ListItemText>Favorites</ListItemText>
@@ -154,7 +156,7 @@ export default function Categories(props) {
 
               <ListItem
                 sx={{
-                  background: props.category == "ao" ? "#f5faff" : "#fff",
+                  background: props.category == "activeOrders" ? "#b6cade" : "#fff",
                 }}
               >
                 <ListItemButton onClick={handleOnActiveOrders}>
@@ -163,7 +165,7 @@ export default function Categories(props) {
               </ListItem>
               <ListItem
                 sx={{
-                  background: props.category == "po" ? "#f5faff" : "#fff",
+                  background: props.category == "pastOrders" ? "#b6cade" : "#fff",
                 }}
               >
                 <ListItemButton onClick={handleOnPastOrders}>
@@ -176,7 +178,7 @@ export default function Categories(props) {
 
           <List>
             <ListItem
-              sx={{ background: props.category == "r" ? "#f5faff" : "#fff" }}
+              sx={{ background: props.category == "reviews" ? "#b6cade" : "#fff" }}
             >
               <ListItemButton onClick={handleOnReviews}>
                 <ListItemText>Reviews</ListItemText>

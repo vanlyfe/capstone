@@ -195,6 +195,8 @@ export default function ListingDetails({ user }) {
     setNext(next + reviewsPerColumn);
   };
 
+
+
   return (
     <Box>
       <Button
