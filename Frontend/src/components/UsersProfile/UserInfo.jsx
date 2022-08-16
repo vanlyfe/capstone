@@ -134,22 +134,22 @@ export default function UserInfo(props) {
                 <Rating name="user-rating" value={rating} readOnly />
               </Box>
             </Grid>
-
             {bio && (
-              <Grid item md={8} xs={12} textAlign="center" >
+              <Grid item md={3} xs={12}>
                 <Box
-                  backgroundColor={{xs: `secondary.light`, md: `secondary.main`}}
+                  backgroundColor={{
+                    xs: `secondary.light`,
+                    md: `secondary.main`,
+                  }}
                   sx={{
                     height: '100%',
                     width: '100%',
                     borderRadius: '5px',
-                    justifyContent: 'center',
                     display: 'flex',
-                    alignItems: 'center',
-                    mt: 1,
+                    p: 4,
                   }}>
                   <Typography
-                    sx={{ fontSize: '20px', fontStyle: 'italic', my: 2 }}>
+                    sx={{ fontSize: '20px', fontStyle: 'italic' }}>
                     "{bio}"
                   </Typography>
                 </Box>

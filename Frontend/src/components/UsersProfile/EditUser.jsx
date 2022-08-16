@@ -1,5 +1,5 @@
-import React from "react";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import React from 'react';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import {
   Box,
   Avatar,
@@ -8,26 +8,27 @@ import {
   Button,
   TextField,
   Link,
-} from "@mui/material";
+  Container,
+} from '@mui/material';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import apiClient from "../../services/apiClient";
-
-import SnackbarContent from "@mui/material/SnackbarContent";
-
+import apiClient from '../../services/apiClient';
 
 export default function EditUser(props) {
   const [success, setSuccess] = React.useState(false);
   const [value, setValue] = React.useState();
   const [form, setForm] = React.useState({
-    firstName: "",
-    lastName: "",
-    username: "",
-    birthdate: "",
-    gender: "",
-    phone: "",
-    location: "",
-    bio: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    username: '',
+    birthdate: '',
+    gender: '',
+    phone: '',
+    location: '',
+    bio: '',
+    email: '',
   });
   const [errors, setErrors] = React.useState({});
 
@@ -58,164 +59,166 @@ export default function EditUser(props) {
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
-  
   return (
-    <Grid
-      sx={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-      }}
-    >
-      <Link href={props.user ? "/user/" + props.user.id : "/login"}>
-        <ArrowBackIcon className="arrowBack" sx={{ fontSize: 60 }} />
+    <Container maxWidth="lg" sx={{ mt: 5 }}>
+      <Link href={props.user ? '/user/' + props.user.id : '/login'}>
+        <ArrowBackIcon sx={{ fontSize: 60, position: 'absolute', left: 10 }} />
       </Link>
 
-      <Grid
-        sx={{
-          width: 250,
-          ml: 30,
-          mt: 5,
-          fontSize: 30,
-          fontWeight: 400,
-        }}
-      >
-        <Box
-          sx={{
-            ml: 3,
-            fontSize: 30,
-            fontWeight: 400,
-          }}
-        >
-          Edit Profile{" "}
-        </Box>
-        <Box>
-          <Avatar
-            alt="Remy Sharp"
-            sx={{ width: 200, height: 200, mt: 3, mb: 1 }}
-          />{" "}
-        </Box>
-
-        <Button variant="text" href="/user/:id/activeListing" sx={{ ml: 4 }}>
-          Upload Photo
-        </Button>
-      </Grid>
-
-      <Grid sx={{ width: "100%", ml: 2, mt: 15 }}>
-        {errors.form && <span className="editUserError">{errors.form}</span>}
-        <SnackbarContent
-          message="Edited successfully!"
-          sx={{
-            ml: "50px",
-
-            mb: "50px",
-            display: success ? "null" : "none",
-            width: "60px",
-            fontSize: 20,
-            height: 60,
-          }}
-        />
-
-        <Box>
-          <Box sx={{ ml: 2, mb: 7 }}>
-            <Grid>
-              <TextField
-                id="filled-multiline-flexible"
-                label="First Name"
-                name="firstName"
-                maxRows={4}
-                onChange={handleOnInputChange}
-                variant="filled"
-                sx={{ width: 240, mr: 3, mb: 5 }}
+      <Grid container>
+        <Grid item md={3} xs={12}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Box
+              sx={{
+                fontSize: 30,
+                fontWeight: 400,
+              }}>
+              Edit Profile
+            </Box>
+            <Box>
+              <Avatar
+                alt="Avatar"
+                sx={{ width: 150, height: 150, mt: 3, mb: 1 }}
               />
-              <TextField
-                id="filled-multiline-flexible"
-                label="Last Name"
-                name="lastName"
-                maxRows={4}
-                onChange={handleOnInputChange}
-                variant="filled"
-                sx={{ width: 240, mr: 3, mb: 5 }}
-              />{" "}
-            </Grid>
+            </Box>
+            <Button variant="text" href="/user/:id/activeListing">
+              Upload Photo
+            </Button>
+          </Box>
+        </Grid>
+
+        <Grid item container md={9} spacing={4}>
+          {errors.form && <span className="editUserError">{errors.form}</span>}
+          <Grid item xs={12}>
+            <SnackbarContent
+              message="Edited successfully!"
+              sx={{
+                ml: '50px',
+                mb: '50px',
+                display: success ? 'null' : 'none',
+                width: '60px',
+                fontSize: 20,
+                height: 60,
+              }}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
             <TextField
+              fullWidth
+              id="filled-multiline-flexible"
+              label="First Name"
+              name="firstName"
+              maxRows={4}
+              onChange={handleOnInputChange}
+              variant="filled"
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <TextField
+              fullWidth
+              id="filled-multiline-flexible"
+              label="Last Name"
+              name="lastName"
+              maxRows={4}
+              onChange={handleOnInputChange}
+              variant="filled"
+            />
+          </Grid>
+          <Grid item md={12} xs={12}>
+            <TextField
+              fullWidth
               id="filled-multiline-flexible"
               label="Email"
               name="email"
               onChange={handleOnInputChange}
               maxRows={4}
               variant="filled"
-              sx={{ width: 500, mr: 3, mb: 5 }}
-            />{" "}
-            <Grid
-              container
-              spacing={4}
-              justifyItems="center"
-              style={{ marginTop: "2px", marginBottom: "40px" }}
-            >
-              <TextField
-                id="filled-multiline-flexible"
-                label="Username"
-                name="username"
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <TextField
+              fullWidth
+              id="filled-multiline-flexible"
+              label="Username"
+              name="username"
+              onChange={handleOnInputChange}
+              maxRows={4}
+              variant="filled"
+            />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <Autocomplete
+              fullWidth
+              disablePortal
+              id="filled-multiline-flexible"
+              options={['Male', 'Female', 'Do not specify']}
+              sx={{
+                background: 'rgba(0, 0, 0, 0.06)',
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Gender"
+                  name="gender"
+                  onChange={handleOnInputChange}
+                  onSelect={handleOnInputChange}
+                />
+              )}
+            />
+          </Grid>
+
+          <Grid item md={6} xs={12}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DatePicker
+                label="Date of Birth"
                 onChange={handleOnInputChange}
-                maxRows={4}
-                variant="filled"
-                sx={{ width: 240, mr: 2.5, ml: 4 }}
-              />{" "}
-              <Autocomplete
-                disablePortal
-                id="locations-auto-complete"
-                options={["Male", "Female", "Do not specify"]}
-                sx={{ width: 240, background: "rgba(0, 0, 0, 0.06)" }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
-                    label="Gender"
-                    name="gender"
-                    onChange={handleOnInputChange}
-                    onSelect={handleOnInputChange}
+                    fullWidth
+                    sx={{
+                      background: 'rgba(0, 0, 0, 0.06)',
+                    }}
                   />
                 )}
               />
-            </Grid>
-            <Grid
-              container
-              spacing={4}
-              justifyItems="center"
-              style={{ marginTop: "2px", marginBottom: "20px" }}
-            >
-              <TextField
-                id="filled-multiline-flexible"
-                label="Date of Birth"
-                name="birthdate"
-                type="date"
-                onChange={handleOnInputChange}
-                variant="filled"
-                sx={{ width: 240, mr: 2.5, ml: 4 }}
-              />
-              <TextField
-                id="filled-multiline-flexible"
-                label="Phone Number"
-                name="phone"
-                maxRows={4}
-                type="number"
-                onChange={handleOnInputChange}
-                variant="filled"
-                sx={{ width: 240, mb: 5 }}
-              />{" "}
-            </Grid>
-            <Grid>
-              <TextField
-                id="filled-multiline-flexible"
-                label="City"
-                name="location"
-                onChange={handleOnInputChange}
-                maxRows={4}
-                variant="filled"
-                sx={{ width: 500, mr: 3 }}
-              />{" "}
-            </Grid>
+            </LocalizationProvider>
+          </Grid>
+
+          <Grid item md={6} xs={12}>
             <TextField
+              id="filled-multiline-flexible"
+              label="Phone Number"
+              fullWidth
+              name="phone"
+              maxRows={4}
+              type="number"
+              onChange={handleOnInputChange}
+              variant="filled"
+            />
+          </Grid>
+
+          <Grid item md={12} xs={12}>
+            <TextField
+              id="filled-multiline-flexible"
+              label="City"
+              name="location"
+              onChange={handleOnInputChange}
+              maxRows={4}
+              variant="filled"
+              fullWidth
+            />
+          </Grid>
+          <Grid item md={12} xs={12}>
+            <TextField
+              fullWidth
               id="filled-multiline-static"
               label="Describe Yourself"
               name="bio"
@@ -223,40 +226,43 @@ export default function EditUser(props) {
               multiline
               rows={4}
               variant="filled"
-              sx={{ width: 500, mt: 5 }}
             />
-          </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", ml: 15 }}>
-            <Button
-              variant="contained"
-              onClick={handleOnSubmit}
-              disabled={
-                form.firstName === "" &&
-                form.lastName === "" &&
-                form.username === "" &&
-                form.birthdate === "" &&
-                form.gender === "" &&
-                form.location === "" &&
-                form.phone === "" &&
-                form.bio === "" &&
-                form.email === ""
-              }
-              sx={{ mt: 1, mb: 1, ml: 1 }}
-            >
-              Accept Changes
-            </Button>
+          </Grid>
+          <Grid item md={12} xs={12}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'row',
+                width: "100%",
+                justifyContent: 'space-around',
+              }}>
+              <Button
+                variant="contained"
+                onClick={handleOnSubmit}
+                disabled={
+                  form.firstName === '' &&
+                  form.lastName === '' &&
+                  form.username === '' &&
+                  form.birthdate === '' &&
+                  form.gender === '' &&
+                  form.location === '' &&
+                  form.phone === '' &&
+                  form.bio === '' &&
+                  form.email === ''
+                }>
+                Accept Changes
+              </Button>
 
-            <Button
-              variant="contained"
-              color="error"
-              onClick={handleOnCancel}
-              sx={{ mt: 1, mb: 1, ml: 1 }}
-            >
-              Cancel
-            </Button>
-          </Box>
-        </Box>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={handleOnCancel}>
+                Cancel
+              </Button>
+            </Box>
+          </Grid>
+        </Grid>
       </Grid>
-    </Grid>
+    </Container>
   );
 }
