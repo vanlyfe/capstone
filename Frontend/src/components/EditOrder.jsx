@@ -63,7 +63,7 @@ export default function EditOrder(props) {
       setErrors((e) => ({ ...e, form: error }));
     }
 
-    console.log(data.order[0]);
+   
     if (data?.order) {
       setSuccess(true);
       setTimeout(function () {
@@ -82,9 +82,7 @@ export default function EditOrder(props) {
     setForm((f) => ({ ...f, [event.target.name]: event.target.value }));
   };
 
-  console.log("Form is", form);
-  console.log("end date", form.endDate);
-  console.log(isValidDate(form.endDate));
+  
 
   return (
     <Grid

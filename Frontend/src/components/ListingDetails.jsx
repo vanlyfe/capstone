@@ -44,7 +44,7 @@ export default function ListingDetails({ user }) {
   const [isUser, setIsUser] = useState(false);
 
   const [carReviews, setCarReviews] = useState([]);
-  
+
   const [dateInValue, setDateInValue] = useState(null);
   const [dateOutValue, setDateOutValue] = useState(null);
   const [numGuests, setNumGuests] = useState(null);
@@ -54,9 +54,6 @@ export default function ListingDetails({ user }) {
 
   let { id } = useParams();
 
-  
-
-
   // fetches the car details
   useEffect(() => {
     const fetchCarDetails = async () => {
@@ -64,7 +61,6 @@ export default function ListingDetails({ user }) {
 
       if (data) {
         setCarDetails(data.listing[0]);
-
       }
     };
 
@@ -80,34 +76,26 @@ export default function ListingDetails({ user }) {
     //Fetches the reviews
     fetchCarDetails();
     fetchCarReviews();
-  
   }, []);
 
   useEffect(() => {
     const fetchHostDetails = async () => {
-    
-    
       const user_id = carDetails.user_id;
 
-      if(user_id){
-      const { data, error } = await apiClient.fetchUserFromId(user_id);
-  
-      if (data) {
-        setHostDetails(data.user);
+      if (user_id) {
+        const { data, error } = await apiClient.fetchUserFromId(user_id);
 
-      } 
-
+        if (data) {
+          setHostDetails(data.user);
+        }
       }
-      
     };
 
     fetchHostDetails();
-    if(user){
-    setIsUser(carDetails.user_id === user.id)
+    if (user) {
+      setIsUser(carDetails.user_id === user.id);
     }
   }, [carDetails]);
-
-  
 
   //CREATE THE FOLLOWING DETAILS TO BE POSTED TO ORDER  ["taxes", "total", "guests", "startDate", "endDate"];
 
@@ -159,6 +147,14 @@ export default function ListingDetails({ user }) {
   const handleOnInputChange = (e) => {
     if (e.target.name === "numGuests") {
       setNumGuests(e.target.value);
+      if (e.target.value > carDetails.max_accomodation) {
+        setErrors((e) => ({
+          ...e,
+          guests: "Number of guest higher than allowed",
+        }));
+      } else {
+        setErrors((e) => ({ ...e, guests: null }));
+      }
     }
 
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
@@ -198,8 +194,6 @@ export default function ListingDetails({ user }) {
   const handleMoreReviews = () => {
     setNext(next + reviewsPerColumn);
   };
-
-
 
   return (
     <Box>
@@ -480,7 +474,11 @@ export default function ListingDetails({ user }) {
                       color="inherit"
                       onClick={handleOnSubmit}
                       disabled={
-                        isUser || !numGuests || !dateInValue || !dateOutValue
+                        isUser ||
+                        !numGuests ||
+                        !dateInValue ||
+                        !dateOutValue ||
+                        errors.guests
                       }
                     >
                       Submit Request
