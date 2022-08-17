@@ -13,7 +13,7 @@ VALUES (
   'afakih',
   'Ammar',
   'Fakih',
-  'afakih@salesforce.com',
+  'jbosire@vassar.edu',
   '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
   'male',
   'https://www.fodors.com/wp-content/uploads/2022/04/jake-blucker-8LlJNFLTEm0-unsplash.jpg',
@@ -38,7 +38,30 @@ VALUES (
   'female',
   'https://i.natgeofe.com/n/0652a07e-42ed-4f3d-b2ea-0538de0c5ba3/seattle-travel_3x2.jpg',
   '2000-07-05T07:00:00.000Z'
+),
+(
+  'nosborne',
+  'Norman',
+  'Osborne',
+  'afakih@hmc.edu',
+  '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
+  'male',
+  'https://preview.redd.it/8nw85fig8g381.jpg?width=640&crop=smart&auto=webp&s=a892131c60ec4281b22dc38ae4c3947abd9c8445',
+  '2000-07-05T07:00:00.000Z'
+
+),
+(
+  'pparker',
+  'Peter',
+  'Parker',
+  'afakih@salesforce.com',
+  '$2b$13$/VSX0UPEI0LZ8ubBpm3z6OYT1RfOAFvYiF5nyY4UqmiCO2LYW/1fS',
+  'male',
+  'https://assets.nationbuilder.com/columbia222/pages/308/attachments/original/1458870011/spiderman.jpg?1458870011',
+  '2000-07-05T07:00:00.000Z'
+
 );
+
 
 INSERT INTO listings(user_id, price, location, max_accomodation, image_url, make, model, year, description, fees)
 VALUES (
