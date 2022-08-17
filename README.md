@@ -5,9 +5,9 @@ SITE Course Year: **2022**
 
 Cohort: **Salesforce**
 
-Team Member Names:**Ammar Fakih,Edilawit Tsehay, Joram Bosire, Vernon Otieno**
+Team Member Names: **Ammar Fakih, Edilawit Tsehay, Joram Bosire, Vernon Otieno**
 
-Mentors Names: **Matthew Curry, Myra Haubrich, Sudhir Genesan,Surendra Bhandari **
+Mentors Names: **Matthew Curry, Myra Haubrich, Sudhir Genesan, Surendra Bhandari**
 
 ## Project Overview
 
