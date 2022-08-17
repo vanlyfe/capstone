@@ -67,6 +67,7 @@ export default function App() {
               )
             }
           />
+          <Route path="/landing" element={<LandingPage />} />
           <Route
             path="/user/:id"
             element={<User user={user} setUser={setUser} />}
