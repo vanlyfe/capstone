@@ -72,9 +72,9 @@ VALUES (
   25.00,
   'San Mateo',
   2,
-  'https://global.toyota/pages/news/images/2019/11/05/1100/20191105_02_01_s.jpg',
-  'Toyota',
-  'Rav 4',
+  'https://www.autoindustriya.com/image.php?src=/images/posts/post15204.jpg&w=720&s=1',
+  'Mazda',
+  'Scrum',
   2019,
   'Clean spacious vehicle, references available',
   5.99
@@ -98,9 +98,9 @@ VALUES (
   12.05,
   'Newark',
   3,
-  'https://cdn.jdpower.com/JDPA_2020%20Volvo%20XC90%20R-Design%20T6%20Thunder%20Gray%20Front%20Quarter%20View.jpg',
+  'https://i.pinimg.com/originals/40/9b/ef/409bef61f2de4c08147cb57819d12279.jpg',
   'Volvo',
-  'XC90',
+  'Renegade',
   2022,
   'Recently purchased vehicle in a friendly neighbourhood',
   4.3
@@ -111,11 +111,11 @@ VALUES (
   15.99,
   'Los Angeles',
   3,
-  'https://s7d1.scene7.com/is/image/scom/22_FOR_feature_2?$900j$',
-  'Subaru',
-  'Forester',
+  'https://www.renderhub.com/creator-3d/mitsubishi-express-spaceclass-2020/mitsubishi-express-spaceclass-2020-01.jpg',
+  'Mitsubishi',
+  'Express',
   2022,
-  'Latest subaru in the market, clean and hospitable',
+  'Latest mitsubishi in the market, clean and hospitable',
   7.8
 
 ),
@@ -154,7 +154,7 @@ VALUES (
   'Toyota',
   'Camper',
   2020,
-  'Clean, affordable ferrari. Meals may be provided',
+  'Clean, affordable toyota. Meals may be provided',
   2.0
 
 ),
@@ -176,11 +176,11 @@ VALUES (
   17.80,
   'Poughkeepsie',
   5,
-  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoxhXy8UaPc2vjPr4CeM09DARGsqsQpnUEiA&usqp=CAU',
-  'Nissan ',
-  'Note',
+  'https://i.ytimg.com/vi/2Ldt4H1VBwY/maxresdefault.jpg',
+  'Toyota',
+  'HIACE',
   2022,
-  'Cozy nissan for anyone',
+  'Cozy toyota for anyone',
   5.99
 
 ),
