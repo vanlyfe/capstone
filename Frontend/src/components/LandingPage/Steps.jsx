@@ -34,7 +34,7 @@ export default function Steps() {
         How it Works
       </Typography>
 
-      <Stepper orientation="vertical" sx={{ mb: 10 }}>
+      <Stepper orientation="vertical" sx={{ mb: 10, ml: 1 }}>
         {steps.map((step, index) => (
           <Step active={true} key={index}>
             <StepLabel>
