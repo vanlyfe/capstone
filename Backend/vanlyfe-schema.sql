@@ -35,7 +35,7 @@ CREATE TABLE listings(
     image_url5          TEXT,
     createdAt           TIMESTAMP NOT NULL DEFAULT NOW(),
     updatedAt           TIMESTAMP NOT NULL DEFAULT NOW(),
-    fees                FLOAT
+    fees                FLOAT NOT NULL DEFAULT 0
 
 );
 
