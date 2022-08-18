@@ -66,7 +66,7 @@ VALUES (
 INSERT INTO listings(user_id, price, location, max_accomodation, image_url, make, model, year, description, fees)
 VALUES (
   1,
-  20.99,
+  40.99,
   'San Francisco',
   3,
   'https://media.ed.edmunds-media.com/ford/transit-passenger-van/2020/oem/2020_ford_transit-passenger-van_passenger-van_350-hd-xlt-high-roof_fq_oem_1_1600.jpg',
@@ -223,6 +223,16 @@ VALUES (
 
 INSERT INTO orders(user_id, taxes, total, guests, listing_id, startDate, endDate)
 VALUES(
+  6,
+  5,
+  55,
+  2,
+  8,
+  '10/6/2021',
+  '10/11/2021'
+
+),
+(
   1,
   5.99,
   20.99,
