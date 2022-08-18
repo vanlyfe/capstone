@@ -333,10 +333,6 @@ export default function CreateListing({ user, isLoading }) {
 
                         <Grid item xs={12}>
                           <TextField
-                            inputProps={{
-                              inputMode: 'numeric',
-                              pattern: '[0-9]*',
-                            }}
                             name="location"
                             value={form.location}
                             required
