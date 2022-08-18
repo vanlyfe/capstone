@@ -13,10 +13,22 @@ Mentors Names: **Matthew Curry, Myra Haubrich, Sudhir Genesan, Surendra Bhandari
 
 The main purpose of our project is to provide short term affordable housing option for people staying in or visiting major American cities. Our product allows for people to rent their car to others.
 
-Add a quick summary of what your project theme and objectives are. 
-
-Deployment Website: **Add Link to Deployed Project**
+Deployment Website: **[vanlyfe.surge.sh](http://vanlyfe.surge.sh/)**
 
 ### Open-source libraries used
 
-- Add any links to open-source libraries used in your project.
+- https://reactjs.org/
+- https://mui.com/
+- https://www.npmjs.com/package/express
+- https://www.npmjs.com/package/bcrypt
+- https://www.npmjs.com/package/colors
+- https://www.npmjs.com/package/cors
+- https://www.npmjs.com/package/dotenv
+- https://www.npmjs.com/package/jsonwebtoken
+- https://www.npmjs.com/package/morgan
+- https://www.npmjs.com/package/node-cron
+- https://www.npmjs.com/package/nodemon
+- https://www.npmjs.com/pg
+- https://www.npmjs.com/axios
+- https://www.npmjs.com/lodash
+- https://www.npmjs.com/react-router-dom
